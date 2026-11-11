@@ -1,0 +1,29 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Struct update syntax</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.5 (Struct update syntax).</b></span> The syntax <span style="color:#273D56">..instance</span> at the end of a struct expression: the remaining fields not explicitly set get the same values as the fields in the given instance.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.7:</b></span> Using struct update syntax to set a new <span style="color:#273D56">email</span> value for a <span style="color:#273D56">User</span> instance but to use the rest of the values from <span style="color:#273D56">user1</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let user2 = User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: String::from("another@example.com"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;..user1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Same effect as Listing 5.6 with less code: <span style="color:#273D56">user2</span> has a different <span style="color:#273D56">email</span> but the same <span style="color:#273D56">username</span>, <span style="color:#273D56">active</span> and <span style="color:#273D56">sign_in_count</span> as <span style="color:#273D56">user1</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

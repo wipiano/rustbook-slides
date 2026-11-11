@@ -1,0 +1,31 @@
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Writing the tiny response to the stream</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In <span style="color:#273D56">handle_connection</span>, remove the <span style="color:#273D56">println!</span> that printed the request data and replace it:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 21.3:</b></span> Writing a tiny successful HTTP response to the stream — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn handle_connection(mut stream: TcpStream) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let buf_reader = BufReader::new(&amp;stream);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let http_request: Vec&lt;_&gt; = buf_reader</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.lines()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.map(|result| result.unwrap())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.take_while(|line| !line.is_empty())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.collect();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let response = "HTTP/1.1 200 OK\r\n\r\n";</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;stream.write_all(response.as_bytes()).unwrap();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">use</span> lines and <span style="color:#273D56">main</span> are unchanged from Listing 21.2.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>

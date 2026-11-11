@@ -1,0 +1,34 @@
+<section id="s82" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.3 Graceful Shutdown and Cleanup</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Breaking out of the Worker loop</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 21.24:</b></span> Explicitly breaking out of the loop when <span style="color:#273D56">recv</span> returns an error — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Worker {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn new(id: usize, receiver: Arc&lt;Mutex&lt;mpsc::Receiver&lt;Job&gt;&gt;&gt;) -&gt; Worker {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let thread = thread::spawn(move || {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;loop {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let message = receiver.lock().unwrap().recv();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(job) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Worker {id} got a job; executing.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;job();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(_) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Worker {id} disconnected; shutting down.");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;break;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">83</p>
+</div>
+</section>

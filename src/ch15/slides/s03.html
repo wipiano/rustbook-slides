@@ -1,0 +1,21 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.1 Using Box&lt;T&gt; to Point to Data on the Heap</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Boxes and when to use them</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.2 (Box).</b></span> The most straightforward smart pointer, of type <span style="color:#273D56">Box&lt;T&gt;</span>. A box stores data on the heap rather than the stack; what remains on the stack is the pointer to the heap data (stack vs. heap: Chapter 4).</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Boxes have no performance overhead other than storing their data on the heap instead of the stack — but they don’t have many extra capabilities either. You’ll use them most often in these situations:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>When you have a type whose size can’t be known at compile time, and you want to use a value of that type in a context that requires an exact size.</li>
+<li>When you have a large amount of data, and you want to transfer ownership but ensure that the data won’t be copied when you do so.</li>
+<li>When you want to own a value, and you care only that it’s a type that implements a particular trait rather than being of a specific type.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

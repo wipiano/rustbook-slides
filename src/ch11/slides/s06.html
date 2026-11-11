@@ -1,0 +1,24 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading the test output</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 11.1:</b></span> What each part of the output in Listing 11.2 means — Cargo compiled and ran the test</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:34%">Output</th><th style="width:66%">Meaning</th></tr>
+<tr><td>running 1 test</td><td>How many tests this run executes</td></tr>
+<tr><td>test tests::it_works ... ok</td><td>The name of the generated test function, and the result of running it</td></tr>
+<tr><td>test result: ok.</td><td>Overall summary: all the tests passed</td></tr>
+<tr><td>1 passed; 0 failed</td><td>Totals of the tests that passed or failed</td></tr>
+<tr><td>0 ignored</td><td>Tests marked as ignored so they don’t run in a particular instance (see 11.2)</td></tr>
+<tr><td>0 measured</td><td>Benchmark tests that measure performance — as of this writing only in nightly Rust</td></tr>
+<tr><td>0 filtered out</td><td>Tests not run because an argument to cargo test selected only names matching a string (see 11.2)</td></tr>
+<tr><td>Doc-tests adder</td><td>Results of documentation tests: Rust can compile code examples in our API documentation, which keeps docs and code in sync (Chapter 14). Ignored for now.</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

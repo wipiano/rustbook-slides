@@ -1,0 +1,22 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Returning a Result instead of calling panic!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can instead return a <span style="color:#273D56">Result</span> value that contains a <span style="color:#273D56">Config</span> instance in the successful case and describes the problem in the error case.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>We also change the function name from <span style="color:#273D56">new</span> to <span style="color:#273D56">build</span>, because many programmers expect <span style="color:#273D56">new</span> functions to never fail.</li>
+<li>When <span style="color:#273D56">Config::build</span> is communicating to <span style="color:#273D56">main</span>, we can use the <span style="color:#273D56">Result</span> type to signal there was a problem.</li>
+<li>Then we can change <span style="color:#273D56">main</span> to convert an <span style="color:#273D56">Err</span> variant into a more practical error for our users, without the surrounding text about <span style="color:#273D56">thread 'main'</span> and <span style="color:#273D56">RUST_BACKTRACE</span> that a call to <span style="color:#273D56">panic!</span> causes.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Listing 12.9 (next slide) shows the changes to the return value of the function we now call <span style="color:#273D56">Config::build</span>, and to its body, needed to return a <span style="color:#273D56">Result</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This won’t compile until we update <span style="color:#273D56">main</span> as well, which we do in the listing after it.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

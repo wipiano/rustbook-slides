@@ -1,0 +1,31 @@
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using supertraits</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Sometimes a trait definition depends on another trait: for a type to implement the first trait, you want to require that it also implements the second, so that your trait definition can use the second trait’s associated items.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.16 (Supertrait).</b></span> The trait your trait definition is relying on.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Example: an <span style="color:#273D56">OutlinePrint</span> trait with an <span style="color:#273D56">outline_print</span> method that prints a value framed in asterisks. Given a <span style="color:#273D56">Point</span> that implements the standard library trait <span style="color:#273D56">Display</span> to result in <span style="color:#273D56">(x, y)</span>, calling <span style="color:#273D56">outline_print</span> on a <span style="color:#273D56">Point</span> with <span style="color:#273D56">1</span> for <span style="color:#273D56">x</span> and <span style="color:#273D56">3</span> for <span style="color:#273D56">y</span> should print the output on the right.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">**********</p>
+<p style="white-space:nowrap">*&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+<p style="white-space:nowrap">* (1, 3) *</p>
+<p style="white-space:nowrap">*&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+<p style="white-space:nowrap">**********</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The implementation of <span style="color:#273D56">outline_print</span> needs <span style="color:#273D56">Display</span>’s functionality, so <span style="color:#273D56">OutlinePrint</span> must work only for types that also implement <span style="color:#273D56">Display</span>. We specify that in the trait definition as <span style="color:#273D56">OutlinePrint: Display</span> — similar to adding a trait bound to the trait.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>

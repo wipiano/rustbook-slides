@@ -1,0 +1,22 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the borrow checker rejects Listing 8.6</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The code might look like it should work: why should a reference to the first element care about changes at the end of the vector?</p>
+<p style="font-size:30px;line-height:1.45">The error is due to the way vectors work. Because vectors put the values next to each other in memory, adding a new element onto the end might require:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>allocating new memory, if there isn’t enough room to put all the elements next to each other where the vector is currently stored, and</li>
+<li>copying the old elements to the new space.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">In that case, the reference to the first element would be pointing to deallocated memory. The borrowing rules prevent programs from ending up in that situation.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For more on the implementation details of the <span style="color:#273D56">Vec&lt;T&gt;</span> type, see “The Rustonomicon” (doc.rust-lang.org/nomicon/vec/vec.html).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

@@ -1,0 +1,25 @@
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A lock can’t be moved into multiple threads</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;9 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let handle = thread::spawn(move || {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;------- value moved into closure here,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;in previous iteration of loop</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">21 |&#160;&#160;&#160;&#160;&#160;println!("Result: {}", *counter.lock().unwrap());</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^ value borrowed here after move</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0382`.</p>
+<p style="white-space:nowrap">error: could not compile `shared-state` (bin "shared-state") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The error message states that the <span style="color:#273D56">counter</span> value was moved in the previous iteration of the loop. Rust is telling us that we can’t move the ownership of lock <span style="color:#273D56">counter</span> into multiple threads.</p>
+<p style="font-size:30px;line-height:1.45">The fix to try next: the multiple-ownership method from Chapter 15.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>

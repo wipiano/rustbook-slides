@@ -1,0 +1,27 @@
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using art through its internal structure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The front page of the documentation that <span style="color:#273D56">cargo doc</span> generates for this crate (the book’s Figure 14-3) lists only the <span style="color:#273D56">kinds</span> and <span style="color:#273D56">utils</span> modules. The <span style="color:#273D56">PrimaryColor</span> and <span style="color:#273D56">SecondaryColor</span> types aren’t listed on the front page, nor is the <span style="color:#273D56">mix</span> function: we have to click <span style="color:#273D56">kinds</span> and <span style="color:#273D56">utils</span> to see them.</p>
+<p style="font-size:30px;line-height:1.45">Another crate that depends on this library needs <span style="color:#273D56">use</span> statements that bring the items from <span style="color:#273D56">art</span> into scope, specifying the module structure that’s currently defined. Listing 14.4 uses the <span style="color:#273D56">PrimaryColor</span> and <span style="color:#273D56">mix</span> items:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.4:</b></span> A crate using the <span style="color:#273D56">art</span> crate’s items with its internal structure exported — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use art::kinds::PrimaryColor;</p>
+<p style="white-space:nowrap">use art::utils::mix;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let red = PrimaryColor::Red;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let yellow = PrimaryColor::Yellow;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;mix(red, yellow);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>

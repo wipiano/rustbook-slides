@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.14 — More About Cargo and Crates.io · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.14 — More About Cargo and Crates.io</h1><nav><a href="ch13.html">← Ch.13</a><a href="ch15.html">Ch.15 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 14</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">More About Cargo and Crates.io</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">So far we’ve used only the most basic features of Cargo to build, run, and test our code, but it can do a lot more. This chapter discusses some of its other, more advanced features, to show you how to:</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>customize your build through release profiles (14.1);</li>
+<li>publish libraries on crates.io (14.2);</li>
+<li>organize large projects with workspaces (14.3);</li>
+<li>install binaries from crates.io (14.4);</li>
+<li>extend Cargo using custom commands (14.5).</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Cargo can do even more than this chapter covers; for a full explanation of all its features, see its documentation (doc.rust-lang.org/cargo).</p>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.1 Customizing Builds with Release Profiles</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Release profiles: dev and release</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.1 (Release profile).</b></span> One of Rust’s predefined, customizable profiles with different configurations that give a programmer more control over various options for compiling code. Each profile is configured independently of the others.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Cargo has two main profiles:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>the <span style="color:#273D56">dev</span> profile, which Cargo uses when you run <span style="color:#273D56">cargo build</span> — defined with good defaults for development;</li>
+<li>the <span style="color:#273D56">release</span> profile, which Cargo uses when you run <span style="color:#273D56">cargo build --release</span> — with good defaults for release builds.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">These profile names might be familiar from the output of your builds:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s</p>
+<p style="white-space:nowrap">$ cargo build --release</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `release` profile [optimized] target(s) in 0.32s</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">dev</span> and <span style="color:#273D56">release</span> shown here are these different profiles used by the compiler.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.1 Customizing Builds with Release Profiles</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Default settings and the opt-level setting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Cargo has default settings for each profile that apply when you haven’t explicitly added any <span style="color:#273D56">[profile.*]</span> sections to the project’s <i>Cargo.toml</i>. By adding <span style="color:#273D56">[profile.*]</span> sections for any profile you want to customize, you override any subset of the default settings. For example, these are the defaults for <span style="color:#273D56">opt-level</span>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[profile.dev]</p>
+<p style="white-space:nowrap">opt-level = 0</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">[profile.release]</p>
+<p style="white-space:nowrap">opt-level = 3</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.2 (opt-level).</b></span> The profile setting that controls the number of optimizations Rust will apply to your code, in a range of 0 to 3.</p>
+</div>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Applying more optimizations extends compiling time.</li>
+<li>In development you compile often, so you want fewer optimizations to compile faster, even if the resulting code runs slower: the default <span style="color:#273D56">opt-level</span> for <span style="color:#273D56">dev</span> is <span style="color:#273D56">0</span>.</li>
+<li>For release it’s best to spend more time compiling: you compile in release mode once but run the program many times, so release mode trades longer compile time for faster code — the default for <span style="color:#273D56">release</span> is <span style="color:#273D56">3</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.1 Customizing Builds with Release Profiles</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Overriding a default setting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You override a default by adding a different value for it in <i>Cargo.toml</i>. For example, to use optimization level 1 in the development profile, add these two lines to the project’s <i>Cargo.toml</i>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[profile.dev]</p>
+<p style="white-space:nowrap">opt-level = 1</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>This overrides the default setting of <span style="color:#273D56">0</span>.</li>
+<li>Now <span style="color:#273D56">cargo build</span> uses the defaults for the <span style="color:#273D56">dev</span> profile plus our customization to <span style="color:#273D56">opt-level</span>.</li>
+<li>Because <span style="color:#273D56">opt-level</span> is <span style="color:#273D56">1</span>, Cargo applies more optimizations than the default, but not as many as in a release build.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For the full list of configuration options and defaults for each profile, see Cargo’s documentation (doc.rust-lang.org/cargo/reference/profiles.html).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Sharing code, and documentation comments</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We’ve used packages from crates.io as dependencies of our projects, but you can also share your code with other people by publishing your own packages. The crate registry at crates.io distributes the source code of your packages, so it primarily hosts code that is open source.</p>
+<p style="font-size:30px;line-height:1.45">Rust and Cargo have features that make your published package easier for people to find and use. We look at some of them first, and then at how to publish a package.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Making useful documentation comments</h3>
+<p style="font-size:30px;line-height:1.45">Accurately documenting your packages helps other users know how and when to use them, so it’s worth investing the time to write documentation. Chapter 3 showed ordinary comments with two slashes, <span style="color:#273D56">//</span>. Rust also has a particular kind of comment for documentation:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.3 (Documentation comment).</b></span> A comment written with three slashes, <span style="color:#273D56">///</span>, instead of two, that supports Markdown notation for formatting the text and is placed just before the item it documents. It generates HTML documentation, which displays the documentation comments of public API items for programmers interested in knowing how to <i>use</i> your crate as opposed to how your crate is <i>implemented</i>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Documenting add_one, and generating the docs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 14.1 shows documentation comments for an <span style="color:#273D56">add_one</span> function in a crate named <span style="color:#273D56">my_crate</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.1:</b></span> A documentation comment for a function — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">/// Adds one to the number given.</p>
+<p style="white-space:nowrap">///</p>
+<p style="white-space:nowrap">/// # Examples</p>
+<p style="white-space:nowrap">///</p>
+<p style="white-space:nowrap">/// ```</p>
+<p style="white-space:nowrap">/// let arg = 5;</p>
+<p style="white-space:nowrap">/// let answer = my_crate::add_one(arg);</p>
+<p style="white-space:nowrap">///</p>
+<p style="white-space:nowrap">/// assert_eq!(6, answer);</p>
+<p style="white-space:nowrap">/// ```</p>
+<p style="white-space:nowrap">pub fn add_one(x: i32) -&gt; i32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x + 1</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We describe what <span style="color:#273D56">add_one</span> does, start a section with the heading <span style="color:#273D56">Examples</span>, and then provide code that demonstrates how to use <span style="color:#273D56">add_one</span>.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">cargo doc</span> generates the HTML documentation from this comment: it runs the <span style="color:#273D56">rustdoc</span> tool distributed with Rust and puts the HTML in the <i>target/doc</i> directory.</p>
+<p style="font-size:30px;line-height:1.45">For convenience, <span style="color:#273D56">cargo doc --open</span> builds the HTML for your crate (and for all of its dependencies) and opens it in a web browser. Navigate to <span style="color:#273D56">add_one</span> to see the rendered text (the book’s Figure 14-1).</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Commonly used documentation sections</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56"># Examples</span> Markdown heading in Listing 14.1 creates a section in the HTML titled “Examples.” Crate authors commonly use these other sections too:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 14.1:</b></span> Common sections of a documentation comment</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Section</th><th style="width:84%">What it describes</th></tr>
+<tr><td>Panics</td><td>The scenarios in which the documented function could panic. Callers who don’t want their programs to panic should make sure they don’t call the function in these situations.</td></tr>
+<tr><td>Errors</td><td>If the function returns a Result: the kinds of errors that might occur and the conditions that cause them, so callers can write code to handle different kinds of errors in different ways.</td></tr>
+<tr><td>Safety</td><td>If the function is unsafe to call (unsafety: Chapter 20): why it is unsafe, and the invariants the function expects callers to uphold.</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Most documentation comments don’t need all of these sections, but this is a good checklist of the aspects of your code users will be interested in knowing about.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Documentation comments as tests</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Example code blocks in your documentation comments demonstrate how to use your library — with an additional bonus: running <span style="color:#273D56">cargo test</span> runs the code examples in your documentation as tests!</p>
+<p style="font-size:30px;line-height:1.45">Nothing is better than documentation with examples. But nothing is worse than examples that don’t work because the code has changed since the documentation was written. Running <span style="color:#273D56">cargo test</span> with the documentation of <span style="color:#273D56">add_one</span> from Listing 14.1 shows a section like this in the test results:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;Doc-tests my_crate</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 1 test</p>
+<p style="white-space:nowrap">test src/lib.rs - add_one (line 5) ... ok</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now, if we change either the function or the example so that the <span style="color:#273D56">assert_eq!</span> in the example panics, and run <span style="color:#273D56">cargo test</span> again, the doc tests catch that the example and the code are out of sync with each other!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Contained item comments: //!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.4 (Contained item comment).</b></span> A doc comment written <span style="color:#273D56">//!</span>. It adds documentation to the item that <i>contains</i> the comments rather than to the items <i>following</i> the comments. It is typically used inside the crate root file (<i>src/lib.rs</i> by convention) or inside a module, to document the crate or the module as a whole.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, to describe the purpose of the <span style="color:#273D56">my_crate</span> crate that contains the <span style="color:#273D56">add_one</span> function, we add documentation comments that start with <span style="color:#273D56">//!</span> to the beginning of the <i>src/lib.rs</i> file, as in Listing 14.2.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.2:</b></span> The documentation for the <span style="color:#273D56">my_crate</span> crate as a whole — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">//! # My Crate</p>
+<p style="white-space:nowrap">//!</p>
+<p style="white-space:nowrap">//! `my_crate` is a collection of utilities to make performing certain</p>
+<p style="white-space:nowrap">//! calculations more convenient.</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">/// Adds one to the number given.</p>
+<p style="white-space:nowrap">// --snip--</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Documenting the crate as a whole</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Notice there isn’t any code after the last line that begins with <span style="color:#273D56">//!</span>. Because these comments start with <span style="color:#273D56">//!</span> instead of <span style="color:#273D56">///</span>, they document the item that contains them rather than an item that follows them. Here that item is the <i>src/lib.rs</i> file, the crate root: these comments describe the entire crate.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 14.2:</b></span> The two kinds of documentation comment</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Comment</th><th style="width:84%">Documents</th></tr>
+<tr><td>///</td><td>the item that follows the comment (a function, struct, enum, …)</td></tr>
+<tr><td>//!</td><td>the item that contains the comment (the crate root file, or a module)</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">When we run <span style="color:#273D56">cargo doc --open</span>, these comments display on the front page of the documentation for <span style="color:#273D56">my_crate</span>, above the list of public items in the crate (the book’s Figure 14-2: the rendered documentation for <span style="color:#273D56">my_crate</span>, including the comment describing the crate as a whole).</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Documentation comments within items are useful for describing crates and modules especially. Use them to explain the overall purpose of the container, to help your users understand the crate’s organization.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Exporting a convenient public API</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The structure of your public API is a major consideration when publishing a crate. People who use your crate are less familiar with the structure than you are, and might have difficulty finding the pieces they want to use if your crate has a large module hierarchy.</p>
+<p style="font-size:30px;line-height:1.45">Chapter 7 covered making items public with the <span style="color:#273D56">pub</span> keyword and bringing items into a scope with <span style="color:#273D56">use</span>. But the structure that makes sense to you while developing a crate might not be convenient for your users. If you organize your structs in a hierarchy of multiple levels, people who want a type defined deep in it might have trouble finding out that the type exists. They might also be annoyed at having to enter <span style="color:#273D56">use my_crate::some_module::another_module::UsefulType;</span> rather than <span style="color:#273D56">use my_crate::UsefulType;</span>.</p>
+<p style="font-size:30px;line-height:1.45">The good news: if the structure <i>isn’t</i> convenient for others to use from another library, you don’t have to rearrange your internal organization. Instead, you can re-export items with <span style="color:#273D56">pub use</span> to make a public structure that’s different from your private structure.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.5 (Re-exporting).</b></span> Taking a public item in one location and making it public in another location, as if it were defined in the other location instead.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">An art library organized into modules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">For example, say we made a library named <span style="color:#273D56">art</span> for modeling artistic concepts. It has two modules: a <span style="color:#273D56">kinds</span> module containing two enums named <span style="color:#273D56">PrimaryColor</span> and <span style="color:#273D56">SecondaryColor</span>, and a <span style="color:#273D56">utils</span> module containing a function named <span style="color:#273D56">mix</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.3:</b></span> An <span style="color:#273D56">art</span> library with items organized into <span style="color:#273D56">kinds</span> and <span style="color:#273D56">utils</span> modules — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">//! # Art</p>
+<p style="white-space:nowrap">//!</p>
+<p style="white-space:nowrap">//! A library for modeling artistic concepts.</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub mod kinds {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;/// The primary colors according to the RYB color model.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub enum PrimaryColor {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Red,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Yellow,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Blue,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The art library: SecondaryColor and utils</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.3 (continued):</b></span> the rest of the <span style="color:#273D56">kinds</span> module, and the <span style="color:#273D56">utils</span> module — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;/// The secondary colors according to the RYB color model.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub enum SecondaryColor {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Orange,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Green,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Purple,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub mod utils {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use crate::kinds::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;/// Combines two primary colors in equal amounts to create</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;/// a secondary color.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn mix(c1: PrimaryColor, c2: PrimaryColor) -&gt; SecondaryColor {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using art through its internal structure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The front page of the documentation that <span style="color:#273D56">cargo doc</span> generates for this crate (the book’s Figure 14-3) lists only the <span style="color:#273D56">kinds</span> and <span style="color:#273D56">utils</span> modules. The <span style="color:#273D56">PrimaryColor</span> and <span style="color:#273D56">SecondaryColor</span> types aren’t listed on the front page, nor is the <span style="color:#273D56">mix</span> function: we have to click <span style="color:#273D56">kinds</span> and <span style="color:#273D56">utils</span> to see them.</p>
+<p style="font-size:30px;line-height:1.45">Another crate that depends on this library needs <span style="color:#273D56">use</span> statements that bring the items from <span style="color:#273D56">art</span> into scope, specifying the module structure that’s currently defined. Listing 14.4 uses the <span style="color:#273D56">PrimaryColor</span> and <span style="color:#273D56">mix</span> items:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.4:</b></span> A crate using the <span style="color:#273D56">art</span> crate’s items with its internal structure exported — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use art::kinds::PrimaryColor;</p>
+<p style="white-space:nowrap">use art::utils::mix;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let red = PrimaryColor::Red;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let yellow = PrimaryColor::Yellow;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;mix(red, yellow);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the internal structure hurts users</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The author of the code in Listing 14.4 had to figure out that <span style="color:#273D56">PrimaryColor</span> is in the <span style="color:#273D56">kinds</span> module and <span style="color:#273D56">mix</span> is in the <span style="color:#273D56">utils</span> module.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The module structure of the <span style="color:#273D56">art</span> crate is more relevant to developers working <i>on</i> the crate than to those <i>using</i> it.</li>
+<li>The internal structure contains no useful information for someone trying to understand how to use <span style="color:#273D56">art</span>; rather, it causes confusion.</li>
+<li>Developers who use the crate have to figure out where to look, and must specify the module names in their <span style="color:#273D56">use</span> statements.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To remove the internal organization from the public API, we can modify the <span style="color:#273D56">art</span> crate code of Listing 14.3 to add <span style="color:#273D56">pub use</span> statements that re-export the items at the top level, as shown in Listing 14.5 on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Re-exporting items with pub use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.5:</b></span> Adding <span style="color:#273D56">pub use</span> statements to re-export items — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">//! # Art</p>
+<p style="white-space:nowrap">//!</p>
+<p style="white-space:nowrap">//! A library for modeling artistic concepts.</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub use self::kinds::PrimaryColor;</p>
+<p style="white-space:nowrap">pub use self::kinds::SecondaryColor;</p>
+<p style="white-space:nowrap">pub use self::utils::mix;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub mod kinds {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub mod utils {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The three <span style="color:#273D56">pub use</span> lines re-export the items at the top level; the modules stay as they were.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using the re-exported items</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The API documentation that <span style="color:#273D56">cargo doc</span> generates for this crate now lists and links the re-exports on the front page (the book’s Figure 14-4), making the <span style="color:#273D56">PrimaryColor</span> and <span style="color:#273D56">SecondaryColor</span> types and the <span style="color:#273D56">mix</span> function easier to find.</p>
+<p style="font-size:30px;line-height:1.45">Users of the <span style="color:#273D56">art</span> crate can still see and use the internal structure from Listing 14.3, as demonstrated in Listing 14.4, or they can use the more convenient structure of Listing 14.5, as in Listing 14.6:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.6:</b></span> A program using the re-exported items from the <span style="color:#273D56">art</span> crate — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use art::PrimaryColor;</p>
+<p style="white-space:nowrap">use art::mix;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let red = PrimaryColor::Red;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let yellow = PrimaryColor::Yellow;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;mix(red, yellow);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">When and why to use pub use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Where there are many nested modules, re-exporting the types at the top level with <span style="color:#273D56">pub use</span> can make a significant difference in the experience of people who use the crate.</li>
+<li>Another common use of <span style="color:#273D56">pub use</span> is to re-export definitions of a dependency in the current crate, to make that crate’s definitions part of your crate’s public API.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Creating a useful public API structure is more an art than a science, and you can iterate to find the API that works best for your users. Choosing <span style="color:#273D56">pub use</span> gives you flexibility in how you structure your crate internally, and decouples that internal structure from what you present to your users.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Look at some of the code of crates you’ve installed to see whether their internal structure differs from their public API.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Setting up a crates.io account</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Before you can publish any crates, you need an account on crates.io and an API token:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Visit the home page at crates.io and log in via a GitHub account. (A GitHub account is currently a requirement, but the site might support other ways of creating an account in the future.)</li>
+<li>Once logged in, visit your account settings at crates.io/me/ and retrieve your API key.</li>
+<li>Run the <span style="color:#273D56">cargo login</span> command and paste your API key when prompted:</li>
+</ol>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo login</p>
+<p style="white-space:nowrap">abcdefghijklmnopqrstuvwxyz012345</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This informs Cargo of your API token and stores it locally in <i>~/.cargo/credentials.toml</i>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This token is a secret: do not share it with anyone else. If you do share it with anyone for any reason, revoke it and generate a new token on crates.io.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding metadata: a unique crate name</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Say you have a crate you want to publish. Before publishing, you need to add some metadata in the <span style="color:#273D56">[package]</span> section of the crate’s <i>Cargo.toml</i> file. First, your crate needs a unique name:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>While working on a crate locally, you can name it whatever you like.</li>
+<li>Crate names on crates.io, however, are allocated on a first-come, first-served basis: once a name is taken, no one else can publish a crate with that name.</li>
+<li>Before attempting to publish, search for the name you want to use. If it has been used, find another name and edit the <span style="color:#273D56">name</span> field under <span style="color:#273D56">[package]</span> to use the new name for publishing:</li>
+</ul>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "guessing_game"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Even with a unique name, running <span style="color:#273D56">cargo publish</span> at this point gives you a warning and then an error (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Publishing without a description or license fails</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo publish</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">warning: manifest has no description, license, license-file, documentation, homepage or repository.</p>
+<p style="white-space:nowrap">See https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info.</p>
+<p style="white-space:nowrap">--snip--</p>
+<p style="white-space:nowrap">error: failed to publish to registry at https://crates.io</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">Caused by:</p>
+<p style="white-space:nowrap">&#160;&#160;the remote server responded with an error (status 400 Bad Request): missing or empty metadata</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;fields: description, license. Please see https://doc.rust-lang.org/cargo/reference/manifest.html</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;for more information on configuring these fields</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This results in an error because you’re missing some crucial information: a <b>description</b> and a <b>license</b> are required, so that people will know what your crate does and under what terms they can use it.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding a description and a license</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">description</span>: just a sentence or two, because it appears with your crate in search results.</li>
+<li><span style="color:#273D56">license</span>: you need to give a license identifier value.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.6 (License identifier value).</b></span> A standard identifier naming a license; the Linux Foundation’s Software Package Data Exchange (SPDX, spdx.org/licenses) lists the identifiers you can use.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, to specify that you’ve licensed your crate using the MIT License, add the <span style="color:#273D56">MIT</span> identifier:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "guessing_game"</p>
+<p style="white-space:nowrap">license = "MIT"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">To use a license that doesn’t appear in the SPDX, place the text of that license in a file, include the file in your project, and then use <span style="color:#273D56">license-file</span> to specify the name of that file instead of using the <span style="color:#273D56">license</span> key.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Dual licensing, and a manifest ready to publish</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Which license suits your project is beyond the scope of the book. Many Rust projects are licensed like Rust itself, with the dual license <span style="color:#273D56">MIT OR Apache-2.0</span>: multiple identifiers separated by <span style="color:#273D56">OR</span> give your project multiple licenses.</p>
+<p style="font-size:30px;line-height:1.45">With a unique name, the version, a description, and a license, a manifest ready to publish might look like this:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "guessing_game"</p>
+<p style="white-space:nowrap">version = "0.1.0"</p>
+<p style="white-space:nowrap">edition = "2024"</p>
+<p style="white-space:nowrap">description = "A fun game where you guess what number the computer has chosen."</p>
+<p style="white-space:nowrap">license = "MIT OR Apache-2.0"</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">[dependencies]</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Cargo’s documentation (doc.rust-lang.org/cargo) describes other metadata you can specify so others can discover and use your crate more easily.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Publishing to crates.io is permanent</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now that you’ve created an account, saved your API token, chosen a name for your crate, and specified the required metadata, you’re ready to publish! Publishing a crate uploads a specific version to crates.io for others to use.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Be careful: a publish is permanent</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>The version can never be overwritten, and the code cannot be deleted except in certain circumstances.</li>
+<li>One major goal of crates.io is to act as a permanent archive of code, so that builds of all projects that depend on crates from crates.io will continue to work. Allowing version deletions would make fulfilling that goal impossible.</li>
+<li>However, there is no limit to the number of crate versions you can publish.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Run the <span style="color:#273D56">cargo publish</span> command again. It should succeed now (output on the next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A successful cargo publish</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo publish</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Packaging guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Packaged 6 files, 1.2KiB (895.0B compressed)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Verifying guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0</p>
+<p style="white-space:nowrap">(file:///projects/guessing_game/target/package/guessing_game-0.1.0)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Uploading guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Uploaded guessing_game v0.1.0 to registry `crates-io`</p>
+<p style="white-space:nowrap">note: waiting for `guessing_game v0.1.0` to be available at registry</p>
+<p style="white-space:nowrap">`crates-io`.</p>
+<p style="white-space:nowrap">You may press ctrl-c to skip waiting; the crate should be available shortly.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Published guessing_game v0.1.0 at registry `crates-io`</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Congratulations! You’ve now shared your code with the Rust community, and anyone can easily add your crate as a dependency of their project.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">New versions, and deprecating old ones</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Publishing a new version of an existing crate</h3>
+<p style="font-size:30px;line-height:1.45">When you’ve made changes to your crate and are ready to release a new version, change the <span style="color:#273D56">version</span> value in your <i>Cargo.toml</i> and republish. Use the Semantic Versioning rules (semver.org) to decide on an appropriate next version number, based on the kinds of changes you’ve made. Then run <span style="color:#273D56">cargo publish</span> to upload the new version.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Deprecating versions from crates.io</h3>
+<p style="font-size:30px;line-height:1.45">Although you can’t remove previous versions of a crate, you can prevent any future projects from adding them as a new dependency. This is useful when a crate version is broken for one reason or another. For such situations, Cargo supports <i>yanking</i> a crate version.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.7 (Yanking).</b></span> Preventing new projects from depending on a published crate version while allowing all existing projects that depend on it to continue. Essentially, all projects with a <i>Cargo.lock</i> will not break, and any future <i>Cargo.lock</i> files generated will not use the yanked version.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Yanking and unyanking with cargo yank</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To yank a version, run <span style="color:#273D56">cargo yank</span> in the directory of the crate you previously published, and specify which version to yank. For example, having published <span style="color:#273D56">guessing_game</span> version 1.0.1, we’d run this in the project directory for <span style="color:#273D56">guessing_game</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo yank --vers 1.0.1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Yank guessing_game@1.0.1</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Adding <span style="color:#273D56">--undo</span> to the command undoes a yank and allows projects to start depending on that version again:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo yank --vers 1.0.1 --undo</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;Unyank guessing_game@1.0.1</p>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> A yank <i>does not</i> delete any code. It cannot, for example, delete accidentally uploaded secrets. If that happens, you must reset those secrets immediately.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Workspaces: several packages developed together</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Chapter 12 we built a package that included a binary crate and a library crate. As your project develops, the library crate might keep getting bigger, and you may want to split your package further into multiple library crates. Cargo’s <i>workspaces</i> help manage multiple related packages that are developed in tandem.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.8 (Workspace).</b></span> A set of packages that share the same <i>Cargo.lock</i> and output directory.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Creating a workspace</h3>
+<p style="font-size:30px;line-height:1.45">The example uses trivial code, to concentrate on the structure. There are multiple ways to structure a workspace; this is one common way: a workspace containing a binary and two libraries. The binary provides the main functionality and depends on the two libraries; one library provides an <span style="color:#273D56">add_one</span> function, the other an <span style="color:#273D56">add_two</span> function. Start with a new directory for the workspace:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ mkdir add</p>
+<p style="white-space:nowrap">$ cd add</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The workspace manifest, and the first member</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the <i>add</i> directory, create the <i>Cargo.toml</i> file that configures the entire workspace. It has no <span style="color:#273D56">[package]</span> section; instead it starts with a <span style="color:#273D56">[workspace]</span> section that lets us add members to the workspace. We also use the latest and greatest version of Cargo’s resolver algorithm by setting <span style="color:#273D56">resolver</span> to <span style="color:#273D56">"3"</span>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[workspace]</p>
+<p style="white-space:nowrap">resolver = "3"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Next, create the <span style="color:#273D56">adder</span> binary crate by running <span style="color:#273D56">cargo new</span> within the <i>add</i> directory:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new adder</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Created binary (application) `adder` package</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;Adding `adder` as member of workspace at `file:///projects/add`</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The members key, and the workspace layout</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running <span style="color:#273D56">cargo new</span> inside a workspace also automatically adds the newly created package to the <span style="color:#273D56">members</span> key in the <span style="color:#273D56">[workspace]</span> definition of the workspace <i>Cargo.toml</i>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[workspace]</p>
+<p style="white-space:nowrap">resolver = "3"</p>
+<p style="white-space:nowrap">members = ["adder"]</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">At this point we can build the workspace by running <span style="color:#273D56">cargo build</span>. The files in the <i>add</i> directory should look like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">├── Cargo.lock</p>
+<p style="white-space:nowrap">├── Cargo.toml</p>
+<p style="white-space:nowrap">├── adder</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;├── Cargo.toml</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;└── src</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;&#160;&#160;&#160;&#160;└── main.rs</p>
+<p style="white-space:nowrap">└── target</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">One shared target directory</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The workspace has one <i>target</i> directory at the top level, into which the compiled artifacts are placed; the <span style="color:#273D56">adder</span> package doesn’t have its own <i>target</i> directory.</li>
+<li>Even if we run <span style="color:#273D56">cargo build</span> from inside the <i>adder</i> directory, the compiled artifacts still end up in <i>add/target</i> rather than <i>add/adder/target</i>.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Why Cargo structures it this way</h3>
+<p style="font-size:30px;line-height:1.45">The crates in a workspace are meant to depend on each other. If each crate had its own <i>target</i> directory, each crate would have to recompile each of the other crates in the workspace to place the artifacts in its own <i>target</i> directory. By sharing one <i>target</i> directory, the crates avoid unnecessary rebuilding.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating the second package in the workspace</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next, create another member package in the workspace, called <span style="color:#273D56">add_one</span>. Generate a new library crate named <span style="color:#273D56">add_one</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new add_one --lib</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Created library `add_one` package</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;Adding `add_one` as member of workspace at `file:///projects/add`</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The top-level <i>Cargo.toml</i> now includes the <i>add_one</i> path in the <span style="color:#273D56">members</span> list:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[workspace]</p>
+<p style="white-space:nowrap">resolver = "3"</p>
+<p style="white-space:nowrap">members = ["adder", "add_one"]</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Two members, and the add_one function</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <i>add</i> directory should now have these directories and files:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">├── Cargo.lock</p>
+<p style="white-space:nowrap">├── Cargo.toml</p>
+<p style="white-space:nowrap">├── add_one</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;├── Cargo.toml</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;└── src</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;&#160;&#160;&#160;&#160;└── lib.rs</p>
+<p style="white-space:nowrap">├── adder</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;├── Cargo.toml</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;└── src</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;&#160;&#160;&#160;&#160;└── main.rs</p>
+<p style="white-space:nowrap">└── target</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">In the <i>add_one/src/lib.rs</i> file, add an <span style="color:#273D56">add_one</span> function:</p>
+<p style="font-size:26px;line-height:1.4"><i>add_one/src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn add_one(x: i32) -&gt; i32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x + 1</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A path dependency between members</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">To have the <span style="color:#273D56">adder</span> package (our binary) depend on the <span style="color:#273D56">add_one</span> package (our library), first add a path dependency on <span style="color:#273D56">add_one</span> to <i>adder/Cargo.toml</i>:</p>
+<p style="font-size:26px;line-height:1.4"><i>adder/Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[dependencies]</p>
+<p style="white-space:nowrap">add_one = { path = "../add_one" }</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Cargo doesn’t assume that crates in a workspace will depend on each other, so we need to be explicit about the dependency relationships.</p>
+<p style="font-size:30px;line-height:1.45">Next, use the <span style="color:#273D56">add_one</span> function (from the <span style="color:#273D56">add_one</span> crate) in the <span style="color:#273D56">adder</span> crate: change <span style="color:#273D56">main</span> in <i>adder/src/main.rs</i> to call it, as in Listing 14.7.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.7:</b></span> Using the <span style="color:#273D56">add_one</span> library crate from the <span style="color:#273D56">adder</span> crate — <i>adder/src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let num = 10;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Hello, world! {num} plus one is {}!", add_one::add_one(num));</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building the workspace, and running one package</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Build the workspace by running <span style="color:#273D56">cargo build</span> in the top-level <i>add</i> directory:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling add_one v0.1.0 (file:///projects/add/add_one)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/add/adder)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.22s</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To run the binary crate from the <i>add</i> directory, specify which package in the workspace to run with the <span style="color:#273D56">-p</span> argument and the package name with <span style="color:#273D56">cargo run</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run -p adder</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/adder`</p>
+<p style="white-space:nowrap">Hello, world! 10 plus one is 11!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This runs the code in <i>adder/src/main.rs</i>, which depends on the <span style="color:#273D56">add_one</span> crate.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Depending on an external package</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The workspace has only one <i>Cargo.lock</i> file, at the top level, rather than one in each crate’s directory, so all crates use the same version of all dependencies. If we add the <span style="color:#273D56">rand</span> package to both <i>adder/Cargo.toml</i> and <i>add_one/Cargo.toml</i>, Cargo resolves both to one version of <span style="color:#273D56">rand</span> and records that in the one <i>Cargo.lock</i>. Using the same dependencies means the crates in the workspace will always be compatible with each other.</p>
+<p style="font-size:30px;line-height:1.45">Add the <span style="color:#273D56">rand</span> crate to the <span style="color:#273D56">[dependencies]</span> section of <i>add_one/Cargo.toml</i>, so that the <span style="color:#273D56">add_one</span> crate can use it:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>add_one/Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[dependencies]</p>
+<p style="white-space:nowrap">rand = "0.10.1"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Now add <span style="color:#273D56">use rand;</span> to <i>add_one/src/lib.rs</i>. Running <span style="color:#273D56">cargo build</span> in the <i>add</i> directory brings in and compiles the <span style="color:#273D56">rand</span> crate, with one warning because we don’t refer to the <span style="color:#273D56">rand</span> we brought into scope (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building with rand: an unused-import warning</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded rand v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;--snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rand v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling add_one v0.1.0 (file:///projects/add/add_one)</p>
+<p style="white-space:nowrap">warning: unused import: `rand`</p>
+<p style="white-space:nowrap">&#160;--&gt; add_one/src/lib.rs:1:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">1 | use rand;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">warning: `add_one` (lib) generated 1 warning (run `cargo fix --lib -p add_one` to apply 1 suggestion)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/add/adder)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.95s</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each crate must declare its own dependencies</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The top-level <i>Cargo.lock</i> now records that <span style="color:#273D56">add_one</span> depends on <span style="color:#273D56">rand</span>. But other crates in the workspace can’t use <span style="color:#273D56">rand</span> unless we add it to their <i>Cargo.toml</i> files as well. Adding <span style="color:#273D56">use rand;</span> to <i>adder/src/main.rs</i> gives an error:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;--snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/add/adder)</p>
+<p style="white-space:nowrap">error[E0432]: unresolved import `rand`</p>
+<p style="white-space:nowrap">&#160;--&gt; adder/src/main.rs:2:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 | use rand;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^ no external crate `rand`</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">To fix this, list <span style="color:#273D56">rand</span> as a dependency in the <span style="color:#273D56">adder</span> package’s <i>Cargo.toml</i> too. Building <span style="color:#273D56">adder</span> then adds <span style="color:#273D56">rand</span> to its dependencies in <i>Cargo.lock</i>, but no additional copies are downloaded: every crate in the workspace using <span style="color:#273D56">rand</span> uses the same version, as long as they specify compatible versions — saving space and keeping the crates compatible.</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If crates in the workspace specify incompatible versions of the same dependency, Cargo resolves each of them, but still tries to resolve as few versions as possible.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding a test to a workspace</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">For another enhancement, add a test of the <span style="color:#273D56">add_one::add_one</span> function within the <span style="color:#273D56">add_one</span> crate:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>add_one/src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn add_one(x: i32) -&gt; i32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x + 1</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">#[cfg(test)]</p>
+<p style="white-space:nowrap">mod tests {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use super::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;#[test]</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn it_works() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assert_eq!(3, add_one(2));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">cargo test runs the tests of every crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now run <span style="color:#273D56">cargo test</span> in the top-level <i>add</i> directory. In a workspace structured like this one, it runs the tests for all the crates in the workspace:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo test</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling add_one v0.1.0 (file:///projects/add/add_one)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/add/adder)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running unittests src/lib.rs (target/debug/deps/add_one-93c49ee75dc46543)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 1 test</p>
+<p style="white-space:nowrap">test tests::it_works ... ok</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The first section of the output shows that the <span style="color:#273D56">it_works</span> test in the <span style="color:#273D56">add_one</span> crate passed. The output continues on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">cargo test in the workspace (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45">Rest of the <span style="color:#273D56">cargo test</span> output:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running unittests src/main.rs (target/debug/deps/adder-3a47283c568d2b6a)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 0 tests</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Doc-tests add_one</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 0 tests</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The next section shows that zero tests were found in the <span style="color:#273D56">adder</span> crate.</li>
+<li>The last section shows that zero documentation tests were found in the <span style="color:#273D56">add_one</span> crate.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Testing one crate with cargo test -p</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">From the top-level directory, run the tests of one particular crate with the <span style="color:#273D56">-p</span> flag and the crate’s name:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo test -p add_one</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running unittests src/lib.rs (target/debug/deps/add_one-93c49ee75dc46543)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 1 test</p>
+<p style="white-space:nowrap">test tests::it_works ... ok</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Doc-tests add_one</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 0 tests</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">cargo test</span> ran only the tests for the <span style="color:#273D56">add_one</span> crate and didn’t run the <span style="color:#273D56">adder</span> crate tests.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Publishing workspace crates, and why workspaces</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Publishing</h3>
+<p style="font-size:30px;line-height:1.45">If you publish the crates in the workspace to crates.io, each crate in the workspace must be published separately. As with <span style="color:#273D56">cargo test</span>, publish a particular crate of the workspace with the <span style="color:#273D56">-p</span> flag and the name of the crate you want to publish.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 14.9.</b> For additional practice, add an <span style="color:#273D56">add_two</span> crate to this workspace in a similar way to the <span style="color:#273D56">add_one</span> crate!</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">When to use a workspace</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>As your project grows, consider a workspace: it lets you work with smaller, easier-to-understand components than one big blob of code.</li>
+<li>Keeping the crates in a workspace can make coordination between them easier if they are often changed at the same time.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.4 Installing Binaries with cargo install</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing binaries with cargo install</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">cargo install</span> command lets you install and use binary crates locally. It isn’t intended to replace system packages; it’s a convenient way for Rust developers to install tools that others have shared on crates.io. You can only install packages that have binary targets.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.10 (Binary target).</b></span> The runnable program created if the crate has a <i>src/main.rs</i> file or another file specified as a binary — as opposed to a <i>library target</i>, which isn’t runnable on its own but is suitable for including within other programs.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Usually, a crate’s README file says whether the crate is a library, has a binary target, or both.</p>
+<p style="font-size:30px;line-height:1.45">All binaries installed with <span style="color:#273D56">cargo install</span> are stored in the installation root’s <i>bin</i> folder. If you installed Rust using <i>rustup.rs</i> and have no custom configurations, this directory is <i>$HOME/.cargo/bin</i>. Ensure that this directory is in your <span style="color:#273D56">$PATH</span> to be able to run programs you’ve installed with <span style="color:#273D56">cargo install</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.4 Installing Binaries with cargo install</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Example: installing ripgrep</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 12 mentioned <span style="color:#273D56">ripgrep</span>, a Rust implementation of the <span style="color:#273D56">grep</span> tool for searching files. To install it, run:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo install ripgrep</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded ripgrep v14.1.1</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded 1 crate (213.6 KB) in 0.40s</p>
+<p style="white-space:nowrap">&#160;&#160;Installing ripgrep v14.1.1</p>
+<p style="white-space:nowrap">--snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling grep v0.3.2</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `release` profile [optimized + debuginfo] target(s) in 6.73s</p>
+<p style="white-space:nowrap">&#160;&#160;Installing ~/.cargo/bin/rg</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Installed package `ripgrep v14.1.1` (executable `rg`)</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The second-to-last line of the output shows the location and the name of the installed binary, which for <span style="color:#273D56">ripgrep</span> is <span style="color:#273D56">rg</span>. As long as the installation directory is in your <span style="color:#273D56">$PATH</span>, you can then run <span style="color:#273D56">rg --help</span> and start using a faster, Rustier tool for searching files!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.5 Extending Cargo with Custom Commands</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Extending Cargo with custom commands</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Cargo is designed so that you can extend it with new subcommands without having to modify it.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.11 (Custom Cargo command).</b></span> A binary in your <span style="color:#273D56">$PATH</span> named <span style="color:#273D56">cargo-something</span>, which you can run as if it were a Cargo subcommand by running <span style="color:#273D56">cargo something</span>.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Custom commands like this are also listed when you run <span style="color:#273D56">cargo --list</span>.</li>
+<li>Being able to use <span style="color:#273D56">cargo install</span> to install extensions and then run them just like the built-in Cargo tools is a super-convenient benefit of Cargo’s design!</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Sharing code with Cargo and crates.io is part of what makes the Rust ecosystem useful for many different tasks. Rust’s standard library is small and stable, but crates are easy to share, use, and improve on a timeline different from that of the language. Don’t be shy about sharing code that’s useful to you on crates.io; it’s likely to be useful to someone else as well! In this chapter:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>release profiles (<span style="color:#273D56">dev</span>, <span style="color:#273D56">release</span>) and <span style="color:#273D56">[profile.*]</span> overrides such as <span style="color:#273D56">opt-level</span>;</li>
+<li><span style="color:#273D56">///</span> and <span style="color:#273D56">//!</span> doc comments, <span style="color:#273D56">cargo doc</span>, doc tests, and <span style="color:#273D56">pub use</span> re-exports for a convenient public API;</li>
+<li><span style="color:#273D56">cargo login</span>, required metadata, <span style="color:#273D56">cargo publish</span> (permanent) and <span style="color:#273D56">cargo yank</span>;</li>
+<li>workspaces: one <i>Cargo.lock</i> and <i>target</i>, path dependencies, <span style="color:#273D56">-p</span> to run, test or publish one crate;</li>
+<li><span style="color:#273D56">cargo install</span> for binary crates, and <span style="color:#273D56">cargo-something</span> binaries as custom commands.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 15 turns to smart pointers, such as <span style="color:#273D56">Box&lt;T&gt;</span>, <span style="color:#273D56">Rc&lt;T&gt;</span> and <span style="color:#273D56">RefCell&lt;T&gt;</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

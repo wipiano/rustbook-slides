@@ -1,0 +1,20 @@
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Checking for panics with should_panic</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In addition to checking return values, it’s important to check that our code handles error conditions as we expect.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 11.6.</b> The <span style="color:#273D56">Guess</span> type from Chapter 9, Listing 9-13: other code that uses <span style="color:#273D56">Guess</span> depends on the guarantee that <span style="color:#273D56">Guess</span> instances contain only values between 1 and 100. We can write a test that ensures that attempting to create a <span style="color:#273D56">Guess</span> instance with a value outside that range panics.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 11.7 (should_panic).</b></span> An attribute added to a test function: the test passes if the code inside the function panics, and fails if the code inside the function doesn’t panic.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 11.8 (next two slides) shows a test that checks that the error conditions of <span style="color:#273D56">Guess::new</span> happen when we expect them to.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>

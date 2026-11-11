@@ -1,0 +1,21 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.3 Running Code on Cleanup with the Drop Trait</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Destructors, double frees, and std::mem::drop</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error states that we’re not allowed to explicitly call <span style="color:#273D56">drop</span>. It uses the term <i>destructor</i>:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.9 (Destructor).</b></span> The general programming term for a function that cleans up an instance — analogous to a <i>constructor</i>, which creates an instance. The <span style="color:#273D56">drop</span> function in Rust is one particular destructor.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Rust doesn’t let us call <span style="color:#273D56">drop</span> explicitly because it would still automatically call <span style="color:#273D56">drop</span> on the value at the end of <span style="color:#273D56">main</span>. That would be a <i>double free</i> error: Rust trying to clean up the same value twice.</li>
+<li>We can’t disable the automatic insertion of <span style="color:#273D56">drop</span>, and we can’t call the <span style="color:#273D56">drop</span> method explicitly. So, to force a value to be cleaned up early, we use the <span style="color:#273D56">std::mem::drop</span> function.</li>
+<li><span style="color:#273D56">std::mem::drop</span> is different from the <span style="color:#273D56">drop</span> method in the <span style="color:#273D56">Drop</span> trait: we call it passing as an argument the value we want to force-drop. It is in the prelude, so <span style="color:#273D56">main</span> can call it directly, as in Listing 15.16.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

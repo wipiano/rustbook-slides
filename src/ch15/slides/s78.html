@@ -1,0 +1,18 @@
+<section id="s78" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.5 RefCell&lt;T&gt; and the Interior Mutability Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How Listing 15.24 works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>We create a value that is an instance of <span style="color:#273D56">Rc&lt;RefCell&lt;i32&gt;&gt;</span> and store it in a variable named <span style="color:#273D56">value</span>, so we can access it directly later.</li>
+<li>We create a <span style="color:#273D56">List</span> in <span style="color:#273D56">a</span> with a <span style="color:#273D56">Cons</span> variant that holds <span style="color:#273D56">value</span>. We clone <span style="color:#273D56">value</span> so that both <span style="color:#273D56">a</span> and <span style="color:#273D56">value</span> own the inner <span style="color:#273D56">5</span>, rather than transferring ownership from <span style="color:#273D56">value</span> to <span style="color:#273D56">a</span> or having <span style="color:#273D56">a</span> borrow from <span style="color:#273D56">value</span>.</li>
+<li>We wrap the list <span style="color:#273D56">a</span> in an <span style="color:#273D56">Rc&lt;T&gt;</span> so that lists <span style="color:#273D56">b</span> and <span style="color:#273D56">c</span> can both refer to <span style="color:#273D56">a</span>, as in Listing 15.18.</li>
+<li>To add 10 to the value in <span style="color:#273D56">value</span>, we call <span style="color:#273D56">borrow_mut</span> on it. This uses automatic dereferencing (“Where’s the <span style="color:#273D56">-&gt;</span> Operator?”, Chapter 5) to dereference the <span style="color:#273D56">Rc&lt;T&gt;</span> to the inner <span style="color:#273D56">RefCell&lt;T&gt;</span>. <span style="color:#273D56">borrow_mut</span> returns a <span style="color:#273D56">RefMut&lt;T&gt;</span> smart pointer; we use the dereference operator on it and change the inner value.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">79</p>
+</div>
+</section>

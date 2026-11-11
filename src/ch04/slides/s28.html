@@ -1,0 +1,20 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.1 What Is Ownership?</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Copy trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust has a special annotation called the <span style="color:#273D56">Copy</span> trait that we can place on types that are stored on the stack, as integers are (traits are covered in Chapter 10).</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 4.8 (Copy trait).</b></span> If a type implements the <span style="color:#273D56">Copy</span> trait, variables that use it do not move, but rather are trivially copied, making them still valid after assignment to another variable.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust won’t let us annotate a type with <span style="color:#273D56">Copy</span> if the type, or any of its parts, has implemented the <span style="color:#273D56">Drop</span> trait. If the type needs something special to happen when the value goes out of scope and we add the <span style="color:#273D56">Copy</span> annotation to that type, we’ll get a compile-time error.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> To learn how to add the <span style="color:#273D56">Copy</span> annotation to your type to implement the trait, see “Derivable Traits” in Appendix C.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

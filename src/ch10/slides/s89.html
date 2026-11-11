@@ -1,0 +1,18 @@
+<section id="s89" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The three lifetime elision rules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Without explicit annotations, the compiler uses three rules to figure out the lifetimes of references. The first applies to input lifetimes; the second and third apply to output lifetimes. If the compiler gets to the end of the three rules and there are still references whose lifetimes it can’t figure out, it stops with an error. The rules apply to <span style="color:#273D56">fn</span> definitions as well as <span style="color:#273D56">impl</span> blocks.</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>The compiler assigns a lifetime parameter to each parameter that’s a reference: one parameter gets one lifetime, <span style="color:#273D56">fn foo&lt;'a&gt;(x: &amp;'a i32)</span>; two parameters get two separate lifetimes, <span style="color:#273D56">fn foo&lt;'a, 'b&gt;(x: &amp;'a i32, y: &amp;'b i32)</span>; and so on.</li>
+<li>If there is exactly one input lifetime parameter, that lifetime is assigned to all output lifetime parameters: <span style="color:#273D56">fn foo&lt;'a&gt;(x: &amp;'a i32) -&gt; &amp;'a i32</span>.</li>
+<li>If there are multiple input lifetime parameters, but one of them is <span style="color:#273D56">&amp;self</span> or <span style="color:#273D56">&amp;mut self</span> because this is a method, the lifetime of <span style="color:#273D56">self</span> is assigned to all output lifetime parameters. This makes methods much nicer to read and write, because fewer symbols are necessary.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">90</p>
+</div>
+</section>

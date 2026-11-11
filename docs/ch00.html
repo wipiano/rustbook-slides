@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.0 — Introduction · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.0 — Introduction</h1><nav><span></span><a href="ch01.html">Ch.1 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">The Rust Programming Language</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Introduction</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Welcome to <i>The Rust Programming Language</i>, an introductory book about Rust. Rust helps you write faster, more reliable software. High-level ergonomics and low-level control are often at odds in programming language design; Rust challenges that conflict. By balancing powerful technical capacity with a great developer experience, Rust lets you control low-level details (such as memory usage) without all the hassle traditionally associated with such control.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This edition of the book is the same as <i>The Rust Programming Language</i> available in print and ebook format from No Starch Press.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>Who Rust Is For</li>
+<li>Who This Book Is For</li>
+<li>How to Use This Book</li>
+<li>Source Code</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Who Rust Is For</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Teams of developers: the compiler as gatekeeper</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust is ideal for many people for a variety of reasons. Let’s look at a few of the most important groups.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Teams of Developers</h3>
+<p style="font-size:30px;line-height:1.45">Rust is proving to be a productive tool for collaborating among large teams of developers with varying levels of systems programming knowledge.</p>
+<p style="font-size:30px;line-height:1.45">Low-level code is prone to various subtle bugs, which in most other languages can only be caught through extensive testing and careful code review by experienced developers.</p>
+<p style="font-size:30px;line-height:1.45">In Rust, the compiler plays a <i>gatekeeper</i> role by refusing to compile code with these elusive bugs, including concurrency bugs. By working alongside the compiler, the team can spend its time focusing on the program’s logic rather than chasing down bugs.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Who Rust Is For</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Teams of developers: contemporary tools</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust also brings contemporary developer tools to the systems programming world:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Cargo, the included dependency manager and build tool, makes adding, compiling, and managing dependencies painless and consistent across the Rust ecosystem.</li>
+<li>The <span style="color:#273D56">rustfmt</span> formatting tool ensures a consistent coding style across developers.</li>
+<li>The Rust Language Server powers integrated development environment (IDE) integration for code completion and inline error messages.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">By using these and other tools in the Rust ecosystem, developers can be productive while writing systems-level code.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Who Rust Is For</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Students and companies</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Students</h3>
+<p style="font-size:30px;line-height:1.45">Rust is for students and those who are interested in learning about systems concepts. Using Rust, many people have learned about topics like operating systems development. The community is very welcoming and happy to answer students’ questions. Through efforts such as this book, the Rust teams want to make systems concepts more accessible to more people, especially those new to programming.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Companies</h3>
+<p style="font-size:30px;line-height:1.45">Hundreds of companies, large and small, use Rust in production for a variety of tasks, including command line tools, web services, DevOps tooling, embedded devices, audio and video analysis and transcoding, cryptocurrencies, bioinformatics, search engines, Internet of Things applications, machine learning, and even major parts of the Firefox web browser.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Who Rust Is For</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Open source developers; speed and stability</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Open Source Developers</h3>
+<p style="font-size:30px;line-height:1.45">Rust is for people who want to build the Rust programming language, community, developer tools, and libraries. We’d love to have you contribute to the Rust language.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">People Who Value Speed and Stability</h3>
+<p style="font-size:30px;line-height:1.45">Rust is for people who crave speed and stability in a language. By <i>speed</i>, we mean both how quickly Rust code can run and the speed at which Rust lets you write programs.</p>
+<p style="font-size:30px;line-height:1.45">The Rust compiler’s checks ensure stability through feature additions and refactoring. This is in contrast to the brittle legacy code in languages without these checks, which developers are often afraid to modify.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Who Rust Is For</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Zero-cost abstractions and Rust’s ambition</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">By striving for zero-cost abstractions, Rust endeavors to make safe code be fast code as well.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 0.1 (Zero-cost abstractions).</b></span> Higher-level features that compile to lower-level code as fast as code written manually.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The Rust language hopes to support many other users as well; those mentioned here are merely some of the biggest stakeholders.</p>
+<p style="font-size:30px;line-height:1.45">Overall, Rust’s greatest ambition is to eliminate the trade-offs that programmers have accepted for decades by providing safety <i>and</i> productivity, speed <i>and</i> ergonomics.</p>
+<p style="font-size:30px;line-height:1.45">Give Rust a try, and see if its choices work for you.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Who This Book Is For</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Readers who already program</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This book assumes that you’ve written code in another programming language, but it doesn’t make any assumptions about which one.</p>
+<p style="font-size:30px;line-height:1.45">The material is meant to be broadly accessible to those from a wide variety of programming backgrounds. The book doesn’t spend a lot of time talking about what programming <i>is</i> or how to think about it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If you’re entirely new to programming, you would be better served by reading a book that specifically provides an introduction to programming.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading order; concept and project chapters</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In general, this book assumes that you’re reading it in sequence from front to back. Later chapters build on concepts in earlier chapters, and earlier chapters might not delve into details on a particular topic but will revisit the topic in a later chapter.</p>
+<p style="font-size:30px;line-height:1.45">You’ll find two kinds of chapters in this book:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 0.2 (Concept chapter).</b></span> A chapter in which you learn about an aspect of Rust.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 0.3 (Project chapter).</b></span> A chapter in which we build small programs together, applying what you’ve learned so far.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Chapter 2, Chapter 12, and Chapter 21 are project chapters; the rest are concept chapters.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapters 1–3: two ways to start</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 1 explains how to install Rust, how to write a “Hello, world!” program, and how to use Cargo, Rust’s package manager and build tool.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Hands-on: Chapter 2</h3>
+<p style="font-size:30px;line-height:1.45">Chapter 2 is a hands-on introduction to writing a program in Rust, having you build up a number-guessing game. It covers concepts at a high level; later chapters provide additional detail. If you want to get your hands dirty right away, Chapter 2 is the place for that.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Detail first: Chapter 3</h3>
+<p style="font-size:30px;line-height:1.45">A particularly meticulous learner who prefers to learn every detail before moving on might skip Chapter 2 and go straight to Chapter 3, which covers Rust features similar to those of other programming languages; then return to Chapter 2 to work on a project applying those details.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapters 4–9: ownership, types, modules, errors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 0.1:</b></span> What Chapters 4–9 cover</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Chapter</th><th style="width:84%">What you’ll learn</th></tr>
+<tr><td>Chapter 4</td><td>Rust’s ownership system</td></tr>
+<tr><td>Chapter 5</td><td>Structs and methods</td></tr>
+<tr><td>Chapter 6</td><td>Enums, match expressions, and the if let and let...else control flow constructs</td></tr>
+<tr><td>Chapter 7</td><td>Rust’s module system and the privacy rules for organizing your code and its public application programming interface (API)</td></tr>
+<tr><td>Chapter 8</td><td>Common collection data structures that the standard library provides: vectors, strings, and hash maps</td></tr>
+<tr><td>Chapter 9</td><td>Rust’s error-handling philosophy and techniques</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">You’ll use structs and enums (Chapters 5 and 6) to make custom types.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapters 10–15: abstraction, testing, a project, Cargo</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 0.2:</b></span> What Chapters 10–15 cover</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Chapter</th><th style="width:84%">What you’ll learn</th></tr>
+<tr><td>Chapter 10</td><td>Generics, traits, and lifetimes, which give you the power to define code that applies to multiple types</td></tr>
+<tr><td>Chapter 11</td><td>Testing, which even with Rust’s safety guarantees is necessary to ensure that your program’s logic is correct</td></tr>
+<tr><td>Chapter 12 (project)</td><td>Building our own implementation of a subset of functionality from the grep command line tool, which searches for text within files, using many of the concepts from the previous chapters</td></tr>
+<tr><td>Chapter 13</td><td>Closures and iterators: features of Rust that come from functional programming languages</td></tr>
+<tr><td>Chapter 14</td><td>Cargo in more depth, and best practices for sharing your libraries with others</td></tr>
+<tr><td>Chapter 15</td><td>Smart pointers that the standard library provides, and the traits that enable their functionality</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapters 16–21: concurrency, idioms, advanced topics</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 0.3:</b></span> What Chapters 16–21 cover</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Chapter</th><th style="width:84%">What you’ll learn</th></tr>
+<tr><td>Chapter 16</td><td>Different models of concurrent programming, and how Rust helps you program in multiple threads fearlessly</td></tr>
+<tr><td>Chapter 17</td><td>Building on that: Rust’s async and await syntax, along with tasks, futures, and streams, and the lightweight concurrency model they enable</td></tr>
+<tr><td>Chapter 18</td><td>How Rust idioms compare to object-oriented programming principles you might be familiar with</td></tr>
+<tr><td>Chapter 19</td><td>A reference on patterns and pattern matching, which are powerful ways of expressing ideas throughout Rust programs</td></tr>
+<tr><td>Chapter 20</td><td>A smorgasbord of advanced topics of interest, including unsafe Rust, macros, and more about lifetimes, traits, types, functions, and closures</td></tr>
+<tr><td>Chapter 21 (project)</td><td>Completing a project in which we implement a low-level multithreaded web server!</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The appendixes, and no wrong way to read</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Finally, some appendixes contain useful information about the language in a more reference-like format.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 0.4:</b></span> The appendixes</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Appendix</th><th style="width:84%">Contents</th></tr>
+<tr><td>A</td><td>Rust’s keywords</td></tr>
+<tr><td>B</td><td>Rust’s operators and symbols</td></tr>
+<tr><td>C</td><td>Derivable traits provided by the standard library</td></tr>
+<tr><td>D</td><td>Some useful development tools</td></tr>
+<tr><td>E</td><td>Rust editions</td></tr>
+<tr><td>F</td><td>Translations of the book</td></tr>
+<tr><td>G</td><td>How Rust is made and what nightly Rust is</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">There is no wrong way to read this book: If you want to skip ahead, go for it! You might have to jump back to earlier chapters if you experience any confusion. But do whatever works for you.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · How to Use This Book</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading compiler errors, and Ferris</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">An important part of learning Rust is learning how to read the error messages the compiler displays: these will guide you toward working code. So the book provides many examples that don’t compile, along with the error message the compiler shows in each situation.</p>
+<p style="font-size:30px;line-height:1.45">If you enter and run a random example, it may not compile! Read the surrounding text to see whether the example is meant to error. In most situations, the book leads you to the correct version of any code that doesn’t compile. Ferris, the crab mascot, also marks code that isn’t meant to work:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 0.5:</b></span> Ferris icons beside code listings</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:45%">Ferris</th><th style="width:55%">Meaning</th></tr>
+<tr><td>Ferris with a question mark</td><td>This code does not compile!</td></tr>
+<tr><td>Ferris throwing up their hands</td><td>This code panics!</td></tr>
+<tr><td>Ferris with one claw up, shrugging</td><td>This code does not produce the desired behavior.</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Source Code</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Where the book’s source lives</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The source files from which this book is generated can be found on GitHub:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">https://github.com/rust-lang/book/tree/main/src</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Introduction · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The introduction sets out what Rust is for and how to approach the book:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Rust pairs low-level control (such as memory usage) with high-level ergonomics, aiming for safety <i>and</i> productivity, speed <i>and</i> ergonomics.</li>
+<li>It serves teams (the compiler rejects subtle bugs; Cargo, <span style="color:#273D56">rustfmt</span> and the Rust Language Server help), students, companies, open source contributors, and anyone who values speed and stability.</li>
+<li>Zero-cost abstractions let safe, high-level code run as fast as hand-written low-level code.</li>
+<li>The book assumes you already program in some language; read it front to back, though skipping ahead is fine.</li>
+<li>Concept chapters teach an aspect of Rust; Chapters 2, 12 and 21 are projects.</li>
+<li>Many examples deliberately fail to compile: read the compiler’s errors, and watch for Ferris’s icons.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 1 installs Rust, writes a “Hello, world!” program, and introduces Cargo, Rust’s package manager and build tool.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Introduction</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

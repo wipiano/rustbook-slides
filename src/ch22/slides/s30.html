@@ -1,0 +1,15 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Clone for duplicating values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Clone</span> trait lets you explicitly create a deep copy of a value; the duplication process might involve running arbitrary code and copying heap data. (More on <span style="color:#273D56">Clone</span>: “Variables and Data Interacting with Clone”, Chapter 4.)</p>
+<p style="font-size:30px;line-height:1.45">Deriving <span style="color:#273D56">Clone</span> implements the <span style="color:#273D56">clone</span> method, which, when implemented for the whole type, calls <span style="color:#273D56">clone</span> on each of the parts of the type. This means all the fields or values in the type must also implement <span style="color:#273D56">Clone</span> to derive <span style="color:#273D56">Clone</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> calling the <span style="color:#273D56">to_vec</span> method on a slice. The slice doesn’t own the type instances it contains, but the vector returned from <span style="color:#273D56">to_vec</span> needs to own its instances, so <span style="color:#273D56">to_vec</span> calls <span style="color:#273D56">clone</span> on each item. Thus, the type stored in the slice must implement <span style="color:#273D56">Clone</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

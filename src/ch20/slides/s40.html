@@ -1,0 +1,19 @@
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why default type parameters; same-named methods</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You’ll use default type parameters in two main ways:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>To extend a type without breaking existing code: if you add a type parameter to an existing trait, a default allows extending the trait’s functionality without breaking the existing implementation code.</li>
+<li>To allow customization in specific cases most users won’t need. The standard library’s <span style="color:#273D56">Add</span> is an example: usually you add two like types, but <span style="color:#273D56">Add</span> lets you customize beyond that. With the default, you don’t have to specify the extra parameter most of the time — a bit of implementation boilerplate isn’t needed, making the trait easier to use.</li>
+</ol>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Disambiguating between identically named methods</h3>
+<p style="font-size:30px;line-height:1.45">Nothing in Rust prevents a trait from having a method with the same name as another trait’s method, nor implementing both traits on one type. A type can also have a method of its own with the same name. When calling methods with the same name, you need to tell Rust which one you want. In Listing 20.17, traits <span style="color:#273D56">Pilot</span> and <span style="color:#273D56">Wizard</span> both have a method <span style="color:#273D56">fly</span>; both are implemented on a type <span style="color:#273D56">Human</span> that already has its own <span style="color:#273D56">fly</span>. Each <span style="color:#273D56">fly</span> does something different.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>

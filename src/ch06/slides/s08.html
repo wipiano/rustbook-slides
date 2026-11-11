@@ -1,0 +1,36 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Message enum: varied data in each variant</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 6.2 shows another enum, with a wide variety of types embedded in its variants.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.2:</b></span> A <span style="color:#273D56">Message</span> enum whose variants each store different amounts and types of values</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quit,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Move { x: i32, y: i32 },</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Write(String),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;ChangeColor(i32, i32, i32),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">This enum has four variants with different types:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Quit</span>: has no data associated with it at all</li>
+<li><span style="color:#273D56">Move</span>: has named fields, like a struct does</li>
+<li><span style="color:#273D56">Write</span>: includes a single <span style="color:#273D56">String</span></li>
+<li><span style="color:#273D56">ChangeColor</span>: includes three <span style="color:#273D56">i32</span> values</li>
+</ul>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Defining an enum with variants such as these is similar to defining different kinds of struct definitions, except the enum doesn’t use the <span style="color:#273D56">struct</span> keyword and all the variants are grouped together under the <span style="color:#273D56">Message</span> type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

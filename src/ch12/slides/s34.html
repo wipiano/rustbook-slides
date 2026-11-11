@@ -1,0 +1,24 @@
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">process::exit and a friendlier error</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A new <span style="color:#273D56">use</span> line brings <span style="color:#273D56">process</span> from the standard library into scope. The closure run in the error case is only two lines: we print the <span style="color:#273D56">err</span> value and then call <span style="color:#273D56">process::exit</span>, which stops the program immediately and returns the number that was passed as the exit status code.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 12.4 (Nonzero exit status).</b></span> A convention by which a program signals to the process that called it that the program exited with an error state.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This is similar to the <span style="color:#273D56">panic!</span>-based handling of Listing 12.8, but we no longer get all the extra output. Great! This output is much friendlier for our users:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling minigrep v0.1.0 (file:///projects/minigrep)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.48s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/minigrep`</p>
+<p style="white-space:nowrap">Problem parsing arguments: not enough arguments</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>

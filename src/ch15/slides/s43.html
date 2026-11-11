@@ -1,0 +1,45 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.4 Rc&lt;T&gt;, the Reference-Counted Smart Pointer</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Two lists sharing a third</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="position:relative;width:1696px;height:330px">
+<p style="position:absolute;left:60px;top:26px;width:50px;font-size:30px;line-height:1.3;text-align:center">b</p>
+<div style="position:absolute;left:220px;top:10px;width:200px;height:70px;display:flex;flex-direction:row;border:1.5px solid #20252B;background:#F3F5F7">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid #20252B"><p style="font-size:26px;line-height:1.3;text-align:center">3</p></div>
+<div style="flex:1"></div>
+</div>
+<p style="position:absolute;left:60px;top:266px;width:50px;font-size:30px;line-height:1.3;text-align:center">c</p>
+<div style="position:absolute;left:220px;top:250px;width:200px;height:70px;display:flex;flex-direction:row;border:1.5px solid #20252B;background:#F3F5F7">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid #20252B"><p style="font-size:26px;line-height:1.3;text-align:center">4</p></div>
+<div style="flex:1"></div>
+</div>
+<p style="position:absolute;left:585px;top:20px;width:50px;font-size:30px;line-height:1.3;text-align:center">a</p>
+<div style="position:absolute;left:560px;top:130px;width:200px;height:70px;display:flex;flex-direction:row;border:1.5px solid #20252B;background:#F3F5F7">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid #20252B"><p style="font-size:26px;line-height:1.3;text-align:center">5</p></div>
+<div style="flex:1"></div>
+</div>
+<div style="position:absolute;left:900px;top:130px;width:200px;height:70px;display:flex;flex-direction:row;border:1.5px solid #20252B;background:#F3F5F7">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid #20252B"><p style="font-size:26px;line-height:1.3;text-align:center">10</p></div>
+<div style="flex:1"></div>
+</div>
+<div style="position:absolute;left:1240px;top:130px;width:120px;height:70px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid #20252B;background:#F3F5F7">
+<p style="font-size:26px;line-height:1.3;text-align:center">Nil</p>
+</div>
+<x-connector x1="110" y1="45" x2="218" y2="45" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="370" y1="45" x2="558" y2="150" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="110" y1="285" x2="218" y2="285" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="370" y1="285" x2="558" y2="180" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="610" y1="66" x2="610" y2="128" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="710" y1="165" x2="898" y2="165" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="1050" y1="165" x2="1238" y2="165" head="end" style="color:#20252B;border-width:1.5px"></x-connector>
+</div>
+<p style="font-size:26px;line-height:1.4;text-align:center"><span style="color:#273D56"><b>Figure 15.3:</b></span> Two lists, <span style="color:#273D56">b</span> and <span style="color:#273D56">c</span>, sharing ownership of a third list, <span style="color:#273D56">a</span></p>
+<p style="font-size:30px;line-height:1.45">We create list <span style="color:#273D56">a</span> that contains <span style="color:#273D56">5</span> and then <span style="color:#273D56">10</span>. Then we make two more lists: <span style="color:#273D56">b</span> that starts with <span style="color:#273D56">3</span> and <span style="color:#273D56">c</span> that starts with <span style="color:#273D56">4</span>. Both <span style="color:#273D56">b</span> and <span style="color:#273D56">c</span> then continue on to the first list <span style="color:#273D56">a</span>, containing <span style="color:#273D56">5</span> and <span style="color:#273D56">10</span>: both lists share it. Implementing this with our <span style="color:#273D56">Box&lt;T&gt;</span>-based <span style="color:#273D56">List</span> won’t work, as Listing 15.17 shows.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

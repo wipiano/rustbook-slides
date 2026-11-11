@@ -1,0 +1,25 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">“Test did not panic as expected”</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4">(output continued)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">note: test did not panic as expected at src/lib.rs:21:8</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">failures:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;tests::greater_than_100</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">error: test failed, to rerun pass `--lib`</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We don’t get a very helpful message in this case, but the test function is annotated with <span style="color:#273D56">#[should_panic]</span>, so the failure means that the code in the test function did not cause a panic.</p>
+<p style="font-size:30px;line-height:1.45">Tests that use <span style="color:#273D56">should_panic</span> can be imprecise: a <span style="color:#273D56">should_panic</span> test would pass even if the test panics for a different reason from the one we were expecting.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

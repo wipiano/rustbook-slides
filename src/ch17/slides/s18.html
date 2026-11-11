@@ -1,0 +1,20 @@
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.1 Futures and the Async Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Walking through the transformed version</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>It uses the <span style="color:#273D56">impl Trait</span> syntax from Chapter 10’s “Traits as Parameters” section.</li>
+<li>The returned value implements the <span style="color:#273D56">Future</span> trait with an associated type of <span style="color:#273D56">Output</span>. The <span style="color:#273D56">Output</span> type is <span style="color:#273D56">Option&lt;String&gt;</span>, the same as the original return type of the <span style="color:#273D56">async fn</span> version of <span style="color:#273D56">page_title</span>.</li>
+<li>All of the code called in the body of the original function is wrapped in an <span style="color:#273D56">async move</span> block. Remember that blocks are expressions: this whole block is the expression returned from the function.</li>
+<li>This async block produces a value with the type <span style="color:#273D56">Option&lt;String&gt;</span>, which matches the <span style="color:#273D56">Output</span> type in the return type — just like other blocks you have seen.</li>
+<li>The new function body is an <span style="color:#273D56">async move</span> block because of how it uses the <span style="color:#273D56">url</span> parameter. (<span style="color:#273D56">async</span> versus <span style="color:#273D56">async move</span> is discussed much more later in the chapter.)</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Now we can call <span style="color:#273D56">page_title</span> in <span style="color:#273D56">main</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>

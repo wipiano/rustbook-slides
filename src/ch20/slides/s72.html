@@ -1,0 +1,33 @@
+<section id="s72" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Traits as DSTs, and the Sized trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can combine <span style="color:#273D56">str</span> with all kinds of pointers: for example, <span style="color:#273D56">Box&lt;str&gt;</span> or <span style="color:#273D56">Rc&lt;str&gt;</span>. You’ve seen this before with a different DST: traits. Every trait is a DST we can refer to by using the name of the trait. Chapter 18 (“Using Trait Objects to Abstract over Shared Behavior”) put trait objects behind a pointer, such as <span style="color:#273D56">&amp;dyn Trait</span> or <span style="color:#273D56">Box&lt;dyn Trait&gt;</span> (<span style="color:#273D56">Rc&lt;dyn Trait&gt;</span> would work too).</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.23 (Sized trait).</b></span> The trait Rust provides to determine whether or not a type’s size is known at compile time. It is automatically implemented for everything whose size is known at compile time.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In addition, Rust implicitly adds a bound on <span style="color:#273D56">Sized</span> to every generic function. A generic function definition like the one on the left is actually treated as though we had written the one on the right:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn generic&lt;T&gt;(t: T) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn generic&lt;T: Sized&gt;(t: T) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">73</p>
+</div>
+</section>

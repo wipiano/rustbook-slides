@@ -1,0 +1,24 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running Listing 20.19; functions without self</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running Listing 20.19 prints the following:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling traits-example v0.1.0 (file:///projects/traits-example)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.46s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/traits-example`</p>
+<p style="white-space:nowrap">This is your captain speaking.</p>
+<p style="white-space:nowrap">Up!</p>
+<p style="white-space:nowrap">*waving arms furiously*</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Because <span style="color:#273D56">fly</span> takes a <span style="color:#273D56">self</span> parameter, if we had two <i>types</i> that both implement one <i>trait</i>, Rust could figure out which implementation to use based on the type of <span style="color:#273D56">self</span>.</p>
+<p style="font-size:30px;line-height:1.45">But associated functions that are not methods have no <span style="color:#273D56">self</span>. When several types or traits define non-method functions with the same name, Rust doesn’t always know which type you mean unless you use fully qualified syntax. In Listing 20.20, an animal shelter names all baby dogs Spot: trait <span style="color:#273D56">Animal</span> has an associated non-method function <span style="color:#273D56">baby_name</span>, implemented for struct <span style="color:#273D56">Dog</span>, which also has its own <span style="color:#273D56">baby_name</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

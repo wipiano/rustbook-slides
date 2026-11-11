@@ -1,0 +1,24 @@
+<section id="s73" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Relaxing the bound with ?Sized</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">By default, generic functions work only on types that have a known size at compile time. This special syntax relaxes the restriction:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn generic&lt;T: ?Sized&gt;(t: &amp;T) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>A trait bound on <span style="color:#273D56">?Sized</span> means “<span style="color:#273D56">T</span> may or may not be <span style="color:#273D56">Sized</span>,” and this notation overrides the default that generic types must have a known size at compile time.</li>
+<li>The <span style="color:#273D56">?Trait</span> syntax with this meaning is only available for <span style="color:#273D56">Sized</span>, not any other traits.</li>
+<li>The type of the <span style="color:#273D56">t</span> parameter switched from <span style="color:#273D56">T</span> to <span style="color:#273D56">&amp;T</span>: because the type might not be <span style="color:#273D56">Sized</span>, we need to use it behind some kind of pointer. Here we’ve chosen a reference.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Next: functions and closures!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">74</p>
+</div>
+</section>

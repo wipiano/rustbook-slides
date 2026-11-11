@@ -1,0 +1,21 @@
+<section id="s66" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.5 Working with Environment Variables</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the lowercase comparison works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">search_case_insensitive</span> is almost the same as <span style="color:#273D56">search</span>; the only difference is that we lowercase the <span style="color:#273D56">query</span> and each <span style="color:#273D56">line</span>.</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>We lowercase the <span style="color:#273D56">query</span> string and store it in a new variable with the same name, shadowing the original. Whether the user’s query is <span style="color:#273D56">"rust"</span>, <span style="color:#273D56">"RUST"</span>, <span style="color:#273D56">"Rust"</span>, or <span style="color:#273D56">"rUsT"</span>, we treat it as if it were <span style="color:#273D56">"rust"</span> and are insensitive to the case.</li>
+<li><span style="color:#273D56">query</span> is now a <span style="color:#273D56">String</span> rather than a string slice, because <span style="color:#273D56">to_lowercase</span> creates new data rather than referencing existing data: the slice <span style="color:#273D56">"rUsT"</span> doesn’t contain a lowercase <span style="color:#273D56">u</span> or <span style="color:#273D56">t</span> for us to use, so we must allocate a new <span style="color:#273D56">String</span> containing <span style="color:#273D56">"rust"</span>. Passing <span style="color:#273D56">query</span> to <span style="color:#273D56">contains</span> now needs an ampersand, because <span style="color:#273D56">contains</span> is defined to take a string slice.</li>
+<li>We call <span style="color:#273D56">to_lowercase</span> on each <span style="color:#273D56">line</span> to lowercase all characters. With both <span style="color:#273D56">line</span> and <span style="color:#273D56">query</span> lowercased, we find matches no matter what the case of the query is.</li>
+</ol>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> While <span style="color:#273D56">to_lowercase</span> handles basic Unicode, it won’t be 100 percent accurate. A real application would need a bit more work here, but this section is about environment variables, not Unicode.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">67</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.1 Using Box&lt;T&gt; to Point to Data on the Heap</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The three use cases, in more detail</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li><b>Unknown size.</b> Demonstrated below in “Enabling Recursive Types with Boxes.”</li>
+<li><b>Large data.</b> Transferring ownership of a large amount of data can take a long time because the data is copied around on the stack. To improve performance, store the data on the heap in a box: then only the small amount of pointer data is copied around on the stack, while the data it references stays in one place on the heap.</li>
+<li><b>Trait implemented.</b> This case is known as a <i>trait object</i>; “Using Trait Objects to Abstract over Shared Behavior” in Chapter 18 is devoted to it — so what you learn here you’ll apply again there.</li>
+</ol>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Storing data on the heap</h3>
+<p style="font-size:30px;line-height:1.45">Before discussing the heap storage use case for <span style="color:#273D56">Box&lt;T&gt;</span>, we cover the syntax and how to interact with values stored within a <span style="color:#273D56">Box&lt;T&gt;</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s62" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading the error, and the borrow checker</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error says that <span style="color:#273D56">x</span> “does not live long enough.” <span style="color:#273D56">x</span> will be out of scope when the inner scope ends on line 7, but <span style="color:#273D56">r</span> is still valid for the outer scope; because its scope is larger, we say that it “lives longer.” If Rust allowed this code, <span style="color:#273D56">r</span> would be referencing memory that was deallocated when <span style="color:#273D56">x</span> went out of scope, and anything we tried to do with <span style="color:#273D56">r</span> wouldn’t work correctly. So, how does Rust determine that this code is invalid? It uses a borrow checker.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The borrow checker</h3>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 10.12 (Borrow checker).</b></span> The part of the Rust compiler that compares scopes to determine whether all borrows are valid.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 10.17 shows the same code as Listing 10.16, but with annotations showing the lifetimes of the variables.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">63</p>
+</div>
+</section>

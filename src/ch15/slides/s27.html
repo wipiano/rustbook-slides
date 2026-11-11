@@ -1,0 +1,27 @@
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Deref coercion in action</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We use <span style="color:#273D56">MyBox&lt;T&gt;</span> from Listing 15.8 and its <span style="color:#273D56">Deref</span> implementation from Listing 15.10. Listing 15.11 defines a function that has a string slice parameter.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.11:</b></span> A <span style="color:#273D56">hello</span> function that has the parameter <span style="color:#273D56">name</span> of type <span style="color:#273D56">&amp;str</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn hello(name: &amp;str) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Hello, {name}!");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We can call <span style="color:#273D56">hello</span> with a string slice, such as <span style="color:#273D56">hello("Rust");</span>. Deref coercion makes it possible to call it with a reference to a value of type <span style="color:#273D56">MyBox&lt;String&gt;</span>, too:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.12:</b></span> Calling <span style="color:#273D56">hello</span> with a reference to a <span style="color:#273D56">MyBox&lt;String&gt;</span> value, which works because of deref coercion — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let m = MyBox::new(String::from("Rust"));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;hello(&amp;m);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>

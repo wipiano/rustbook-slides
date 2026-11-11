@@ -1,0 +1,18 @@
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Pointers, references and smart pointers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A <i>pointer</i> is a general concept for a variable that contains an address in memory; the address refers to, or “points at,” some other data. The most common kind of pointer in Rust is a reference (Chapter 4): indicated by the <span style="color:#273D56">&amp;</span> symbol, it borrows the value it points to. References have no special capabilities other than referring to data, and they have no overhead.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.1 (Smart pointer).</b></span> A data structure that acts like a pointer but also has additional metadata and capabilities.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Smart pointers aren’t unique to Rust: they originated in C++ and exist in other languages as well. Rust’s standard library defines a variety of them, providing functionality beyond that of references. One example in this chapter is a <i>reference counting</i> smart pointer, which lets data have multiple owners by keeping track of the number of owners and cleaning up the data when no owners remain.</p>
+<p style="font-size:30px;line-height:1.45">With Rust’s ownership and borrowing there is one more difference: while references only borrow data, in many cases smart pointers <i>own</i> the data they point to.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>

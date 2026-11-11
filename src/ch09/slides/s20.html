@@ -1,0 +1,27 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shortcuts for panic on error: expect</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Similarly, <span style="color:#273D56">expect</span> also lets us choose the <span style="color:#273D56">panic!</span> message. Used instead of <span style="color:#273D56">unwrap</span> with a good message, it conveys your intent and makes tracking down the source of a panic easier:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("hello.txt should be included in this project");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We use <span style="color:#273D56">expect</span> like <span style="color:#273D56">unwrap</span>: to return the file handle or call <span style="color:#273D56">panic!</span>. The message <span style="color:#273D56">expect</span> uses in its call to <span style="color:#273D56">panic!</span> is the parameter we pass to it, rather than the default message <span style="color:#273D56">unwrap</span> uses:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">thread 'main' panicked at src/main.rs:5:10:</p>
+<p style="white-space:nowrap">hello.txt should be included in this project:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Os { code: 2, kind: NotFound, message: "No such file or directory" }</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

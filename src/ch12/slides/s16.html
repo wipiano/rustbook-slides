@@ -1,0 +1,32 @@
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Separating concerns in binary projects</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Allocating responsibility for multiple tasks to <span style="color:#273D56">main</span> is a problem common to many binary projects. So many Rust programmers split up the separate concerns of a binary program when <span style="color:#273D56">main</span> starts getting large.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The process</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>Split your program into a <i>main.rs</i> file and a <i>lib.rs</i> file, and move your program’s logic to <i>lib.rs</i>.</li>
+<li>As long as your command line parsing logic is small, it can remain in <span style="color:#273D56">main</span>.</li>
+<li>When the parsing logic starts getting complicated, extract it from <span style="color:#273D56">main</span> into other functions or types.</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">What stays in main</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>Calling the command line parsing logic with the argument values</li>
+<li>Setting up any other configuration</li>
+<li>Calling a <span style="color:#273D56">run</span> function in <i>lib.rs</i></li>
+<li>Handling the error if <span style="color:#273D56">run</span> returns an error</li>
+</ul>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>

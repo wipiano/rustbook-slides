@@ -1,0 +1,28 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating a package with cargo new</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s walk through what happens when we create a package. First, enter the command <span style="color:#273D56">cargo new my-project</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new my-project</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Created binary (application) `my-project` package</p>
+<p style="white-space:nowrap">$ ls my-project</p>
+<p style="white-space:nowrap">Cargo.toml</p>
+<p style="white-space:nowrap">src</p>
+<p style="white-space:nowrap">$ ls my-project/src</p>
+<p style="white-space:nowrap">main.rs</p>
+</div>
+<p style="font-size:30px;line-height:1.45">After <span style="color:#273D56">cargo new my-project</span>, we use <span style="color:#273D56">ls</span> to see what Cargo creates:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In the <i>my-project</i> directory there’s a <i>Cargo.toml</i> file, giving us a package.</li>
+<li>There’s also a <i>src</i> directory that contains <i>main.rs</i>.</li>
+<li>Open <i>Cargo.toml</i> in your text editor and note that there’s no mention of <i>src/main.rs</i>: Cargo finds it by convention (next slide).</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

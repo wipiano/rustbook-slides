@@ -1,0 +1,33 @@
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Struct field shorthand in patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.13:</b></span> Destructuring struct fields using struct field shorthand — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let p = Point { x: 0, y: 7 };</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Point { x, y } = p;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(0, x);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(7, y);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">It’s common to match the variable names to the field names, to make it easier to remember which variables came from which fields. Because of this, and because <span style="color:#273D56">let Point { x: x, y: y } = p;</span> contains a lot of duplication, Rust has a shorthand: list only the name of the struct field, and the variables created from the pattern get the same names.</p>
+<p style="font-size:30px;line-height:1.45">Listing 19.13 behaves like Listing 19.12, but the variables created are <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> instead of <span style="color:#273D56">a</span> and <span style="color:#273D56">b</span>: they contain the values from the <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> fields of the <span style="color:#273D56">p</span> struct.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>

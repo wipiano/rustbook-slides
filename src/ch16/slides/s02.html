@@ -1,0 +1,21 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A variety of tools, not one dogma</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For simplicity’s sake, the book refers to many of the problems as <i>concurrent</i> rather than being more precise by saying <i>concurrent and/or parallel</i>. For this chapter, mentally substitute <i>concurrent and/or parallel</i> whenever it says <i>concurrent</i>. In the next chapter, where the distinction matters more, it is more specific.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Many languages are dogmatic about the solutions they offer for handling concurrent problems. For example, Erlang has elegant functionality for message-passing concurrency but has only obscure ways to share state between threads.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Supporting only a subset of possible solutions is a reasonable strategy for higher-level languages, because a higher-level language promises benefits from giving up some control to gain abstractions.</li>
+<li>Lower-level languages, however, are expected to provide the solution with the best performance in any given situation, and have fewer abstractions over the hardware.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Therefore, Rust offers a variety of tools for modeling problems in whatever way is appropriate for your situation and requirements: threads, message passing, shared state, and the <span style="color:#273D56">Send</span> and <span style="color:#273D56">Sync</span> traits.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

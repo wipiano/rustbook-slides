@@ -1,0 +1,30 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The 404 page</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The response has a status line with status code 404 and the reason phrase <span style="color:#273D56">NOT FOUND</span>. Its body is the HTML in <i>404.html</i>: create that file next to <i>hello.html</i>, with any HTML you want, or this example:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 21.8:</b></span> Sample content for the page to send back with any 404 response — <i>404.html</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&lt;!DOCTYPE html&gt;</p>
+<p style="white-space:nowrap">&lt;html lang="en"&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&lt;head&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&lt;meta charset="utf-8"&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&lt;title&gt;Hello!&lt;/title&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&lt;/head&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&lt;body&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&lt;h1&gt;Oops!&lt;/h1&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&lt;p&gt;Sorry, I don't know what you're asking for.&lt;/p&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&lt;/body&gt;</p>
+<p style="white-space:nowrap">&lt;/html&gt;</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Run again: <i>127.0.0.1:7878</i> returns <i>hello.html</i>; any other request, like <i>127.0.0.1:7878/foo</i>, returns <i>404.html</i>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

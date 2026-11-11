@@ -1,0 +1,27 @@
+<section id="s61" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.2 Controlling How Tests Are Run</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running a subset of tests by name</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running a full test suite can sometimes take a long time. If you’re working on code in a particular area, you might want to run only the tests pertaining to that code. You can choose which tests to run by passing <span style="color:#273D56">cargo test</span> the name or names of the test(s) you want to run as an argument.</p>
+<p style="font-size:30px;line-height:1.45">To demonstrate, we first create three tests for our <span style="color:#273D56">add_two</span> function and choose which ones to run.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 11.11:</b></span> Three tests with three different names — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn add_two(a: u64) -&gt; u64 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;a + 2</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">#[cfg(test)]</p>
+<p style="white-space:nowrap">mod tests {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use super::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">64</p>
+</div>
+</section>

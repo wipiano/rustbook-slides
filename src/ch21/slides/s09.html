@@ -1,0 +1,31 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Listing 21.2: the handle_connection function</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 21.2 (continued):</b></span> Reading from the <span style="color:#273D56">TcpStream</span> and printing the data — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn handle_connection(mut stream: TcpStream) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let buf_reader = BufReader::new(&amp;stream);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let http_request: Vec&lt;_&gt; = buf_reader</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.lines()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.map(|result| result.unwrap())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.take_while(|line| !line.is_empty())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.collect();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Request: {http_request:#?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>We bring <span style="color:#273D56">std::io::BufReader</span> and <span style="color:#273D56">std::io::prelude</span> into scope to get traits and types that let us read from and write to the stream; <span style="color:#273D56">main</span>’s loop now passes each <span style="color:#273D56">stream</span> to <span style="color:#273D56">handle_connection</span>.</li>
+<li><span style="color:#273D56">handle_connection</span> creates a new <span style="color:#273D56">BufReader</span> that wraps a reference to the <span style="color:#273D56">stream</span>. <span style="color:#273D56">BufReader</span> adds buffering by managing calls to the <span style="color:#273D56">std::io::Read</span> trait methods for us.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

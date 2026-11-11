@@ -1,0 +1,28 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A secret number from the rand crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next we generate a secret number for the user to guess. It should be different every time, so that the game is fun to play more than once, and between 1 and 100, so that the game isn’t too difficult. Rust doesn’t yet include random number functionality in its standard library, but the Rust team provides a <span style="color:#273D56">rand</span> crate (crates.io/crates/rand) with that functionality.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Increasing functionality with a crate</h3>
+<p style="font-size:30px;line-height:1.45">Remember that a crate is a collection of Rust source code files.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.7 (Binary crate).</b></span> A crate that is an executable, like the project we’ve been building.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.8 (Library crate).</b></span> A crate, like <span style="color:#273D56">rand</span>, containing code intended to be used in other programs; it can’t be executed on its own.</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Coordinating external crates is where Cargo really shines. To use <span style="color:#273D56">rand</span>, first add it as a dependency: put the line shown next beneath the <span style="color:#273D56">[dependencies]</span> header in <i>Cargo.toml</i>. Specify <span style="color:#273D56">rand</span> exactly so, with this version number, or the code examples may not work.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

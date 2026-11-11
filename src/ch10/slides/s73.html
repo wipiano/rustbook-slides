@@ -1,0 +1,19 @@
+<section id="s73" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Annotations as a contract</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When annotating lifetimes in functions, the annotations go in the function signature, not in the function body. They become part of the contract of the function, much like the types in the signature.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Having signatures contain the lifetime contract makes the analysis the Rust compiler does simpler.</li>
+<li>If there’s a problem with the way a function is annotated or called, the compiler errors can point to the part of our code and the constraints more precisely.</li>
+<li>If, instead, the compiler made more inferences about what we intended the relationships of the lifetimes to be, it might only be able to point to a use of our code many steps away from the cause of the problem.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">When we pass concrete references to <span style="color:#273D56">longest</span>, the concrete lifetime substituted for <span style="color:#273D56">'a</span> is the part of the scope of <span style="color:#273D56">x</span> that overlaps with the scope of <span style="color:#273D56">y</span>: the generic lifetime <span style="color:#273D56">'a</span> gets the concrete lifetime equal to the smaller of the lifetimes of <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span>. Because the returned reference has the same lifetime parameter <span style="color:#273D56">'a</span>, it is also valid for the length of the smaller of those lifetimes.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">74</p>
+</div>
+</section>

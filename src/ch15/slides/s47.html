@@ -1,0 +1,29 @@
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.4 Rc&lt;T&gt;, the Reference-Counted Smart Pointer</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A List that uses Rc&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.18:</b></span> A definition of <span style="color:#273D56">List</span> that uses <span style="color:#273D56">Rc&lt;T&gt;</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum List {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Cons(i32, Rc&lt;List&gt;),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Nil,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use crate::List::{Cons, Nil};</p>
+<p style="white-space:nowrap">use std::rc::Rc;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let b = Cons(3, Rc::clone(&amp;a));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let c = Cons(4, Rc::clone(&amp;a));</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">use</span> statement brings <span style="color:#273D56">Rc&lt;T&gt;</span> into scope, because it’s not in the prelude. In <span style="color:#273D56">main</span>, we store the list holding <span style="color:#273D56">5</span> and <span style="color:#273D56">10</span> in a new <span style="color:#273D56">Rc&lt;List&gt;</span> in <span style="color:#273D56">a</span>. To create <span style="color:#273D56">b</span> and <span style="color:#273D56">c</span>, we call <span style="color:#273D56">Rc::clone</span>, passing a reference to the <span style="color:#273D56">Rc&lt;List&gt;</span> in <span style="color:#273D56">a</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>

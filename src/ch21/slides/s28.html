@@ -1,0 +1,20 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A web server in about 40 lines</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Awesome! We now have a simple web server in approximately 40 lines of Rust code. It:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>listens for TCP connections on <span style="color:#273D56">127.0.0.1:7878</span>;</li>
+<li>reads the request line of each HTTP request;</li>
+<li>responds to one request (<span style="color:#273D56">GET / HTTP/1.1</span>) with a page of content, <i>hello.html</i>, and status <span style="color:#273D56">200 OK</span>;</li>
+<li>responds to all other requests with a 404 response and <i>404.html</i>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Currently, our server runs in a single thread, meaning it can only serve one request at a time. Next we examine how that can be a problem by simulating some slow requests, and then fix it so that the server can handle multiple requests at once.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

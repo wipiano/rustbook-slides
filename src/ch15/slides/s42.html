@@ -1,0 +1,18 @@
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.4 Rc&lt;T&gt;, the Reference-Counted Smart Pointer</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">When to use Rc&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We use <span style="color:#273D56">Rc&lt;T&gt;</span> when we want to allocate some data on the heap for multiple parts of our program to read, and we can’t determine at compile time which part will finish using the data last. If we knew which part would finish last, we could just make that part the data’s owner, and the normal ownership rules enforced at compile time would take effect.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> <span style="color:#273D56">Rc&lt;T&gt;</span> is only for use in single-threaded scenarios. Chapter 16, on concurrency, covers how to do reference counting in multithreaded programs.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Sharing data</h3>
+<p style="font-size:30px;line-height:1.45">Back to the cons list of Listing 15.5, defined with <span style="color:#273D56">Box&lt;T&gt;</span>. This time we create two lists that both share ownership of a third list, conceptually as in Figure 15.3 (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>

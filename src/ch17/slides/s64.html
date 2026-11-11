@@ -1,0 +1,40 @@
+<section id="s64" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Now the two futures’ work is interleaved</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 17.16 (continued)</b></span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn slow(name: &amp;str, ms: u64) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;thread::sleep(Duration::from_millis(ms));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("'{name}' ran for {ms}ms");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We’ve added <span style="color:#273D56">trpl::sleep</span> calls with await points between each call to <span style="color:#273D56">slow</span>. Now the two futures’ work is interleaved:</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4">Output of Listing 17.16:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">'a' started.</p>
+<p style="white-space:nowrap">'a' ran for 30ms</p>
+<p style="white-space:nowrap">'b' started.</p>
+<p style="white-space:nowrap">'b' ran for 75ms</p>
+<p style="white-space:nowrap">'a' ran for 10ms</p>
+<p style="white-space:nowrap">'b' ran for 10ms</p>
+<p style="white-space:nowrap">'a' ran for 20ms</p>
+<p style="white-space:nowrap">'b' ran for 15ms</p>
+<p style="white-space:nowrap">'a' finished.</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">a</span> future still runs for a bit before handing off control to <span style="color:#273D56">b</span>, because it calls <span style="color:#273D56">slow</span> before ever calling <span style="color:#273D56">trpl::sleep</span>; after that the futures swap back and forth each time one of them hits an await point. Here we did that after every call to <span style="color:#273D56">slow</span>, but we could break up the work in whatever way makes the most sense to us.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">65</p>
+</div>
+</section>

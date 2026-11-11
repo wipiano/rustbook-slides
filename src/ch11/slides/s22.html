@@ -1,0 +1,19 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Testing equality with assert_eq! and assert_ne!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A common way to verify functionality is to test for equality between the result of the code under test and the value you expect it to return. You could pass <span style="color:#273D56">assert!</span> an expression using the <span style="color:#273D56">==</span> operator — but this test is so common that the standard library provides a pair of macros to do it more conveniently:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">assert_eq!</span> compares two arguments for equality;</li>
+<li><span style="color:#273D56">assert_ne!</span> compares two arguments for inequality.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">They also print the two values if the assertion fails, which makes it easier to see <i>why</i> the test failed. Conversely, <span style="color:#273D56">assert!</span> only indicates that it got a <span style="color:#273D56">false</span> value for the <span style="color:#273D56">==</span> expression, without printing the values that led to the <span style="color:#273D56">false</span> value.</p>
+<p style="font-size:30px;line-height:1.45">In Listing 11.7 (next slide), we write a function named <span style="color:#273D56">add_two</span> that adds <span style="color:#273D56">2</span> to its parameter, and then test it using <span style="color:#273D56">assert_eq!</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Default generic parameters and operator overloading</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When we use generic type parameters, we can specify a default concrete type for the generic type. This eliminates the need for implementors of the trait to specify a concrete type if the default type works. You specify a default type when declaring a generic type with the <span style="color:#273D56">&lt;PlaceholderType=ConcreteType&gt;</span> syntax.</p>
+<p style="font-size:30px;line-height:1.45">A great example of where this technique is useful is operator overloading.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.13 (Operator overloading).</b></span> Customizing the behavior of an operator (such as <span style="color:#273D56">+</span>) in particular situations.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust doesn’t allow you to create your own operators or overload arbitrary operators. But you can overload the operations and corresponding traits listed in <span style="color:#273D56">std::ops</span> by implementing the traits associated with the operator. Listing 20.15 (next slide) overloads the <span style="color:#273D56">+</span> operator to add two <span style="color:#273D56">Point</span> instances together, by implementing the <span style="color:#273D56">Add</span> trait on a <span style="color:#273D56">Point</span> struct.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>

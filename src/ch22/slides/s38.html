@@ -1,0 +1,26 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Clippy’s approx_constant error</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running <span style="color:#273D56">cargo clippy</span> on this project results in this error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error: approximate value of `f{32, 64}::consts::PI` found</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:2:13</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let x = 3.1415;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `#[deny(clippy::approx_constant)]` on by default</p>
+<p style="white-space:nowrap">&#160;&#160;= help: consider using the constant directly</p>
+<p style="white-space:nowrap">&#160;&#160;= help: for further information visit</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;https://rust-lang.github.io/rust-clippy/master/index.html#approx_constant</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This error lets you know that Rust already has a more precise <span style="color:#273D56">PI</span> constant defined, and that your program would be more correct if you used the constant instead. You would then change your code to use the <span style="color:#273D56">PI</span> constant.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

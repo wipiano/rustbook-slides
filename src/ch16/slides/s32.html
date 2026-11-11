@@ -1,0 +1,16 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.2 Transfer Data Between Threads with Message Passing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">send takes ownership; sending multiple values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Our concurrency mistake has caused a compile-time error. The <span style="color:#273D56">send</span> function takes ownership of its parameter, and when the value is moved the receiver takes ownership of it. This stops us from accidentally using the value again after sending it; the ownership system checks that everything is okay.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Sending multiple values</h3>
+<p style="font-size:30px;line-height:1.45">Listing 16.8 compiled and ran, but it didn’t clearly show that two separate threads were talking to each other over the channel.</p>
+<p style="font-size:30px;line-height:1.45">Listing 16.10 (next two slides) makes modifications that prove the code is running concurrently: the spawned thread now sends multiple messages and pauses for a second between each message.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

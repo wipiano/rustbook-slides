@@ -1,0 +1,28 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Absolute or relative: which to choose</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">First call: absolute</h3>
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56">add_to_waitlist</span> is in the same crate as <span style="color:#273D56">eat_at_restaurant</span>, so the path can start with the <span style="color:#273D56">crate</span> keyword, then include each successive module down to <span style="color:#273D56">add_to_waitlist</span>. Filesystem equivalent: <span style="color:#273D56">/front_of_house/hosting/add_to_waitlist</span> — starting with <span style="color:#273D56">crate</span> is like starting from the filesystem root <span style="color:#273D56">/</span> in your shell.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Second call: relative</h3>
+<p style="font-size:26px;line-height:1.45">The path starts with <span style="color:#273D56">front_of_house</span>, the name of the module defined at the same level of the module tree as <span style="color:#273D56">eat_at_restaurant</span>. Filesystem equivalent: <span style="color:#273D56">front_of_house/hosting/add_to_waitlist</span>. Starting with a module name means that the path is relative.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The choice depends on whether you’re more likely to move an item’s definition separately from or together with the code that uses it:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Move <span style="color:#273D56">front_of_house</span> and <span style="color:#273D56">eat_at_restaurant</span> together into a module <span style="color:#273D56">customer_experience</span>: the absolute path must be updated; the relative path stays valid.</li>
+<li>Move only <span style="color:#273D56">eat_at_restaurant</span> into a module <span style="color:#273D56">dining</span>: the absolute path stays the same; the relative path must be updated.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The book generally prefers absolute paths: it’s more likely we’ll want to move definitions and item calls independently.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

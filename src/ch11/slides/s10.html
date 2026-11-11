@@ -1,0 +1,29 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">One test passes, one test fails</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Run the tests again using <span style="color:#273D56">cargo test</span>. The output shows that <span style="color:#273D56">exploration</span> passed and <span style="color:#273D56">another</span> failed: instead of <span style="color:#273D56">ok</span>, the line <span style="color:#273D56">test tests::another</span> shows <span style="color:#273D56">FAILED</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 11.4:</b></span> Test results when one test passes and one test fails</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo test</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/adder)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `test` profile [unoptimized + debuginfo] target(s) in 0.72s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 2 tests</p>
+<p style="white-space:nowrap">test tests::another ... FAILED</p>
+<p style="white-space:nowrap">test tests::exploration ... ok</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">failures:</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

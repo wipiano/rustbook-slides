@@ -1,0 +1,37 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Starting relative paths with super</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.13 (super).</b></span> A keyword at the start of a path that makes it a relative path beginning in the parent module, rather than the current module or the crate root — like starting a filesystem path with <span style="color:#273D56">..</span> to go to the parent directory.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.8:</b></span> Calling a function using a relative path starting with <span style="color:#273D56">super</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn deliver_order() {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">mod back_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn fix_incorrect_order() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cook_order();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;super::deliver_order();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn cook_order() {}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;line-height:1.45">Using <span style="color:#273D56">super</span> references an item we know is in the parent module, which makes rearranging the module tree easier when the module is closely related to the parent but the parent might be moved elsewhere someday.</p>
+<p style="font-size:26px;line-height:1.45">A chef fixes an incorrect order and personally brings it out. From <span style="color:#273D56">back_of_house</span>, <span style="color:#273D56">super</span> goes to its parent — <span style="color:#273D56">crate</span>, the root — where <span style="color:#273D56">deliver_order</span> is found. Success!</p>
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56">back_of_house</span> and <span style="color:#273D56">deliver_order</span> are likely to stay in the same relationship and get moved together, so <span style="color:#273D56">super</span> leaves fewer places to update if the code moves.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

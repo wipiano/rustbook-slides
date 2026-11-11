@@ -1,0 +1,15 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.1 Futures and the Async Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Left, Right, and a working web scraper</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">select</span> function returns <span style="color:#273D56">Left</span> with that future’s output if the first argument wins, and <span style="color:#273D56">Right</span> with the second future argument’s output if <i>that</i> one wins. This matches the order the arguments appear in the call: the first argument is to the left of the second argument.</p>
+<p style="font-size:30px;line-height:1.45">We also updated <span style="color:#273D56">page_title</span> to return the same URL passed in. That way, if the page that returns first does not have a <span style="color:#273D56">&lt;title&gt;</span> we can resolve, we can still print a meaningful message. With that information available, the <span style="color:#273D56">println!</span> output indicates both which URL finished first and what, if any, the <span style="color:#273D56">&lt;title&gt;</span> is for the web page at that URL.</p>
+<p style="font-size:30px;line-height:1.45">You have built a small working web scraper! Pick a couple of URLs and run the command line tool. You may discover that some sites are consistently faster than others, while in other cases the faster site varies from run to run. More importantly, you’ve learned the basics of working with futures, so now we can dig deeper into what we can do with async.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

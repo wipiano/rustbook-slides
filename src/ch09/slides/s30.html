@@ -1,0 +1,28 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Even shorter: fs::read_to_string</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 9.9 shows a way to make this even shorter.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.9:</b></span> Using <span style="color:#273D56">fs::read_to_string</span> instead of opening and then reading the file — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fs::read_to_string("hello.txt")</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Reading a file into a string is a fairly common operation, so the standard library provides the convenient <span style="color:#273D56">fs::read_to_string</span> function. It opens the file, creates a new <span style="color:#273D56">String</span>, reads the contents of the file, puts the contents into that <span style="color:#273D56">String</span>, and returns it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Using <span style="color:#273D56">fs::read_to_string</span> doesn’t give us the opportunity to explain all the error handling, which is why the book did it the longer way first.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

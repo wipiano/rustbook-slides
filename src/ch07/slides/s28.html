@@ -1,0 +1,32 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Constructors for private fields; public enums</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because <span style="color:#273D56">back_of_house::Breakfast</span> has a private field, the struct needs to provide a public associated function that constructs an instance of <span style="color:#273D56">Breakfast</span> (here named <span style="color:#273D56">summer</span>). Without such a function, we couldn’t create an instance of <span style="color:#273D56">Breakfast</span> in <span style="color:#273D56">eat_at_restaurant</span>, because we couldn’t set the value of the private <span style="color:#273D56">seasonal_fruit</span> field there.</p>
+<p style="font-size:30px;line-height:1.45">In contrast, if we make an enum public, all of its variants are then public. We only need the <span style="color:#273D56">pub</span> before the <span style="color:#273D56">enum</span> keyword.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.10:</b></span> Designating an enum as public makes all its variants public. — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod back_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub enum Appetizer {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Soup,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Salad,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let order1 = back_of_house::Appetizer::Soup;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let order2 = back_of_house::Appetizer::Salad;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

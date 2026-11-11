@@ -1,0 +1,24 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running it: several connections per visit</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Invoke <span style="color:#273D56">cargo run</span>, then load <i>127.0.0.1:7878</i> in a web browser. The browser shows an error like “Connection reset”, because the server isn’t sending back any data yet. But the terminal shows several messages printed when the browser connected:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/hello`</p>
+<p style="white-space:nowrap">Connection established!</p>
+<p style="white-space:nowrap">Connection established!</p>
+<p style="white-space:nowrap">Connection established!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Why several messages for one browser request?</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The browser may request the page as well as other resources, like the <i>favicon.ico</i> icon that appears in the browser tab.</li>
+<li>The browser may retry, because the server isn’t responding with data. When <span style="color:#273D56">stream</span> goes out of scope and is dropped at the end of the loop, the connection is closed as part of the <span style="color:#273D56">drop</span> implementation; browsers sometimes deal with closed connections by retrying, because the problem might be temporary.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

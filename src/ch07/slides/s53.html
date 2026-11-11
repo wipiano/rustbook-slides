@@ -1,0 +1,24 @@
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Alternate file paths</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So far we’ve covered the most idiomatic file paths the Rust compiler uses, but Rust also supports an older style of file path.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.4:</b></span> Where the compiler looks for a module’s code</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:36%">Module</th><th style="width:32%">Idiomatic (what we covered)</th><th style="width:32%">Older style, still supported</th></tr>
+<tr><td>front_of_house, declared in the crate root</td><td>src/front_of_house.rs</td><td>src/front_of_house/mod.rs</td></tr>
+<tr><td>hosting, a submodule of front_of_house</td><td>src/front_of_house/hosting.rs</td><td>src/front_of_house/hosting/mod.rs</td></tr>
+</table>
+<ul style="font-size:30px;line-height:1.45">
+<li>Using both styles for the same module gives a compiler error.</li>
+<li>Mixing both styles for different modules in the same project is allowed but might be confusing for people navigating your project.</li>
+<li>The main downside of the <i>mod.rs</i> style: your project can end up with many files named <i>mod.rs</i>, which can get confusing when you have them open in your editor at the same time.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>

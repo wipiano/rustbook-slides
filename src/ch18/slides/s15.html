@@ -1,0 +1,22 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Homogeneous versus mixed collections</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">On the other hand, with the method using trait objects, one <span style="color:#273D56">Screen</span> instance can hold a <span style="color:#273D56">Vec&lt;T&gt;</span> that contains a <span style="color:#273D56">Box&lt;Button&gt;</span> as well as a <span style="color:#273D56">Box&lt;TextField&gt;</span>. Next we see how this works, and then the runtime performance implications.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 18.1:</b></span> The two <span style="color:#273D56">Screen</span> designs compared</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:22%"> </th><th style="width:39%">Generic + trait bound (Listing 18.6)</th><th style="width:39%">Trait object (Listing 18.5)</th></tr>
+<tr><td>Field type</td><td>Vec&lt;T&gt; where T: Draw</td><td>Vec&lt;Box&lt;dyn Draw&gt;&gt;</td></tr>
+<tr><td>Types per Screen</td><td>One concrete type at a time</td><td>Many concrete types, filled in at runtime</td></tr>
+<tr><td>Example contents</td><td>All Button, or all TextField</td><td>Box&lt;Button&gt; and Box&lt;TextField&gt; together</td></tr>
+<tr><td>Compilation</td><td>Monomorphized to the concrete type</td><td>Method looked up at runtime (dynamic dispatch)</td></tr>
+<tr><td>Prefer when</td><td>Collections are always homogeneous</td><td>Users must be able to add new types</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

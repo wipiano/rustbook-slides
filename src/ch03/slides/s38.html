@@ -1,0 +1,22 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.3 Functions</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Parameters must declare their types</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Try running this program; you should get the following output:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling functions v0.1.0 (file:///projects/functions)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.21s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/functions`</p>
+<p style="white-space:nowrap">The value of x is: 5</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The declaration of <span style="color:#273D56">another_function</span> has one parameter named <span style="color:#273D56">x</span>, whose type is specified as <span style="color:#273D56">i32</span>. When we pass <span style="color:#273D56">5</span> in to <span style="color:#273D56">another_function</span>, the <span style="color:#273D56">println!</span> macro puts <span style="color:#273D56">5</span> where the pair of curly brackets containing <span style="color:#273D56">x</span> was in the format string.</p>
+<p style="font-size:30px;line-height:1.45">In function signatures, you <i>must</i> declare the type of each parameter. This is a deliberate decision in Rust’s design: requiring type annotations in function definitions means the compiler almost never needs you to use them elsewhere in the code to figure out what type you mean. The compiler can also give more helpful error messages if it knows what types the function expects.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

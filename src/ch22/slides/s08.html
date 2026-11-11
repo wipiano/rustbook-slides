@@ -1,0 +1,33 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Raw identifiers: the fix, and why they exist</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn r#match(needle: &amp;str, haystack: &amp;str) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;haystack.contains(needle)</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert!(r#match("foo", "foobar"));</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code compiles without any errors. Note the <span style="color:#273D56">r#</span> prefix on the function name both in its definition and where the function is called in <span style="color:#273D56">main</span>.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Raw identifiers let you use any word you choose as an identifier, even a reserved keyword. That gives more freedom in naming and lets Rust integrate with programs written in a language where these words aren’t keywords.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.3.</b> Raw identifiers also let you use libraries written in a different Rust edition than your crate. <span style="color:#273D56">try</span> isn’t a keyword in the 2015 edition but is in the 2018, 2021, and 2024 editions. If you depend on a 2015-edition library that has a <span style="color:#273D56">try</span> function, you call it as <span style="color:#273D56">r#try</span> from your code on later editions. (Editions: Appendix E.)</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

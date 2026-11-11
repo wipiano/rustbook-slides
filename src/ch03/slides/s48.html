@@ -1,0 +1,24 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.3 Functions</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using a function’s return value</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There are no function calls, macros, or even <span style="color:#273D56">let</span> statements in the <span style="color:#273D56">five</span> function — just the number <span style="color:#273D56">5</span> by itself. That’s a perfectly valid function in Rust. Note that the function’s return type is specified too, as <span style="color:#273D56">-&gt; i32</span>. Try running this code; the output should look like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling functions v0.1.0 (file:///projects/functions)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.30s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/functions`</p>
+<p style="white-space:nowrap">The value of x is: 5</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">5</span> in <span style="color:#273D56">five</span> is the function’s return value, which is why the return type is <span style="color:#273D56">i32</span>. There are two important bits. First, the line <span style="color:#273D56">let x = five();</span> shows that we’re using the return value of a function to initialize a variable. Because <span style="color:#273D56">five</span> returns a <span style="color:#273D56">5</span>, that line is the same as:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let x = 5;</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

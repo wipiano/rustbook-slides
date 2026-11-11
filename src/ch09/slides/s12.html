@@ -1,0 +1,28 @@
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Opening a file returns a Result</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s call a function that returns a <span style="color:#273D56">Result</span> value because it could fail. In Listing 9.3, we try to open a file.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.3:</b></span> Opening a file — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file_result = File::open("hello.txt");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The return type of <span style="color:#273D56">File::open</span> is a <span style="color:#273D56">Result&lt;T, E&gt;</span>. <span style="color:#273D56">T</span> is filled in with the success type <span style="color:#273D56">std::fs::File</span>, a file handle; <span style="color:#273D56">E</span> is <span style="color:#273D56">std::io::Error</span>.</li>
+<li>The call might succeed and return a file handle we can read from or write to. It also might fail: the file might not exist, or we might not have permission to access it. <span style="color:#273D56">File::open</span> must tell us whether it succeeded or failed and give us either the file handle or error information — exactly what <span style="color:#273D56">Result</span> conveys.</li>
+<li>On success, <span style="color:#273D56">greeting_file_result</span> holds an instance of <span style="color:#273D56">Ok</span> containing a file handle; on failure, an instance of <span style="color:#273D56">Err</span> containing more information about the kind of error that occurred.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>

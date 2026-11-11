@@ -1,0 +1,23 @@
+<section id="s96" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.3 Graceful Shutdown and Cleanup</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ideas for enhancing the project</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We could do more here! If you want to continue enhancing this project, here are some ideas:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Add more documentation to <span style="color:#273D56">ThreadPool</span> and its public methods.</li>
+<li>Add tests of the library’s functionality.</li>
+<li>Change calls to <span style="color:#273D56">unwrap</span> to more robust error handling.</li>
+<li>Use <span style="color:#273D56">ThreadPool</span> to perform some task other than serving web requests.</li>
+<li>Find a thread pool crate on crates.io and implement a similar web server using the crate instead. Then compare its API and robustness to the thread pool we implemented.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> In this reference <i>src/lib.rs</i>, <span style="color:#273D56">Worker</span> holds an <span style="color:#273D56">Option&lt;thread::JoinHandle&lt;()&gt;&gt;</span> and <span style="color:#273D56">drop</span> joins each thread via <span style="color:#273D56">take</span> — the <span style="color:#273D56">Option</span> approach discussed earlier — rather than the <span style="color:#273D56">Vec::drain</span> version of Listings 21.23–21.24. Both shut down the same way.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">97</p>
+</div>
+</section>

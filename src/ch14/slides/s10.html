@@ -1,0 +1,18 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Exporting a convenient public API</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The structure of your public API is a major consideration when publishing a crate. People who use your crate are less familiar with the structure than you are, and might have difficulty finding the pieces they want to use if your crate has a large module hierarchy.</p>
+<p style="font-size:30px;line-height:1.45">Chapter 7 covered making items public with the <span style="color:#273D56">pub</span> keyword and bringing items into a scope with <span style="color:#273D56">use</span>. But the structure that makes sense to you while developing a crate might not be convenient for your users. If you organize your structs in a hierarchy of multiple levels, people who want a type defined deep in it might have trouble finding out that the type exists. They might also be annoyed at having to enter <span style="color:#273D56">use my_crate::some_module::another_module::UsefulType;</span> rather than <span style="color:#273D56">use my_crate::UsefulType;</span>.</p>
+<p style="font-size:30px;line-height:1.45">The good news: if the structure <i>isn’t</i> convenient for others to use from another library, you don’t have to rearrange your internal organization. Instead, you can re-export items with <span style="color:#273D56">pub use</span> to make a public structure that’s different from your private structure.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.5 (Re-exporting).</b></span> Taking a public item in one location and making it public in another location, as if it were defined in the other location instead.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

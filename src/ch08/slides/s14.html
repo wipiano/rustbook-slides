@@ -1,0 +1,18 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Explicit element types, trait objects, and the Vec API</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We must also be explicit about what types are allowed in this vector. If Rust allowed a vector to hold any type, there would be a chance that one or more of the types would cause errors with the operations performed on the elements of the vector.</p>
+<p style="font-size:30px;line-height:1.45">Using an enum plus a <span style="color:#273D56">match</span> expression means that Rust will ensure at compile time that every possible case is handled, as discussed in Chapter 6.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If you don’t know the exhaustive set of types a program will get at runtime to store in a vector, the enum technique won’t work. Instead, you can use a trait object, covered in Chapter 18.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Those are some of the most common ways to use vectors. Be sure to review the API documentation (std::vec::Vec) for the many useful methods the standard library defines on <span style="color:#273D56">Vec&lt;T&gt;</span>. For example, in addition to <span style="color:#273D56">push</span>, a <span style="color:#273D56">pop</span> method removes and returns the last element.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

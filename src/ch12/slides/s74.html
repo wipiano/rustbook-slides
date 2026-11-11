@@ -1,0 +1,27 @@
+<section id="s74" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.5 Working with Environment Variables</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">PowerShell, and the case-insensitive result</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In PowerShell, you need to set the environment variable and run the program as separate commands:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">PS&gt; $Env:IGNORE_CASE=1; cargo run -- to poem.txt</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This makes <span style="color:#273D56">IGNORE_CASE</span> persist for the remainder of your shell session. It can be unset with the <span style="color:#273D56">Remove-Item</span> cmdlet:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">PS&gt; Remove-Item Env:IGNORE_CASE</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We should get lines that contain <i>to</i> that might have uppercase letters:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Are you nobody, too?</p>
+<p style="white-space:nowrap">How dreary to be somebody!</p>
+<p style="white-space:nowrap">To tell your name the livelong day</p>
+<p style="white-space:nowrap">To an admiring bog!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">75</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Changes 2 and 3: the ? operator and Ok(())</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">2. ? instead of expect</h3>
+<p style="font-size:30px;line-height:1.45">We removed the call to <span style="color:#273D56">expect</span> in favor of the <span style="color:#273D56">?</span> operator, as discussed in Chapter 9. Rather than <span style="color:#273D56">panic!</span> on an error, <span style="color:#273D56">?</span> returns the error value from the current function for the caller to handle.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">3. Ok(()) on success</h3>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">run</span> function now returns an <span style="color:#273D56">Ok</span> value in the success case. We declared its success type as <span style="color:#273D56">()</span>, so we need to wrap the unit type value in the <span style="color:#273D56">Ok</span> value.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This <span style="color:#273D56">Ok(())</span> syntax might look a bit strange at first. But using <span style="color:#273D56">()</span> like this is the idiomatic way to indicate that we’re calling <span style="color:#273D56">run</span> for its side effects only; it doesn’t return a value we need.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>

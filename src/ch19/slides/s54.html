@@ -1,0 +1,24 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What each arm of Listing 19.29 can see</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The second arm has only a range in its pattern, so its code has no variable containing the actual value of the <span style="color:#273D56">id</span> field. The value could have been 10, 11, or 12, but the code that goes with that pattern doesn’t know which: we haven’t saved the <span style="color:#273D56">id</span> value in a variable.</li>
+<li>The last arm specifies a variable without a range, so the value is available in the arm’s code in a variable named <span style="color:#273D56">id</span>, thanks to the struct field shorthand syntax. But it applies no test to the value, as the first two arms did: any value would match this pattern.</li>
+</ul>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 19.2:</b></span> Testing versus binding in the three arms of Listing 19.29</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:34%">Pattern for the id field</th><th style="width:33%">Tests the value?</th><th style="width:33%">Value usable in the arm?</th></tr>
+<tr><td>id: id @ 3..=7</td><td>Yes, range 3..=7</td><td>Yes, as id</td></tr>
+<tr><td>id: 10..=12</td><td>Yes, range 10..=12</td><td>No</td></tr>
+<tr><td>id (shorthand)</td><td>No, any value matches</td><td>Yes, as id</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">@</span> lets us test a value and save it in a variable within one pattern.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

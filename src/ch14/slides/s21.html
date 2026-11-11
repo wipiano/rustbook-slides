@@ -1,0 +1,29 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding a description and a license</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">description</span>: just a sentence or two, because it appears with your crate in search results.</li>
+<li><span style="color:#273D56">license</span>: you need to give a license identifier value.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.6 (License identifier value).</b></span> A standard identifier naming a license; the Linux Foundation’s Software Package Data Exchange (SPDX, spdx.org/licenses) lists the identifiers you can use.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, to specify that you’ve licensed your crate using the MIT License, add the <span style="color:#273D56">MIT</span> identifier:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "guessing_game"</p>
+<p style="white-space:nowrap">license = "MIT"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">To use a license that doesn’t appear in the SPDX, place the text of that license in a file, include the file in your project, and then use <span style="color:#273D56">license-file</span> to specify the name of that file instead of using the <span style="color:#273D56">license</span> key.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

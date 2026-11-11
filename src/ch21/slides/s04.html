@@ -1,0 +1,21 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">TcpListener, the address, and bind</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">TcpListener</span>, we listen for TCP connections at the address <span style="color:#273D56">127.0.0.1:7878</span>.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The section before the colon is an IP address representing your computer. It is the same on every computer and doesn’t represent the authors’ computer specifically.</li>
+<li><span style="color:#273D56">7878</span> is the port, chosen for two reasons: HTTP isn’t normally accepted on this port, so our server is unlikely to conflict with any other web server running on your machine; and 7878 is <i>rust</i> typed on a telephone.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 21.3 (Binding to a port).</b></span> In networking, connecting to a port to listen to it. Hence the name of the <span style="color:#273D56">bind</span> function, which works like a <span style="color:#273D56">new</span> function: it returns a new <span style="color:#273D56">TcpListener</span> instance.</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">bind</span> returns a <span style="color:#273D56">Result&lt;T, E&gt;</span>: binding can fail — for example, if we ran two instances of our program and so had two programs listening to the same port. Because this is a basic server just for learning, we won’t handle these kinds of errors; we use <span style="color:#273D56">unwrap</span> to stop the program if errors happen.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

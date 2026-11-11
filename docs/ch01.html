@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.1 — Getting Started · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.1 — Getting Started</h1><nav><a href="ch00.html">← Ch.0</a><a href="ch02.html">Ch.2 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 1</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Getting Started</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Install the Rust toolchain with <span style="color:#273D56">rustup</span>, write and run a “Hello, world!” program with the compiler <span style="color:#273D56">rustc</span>, and then manage the same program as a project with <span style="color:#273D56">cargo</span>, Rust’s build system and package manager.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>1.1 Installation</li>
+<li>1.2 Hello, World!</li>
+<li>1.3 Hello, Cargo!</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing Rust through rustup</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The first step is to install Rust. The book downloads it through <span style="color:#273D56">rustup</span>, a command line tool for managing Rust versions and associated tools. The download needs an internet connection.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.1 (rustup).</b></span> A command line tool that installs Rust and manages Rust versions and their associated tools.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The steps install the latest <i>stable</i> version of the Rust compiler. Rust’s stability guarantees ensure that every example in the book that compiles will continue to compile with newer Rust versions. Output may differ slightly between versions, because Rust often improves its error messages and warnings — so any newer stable version installed this way works with the book.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If you prefer not to use rustup, the “Other Rust Installation Methods” page (forge.rust-lang.org/infra/other-installation-methods.html) lists more options.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Command line notation</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Throughout the book, terminal sessions follow one convention:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Lines you should enter start with <span style="color:#273D56">$</span>. Do not type the <span style="color:#273D56">$</span>; it is the prompt marking the start of each command.</li>
+<li>Lines that do not start with <span style="color:#273D56">$</span> typically show the output of the previous command.</li>
+<li>PowerShell-specific examples use <span style="color:#273D56">&gt;</span> rather than <span style="color:#273D56">$</span>.</li>
+</ul>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 1.2.</b> In the session below, the first line is a command you type (without the <span style="color:#273D56">$</span>), and the second line is what the terminal prints back.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustc --version</p>
+<p style="white-space:nowrap">rustc x.y.z (abcabcabc yyyy-mm-dd)</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing rustup on Linux or macOS</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Open a terminal and enter the command below. It downloads a script that installs the <span style="color:#273D56">rustup</span> tool, which in turn installs the latest stable Rust. You might be prompted for your password. On success it prints <span style="color:#273D56">Rust is installed now. Great!</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.3 (Linker).</b></span> A program that Rust uses to join its compiled outputs into one file.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">You probably already have a linker. If you get linker errors, install a C compiler, which typically includes one. A C compiler is useful anyway, because some common Rust packages depend on C code.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>macOS</b> — get a C compiler with:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ xcode-select --install</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Linux</b> — install GCC or Clang as your distribution documents; on Ubuntu, install the <span style="color:#273D56">build-essential</span> package.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing on Windows, and troubleshooting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Windows</h3>
+<p style="font-size:30px;line-height:1.45">Go to rust-lang.org/tools/install and follow the instructions. At some point you are prompted to install Visual Studio, which provides a linker and the native libraries needed to compile programs. More help: rust-lang.github.io/rustup/installation/windows-msvc.html.</p>
+<p style="font-size:30px;line-height:1.45">The rest of the book uses commands that work in both <i>cmd.exe</i> and PowerShell, and explains any differences.</p>
+<p style="font-size:30px;line-height:1.45">Still stuck? The community page (rust-lang.org/community) lists where to reach other <i>Rustaceans</i> — the nickname Rust users call themselves.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Troubleshooting</h3>
+<p style="font-size:30px;line-height:1.45">Check the install: you should see the version number, commit hash and commit date of the latest stable release.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustc --version</p>
+<p style="white-space:nowrap">rustc x.y.z (abcabcabc yyyy-mm-dd)</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If not, check that Rust is in your <span style="color:#273D56">%PATH%</span> system variable:</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:40%">Shell</th><th style="width:60%">Command</th></tr>
+<tr><td>Windows CMD</td><td>&gt; echo %PATH%</td></tr>
+<tr><td>PowerShell</td><td>&gt; echo $env:Path</td></tr>
+<tr><td>Linux, macOS</td><td>$ echo $PATH</td></tr>
+</table>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Updating, uninstalling, local docs and editors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Updating</h3>
+<p style="font-size:30px;line-height:1.45">Once Rust is installed via rustup, updating to a newly released version is one command:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustup update</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Uninstalling</h3>
+<p style="font-size:30px;line-height:1.45">To remove both Rust and rustup, run the uninstall script:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustup self uninstall</p>
+</div>
+</div>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Reading the local documentation</h3>
+<p style="font-size:30px;line-height:1.45">The installation includes a local copy of the documentation for offline reading; <span style="color:#273D56">rustup doc</span> opens it in your browser. Whenever you are unsure what a standard-library type or function does or how to use it, look it up in the API (application programming interface) documentation.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Text editors and IDEs</h3>
+<p style="font-size:30px;line-height:1.45">The book assumes no particular tool: almost any text editor will do. Many editors and IDEs have built-in Rust support; the tools page (rust-lang.org/tools) keeps a fairly current list.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Working offline with this book</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Several examples use Rust packages beyond the standard library. To work through them you need either an internet connection or the dependencies downloaded ahead of time. These commands download and cache them (what <span style="color:#273D56">cargo</span> is and what each command does is explained later):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new get-dependencies</p>
+<p style="white-space:nowrap">$ cd get-dependencies</p>
+<p style="white-space:nowrap">$ cargo add rand@0.10.1 trpl@0.2.0</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The downloads of these packages are cached, so you will not need to download them later.</li>
+<li>After running the commands you do not need to keep the <i>get-dependencies</i> folder.</li>
+<li>Once cached, pass the <span style="color:#273D56">--offline</span> flag to every <span style="color:#273D56">cargo</span> command in the rest of the book to use the cached versions instead of the network.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.2 Hello, World!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Project directory setup</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Traditionally, the first program in a new language prints <span style="color:#273D56">Hello, world!</span> to the screen. Rust doesn’t care where your code lives; the book suggests a <i>projects</i> directory in your home directory, with one directory per project inside it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The book assumes basic familiarity with the command line, but Rust makes no demands about editors or tooling: an IDE works just as well. The Rust team focuses IDE support on <span style="color:#273D56">rust-analyzer</span> (Appendix D).</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Linux, macOS, and PowerShell on Windows:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ mkdir ~/projects</p>
+<p style="white-space:nowrap">$ cd ~/projects</p>
+<p style="white-space:nowrap">$ mkdir hello_world</p>
+<p style="white-space:nowrap">$ cd hello_world</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Windows CMD:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&gt; mkdir "%USERPROFILE%\projects"</p>
+<p style="white-space:nowrap">&gt; cd /d "%USERPROFILE%\projects"</p>
+<p style="white-space:nowrap">&gt; mkdir hello_world</p>
+<p style="white-space:nowrap">&gt; cd hello_world</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.2 Hello, World!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Writing and running the first program</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Create a source file named <i>main.rs</i>. Rust files always end in <i>.rs</i>; for multi-word names, separate words with an underscore (<i>hello_world.rs</i>, not <i>helloworld.rs</i>).</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 1.1:</b></span> A program that prints Hello, world! — <i>main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Hello, world!");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Compile and run on Linux or macOS:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustc main.rs</p>
+<p style="white-space:nowrap">$ ./main</p>
+<p style="white-space:nowrap">Hello, world!</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">On Windows, run <span style="color:#273D56">.\main</span> instead:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&gt; rustc main.rs</p>
+<p style="white-space:nowrap">&gt; .\main</p>
+<p style="white-space:nowrap">Hello, world!</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Whatever your OS, <span style="color:#273D56">Hello, world!</span> should print. If it did, you have officially written a Rust program — welcome, Rust programmer! If not, see “Troubleshooting”.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.2 Hello, World!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Anatomy of a Rust program: the main function</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">These lines define a function named <span style="color:#273D56">main</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.4 (main function).</b></span> The special function that is always the first code to run in every executable Rust program.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>This <span style="color:#273D56">main</span> has no parameters and returns nothing. Parameters, if any, would go inside the parentheses <span style="color:#273D56">()</span>.</li>
+<li>The function body is wrapped in <span style="color:#273D56">{}</span>: Rust requires curly brackets around every function body.</li>
+<li>Good style puts the opening bracket on the same line as the declaration, with one space in between.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> To keep a standard style across Rust projects, use the automatic formatter <span style="color:#273D56">rustfmt</span> (Appendix D). It ships with the standard Rust distribution, like <span style="color:#273D56">rustc</span>, so it is already installed.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.2 Hello, World!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Anatomy of a Rust program: println!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The body of <span style="color:#273D56">main</span> holds the one line that does all the work — printing text to the screen:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">println!("Hello, world!");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Three details matter here:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">println!</span> calls a Rust <i>macro</i>. A function call would be written <span style="color:#273D56">println</span>, without the <span style="color:#273D56">!</span>. The <span style="color:#273D56">!</span> means you are calling a macro, and macros don’t always follow the same rules as functions (Chapter 20 covers them).</li>
+<li><span style="color:#273D56">"Hello, world!"</span> is a string, passed as an argument to <span style="color:#273D56">println!</span>, which prints it to the screen.</li>
+<li>The line ends with a semicolon <span style="color:#273D56">;</span>, which says this expression is over and the next one is ready to begin. Most lines of Rust code end with a semicolon.</li>
+</ol>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.5 (Macro).</b></span> A way to write code that generates code, extending Rust’s syntax.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.2 Hello, World!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Compilation and execution are separate steps</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">First compile with <span style="color:#273D56">rustc</span>, passing the source file — much like <span style="color:#273D56">gcc</span> or <span style="color:#273D56">clang</span> for C/C++. It outputs a binary executable.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustc main.rs</p>
+<p style="white-space:nowrap">$ ls</p>
+<p style="white-space:nowrap">main&#160;&#160;main.rs</p>
+</div>
+<p style="font-size:26px;line-height:1.45">With CMD on Windows (PowerShell shows the same three files); the <span style="color:#273D56">/B</span> option shows only the file names:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&gt; dir /B</p>
+<p style="white-space:nowrap">main.exe</p>
+<p style="white-space:nowrap">main.pdb</p>
+<p style="white-space:nowrap">main.rs</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">You see the source (<i>.rs</i>), the executable (<i>main.exe</i> on Windows, <i>main</i> elsewhere) and, on Windows, a <i>.pdb</i> file of debugging information. Then run it:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ ./main # or .\main on Windows</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.6 (Ahead-of-time compiled).</b></span> Compiled into an executable that can be given to someone else and run without Rust installed.</p>
+</div>
+<p style="font-size:26px;line-height:1.45">A <i>.rb</i>, <i>.py</i> or <i>.js</i> file needs a Ruby, Python or JavaScript implementation installed, but needs only one command to compile and run. Everything is a trade-off in language design. As projects grow, plain <span style="color:#273D56">rustc</span> gets unwieldy — hence Cargo.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Cargo: Rust’s build system and package manager</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.7 (Cargo).</b></span> Rust’s build system and package manager. It builds your code, downloads the libraries your code depends on, and builds those libraries. The libraries your code needs are its <i>dependencies</i>.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Most Rustaceans use Cargo to manage their Rust projects, because it handles so many tasks for you.</li>
+<li>The simplest programs, like “Hello, world!”, have no dependencies; built with Cargo, they would use only the part of Cargo that builds your code.</li>
+<li>As programs grow more complex you add dependencies — and a project started with Cargo makes that much easier.</li>
+<li>Because the vast majority of Rust projects use Cargo, the rest of the book assumes you do too. The official installers include it.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">If you installed Rust some other way, check for Cargo. A version number means you have it; an error such as <span style="color:#273D56">command not found</span> means you should consult your installation method’s documentation to install Cargo separately.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo --version</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating a project with cargo new</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Go back to your <i>projects</i> directory and, on any operating system, run:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new hello_cargo</p>
+<p style="white-space:nowrap">$ cd hello_cargo</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The first command creates a new directory and project named <i>hello_cargo</i>; Cargo creates its files in a directory of the same name. Inside you find:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>a <i>Cargo.toml</i> file;</li>
+<li>a <i>src</i> directory with a <i>main.rs</i> file inside;</li>
+<li>a newly initialized Git repository, with a <i>.gitignore</i> file.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Git files are not generated when you run <span style="color:#273D56">cargo new</span> inside an existing Git repository; override that with <span style="color:#273D56">cargo new --vcs=git</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Git is a common version control system. The <span style="color:#273D56">--vcs</span> flag makes <span style="color:#273D56">cargo new</span> use a different version control system, or none. Run <span style="color:#273D56">cargo new --help</span> to see the options.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Cargo.toml manifest</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 1.2:</b></span> Contents of <i>Cargo.toml</i> generated by <span style="color:#273D56">cargo new</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "hello_cargo"</p>
+<p style="white-space:nowrap">version = "0.1.0"</p>
+<p style="white-space:nowrap">edition = "2024"</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">[dependencies]</p>
+</div>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.8 (TOML).</b></span> <i>Tom’s Obvious, Minimal Language</i>, the format of Cargo’s configuration (toml.io).</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.9 (Crate).</b></span> A package of Rust code.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">[package]</span> is a section heading: the statements after it configure a package. More sections are added as the file grows.</li>
+<li>The next three lines give the information Cargo needs to compile the program: its <span style="color:#273D56">name</span>, its <span style="color:#273D56">version</span>, and the <span style="color:#273D56">edition</span> of Rust to use (editions: Appendix E).</li>
+<li><span style="color:#273D56">[dependencies]</span> starts the section listing the project’s dependencies. This project needs no other crates; the Chapter 2 project will use this section.</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The generated src/main.rs and project layout</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Cargo has generated a “Hello, world!” program for you, just like Listing 1.1:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Hello, world!");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">So far the differences from the hand-made project are that the code lives in the <i>src</i> directory and there is a <i>Cargo.toml</i> configuration file in the top directory.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Cargo expects source files inside <i>src</i>.</li>
+<li>The top-level directory is for README files, license information, configuration files and anything else not related to your code.</li>
+<li>Cargo helps you organize projects: a place for everything, and everything in its place.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To convert a project that doesn’t use Cargo, move its code into <i>src</i> and create a suitable <i>Cargo.toml</i>; <span style="color:#273D56">cargo init</span> creates that file for you.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building with cargo build</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">From the <i>hello_cargo</i> directory, build the project:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling hello_cargo v0.1.0 (file:///projects/hello_cargo)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished dev [unoptimized + debuginfo] target(s) in 2.85 secs</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The executable goes to <i>target/debug/hello_cargo</i> (<i>target\debug\hello_cargo.exe</i> on Windows), not the current directory. The default build is a <i>debug</i> build, hence the directory name. Run it with:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ ./target/debug/hello_cargo # or .\target\debug\hello_cargo.exe on Windows</p>
+<p style="white-space:nowrap">Hello, world!</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.10 (Cargo.lock).</b></span> A file created at the top level by the first <span style="color:#273D56">cargo build</span>. It keeps track of the exact versions of the project’s dependencies. Cargo manages it; you never need to change it by hand. With no dependencies, this project’s lock file is sparse.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Compiling and running in one step: cargo run</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">cargo run</span> compiles the code and then runs the resulting executable, all in one command. It is more convenient than remembering <span style="color:#273D56">cargo build</span> plus the whole path to the binary, so most developers use it.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished dev [unoptimized + debuginfo] target(s) in 0.0 secs</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/hello_cargo`</p>
+<p style="white-space:nowrap">Hello, world!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This time there was no “Compiling” line: Cargo saw that the files hadn’t changed, so it didn’t rebuild and just ran the binary. After a change to the source, Cargo rebuilds before running:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling hello_cargo v0.1.0 (file:///projects/hello_cargo)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished dev [unoptimized + debuginfo] target(s) in 0.33 secs</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/hello_cargo`</p>
+<p style="white-space:nowrap">Hello, world!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Checking without building: cargo check</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">cargo check</span> quickly checks that your code compiles, but doesn’t produce an executable:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo check</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Checking hello_cargo v0.1.0 (file:///projects/hello_cargo)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished dev [unoptimized + debuginfo] target(s) in 0.32 secs</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Why not want an executable?</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">cargo check</span> is often much faster than <span style="color:#273D56">cargo build</span>, because it skips producing an executable.</li>
+<li>While you are writing code and continually checking your work, it speeds up learning whether the project still compiles.</li>
+<li>Many Rustaceans therefore run <span style="color:#273D56">cargo check</span> periodically as they write, and run <span style="color:#273D56">cargo build</span> when they are ready to use the executable.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Recap of the Cargo commands so far</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 1.1:</b></span> Cargo commands introduced in this chapter</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:34%">Command</th><th style="width:66%">What it does</th></tr>
+<tr><td>cargo new &lt;name&gt;</td><td>Creates a project (Cargo.toml, src/main.rs, Git repository)</td></tr>
+<tr><td>cargo build</td><td>Builds the project; output goes to target/debug</td></tr>
+<tr><td>cargo run</td><td>Builds (if needed) and runs the project in one step</td></tr>
+<tr><td>cargo check</td><td>Checks for errors without producing a binary</td></tr>
+<tr><td>cargo build --release</td><td>Builds with optimizations; output goes to target/release</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Instead of saving the build result in the same directory as the code, Cargo stores it in <i>target/debug</i>.</p>
+<p style="font-size:30px;line-height:1.45">A further advantage: Cargo’s commands are the same on every operating system. From here on, the book no longer gives separate instructions for Linux and macOS versus Windows.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building for release, and Cargo’s conventions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Building for release</h3>
+<p style="font-size:30px;line-height:1.45">When the project is ready for release, <span style="color:#273D56">cargo build --release</span> compiles it with optimizations into <i>target/release</i> instead of <i>target/debug</i>. Optimizations make the code run faster but lengthen compile time. Hence two profiles: one for development, rebuilt quickly and often; one for the final program given to users, built once and run as fast as possible. When benchmarking running time, build with <span style="color:#273D56">--release</span> and benchmark the executable in <i>target/release</i>.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Leveraging Cargo’s conventions</h3>
+<p style="font-size:30px;line-height:1.45">For simple projects Cargo adds little over <span style="color:#273D56">rustc</span>, but it proves its worth once programs grow to multiple files or need a dependency. Even <i>hello_cargo</i> already uses the real tooling of a Rust career: to work on any existing project, check it out, enter its directory and build:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ git clone example.org/someproject</p>
+<p style="white-space:nowrap">$ cd someproject</p>
+<p style="white-space:nowrap">$ cargo build</p>
+</div>
+<p style="font-size:26px;line-height:1.45">More about Cargo: its documentation at doc.rust-lang.org/cargo.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You’re already off to a great start on your Rust journey. In this chapter you learned how to:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>install the latest stable version of Rust using <span style="color:#273D56">rustup</span>;</li>
+<li>update to a newer Rust version (<span style="color:#273D56">rustup update</span>);</li>
+<li>open the locally installed documentation (<span style="color:#273D56">rustup doc</span>);</li>
+<li>write and run a “Hello, world!” program using <span style="color:#273D56">rustc</span> directly;</li>
+<li>create and run a new project using the conventions of Cargo (<span style="color:#273D56">cargo new</span>, <span style="color:#273D56">build</span>, <span style="color:#273D56">run</span>, <span style="color:#273D56">check</span>, <span style="color:#273D56">build --release</span>).</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 2 builds a more substantial program — a guessing game — to get used to reading and writing Rust code. If you would rather first learn how common programming concepts work in Rust, read Chapter 3 and then return to Chapter 2.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

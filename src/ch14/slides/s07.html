@@ -1,0 +1,23 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Documentation comments as tests</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Example code blocks in your documentation comments demonstrate how to use your library — with an additional bonus: running <span style="color:#273D56">cargo test</span> runs the code examples in your documentation as tests!</p>
+<p style="font-size:30px;line-height:1.45">Nothing is better than documentation with examples. But nothing is worse than examples that don’t work because the code has changed since the documentation was written. Running <span style="color:#273D56">cargo test</span> with the documentation of <span style="color:#273D56">add_one</span> from Listing 14.1 shows a section like this in the test results:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;Doc-tests my_crate</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 1 test</p>
+<p style="white-space:nowrap">test src/lib.rs - add_one (line 5) ... ok</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now, if we change either the function or the example so that the <span style="color:#273D56">assert_eq!</span> in the example panics, and run <span style="color:#273D56">cargo test</span> again, the doc tests catch that the example and the code are out of sync with each other!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

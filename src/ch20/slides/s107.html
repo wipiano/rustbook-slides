@@ -1,0 +1,22 @@
+<section id="s107" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Function-like macros</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Function-like macros define macros that look like function calls. Like <span style="color:#273D56">macro_rules!</span> macros, they’re more flexible than functions; for example, they can take an unknown number of arguments. But <span style="color:#273D56">macro_rules!</span> macros can only be defined using the match-like syntax of “Declarative Macros for General Metaprogramming”. Function-like macros take a <span style="color:#273D56">TokenStream</span> parameter, and their definition manipulates that <span style="color:#273D56">TokenStream</span> using Rust code, as the other two types of procedural macros do. Example: an <span style="color:#273D56">sql!</span> macro that might be called like so:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let sql = sql!(SELECT * FROM posts WHERE id=1);</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This macro would parse the SQL statement inside it and check that it’s syntactically correct — much more complex processing than a <span style="color:#273D56">macro_rules!</span> macro can do. It would be defined like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[proc_macro]</p>
+<p style="white-space:nowrap">pub fn sql(input: TokenStream) -&gt; TokenStream {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This is similar to the custom <span style="color:#273D56">derive</span> macro’s signature: we receive the tokens inside the parentheses and return the code we wanted to generate.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">108</p>
+</div>
+</section>

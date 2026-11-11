@@ -1,0 +1,22 @@
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading the module tree</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The tree in Listing 7.2 shows how modules relate:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Nesting.</b> Some modules nest inside other modules; for example, <span style="color:#273D56">hosting</span> nests inside <span style="color:#273D56">front_of_house</span>.</li>
+<li><b>Siblings.</b> Modules defined in the same module are <i>siblings</i>: <span style="color:#273D56">hosting</span> and <span style="color:#273D56">serving</span> are siblings defined within <span style="color:#273D56">front_of_house</span>.</li>
+<li><b>Child and parent.</b> If module A is contained inside module B, module A is the <i>child</i> of module B, and module B is the <i>parent</i> of module A.</li>
+<li><b>Root.</b> The entire module tree is rooted under the implicit module named <span style="color:#273D56">crate</span>.</li>
+</ul>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 7.8.</b> The module tree is like the filesystem’s directory tree on your computer — a very apt comparison. Just like directories in a filesystem, you use modules to organize your code. And just like files in a directory, we need a way to find our modules: that is what paths are for (7.3).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>

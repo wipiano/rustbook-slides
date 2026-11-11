@@ -1,0 +1,24 @@
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.4 Adding Functionality with Test-Driven Development</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why search needs the lifetime 'a</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn search&lt;'a&gt;(query: &amp;str, contents: &amp;'a str) -&gt; Vec&lt;&amp;'a str&gt;</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We define an explicit lifetime <span style="color:#273D56">'a</span> in the signature of <span style="color:#273D56">search</span> and use it with the <span style="color:#273D56">contents</span> argument and the return value. Recall from Chapter 10 that lifetime parameters specify which argument lifetime is connected to the lifetime of the return value.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Here, the returned vector should contain string slices that reference slices of the argument <span style="color:#273D56">contents</span> (rather than the argument <span style="color:#273D56">query</span>).</li>
+<li>In other words, the data returned by <span style="color:#273D56">search</span> will live as long as the data passed into <span style="color:#273D56">search</span> in the <span style="color:#273D56">contents</span> argument.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This is important! The data referenced <i>by</i> a slice needs to be valid for the reference to be valid; if the compiler assumed we were making string slices of <span style="color:#273D56">query</span> rather than <span style="color:#273D56">contents</span>, it would do its safety checking incorrectly.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If we forget the lifetime annotations and try to compile this function, we get the error on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>

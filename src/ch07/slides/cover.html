@@ -1,0 +1,25 @@
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:24px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 7</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Packages, Crates, and Modules</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:26px;line-height:1.45">As programs grow, organizing code matters: group related functionality, separate distinct features, and split one module in one file into multiple modules and then multiple files. A package can contain multiple binary crates and optionally one library crate; parts can be extracted into separate crates that become external dependencies (very large sets of interrelated packages use Cargo <i>workspaces</i>, Chapter 14). Encapsulation lets other code call yours through its public interface while private details stay yours to change. Scope decides which names are defined at each spot; two items can’t share a name in one scope. Together these features form the <i>module system</i>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<ul style="flex:1;font-size:26px;line-height:1.45;color:#20252B">
+<li><b>Packages</b>: a Cargo feature that lets you build, test, and share crates</li>
+<li><b>Crates</b>: a tree of modules that produces a library or executable</li>
+<li><b>Modules and use</b>: control the organization, scope, and privacy of paths</li>
+<li><b>Paths</b>: a way of naming an item, such as a struct, function, or module</li>
+</ul>
+<ul style="flex:1;font-size:26px;line-height:1.45;color:#20252B">
+<li>7.1 Packages and Crates</li>
+<li>7.2 Control Scope and Privacy with Modules</li>
+<li>7.3 Paths for Referring to an Item in the Module Tree</li>
+<li>7.4 Bringing Paths into Scope with the <span style="color:#273D56">use</span> Keyword</li>
+<li>7.5 Separating Modules into Different Files</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>

@@ -1,0 +1,23 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Backtraces and how to read them</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This error points at line 4 of our <i>main.rs</i>, where we attempt to access index 99 of the vector in <span style="color:#273D56">v</span>. The <span style="color:#273D56">note:</span> line tells us that we can set the <span style="color:#273D56">RUST_BACKTRACE</span> environment variable to get a backtrace of exactly what happened to cause the error.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.6 (Backtrace).</b></span> A list of all the functions that have been called to get to this point.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Backtraces in Rust work as they do in other languages:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The key to reading the backtrace is to start from the top and read until you see files you wrote. That’s the spot where the problem originated.</li>
+<li>The lines above that spot are code that your code has called; the lines below are code that called your code.</li>
+<li>These before-and-after lines might include core Rust code, standard library code, or crates that you’re using.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To get a backtrace, set the <span style="color:#273D56">RUST_BACKTRACE</span> environment variable to any value except <span style="color:#273D56">0</span>. Listing 9.2 shows output similar to what you’ll see.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

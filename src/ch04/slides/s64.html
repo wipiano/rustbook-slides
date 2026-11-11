@@ -1,0 +1,18 @@
+<section id="s64" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.3 The Slice Type</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A second_word function would be even more brittle</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Having to worry about the index in <span style="color:#273D56">word</span> getting out of sync with the data in <span style="color:#273D56">s</span> is tedious and error-prone! Managing these indices is even more brittle if we write a <span style="color:#273D56">second_word</span> function. Its signature would have to look like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn second_word(s: &amp;String) -&gt; (usize, usize) {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now we’re tracking a starting <i>and</i> an ending index, and we have even more values that were calculated from data in a particular state but aren’t tied to that state at all. We have three unrelated variables floating around that need to be kept in sync.</p>
+<p style="font-size:30px;line-height:1.45">Luckily, Rust has a solution to this problem: string slices.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">66</p>
+</div>
+</section>

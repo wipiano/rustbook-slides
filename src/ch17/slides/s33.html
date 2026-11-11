@@ -1,0 +1,33 @@
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.2 Applying Concurrency with Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How Listing 17.6 runs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We set up <span style="color:#273D56">main</span> with <span style="color:#273D56">trpl::block_on</span> so that our top-level function can be async.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> From here on, every example includes this exact same wrapping code with <span style="color:#273D56">trpl::block_on</span> in <span style="color:#273D56">main</span>, so the book often skips it, just as it does with <span style="color:#273D56">main</span>. Remember to include it in your code!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Then we write two loops within that block, each containing a <span style="color:#273D56">trpl::sleep</span> call that waits for half a second (500 milliseconds) before sending the next message. One loop is in the body of a <span style="color:#273D56">trpl::spawn_task</span>, the other in a top-level <span style="color:#273D56">for</span> loop. We add an <span style="color:#273D56">await</span> after the <span style="color:#273D56">sleep</span> calls.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">This behaves similarly to the thread-based version — including that the messages may appear in a different order in your terminal:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">hi number 1 from the second task!</p>
+<p style="white-space:nowrap">hi number 1 from the first task!</p>
+<p style="white-space:nowrap">hi number 2 from the first task!</p>
+<p style="white-space:nowrap">hi number 2 from the second task!</p>
+<p style="white-space:nowrap">hi number 3 from the first task!</p>
+<p style="white-space:nowrap">hi number 3 from the second task!</p>
+<p style="white-space:nowrap">hi number 4 from the first task!</p>
+<p style="white-space:nowrap">hi number 4 from the second task!</p>
+<p style="white-space:nowrap">hi number 5 from the first task!</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>

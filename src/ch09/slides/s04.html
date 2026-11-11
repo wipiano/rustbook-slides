@@ -1,0 +1,27 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading a panic message</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When you run the program, you’ll see something like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling panic v0.1.0 (file:///projects/panic)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.25s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/panic`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6018279) panicked at src/main.rs:2:5:</p>
+<p style="white-space:nowrap">crash and burn</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The call to <span style="color:#273D56">panic!</span> causes the error message in the last two lines. The first of them shows our panic message and the place in our source code where the panic occurred: <i>src/main.rs:2:5</i> means the second line, fifth character of <i>src/main.rs</i>.</li>
+<li>Here the line indicated is part of our code: going there, we see the <span style="color:#273D56">panic!</span> call. In other cases the <span style="color:#273D56">panic!</span> call might be in code that our code calls; the filename and line number reported will then be someone else’s code where <span style="color:#273D56">panic!</span> is called, not the line of our code that eventually led to it.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

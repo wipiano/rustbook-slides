@@ -1,0 +1,24 @@
+<section id="s75" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why 10.22 passes, and an experiment that fails</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">string1</span> is valid until the end of the outer scope.</li>
+<li><span style="color:#273D56">string2</span> is valid until the end of the inner scope.</li>
+<li><span style="color:#273D56">result</span> references something that is valid until the end of the inner scope.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Run this code and the borrow checker approves; it compiles and prints <span style="color:#273D56">The longest string is long string is long</span>.</p>
+<p style="font-size:30px;line-height:1.45">Next, an example showing that the lifetime of the reference in <span style="color:#273D56">result</span> must be the smaller lifetime of the two arguments:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Move the declaration of <span style="color:#273D56">result</span> outside the inner scope, but leave the assignment to <span style="color:#273D56">result</span> inside the scope with <span style="color:#273D56">string2</span>.</li>
+<li>Move the <span style="color:#273D56">println!</span> that uses <span style="color:#273D56">result</span> outside the inner scope, after it has ended.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">The code in Listing 10.23 will not compile.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">76</p>
+</div>
+</section>

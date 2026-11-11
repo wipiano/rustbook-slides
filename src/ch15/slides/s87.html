@@ -1,0 +1,20 @@
+<section id="s87" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Preventing reference cycles using Weak&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So far, calling <span style="color:#273D56">Rc::clone</span> increases the <span style="color:#273D56">strong_count</span> of an <span style="color:#273D56">Rc&lt;T&gt;</span> instance, and an <span style="color:#273D56">Rc&lt;T&gt;</span> instance is only cleaned up if its <span style="color:#273D56">strong_count</span> is 0. You can also create a weak reference to the value within an <span style="color:#273D56">Rc&lt;T&gt;</span> instance by calling <span style="color:#273D56">Rc::downgrade</span> and passing a reference to the <span style="color:#273D56">Rc&lt;T&gt;</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.18 (Strong reference).</b></span> A reference through which you share ownership of an <span style="color:#273D56">Rc&lt;T&gt;</span> instance (counted in <span style="color:#273D56">strong_count</span>).</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.19 (Weak reference).</b></span> A reference that doesn’t express an ownership relationship; its count doesn’t affect when an <span style="color:#273D56">Rc&lt;T&gt;</span> instance is cleaned up.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Weak references won’t cause a reference cycle, because any cycle involving some weak references will be broken once the strong reference count of the values involved is 0.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">88</p>
+</div>
+</section>

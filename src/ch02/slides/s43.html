@@ -1,0 +1,18 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the match handles Ok and Err</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">parse</span> is able to turn the string into a number, it returns an <span style="color:#273D56">Ok</span> value that contains the resultant number. That <span style="color:#273D56">Ok</span> value matches the first arm’s pattern, and the <span style="color:#273D56">match</span> expression just returns the <span style="color:#273D56">num</span> value that <span style="color:#273D56">parse</span> produced and put inside the <span style="color:#273D56">Ok</span> value. That number ends up right where we want it, in the new <span style="color:#273D56">guess</span> variable we’re creating.</p>
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">parse</span> is <i>not</i> able to turn the string into a number, it returns an <span style="color:#273D56">Err</span> value that contains more information about the error. The <span style="color:#273D56">Err</span> value does not match the <span style="color:#273D56">Ok(num)</span> pattern in the first arm, but it does match the <span style="color:#273D56">Err(_)</span> pattern in the second arm.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.15 (Catch-all value).</b></span> The underscore, <span style="color:#273D56">_</span>, in a pattern. <span style="color:#273D56">Err(_)</span> says we want to match all <span style="color:#273D56">Err</span> values, no matter what information they have inside them.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">So the program executes the second arm’s code, <span style="color:#273D56">continue</span>, which tells the program to go to the next iteration of the <span style="color:#273D56">loop</span> and ask for another guess. Effectively, the program ignores all errors that <span style="color:#273D56">parse</span> might encounter!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

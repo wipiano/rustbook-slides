@@ -1,0 +1,22 @@
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Superpower 5: union fields — and checking with Miri</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Accessing fields of a union</h3>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.10 (Union).</b></span> A type similar to a <span style="color:#273D56">struct</span>, but only one declared field is used in a particular instance at one time.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Unions are primarily used to interface with unions in C code. Accessing union fields is unsafe because Rust can’t guarantee the type of the data currently stored in the union instance (more: the Rust Reference).</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Using Miri to check unsafe code</h3>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.11 (Miri).</b></span> An official Rust tool for detecting undefined behavior. Whereas the borrow checker is a <i>static</i> tool that works at compile time, Miri is a <i>dynamic</i> tool that works at runtime: it runs your program, or its test suite, and detects when you violate the rules it understands about how Rust should work.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Miri is one of the best ways to check that unsafe code you’ve written actually is safe and correct.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>

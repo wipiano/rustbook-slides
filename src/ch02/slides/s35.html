@@ -1,0 +1,20 @@
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">parse, the u32 annotation, and failure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">parse</span> method on strings converts a string to another type — here, from a string to a number. We tell Rust the exact number type we want with <span style="color:#273D56">let guess: u32</span>: the colon (<span style="color:#273D56">:</span>) after <span style="color:#273D56">guess</span> tells Rust we’ll annotate the variable’s type.</p>
+<p style="font-size:30px;line-height:1.45">Rust has a few built-in number types; <span style="color:#273D56">u32</span> is an unsigned, 32-bit integer, a good default choice for a small positive number (other number types: Chapter 3).</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">u32</span> annotation and the comparison with <span style="color:#273D56">secret_number</span> mean Rust infers that <span style="color:#273D56">secret_number</span> should be a <span style="color:#273D56">u32</span> as well. So now the comparison is between two values of the same type!</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">parse</span> only works on characters that can logically be converted into numbers, so it can easily cause errors: a string such as <span style="color:#273D56">A👍%</span> cannot be converted to a number. Because it might fail, <span style="color:#273D56">parse</span> returns a <span style="color:#273D56">Result</span>, much as <span style="color:#273D56">read_line</span> does, and we treat it the same way, with <span style="color:#273D56">expect</span>:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Err</span> (no number could be created from the string): <span style="color:#273D56">expect</span> crashes the game and prints the message we give it.</li>
+<li><span style="color:#273D56">Ok</span> (the conversion succeeded): <span style="color:#273D56">expect</span> returns the number that we want from the <span style="color:#273D56">Ok</span> value.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Downsides: coupled states and duplicated logic</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><i>Coupling.</i> Because the states implement the transitions between states, some states are coupled to each other. Adding a state such as <span style="color:#273D56">Scheduled</span> between <span style="color:#273D56">PendingReview</span> and <span style="color:#273D56">Published</span> would mean changing the code in <span style="color:#273D56">PendingReview</span> to transition to <span style="color:#273D56">Scheduled</span> instead. It would be less work if <span style="color:#273D56">PendingReview</span> didn’t need to change, but that would mean switching to another design pattern.</p>
+<p style="font-size:30px;line-height:1.45"><i>Duplicated defaults.</i> We might try default implementations of <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> on the <span style="color:#273D56">State</span> trait that return <span style="color:#273D56">self</span>. This wouldn’t work: when <span style="color:#273D56">State</span> is used as a trait object, the trait doesn’t know what the concrete <span style="color:#273D56">self</span> will be, so the return type isn’t known at compile time. (This is one of the dyn compatibility rules.)</p>
+<p style="font-size:30px;line-height:1.45"><i>Duplicated delegation.</i> <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> on <span style="color:#273D56">Post</span> both use <span style="color:#273D56">Option::take</span> on <span style="color:#273D56">state</span> and, if it is <span style="color:#273D56">Some</span>, delegate to the wrapped value’s same-named method and store the result. With many such methods, we might define a macro to remove the repetition (see “Macros” in Chapter 20).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

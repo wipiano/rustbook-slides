@@ -1,0 +1,20 @@
+<section id="s58" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Comparing RefCell&lt;T&gt;/Rc&lt;T&gt; and Mutex&lt;T&gt;/Arc&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You might have noticed that <span style="color:#273D56">counter</span> is immutable, yet we could get a mutable reference to the value inside it: <span style="color:#273D56">Mutex&lt;T&gt;</span> provides interior mutability, as the <span style="color:#273D56">Cell</span> family does. In the same way <span style="color:#273D56">RefCell&lt;T&gt;</span> (Chapter 15) allowed mutating contents inside an <span style="color:#273D56">Rc&lt;T&gt;</span>, <span style="color:#273D56">Mutex&lt;T&gt;</span> is used to mutate contents inside an <span style="color:#273D56">Arc&lt;T&gt;</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 16.1:</b></span> Single-threaded types and their thread-safe counterparts</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:28%">Role</th><th style="width:30%">Single-threaded (Ch.15)</th><th style="width:42%">Across threads (Ch.16)</th></tr>
+<tr><td>Multiple ownership</td><td>Rc&lt;T&gt;</td><td>Arc&lt;T&gt; (atomic reference count)</td></tr>
+<tr><td>Interior mutability</td><td>RefCell&lt;T&gt;</td><td>Mutex&lt;T&gt; (lock guards the data)</td></tr>
+<tr><td>Logic-error risk</td><td>reference cycles → memory leaks</td><td>deadlocks</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">59</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The workflow is complete</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We add a default implementation of <span style="color:#273D56">content</span> that returns an empty string slice, so we don’t need to implement <span style="color:#273D56">content</span> on the <span style="color:#273D56">Draft</span> and <span style="color:#273D56">PendingReview</span> structs. The <span style="color:#273D56">Published</span> struct overrides <span style="color:#273D56">content</span> and returns the value in <span style="color:#273D56">post.content</span>. While convenient, having <span style="color:#273D56">content</span> on <span style="color:#273D56">State</span> determine the content of the <span style="color:#273D56">Post</span> blurs the lines between the responsibility of <span style="color:#273D56">State</span> and the responsibility of <span style="color:#273D56">Post</span>.</p>
+<p style="font-size:30px;line-height:1.45">This method needs lifetime annotations, as discussed in Chapter 10: it takes a reference to a <span style="color:#273D56">post</span> as an argument and returns a reference to part of that <span style="color:#273D56">post</span>, so the lifetime of the returned reference is related to the lifetime of the <span style="color:#273D56">post</span> argument.</p>
+<p style="font-size:30px;line-height:1.45">And we’re done — all of Listing 18.11 now works! We’ve implemented the state pattern with the rules of the blog post workflow. The logic related to the rules lives in the state objects rather than being scattered throughout <span style="color:#273D56">Post</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

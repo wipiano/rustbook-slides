@@ -1,0 +1,23 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Controlling access with mutexes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.12 (Mutex).</b></span> Abbreviation for <i>mutual exclusion</i>: a mutex allows only one thread to access some data at any given time. To access the data, a thread must first signal that it wants access by asking to acquire the mutex’s lock.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.13 (Lock).</b></span> A data structure that is part of the mutex and keeps track of who currently has exclusive access to the data. The mutex is therefore described as <i>guarding</i> the data it holds via the locking system.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Mutexes have a reputation for being difficult to use because you have to remember two rules:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>You must attempt to acquire the lock before using the data.</li>
+<li>When you’re done with the data that the mutex guards, you must unlock the data so that other threads can acquire the lock.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

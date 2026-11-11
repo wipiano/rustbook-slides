@@ -1,0 +1,24 @@
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Smart pointers make different guarantees and trade-offs from those Rust makes by default with regular references:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Box&lt;T&gt;</span> has a known size and points to data allocated on the heap.</li>
+<li><span style="color:#273D56">Rc&lt;T&gt;</span> keeps track of the number of references to data on the heap, so that the data can have multiple owners.</li>
+<li><span style="color:#273D56">RefCell&lt;T&gt;</span>, with its interior mutability, gives a type to use when we need an immutable type but must change an inner value of it; it enforces the borrowing rules at runtime instead of at compile time.</li>
+<li>The <span style="color:#273D56">Deref</span> and <span style="color:#273D56">Drop</span> traits enable a lot of the functionality of smart pointers.</li>
+<li>Reference cycles can cause memory leaks; <span style="color:#273D56">Weak&lt;T&gt;</span> prevents them.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To implement your own smart pointers, “The Rustonomicon” has more useful information.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 16 covers concurrency in Rust — including a few new smart pointers, such as the thread-safe counterparts of <span style="color:#273D56">Rc&lt;T&gt;</span> and <span style="color:#273D56">RefCell&lt;T&gt;</span> mentioned in this chapter.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">102</p>
+</div>
+</section>

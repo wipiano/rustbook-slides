@@ -1,0 +1,37 @@
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The fix: let...else</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If we have a refutable pattern where an irrefutable pattern is needed, we can fix it by changing the code that uses the pattern: instead of <span style="color:#273D56">let</span>, use <span style="color:#273D56">let...else</span>. Then, if the pattern doesn’t match, the code in the curly brackets handles the value. Listing 19.9 fixes Listing 19.8.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.9:</b></span> Using <span style="color:#273D56">let...else</span> and a block with refutable patterns instead of <span style="color:#273D56">let</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let some_option_value: Option&lt;i32&gt; = None;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Some(x) = some_option_value else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.10:</b></span> Attempting to use an irrefutable pattern with <span style="color:#273D56">let...else</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 5 else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We’ve given the code an out! Listing 19.9 is perfectly valid, but it means we cannot use an irrefutable pattern without receiving a warning: if we give <span style="color:#273D56">let...else</span> a pattern that will always match, such as <span style="color:#273D56">x</span> in Listing 19.10, the compiler warns.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>

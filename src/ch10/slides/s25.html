@@ -1,0 +1,43 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.1 Generic Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Methods only for Point&lt;f32&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 10.10:</b></span> An <span style="color:#273D56">impl</span> block that only applies to a struct with a particular concrete type for the generic type parameter <span style="color:#273D56">T</span> — <i>src/main.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Point&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x: T,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;y: T,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl&lt;T&gt; Point&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn x(&amp;self) -&gt; &amp;T {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&amp;self.x</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:1.6;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Point&lt;f32&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn distance_from_origin(&amp;self) -&gt; f32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(self.x.powi(2) + self.y.powi(2)).sqrt()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let p = Point { x: 5, y: 10 };</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("p.x = {}", p.x());</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Point&lt;f32&gt;</span> will have a <span style="color:#273D56">distance_from_origin</span> method; instances of <span style="color:#273D56">Point&lt;T&gt;</span> where <span style="color:#273D56">T</span> is not <span style="color:#273D56">f32</span> will not. The method measures how far our point is from (0.0, 0.0) using mathematical operations available only for floating-point types.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

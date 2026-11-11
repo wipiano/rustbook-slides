@@ -1,0 +1,41 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · Parallelism and Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Concurrency: one person, several tasks</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So far we’ve treated parallelism and concurrency as mostly interchangeable; now we need to distinguish them precisely, because the differences will show up as we work. Consider how a team could split up work on a software project: assign a single member multiple tasks, assign each member one task, or use a mix of the two.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.5 (Concurrency).</b></span> An individual works on several different tasks before any of them is complete.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">One way to implement concurrency is like having two different projects checked out on your computer: when you get bored or stuck on one, you switch to the other. You’re just one person, so you can’t make progress on both at the exact same time, but you can multitask, making progress on one at a time by switching between them.</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Figure 17.1:</b></span> A concurrent workflow, switching between Task A and Task B (time runs left to right)</p>
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center">
+<p style="font-size:26px;width:140px;color:#596675">Task A</p>
+<div style="width:112px;border:1px solid #273D56;background:#F3F5F7;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#273D56">A1</p></div>
+<div style="width:112px"></div>
+<div style="width:112px;border:1px solid #273D56;background:#F3F5F7;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#273D56">A2</p></div>
+<div style="width:112px"></div>
+<div style="width:112px;border:1px solid #273D56;background:#F3F5F7;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#273D56">A3</p></div>
+<div style="width:112px;border:1px solid #273D56;background:#F3F5F7;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#273D56">A4</p></div>
+<div style="width:112px"></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center">
+<p style="font-size:26px;width:140px;color:#596675">Task B</p>
+<div style="width:112px"></div>
+<div style="width:112px;border:1px solid #596675;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#596675">B1</p></div>
+<div style="width:112px"></div>
+<div style="width:112px;border:1px solid #596675;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#596675">B2</p></div>
+<div style="width:112px"></div>
+<div style="width:112px"></div>
+<div style="width:112px;border:1px solid #596675;padding:6px 0"><p style="font-size:26px;line-height:1.3;text-align:center;color:#596675">B3</p></div>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#596675">Order of work: A1 → B1 → A2 → B2 → A3 → A4 → B3 — one worker, switching between the tasks.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

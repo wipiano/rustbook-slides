@@ -1,0 +1,18 @@
+<section id="s77" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.6 Redirecting Errors to Standard Error</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Checking where errors are written</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First, we observe how the content printed by <span style="color:#273D56">minigrep</span> is currently written to standard output — including the error messages we want to write to standard error instead. We redirect the standard output stream to a file while intentionally causing an error. We don’t redirect the standard error stream, so any content sent to standard error will continue to display on the screen.</p>
+<p style="font-size:30px;line-height:1.45">Command line programs are expected to send error messages to the standard error stream, so that we can still see error messages on the screen even if we redirect the standard output stream to a file. Our program is not currently well behaved: we’re about to see that it saves the error message output to a file instead!</p>
+<p style="font-size:30px;line-height:1.45">We run the program with <span style="color:#273D56">&gt;</span> and the file path, <i>output.txt</i>, that we want to redirect the standard output stream to. We pass no arguments, which should cause an error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run &gt; output.txt</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">78</p>
+</div>
+</section>

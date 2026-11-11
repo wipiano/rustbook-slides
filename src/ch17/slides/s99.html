@@ -1,0 +1,18 @@
+<section id="s99" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Most types are safe to move: Unpin</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">However, most types are perfectly safe to move around, even if they happen to be behind a <span style="color:#273D56">Pin</span> pointer. We only need to think about pinning when items have internal references. Primitive values such as numbers and Booleans obviously don’t have any internal references; neither do most types you normally work with in Rust. You can move around a <span style="color:#273D56">Vec</span>, for example, without worrying.</p>
+<p style="font-size:30px;line-height:1.45">Yet with a <span style="color:#273D56">Pin&lt;Vec&lt;String&gt;&gt;</span>, you’d have to do everything via the safe but restrictive APIs provided by <span style="color:#273D56">Pin</span>, even though a <span style="color:#273D56">Vec&lt;String&gt;</span> is always safe to move if there are no other references to it. We need a way to tell the compiler that it’s fine to move items around in cases like this — and that’s where <span style="color:#273D56">Unpin</span> comes into play.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.21 (Unpin).</b></span> A marker trait informing the compiler that a given type does <i>not</i> need to uphold any guarantees about whether the value in question can be safely moved.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Like <span style="color:#273D56">Send</span> and <span style="color:#273D56">Sync</span> from Chapter 16, <span style="color:#273D56">Unpin</span> has no functionality of its own. Marker traits exist only to tell the compiler it’s safe to use the type implementing a given trait in a particular context.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">100</p>
+</div>
+</section>

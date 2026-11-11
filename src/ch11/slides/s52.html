@@ -1,0 +1,27 @@
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Returning Ok or Err from a test</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/lib.rs</i> (continued)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if result == 4 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(String::from("two plus two does not equal four"))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">it_works</span> now has the <span style="color:#273D56">Result&lt;(), String&gt;</span> return type. Rather than calling <span style="color:#273D56">assert_eq!</span>, the body returns <span style="color:#273D56">Ok(())</span> when the test passes and an <span style="color:#273D56">Err</span> with a <span style="color:#273D56">String</span> inside when it fails.</p>
+<p style="font-size:30px;line-height:1.45">Tests that return a <span style="color:#273D56">Result&lt;T, E&gt;</span> can use the question mark operator in their body — a convenient way to write tests that should fail if any operation within them returns an <span style="color:#273D56">Err</span> variant.</p>
+<p style="font-size:30px;line-height:1.45">You can’t use <span style="color:#273D56">#[should_panic]</span> on tests that use <span style="color:#273D56">Result&lt;T, E&gt;</span>. To assert that an operation returns an <span style="color:#273D56">Err</span> variant, <i>don’t</i> use the question mark operator on the <span style="color:#273D56">Result&lt;T, E&gt;</span> value; instead, use <span style="color:#273D56">assert!(value.is_err())</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>

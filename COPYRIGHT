@@ -1,0 +1,46 @@
+Copyright and attribution
+=========================
+
+Source work
+-----------
+These slides are adapted from "The Rust Programming Language"
+(https://doc.rust-lang.org/book/, source: https://github.com/rust-lang/book)
+by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the
+Rust Community. The adapted text corresponds to the edition that assumes
+Rust 1.97.0.
+
+Copyright (c) 2010 The Rust Project Developers.
+The source work is licensed under the Apache License, Version 2.0
+<LICENSE-APACHE or https://www.apache.org/licenses/LICENSE-2.0> or the MIT
+license <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your option.
+
+This work
+---------
+Copyright (c) 2026 wipiano.
+This adaptation is licensed under the same terms: Apache License, Version 2.0
+or MIT license, at your option.
+
+Changes made to the source work (Apache-2.0 section 4(b)):
+- The book's prose was restructured into slides and in places shortened or
+  reworded to fit a slide; explanations, code listings and the compiler
+  output the text discusses are kept.
+- Code listings are shown as the online book displays them (lines that mdBook
+  hides are omitted); some long listings are split across slides, some long
+  output lines are wrapped, and some repetitive compiler output is elided
+  with "...".
+- Figures were redrawn as HTML/SVG diagrams; some screenshots are described
+  in text instead.
+- Some summary tables, examples and remarks were added; they are marked as
+  numbered Table/Example/Remark blocks on the slides.
+- Definitions, tables and listings were renumbered per chapter.
+
+Third-party material
+--------------------
+- Fonts: Libertinus Serif, Source Sans 3 and IBM Plex Mono, loaded from
+  Google Fonts at view time (not redistributed here), each under the SIL Open
+  Font License 1.1.
+
+Trademarks
+----------
+This is an unofficial project, not affiliated with or endorsed by the Rust
+Project or the Rust Foundation. "Rust" is a trademark of the Rust Foundation.

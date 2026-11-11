@@ -1,0 +1,28 @@
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.1 Variables and Mutability</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">mut cannot change a variable’s type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error says we’re not allowed to mutate a variable’s type:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling variables v0.1.0 (file:///projects/variables)</p>
+<p style="white-space:nowrap">error[E0308]: mismatched types</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:3:14</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let mut spaces = "&#160;&#160;&#160;";</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;----- expected due to this value</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;spaces = spaces.len();</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^ expected `&amp;str`, found `usize`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0308`.</p>
+<p style="white-space:nowrap">error: could not compile `variables` (bin "variables") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now that we’ve explored how variables work, let’s look at more data types they can have.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>

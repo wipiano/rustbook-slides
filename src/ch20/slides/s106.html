@@ -1,0 +1,23 @@
+<section id="s106" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Attribute-like macros</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Attribute-like macros are similar to custom <span style="color:#273D56">derive</span> macros, but instead of generating code for the <span style="color:#273D56">derive</span> attribute, they allow you to create new attributes. They’re also more flexible: <span style="color:#273D56">derive</span> only works for structs and enums; attributes can be applied to other items as well, such as functions.</p>
+<p style="font-size:30px;line-height:1.45">Example: a web framework’s <span style="color:#273D56">route</span> attribute on a function, and the signature of its procedural macro definition:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[route(GET, "/")]</p>
+<p style="white-space:nowrap">fn index() {</p>
+</div>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[proc_macro_attribute]</p>
+<p style="white-space:nowrap">pub fn route(attr: TokenStream, item: TokenStream) -&gt; TokenStream {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">There are two parameters of type <span style="color:#273D56">TokenStream</span>. The first is for the contents of the attribute: the <span style="color:#273D56">GET, "/"</span> part. The second is the body of the item the attribute is attached to: here, <span style="color:#273D56">fn index() {}</span> and the rest of the function’s body. Other than that, attribute-like macros work the same way as custom <span style="color:#273D56">derive</span> macros: create a crate with the <span style="color:#273D56">proc-macro</span> crate type and implement a function that generates the code you want!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">107</p>
+</div>
+</section>

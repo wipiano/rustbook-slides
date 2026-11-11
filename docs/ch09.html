@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.9 — Error Handling · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.9 — Error Handling</h1><nav><a href="ch08.html">← Ch.8</a><a href="ch10.html">Ch.10 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 9</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Error Handling</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Errors are a fact of life in software, so Rust has a number of features for handling situations in which something goes wrong. In many cases, Rust requires you to acknowledge the possibility of an error and take some action before your code will compile. This requirement makes your program more robust by ensuring that you’ll discover errors and handle them appropriately before deploying your code to production!</p>
+<p style="font-size:30px;line-height:1.45">The chapter covers calling <span style="color:#273D56">panic!</span> first, then returning <span style="color:#273D56">Result&lt;T, E&gt;</span> values, and finally how to decide whether to try to recover from an error or to stop execution.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>9.1 Unrecoverable Errors with panic!</li>
+<li>9.2 Recoverable Errors with Result</li>
+<li>9.3 To panic! or Not to panic!</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Two kinds of errors: recoverable and unrecoverable</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust groups errors into two major categories:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.1 (Recoverable error).</b></span> An error such as a <i>file not found</i> error, where we most likely just want to report the problem to the user and retry the operation.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.2 (Unrecoverable error).</b></span> An error that is always a symptom of a bug, such as trying to access a location beyond the end of an array; we want to immediately stop the program.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Most languages don’t distinguish between these two kinds of errors and handle both in the same way, using mechanisms such as exceptions. Rust doesn’t have exceptions. Instead:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 9.1:</b></span> How Rust handles each category</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:34%">Category</th><th style="width:66%">Rust mechanism</th></tr>
+<tr><td>Recoverable</td><td>The type Result&lt;T, E&gt;</td></tr>
+<tr><td>Unrecoverable</td><td>The panic! macro, which stops execution</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The panic! macro: unwinding or aborting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Sometimes bad things happen in your code, and there’s nothing you can do about it. For these cases Rust has the <span style="color:#273D56">panic!</span> macro. There are two ways to cause a panic in practice:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>by taking an action that causes our code to panic (such as accessing an array past the end), or</li>
+<li>by explicitly calling the <span style="color:#273D56">panic!</span> macro.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">By default, these panics print a failure message, unwind, clean up the stack, and quit. Via an environment variable, you can also have Rust display the call stack when a panic occurs, to make it easier to track down the source of the panic.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.3 (Unwinding).</b></span> The default response to a panic: Rust walks back up the stack and cleans up the data from each function it encounters. Walking back and cleaning up is a lot of work.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.4 (Aborting).</b></span> The alternative you may choose: immediately ending the program without cleaning up. Memory the program was using must then be cleaned up by the operating system.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Aborting on panic, and calling panic! directly</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If your project needs the resultant binary to be as small as possible, switch from unwinding to aborting upon a panic by adding <span style="color:#273D56">panic = 'abort'</span> to the appropriate <span style="color:#273D56">[profile]</span> sections in your <i>Cargo.toml</i> file. For example, to abort on panic in release mode, add this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[profile.release]</p>
+<p style="white-space:nowrap">panic = 'abort'</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Let’s try calling <span style="color:#273D56">panic!</span> in a simple program:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;panic!("crash and burn");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading a panic message</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When you run the program, you’ll see something like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling panic v0.1.0 (file:///projects/panic)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.25s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/panic`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6018279) panicked at src/main.rs:2:5:</p>
+<p style="white-space:nowrap">crash and burn</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The call to <span style="color:#273D56">panic!</span> causes the error message in the last two lines. The first of them shows our panic message and the place in our source code where the panic occurred: <i>src/main.rs:2:5</i> means the second line, fifth character of <i>src/main.rs</i>.</li>
+<li>Here the line indicated is part of our code: going there, we see the <span style="color:#273D56">panic!</span> call. In other cases the <span style="color:#273D56">panic!</span> call might be in code that our code calls; the filename and line number reported will then be someone else’s code where <span style="color:#273D56">panic!</span> is called, not the line of our code that eventually led to it.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A panic from a library: indexing past the end</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can use the backtrace of the functions the <span style="color:#273D56">panic!</span> call came from to figure out the part of our code causing the problem. To see how, look at an example where a <span style="color:#273D56">panic!</span> call comes from a library because of a bug in our code, instead of from our code calling the macro directly. Listing 9.1 tries to access an index in a vector beyond the range of valid indexes.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.1:</b></span> Attempting to access an element beyond the end of a vector, which will cause a call to <span style="color:#273D56">panic!</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec![1, 2, 3];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v[99];</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Here we’re attempting to access the 100th element of our vector (at index 99, because indexing starts at zero), but the vector has only three elements. In this situation, Rust will panic. Using <span style="color:#273D56">[]</span> is supposed to return an element, but if you pass an invalid index, there’s no element that Rust could return here that would be correct.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why Rust stops instead of reading past the end</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In C, reading beyond the end of a data structure is undefined behavior: you might get whatever is at that element’s memory location, even though the memory doesn’t belong to the structure.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.5 (Buffer overread).</b></span> Reading memory past the end of a data structure. It can lead to security vulnerabilities if an attacker can manipulate the index so as to read data stored after the data structure that they shouldn’t be allowed to read.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To protect your program from this sort of vulnerability, if you try to read an element at an index that doesn’t exist, Rust will stop execution and refuse to continue. Let’s try it and see:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling panic v0.1.0 (file:///projects/panic)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/panic`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6017887) panicked at src/main.rs:4:6:</p>
+<p style="white-space:nowrap">index out of bounds: the len is 3 but the index is 99</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Backtraces and how to read them</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This error points at line 4 of our <i>main.rs</i>, where we attempt to access index 99 of the vector in <span style="color:#273D56">v</span>. The <span style="color:#273D56">note:</span> line tells us that we can set the <span style="color:#273D56">RUST_BACKTRACE</span> environment variable to get a backtrace of exactly what happened to cause the error.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.6 (Backtrace).</b></span> A list of all the functions that have been called to get to this point.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Backtraces in Rust work as they do in other languages:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The key to reading the backtrace is to start from the top and read until you see files you wrote. That’s the spot where the problem originated.</li>
+<li>The lines above that spot are code that your code has called; the lines below are code that called your code.</li>
+<li>These before-and-after lines might include core Rust code, standard library code, or crates that you’re using.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To get a backtrace, set the <span style="color:#273D56">RUST_BACKTRACE</span> environment variable to any value except <span style="color:#273D56">0</span>. Listing 9.2 shows output similar to what you’ll see.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A backtrace with RUST_BACKTRACE=1</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.2:</b></span> The backtrace generated by a call to <span style="color:#273D56">panic!</span> displayed when the environment variable <span style="color:#273D56">RUST_BACKTRACE</span> is set</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ RUST_BACKTRACE=1 cargo run</p>
+<p style="white-space:nowrap">thread 'main' panicked at src/main.rs:4:6:</p>
+<p style="white-space:nowrap">index out of bounds: the len is 3 but the index is 99</p>
+<p style="white-space:nowrap">stack backtrace:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;0: rust_begin_unwind</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at /rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/std/src/panicking.rs:692:5</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;1: core::panicking::panic_fmt</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at /rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/core/src/panicking.rs:75:14</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;2: core::panicking::panic_bounds_check</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at /rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/core/src/panicking.rs:273:5</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;3: &lt;usize as core::slice::index::SliceIndex&lt;[T]&gt;&gt;::index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/core/src/slice/index.rs:274:10</p>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.45">(continued on the next slide; long paths are wrapped onto an indented second line)</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A backtrace with RUST_BACKTRACE=1 (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.2 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;4: core::slice::index::&lt;impl core::ops::index::Index&lt;I&gt; for [T]&gt;::index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/core/src/slice/index.rs:16:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;5: &lt;alloc::vec::Vec&lt;T,A&gt; as core::ops::index::Index&lt;I&gt;&gt;::index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/alloc/src/vec/mod.rs:3361:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;6: panic::main</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at ./src/main.rs:4:6</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;7: core::ops::function::FnOnce::call_once</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/core/src/ops/function.rs:250:5</p>
+<p style="white-space:nowrap">note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">That’s a lot of output! The exact output you see might differ depending on your operating system and Rust version. To get backtraces with this information, debug symbols must be enabled. They are enabled by default when using <span style="color:#273D56">cargo build</span> or <span style="color:#273D56">cargo run</span> without the <span style="color:#273D56">--release</span> flag, as we have here.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">From the backtrace to a fix</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>In Listing 9.2, line 6 of the backtrace (<span style="color:#273D56">6: panic::main</span>) points to the line in our project that’s causing the problem: line 4 of <i>src/main.rs</i>.</li>
+<li>If we don’t want our program to panic, we should start our investigation at the location pointed to by the first line mentioning a file we wrote.</li>
+<li>In Listing 9.1, where we deliberately wrote code that would panic, the way to fix the panic is to not request an element beyond the range of the vector indexes.</li>
+<li>When your code panics in the future, you’ll need to figure out what action the code is taking with what values to cause the panic, and what the code should do instead.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> We’ll come back to <span style="color:#273D56">panic!</span> — and when we should and should not use it to handle error conditions — in Section 9.3, “To panic! or Not to panic!”. Next, we look at how to recover from an error using <span style="color:#273D56">Result</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Result enum</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Most errors aren’t serious enough to stop the program entirely; often a function fails for a reason you can easily interpret and respond to. If opening a file fails because it doesn’t exist, you might create the file instead of terminating.</p>
+<p style="font-size:30px;line-height:1.45">Recall from Chapter 2 (“Handling Potential Failure with Result”) that the <span style="color:#273D56">Result</span> enum is defined as having two variants, <span style="color:#273D56">Ok</span> and <span style="color:#273D56">Err</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Result&lt;T, E&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(T),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Err(E),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.7 (Result&lt;T, E&gt;).</b></span> An enum whose generic type parameters (Chapter 10) are <span style="color:#273D56">T</span>, the type of the value returned in a success case within the <span style="color:#273D56">Ok</span> variant, and <span style="color:#273D56">E</span>, the type of the error returned in a failure case within the <span style="color:#273D56">Err</span> variant.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Thanks to these generic type parameters, <span style="color:#273D56">Result</span> and the functions defined on it work in many situations where the success and error values we want to return differ.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Opening a file returns a Result</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s call a function that returns a <span style="color:#273D56">Result</span> value because it could fail. In Listing 9.3, we try to open a file.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.3:</b></span> Opening a file — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file_result = File::open("hello.txt");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The return type of <span style="color:#273D56">File::open</span> is a <span style="color:#273D56">Result&lt;T, E&gt;</span>. <span style="color:#273D56">T</span> is filled in with the success type <span style="color:#273D56">std::fs::File</span>, a file handle; <span style="color:#273D56">E</span> is <span style="color:#273D56">std::io::Error</span>.</li>
+<li>The call might succeed and return a file handle we can read from or write to. It also might fail: the file might not exist, or we might not have permission to access it. <span style="color:#273D56">File::open</span> must tell us whether it succeeded or failed and give us either the file handle or error information — exactly what <span style="color:#273D56">Result</span> conveys.</li>
+<li>On success, <span style="color:#273D56">greeting_file_result</span> holds an instance of <span style="color:#273D56">Ok</span> containing a file handle; on failure, an instance of <span style="color:#273D56">Err</span> containing more information about the kind of error that occurred.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling a Result with match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We need to add to the code in Listing 9.3 to take different actions depending on the value <span style="color:#273D56">File::open</span> returns. Listing 9.4 shows one way, using a basic tool: the <span style="color:#273D56">match</span> expression from Chapter 6.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.4:</b></span> Using a <span style="color:#273D56">match</span> expression to handle the <span style="color:#273D56">Result</span> variants that might be returned — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file_result = File::open("hello.txt");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = match greeting_file_result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(file) =&gt; file,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(error) =&gt; panic!("Problem opening the file: {error:?}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Like the <span style="color:#273D56">Option</span> enum, the <span style="color:#273D56">Result</span> enum and its variants have been brought into scope by the prelude, so we don’t need to specify <span style="color:#273D56">Result::</span> before the <span style="color:#273D56">Ok</span> and <span style="color:#273D56">Err</span> variants in the <span style="color:#273D56">match</span> arms.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The two arms of the match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Ok arm.</b> When the result is <span style="color:#273D56">Ok</span>, this code returns the inner <span style="color:#273D56">file</span> value out of the <span style="color:#273D56">Ok</span> variant, and we assign that file handle to the variable <span style="color:#273D56">greeting_file</span>. After the <span style="color:#273D56">match</span>, we can use the file handle for reading or writing.</li>
+<li><b>Err arm.</b> It handles the case where we get an <span style="color:#273D56">Err</span> value from <span style="color:#273D56">File::open</span>. Here we’ve chosen to call the <span style="color:#273D56">panic!</span> macro.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">If there’s no file named <i>hello.txt</i> in our current directory and we run this code, we’ll see the output below from the <span style="color:#273D56">panic!</span> macro. As usual, it tells us exactly what has gone wrong.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling error-handling v0.1.0 (file:///projects/error-handling)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.73s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/error-handling`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6018048) panicked at src/main.rs:8:23:</p>
+<p style="white-space:nowrap">Problem opening the file: Os { code: 2, kind: NotFound, message: "No such file or directory" }</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div></div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matching on different errors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 9.4 will <span style="color:#273D56">panic!</span> no matter why <span style="color:#273D56">File::open</span> failed. We want different actions for different reasons: if the file doesn’t exist, create it and return the handle to the new file; for any other reason (e.g. no permission), still <span style="color:#273D56">panic!</span> as in Listing 9.4. For this, we add an inner <span style="color:#273D56">match</span> expression.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.5:</b></span> Handling different kinds of errors in different ways — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">use std::io::ErrorKind;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file_result = File::open("hello.txt");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = match greeting_file_result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(file) =&gt; file,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(error) =&gt; match error.kind() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ErrorKind::NotFound =&gt; match File::create("hello.txt") {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(fc) =&gt; fc,</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matching on different errors (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.5 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(e) =&gt; panic!("Problem creating the file: {e:?}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;},</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;panic!("Problem opening the file: {error:?}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;},</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The value <span style="color:#273D56">File::open</span> returns inside the <span style="color:#273D56">Err</span> variant is an <span style="color:#273D56">io::Error</span>, a struct provided by the standard library. Its method <span style="color:#273D56">kind</span> gives an <span style="color:#273D56">io::ErrorKind</span> value.</li>
+<li>The standard-library enum <span style="color:#273D56">io::ErrorKind</span> has variants representing the different kinds of errors an <span style="color:#273D56">io</span> operation might produce. We want <span style="color:#273D56">ErrorKind::NotFound</span>: the file we’re trying to open doesn’t exist yet.</li>
+<li>So we match on <span style="color:#273D56">greeting_file_result</span>, but we also have an inner match on <span style="color:#273D56">error.kind()</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The inner match, and alternatives to match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The inner match checks whether the value returned by <span style="color:#273D56">error.kind()</span> is the <span style="color:#273D56">NotFound</span> variant of the <span style="color:#273D56">ErrorKind</span> enum. If it is, we try to create the file with <span style="color:#273D56">File::create</span>. However, because <span style="color:#273D56">File::create</span> could also fail, we need a second arm in the inner <span style="color:#273D56">match</span>: when the file can’t be created, a different error message is printed. The second arm of the outer <span style="color:#273D56">match</span> stays the same, so the program panics on any error besides the missing file error.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Alternatives to using match with Result&lt;T, E&gt;</h3>
+<p style="font-size:30px;line-height:1.45">That’s a lot of <span style="color:#273D56">match</span>! The <span style="color:#273D56">match</span> expression is very useful but also very much a primitive. In Chapter 13, you’ll learn about closures, which are used with many of the methods defined on <span style="color:#273D56">Result&lt;T, E&gt;</span>. These methods can be more concise than using <span style="color:#273D56">match</span> when handling <span style="color:#273D56">Result&lt;T, E&gt;</span> values in your code.</p>
+<p style="font-size:30px;line-height:1.45">For example, the next slide writes the same logic as Listing 9.5, this time using closures and the <span style="color:#273D56">unwrap_or_else</span> method.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The same logic with unwrap_or_else and closures</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">use std::io::ErrorKind;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt").unwrap_or_else(|error| {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if error.kind() == ErrorKind::NotFound {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;File::create("hello.txt").unwrap_or_else(|error| {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;panic!("Problem creating the file: {error:?}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;})</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;panic!("Problem opening the file: {error:?}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;});</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This code has the same behavior as Listing 9.5, but it doesn’t contain any <span style="color:#273D56">match</span> expressions and is cleaner to read. Come back to it after Chapter 13 and look up <span style="color:#273D56">unwrap_or_else</span> in the standard library documentation. Many more of these methods can clean up huge, nested <span style="color:#273D56">match</span> expressions when you’re dealing with errors.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shortcuts for panic on error: unwrap</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">match</span> works well enough, but it can be a bit verbose and doesn’t always communicate intent well. <span style="color:#273D56">Result&lt;T, E&gt;</span> has many helper methods for more specific tasks. The <span style="color:#273D56">unwrap</span> method is a shortcut implemented just like the <span style="color:#273D56">match</span> in Listing 9.4: if the <span style="color:#273D56">Result</span> is <span style="color:#273D56">Ok</span>, <span style="color:#273D56">unwrap</span> returns the value inside the <span style="color:#273D56">Ok</span>; if it is <span style="color:#273D56">Err</span>, <span style="color:#273D56">unwrap</span> calls the <span style="color:#273D56">panic!</span> macro for us.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt").unwrap();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Run without a <i>hello.txt</i> file, it shows the error message from the <span style="color:#273D56">panic!</span> call that <span style="color:#273D56">unwrap</span> makes:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">thread 'main' panicked at src/main.rs:4:49:</p>
+<p style="white-space:nowrap">called `Result::unwrap()` on an `Err` value:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Os { code: 2, kind: NotFound, message: "No such file or directory" }</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shortcuts for panic on error: expect</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Similarly, <span style="color:#273D56">expect</span> also lets us choose the <span style="color:#273D56">panic!</span> message. Used instead of <span style="color:#273D56">unwrap</span> with a good message, it conveys your intent and makes tracking down the source of a panic easier:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("hello.txt should be included in this project");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We use <span style="color:#273D56">expect</span> like <span style="color:#273D56">unwrap</span>: to return the file handle or call <span style="color:#273D56">panic!</span>. The message <span style="color:#273D56">expect</span> uses in its call to <span style="color:#273D56">panic!</span> is the parameter we pass to it, rather than the default message <span style="color:#273D56">unwrap</span> uses:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">thread 'main' panicked at src/main.rs:5:10:</p>
+<p style="white-space:nowrap">hello.txt should be included in this project:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Os { code: 2, kind: NotFound, message: "No such file or directory" }</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">expect in production code</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In production-quality code, most Rustaceans choose <span style="color:#273D56">expect</span> rather than <span style="color:#273D56">unwrap</span> and give more context about why the operation is expected to always succeed. That way, if your assumptions are ever proven wrong, you have more information to use in debugging.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 9.2:</b></span> Ways to handle a Result&lt;T, E&gt; seen so far</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:30%">Approach</th><th style="width:30%">On Ok(value)</th><th style="width:40%">On Err(error)</th></tr>
+<tr><td>match (Listing 9.4)</td><td>whatever the Ok arm does</td><td>whatever the Err arm does</td></tr>
+<tr><td>unwrap_or_else(closure)</td><td>returns the value</td><td>runs the closure on the error</td></tr>
+<tr><td>unwrap()</td><td>returns the value</td><td>calls panic! with a default message</td></tr>
+<tr><td>expect(msg)</td><td>returns the value</td><td>calls panic! with msg, then the error</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Propagating errors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When a function’s implementation calls something that might fail, instead of handling the error within the function itself, you can return the error to the calling code so that it can decide what to do.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.8 (Propagating an error).</b></span> Returning an error to the calling code rather than handling it in place. It gives more control to the calling code, where there might be more information or logic that dictates how the error should be handled than what is available in the context of your code.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, Listing 9.6 (next slides) shows a function that reads a username from a file. If the file doesn’t exist or can’t be read, this function returns those errors to the code that called it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This function can be written in a much shorter way, but the book starts by doing a lot of it manually in order to explore error handling; the shorter way comes at the end.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Propagating errors with match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.6:</b></span> A function that returns errors to the calling code using <span style="color:#273D56">match</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">use std::io::{self, Read};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let username_file_result = File::open("hello.txt");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut username_file = match username_file_result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(file) =&gt; file,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(e) =&gt; return Err(e),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Look at the return type first: <span style="color:#273D56">Result&lt;String, io::Error&gt;</span>. The function returns a value of type <span style="color:#273D56">Result&lt;T, E&gt;</span>, where the generic parameter <span style="color:#273D56">T</span> has been filled in with the concrete type <span style="color:#273D56">String</span> and the generic type <span style="color:#273D56">E</span> with the concrete type <span style="color:#273D56">io::Error</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Propagating errors with match (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.6 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut username = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match username_file.read_to_string(&amp;mut username) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(_) =&gt; Ok(username),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(e) =&gt; Err(e),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>If this function succeeds without any problems, the calling code receives an <span style="color:#273D56">Ok</span> value that holds a <span style="color:#273D56">String</span> — the <span style="color:#273D56">username</span> that this function read from the file.</li>
+<li>If it encounters any problems, the calling code receives an <span style="color:#273D56">Err</span> value that holds an instance of <span style="color:#273D56">io::Error</span> containing more information about what the problems were.</li>
+<li>We chose <span style="color:#273D56">io::Error</span> as the error type because it happens to be the type of the error value returned by both fallible operations in the body: the <span style="color:#273D56">File::open</span> function and the <span style="color:#273D56">read_to_string</span> method.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Walking through Listing 9.6</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The body starts by calling <span style="color:#273D56">File::open</span>, then handles the <span style="color:#273D56">Result</span> with a <span style="color:#273D56">match</span> similar to the one in Listing 9.4. If <span style="color:#273D56">File::open</span> succeeds, the file handle in the pattern variable <span style="color:#273D56">file</span> becomes the value in the mutable variable <span style="color:#273D56">username_file</span>, and the function continues.</li>
+<li>In the <span style="color:#273D56">Err</span> case, instead of calling <span style="color:#273D56">panic!</span>, we use the <span style="color:#273D56">return</span> keyword to return early out of the function entirely, passing the error value from <span style="color:#273D56">File::open</span> (now in the pattern variable <span style="color:#273D56">e</span>) back to the calling code as this function’s error value.</li>
+<li>With a file handle in <span style="color:#273D56">username_file</span>, the function creates a new <span style="color:#273D56">String</span> in <span style="color:#273D56">username</span> and calls <span style="color:#273D56">read_to_string</span> on the file handle to read the file’s contents into <span style="color:#273D56">username</span>.</li>
+<li><span style="color:#273D56">read_to_string</span> also returns a <span style="color:#273D56">Result</span>, because it might fail even though <span style="color:#273D56">File::open</span> succeeded — so another <span style="color:#273D56">match</span> handles it. On success, our function has succeeded and returns the username wrapped in an <span style="color:#273D56">Ok</span>. On failure, it returns the error value just as for <span style="color:#273D56">File::open</span>. No explicit <span style="color:#273D56">return</span> is needed, because this is the last expression in the function.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The caller decides</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The code that calls <span style="color:#273D56">read_username_from_file</span> will then handle getting either an <span style="color:#273D56">Ok</span> value that contains a username or an <span style="color:#273D56">Err</span> value that contains an <span style="color:#273D56">io::Error</span>. It’s up to the calling code to decide what to do with those values. If it gets an <span style="color:#273D56">Err</span> value, it could, for example:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>call <span style="color:#273D56">panic!</span> and crash the program,</li>
+<li>use a default username, or</li>
+<li>look up the username from somewhere other than a file.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We don’t have enough information on what the calling code is actually trying to do, so we propagate all the success or error information upward for it to handle appropriately.</p>
+<p style="font-size:30px;line-height:1.45">This pattern of propagating errors is so common in Rust that Rust provides the question mark operator <span style="color:#273D56">?</span> to make it easier.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The ? operator shortcut</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 9.7 has the same functionality as Listing 9.6, but uses the <span style="color:#273D56">?</span> operator.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.7:</b></span> A function that returns errors to the calling code using the <span style="color:#273D56">?</span> operator — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">use std::io::{self, Read};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut username_file = File::open("hello.txt")?;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut username = String::new();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;username_file.read_to_string(&amp;mut username)?;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(username)</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.9 (The ? operator).</b></span> Placed after a <span style="color:#273D56">Result</span> value, it works almost like the <span style="color:#273D56">match</span> of Listing 9.6: on <span style="color:#273D56">Ok</span>, the value inside is the expression’s value and the program continues; on <span style="color:#273D56">Err</span>, the <span style="color:#273D56">Err</span> is returned from the whole function as if by <span style="color:#273D56">return</span>, propagating the error to the calling code.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How ? differs from match: error conversion with From</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There is one difference between the <span style="color:#273D56">match</span> of Listing 9.6 and the <span style="color:#273D56">?</span> operator. Error values that <span style="color:#273D56">?</span> is called on go through the <span style="color:#273D56">from</span> function, defined in the <span style="color:#273D56">From</span> trait in the standard library, which converts values from one type into another. When <span style="color:#273D56">?</span> calls <span style="color:#273D56">from</span>, the error type received is converted into the error type defined in the return type of the current function. This is useful when a function returns one error type to represent all the ways it might fail, even if parts might fail for many different reasons.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 9.10.</b> We could change <span style="color:#273D56">read_username_from_file</span> in Listing 9.7 to return a custom error type named <span style="color:#273D56">OurError</span> that we define. If we also define <span style="color:#273D56">impl From&lt;io::Error&gt; for OurError</span> to construct an <span style="color:#273D56">OurError</span> from an <span style="color:#273D56">io::Error</span>, then the <span style="color:#273D56">?</span> calls in the body will call <span style="color:#273D56">from</span> and convert the error types without needing to add any more code to the function.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In Listing 9.7, the <span style="color:#273D56">?</span> at the end of the <span style="color:#273D56">File::open</span> call returns the value inside an <span style="color:#273D56">Ok</span> to the variable <span style="color:#273D56">username_file</span>. If an error occurs, <span style="color:#273D56">?</span> returns early out of the whole function and gives any <span style="color:#273D56">Err</span> value to the calling code. The same applies to the <span style="color:#273D56">?</span> at the end of the <span style="color:#273D56">read_to_string</span> call.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chaining method calls after ?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">?</span> eliminates a lot of boilerplate; we can shorten further by chaining calls right after the <span style="color:#273D56">?</span>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.8:</b></span> Chaining method calls after the <span style="color:#273D56">?</span> operator — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">use std::io::{self, Read};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut username = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;File::open("hello.txt")?.read_to_string(&amp;mut username)?;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(username)</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The new <span style="color:#273D56">String</span> moved to the start. Instead of a variable <span style="color:#273D56">username_file</span>, we chain <span style="color:#273D56">read_to_string</span> directly onto <span style="color:#273D56">File::open("hello.txt")?</span>, keep its <span style="color:#273D56">?</span>, and still return <span style="color:#273D56">Ok(username)</span> when both succeed: the same functionality as Listings 9.6 and 9.7, just more ergonomic.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Even shorter: fs::read_to_string</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 9.9 shows a way to make this even shorter.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.9:</b></span> Using <span style="color:#273D56">fs::read_to_string</span> instead of opening and then reading the file — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fs::read_to_string("hello.txt")</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Reading a file into a string is a fairly common operation, so the standard library provides the convenient <span style="color:#273D56">fs::read_to_string</span> function. It opens the file, creates a new <span style="color:#273D56">String</span>, reads the contents of the file, puts the contents into that <span style="color:#273D56">String</span>, and returns it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Using <span style="color:#273D56">fs::read_to_string</span> doesn’t give us the opportunity to explain all the error handling, which is why the book did it the longer way first.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Where the ? operator can be used</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">?</span> operator can only be used in functions whose return type is compatible with the value the <span style="color:#273D56">?</span> is used on. This is because <span style="color:#273D56">?</span> is defined to perform an early return of a value out of the function, in the same manner as the <span style="color:#273D56">match</span> of Listing 9.6. There, the <span style="color:#273D56">match</span> was using a <span style="color:#273D56">Result</span> value, and the early return arm returned an <span style="color:#273D56">Err(e)</span> value. The return type of the function has to be a <span style="color:#273D56">Result</span> so that it’s compatible with this <span style="color:#273D56">return</span>.</p>
+<p style="font-size:30px;line-height:1.45">Listing 9.10 uses <span style="color:#273D56">?</span> in a <span style="color:#273D56">main</span> function whose return type is incompatible with the type of the value we use <span style="color:#273D56">?</span> on.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.10:</b></span> Attempting to use the <span style="color:#273D56">?</span> in the <span style="color:#273D56">main</span> function that returns <span style="color:#273D56">()</span> won’t compile. — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")?;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0277: ? in a function that returns ()</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code opens a file, which might fail. The <span style="color:#273D56">?</span> operator follows the <span style="color:#273D56">Result</span> value returned by <span style="color:#273D56">File::open</span>, but this <span style="color:#273D56">main</span> function has the return type <span style="color:#273D56">()</span>, not <span style="color:#273D56">Result</span>. Compiling it gives this error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling error-handling v0.1.0 (file:///projects/error-handling)</p>
+<p style="white-space:nowrap">error[E0277]: the `?` operator can only be used in a function that returns `Result` or `Option`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;(or another type that implements `FromResidual`)</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:4:48</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 | fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;| --------- this function should return `Result` or `Option` to accept `?`</p>
+<p style="white-space:nowrap">4 |&#160;&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")?;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ cannot use the `?` operator in a function</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;that returns `()`</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">help: consider adding return type</p>
+</div></div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0277 (continued), and two ways to fix it</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 ~ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</p>
+<p style="white-space:nowrap">4 |&#160;&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")?;</p>
+<p style="white-space:nowrap">5 +&#160;&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0277`.</p>
+<p style="white-space:nowrap">error: could not compile `error-handling` (bin "error-handling") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This error points out that we’re only allowed to use the <span style="color:#273D56">?</span> operator in a function that returns <span style="color:#273D56">Result</span>, <span style="color:#273D56">Option</span>, or another type that implements <span style="color:#273D56">FromResidual</span>. To fix the error, you have two choices:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Change the return type of your function to be compatible with the value you’re using the <span style="color:#273D56">?</span> operator on, as long as you have no restrictions preventing that.</li>
+<li>Use a <span style="color:#273D56">match</span> or one of the <span style="color:#273D56">Result&lt;T, E&gt;</span> methods to handle the <span style="color:#273D56">Result&lt;T, E&gt;</span> in whatever way is appropriate.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using ? on Option&lt;T&gt; values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error message also mentioned that <span style="color:#273D56">?</span> can be used with <span style="color:#273D56">Option&lt;T&gt;</span> values as well. As with using <span style="color:#273D56">?</span> on <span style="color:#273D56">Result</span>, you can only use <span style="color:#273D56">?</span> on <span style="color:#273D56">Option</span> in a function that returns an <span style="color:#273D56">Option</span>. The behavior of <span style="color:#273D56">?</span> on an <span style="color:#273D56">Option&lt;T&gt;</span> is similar to its behavior on a <span style="color:#273D56">Result&lt;T, E&gt;</span>:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 9.3:</b></span> What the ? operator does with each value</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:24%">Value</th><th style="width:76%">Effect of ?</th></tr>
+<tr><td>Ok(v)</td><td>v is the resultant value of the expression; the function continues</td></tr>
+<tr><td>Err(e)</td><td>Err is returned early from the function (after conversion by From::from)</td></tr>
+<tr><td>Some(v)</td><td>v is the resultant value of the expression; the function continues</td></tr>
+<tr><td>None</td><td>None is returned early from the function at that point</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Listing 9.11 (next slide) has an example: a function that finds the last character of the first line in the given text.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The last character of the first line</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.11:</b></span> Using the <span style="color:#273D56">?</span> operator on an <span style="color:#273D56">Option&lt;T&gt;</span> value</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn last_char_of_first_line(text: &amp;str) -&gt; Option&lt;char&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;text.lines().next()?.chars().last()</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;last_char_of_first_line("Hello, world\nHow are you today?"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some('d')</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(last_char_of_first_line(""), None);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(last_char_of_first_line("\nhi"), None);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The function returns <span style="color:#273D56">Option&lt;char&gt;</span> because it’s possible that there is a character there, but it’s also possible that there isn’t.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How Listing 9.11 works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The code takes the <span style="color:#273D56">text</span> string slice argument and calls the <span style="color:#273D56">lines</span> method on it, which returns an iterator over the lines in the string.</li>
+<li>Because the function wants to examine the first line, it calls <span style="color:#273D56">next</span> on the iterator to get its first value. If <span style="color:#273D56">text</span> is the empty string, <span style="color:#273D56">next</span> returns <span style="color:#273D56">None</span>, and we use <span style="color:#273D56">?</span> to stop and return <span style="color:#273D56">None</span> from <span style="color:#273D56">last_char_of_first_line</span>. Otherwise <span style="color:#273D56">next</span> returns a <span style="color:#273D56">Some</span> value containing a string slice of the first line.</li>
+<li>The <span style="color:#273D56">?</span> extracts the string slice, and we call <span style="color:#273D56">chars</span> on it to get an iterator of its characters, then <span style="color:#273D56">last</span> to return the last item in the iterator.</li>
+<li><span style="color:#273D56">last</span> returns an <span style="color:#273D56">Option</span>, because the first line may be the empty string — for example, if <span style="color:#273D56">text</span> starts with a blank line but has characters on other lines, as in <span style="color:#273D56">"\nhi"</span>. If there is a last character on the first line, it is returned in the <span style="color:#273D56">Some</span> variant.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">?</span> in the middle gives a concise way to express this logic, implementing the function in one line. Without <span style="color:#273D56">?</span> on <span style="color:#273D56">Option</span>, we’d need more method calls or a <span style="color:#273D56">match</span> expression.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">No mixing Result and Option; what main may return</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">You can’t mix and match</h3>
+<p style="font-size:30px;line-height:1.45">You can use <span style="color:#273D56">?</span> on a <span style="color:#273D56">Result</span> in a function that returns <span style="color:#273D56">Result</span>, and on an <span style="color:#273D56">Option</span> in a function that returns <span style="color:#273D56">Option</span>, but you can’t mix and match. The <span style="color:#273D56">?</span> operator won’t automatically convert a <span style="color:#273D56">Result</span> to an <span style="color:#273D56">Option</span> or vice versa; in those cases, use methods like <span style="color:#273D56">ok</span> on <span style="color:#273D56">Result</span> or <span style="color:#273D56">ok_or</span> on <span style="color:#273D56">Option</span> to do the conversion explicitly.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The return type of main</h3>
+<p style="font-size:30px;line-height:1.45">So far, all the <span style="color:#273D56">main</span> functions we’ve used return <span style="color:#273D56">()</span>. The <span style="color:#273D56">main</span> function is special because it’s the entry point and exit point of an executable program, and there are restrictions on what its return type can be for the program to behave as expected.</p>
+<p style="font-size:30px;line-height:1.45">Luckily, <span style="color:#273D56">main</span> can also return a <span style="color:#273D56">Result&lt;(), E&gt;</span>. Listing 9.12 has the code from Listing 9.10, but with the return type of <span style="color:#273D56">main</span> changed to <span style="color:#273D56">Result&lt;(), Box&lt;dyn Error&gt;&gt;</span> and a return value <span style="color:#273D56">Ok(())</span> added at the end. This code will now compile.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">main returning Result&lt;(), Box&lt;dyn Error&gt;&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.12:</b></span> Changing <span style="color:#273D56">main</span> to return <span style="color:#273D56">Result&lt;(), E&gt;</span> allows the use of the <span style="color:#273D56">?</span> operator on <span style="color:#273D56">Result</span> values. — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::error::Error;</p>
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")?;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">Box&lt;dyn Error&gt;</span> type is a trait object, covered in Chapter 18 (“Using Trait Objects to Abstract over Shared Behavior”). For now, read <span style="color:#273D56">Box&lt;dyn Error&gt;</span> as “any kind of error.”</li>
+<li>Using <span style="color:#273D56">?</span> on a <span style="color:#273D56">Result</span> in a <span style="color:#273D56">main</span> with error type <span style="color:#273D56">Box&lt;dyn Error&gt;</span> is allowed because it allows any <span style="color:#273D56">Err</span> value to be returned early.</li>
+<li>Even though this body only ever returns errors of type <span style="color:#273D56">std::io::Error</span>, specifying <span style="color:#273D56">Box&lt;dyn Error&gt;</span> keeps the signature correct even if code returning other errors is added to <span style="color:#273D56">main</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Exit codes and the Termination trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When a <span style="color:#273D56">main</span> function returns a <span style="color:#273D56">Result&lt;(), E&gt;</span>, the executable exits with a value of <span style="color:#273D56">0</span> if <span style="color:#273D56">main</span> returns <span style="color:#273D56">Ok(())</span>, and with a nonzero value if <span style="color:#273D56">main</span> returns an <span style="color:#273D56">Err</span> value.</p>
+<p style="font-size:30px;line-height:1.45">Executables written in C return integers when they exit: programs that exit successfully return the integer <span style="color:#273D56">0</span>, and programs that error return some integer other than <span style="color:#273D56">0</span>. Rust also returns integers from executables to be compatible with this convention.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">main</span> function may return any types that implement the <span style="color:#273D56">std::process::Termination</span> trait, which contains a function <span style="color:#273D56">report</span> that returns an <span style="color:#273D56">ExitCode</span>. Consult the standard library documentation for more information on implementing the <span style="color:#273D56">Termination</span> trait for your own types.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Now that we’ve discussed the details of calling <span style="color:#273D56">panic!</span> or returning <span style="color:#273D56">Result</span>, the next section returns to how to decide which is appropriate to use in which cases.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">panic! or Result: returning Result is the default</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So, how do you decide when you should call <span style="color:#273D56">panic!</span> and when you should return <span style="color:#273D56">Result</span>?</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>When code panics, there’s no way to recover. You could call <span style="color:#273D56">panic!</span> for any error situation, whether there’s a possible way to recover or not — but then you’re making the decision that a situation is unrecoverable on behalf of the calling code.</li>
+<li>When you choose to return a <span style="color:#273D56">Result</span> value, you give the calling code options. It could attempt to recover in a way that’s appropriate for its situation, or it could decide that an <span style="color:#273D56">Err</span> value in this case is unrecoverable, call <span style="color:#273D56">panic!</span>, and turn your recoverable error into an unrecoverable one.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Therefore, returning <span style="color:#273D56">Result</span> is a good default choice when you’re defining a function that might fail.</p>
+<p style="font-size:30px;line-height:1.45">In situations such as examples, prototype code, and tests, it’s more appropriate to write code that panics instead of returning a <span style="color:#273D56">Result</span>. This section explores why, then discusses situations in which the compiler can’t tell that failure is impossible but you as a human can, and concludes with general guidelines on whether to panic in library code.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Examples, prototype code, and tests</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Examples</h3>
+<p style="font-size:30px;line-height:1.45">When you’re writing an example to illustrate some concept, also including robust error-handling code can make the example less clear. In examples, it’s understood that a call to a method like <span style="color:#273D56">unwrap</span> that could panic is meant as a placeholder for the way you’d want your application to handle errors, which can differ based on what the rest of your code is doing.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Prototypes</h3>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">unwrap</span> and <span style="color:#273D56">expect</span> methods are very handy when you’re prototyping and not yet ready to decide how to handle errors. They leave clear markers in your code for when you’re ready to make your program more robust.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Tests</h3>
+<p style="font-size:30px;line-height:1.45">If a method call fails in a test, you’d want the whole test to fail, even if that method isn’t the functionality under test. Because <span style="color:#273D56">panic!</span> is how a test is marked as a failure, calling <span style="color:#273D56">unwrap</span> or <span style="color:#273D56">expect</span> is exactly what should happen.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">When you have more information than the compiler</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">It is also appropriate to call <span style="color:#273D56">expect</span> when some other logic ensures that the <span style="color:#273D56">Result</span> will have an <span style="color:#273D56">Ok</span> value, but the logic isn’t something the compiler understands. You still have a <span style="color:#273D56">Result</span> to handle: whatever operation you’re calling can still fail in general, even though it’s logically impossible in your particular situation. If you can ensure by manually inspecting the code that you’ll never have an <span style="color:#273D56">Err</span> variant, it’s perfectly acceptable to call <span style="color:#273D56">expect</span> and document in the argument text the reason you think you’ll never have one.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 9.11.</b> Creating an <span style="color:#273D56">IpAddr</span> instance by parsing a hardcoded string:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::net::IpAddr;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let home: IpAddr = "127.0.0.1"</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.parse()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Hardcoded IP address should be valid");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why expect is acceptable in Example 9.11</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>We can see that <span style="color:#273D56">127.0.0.1</span> is a valid IP address, so it’s acceptable to use <span style="color:#273D56">expect</span> here.</li>
+<li>However, having a hardcoded, valid string doesn’t change the return type of the <span style="color:#273D56">parse</span> method: we still get a <span style="color:#273D56">Result</span> value, and the compiler will still make us handle the <span style="color:#273D56">Result</span> as if the <span style="color:#273D56">Err</span> variant is a possibility, because the compiler isn’t smart enough to see that this string is always a valid IP address.</li>
+<li>If the IP address string came from a user rather than being hardcoded into the program, and therefore <i>did</i> have a possibility of failure, we’d definitely want to handle the <span style="color:#273D56">Result</span> in a more robust way instead.</li>
+<li>Mentioning the assumption that this IP address is hardcoded will prompt us to change <span style="color:#273D56">expect</span> to better error-handling code if, in the future, we need to get the IP address from some other source instead.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Guidelines for error handling: the bad state</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">It’s advisable to have your code panic when it’s possible that your code could end up in a bad state.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.12 (Bad state).</b></span> A state in which some assumption, guarantee, contract, or invariant has been broken — such as when invalid values, contradictory values, or missing values are passed to your code — plus one or more of the conditions below.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The bad state is something that is unexpected, as opposed to something that will likely happen occasionally, like a user entering data in the wrong format.</li>
+<li>Your code after this point needs to rely on not being in this bad state, rather than checking for the problem at every step.</li>
+<li>There’s not a good way to encode this information in the types you use. Chapter 18 works through an example in “Encoding States and Behavior as Types”.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Values that don’t make sense, and expected failure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">When to panic</h3>
+<p style="font-size:30px;line-height:1.45">If someone calls your code and passes in values that don’t make sense, it’s best to return an error if you can, so that the user of the library can decide what they want to do in that case.</p>
+<p style="font-size:30px;line-height:1.45">However, where continuing could be insecure or harmful, the best choice might be to call <span style="color:#273D56">panic!</span> and alert the person using your library to the bug in their code so they can fix it during development.</p>
+<p style="font-size:30px;line-height:1.45">Similarly, <span style="color:#273D56">panic!</span> is often appropriate if you’re calling external code that is out of your control and returns an invalid state that you have no way of fixing.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">When to return Result</h3>
+<p style="font-size:30px;line-height:1.45">When failure is expected, it’s more appropriate to return a <span style="color:#273D56">Result</span> than to make a <span style="color:#273D56">panic!</span> call. Examples:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>a parser being given malformed data;</li>
+<li>an HTTP request returning a status that indicates you have hit a rate limit.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Returning a <span style="color:#273D56">Result</span> indicates that failure is an expected possibility that the calling code must decide how to handle.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Invalid values, safety, and contracts</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When your code performs an operation that could put a user at risk if it’s called using invalid values, your code should verify the values are valid first and panic if they aren’t. This is mostly for safety reasons: attempting to operate on invalid data can expose your code to vulnerabilities.</p>
+<p style="font-size:30px;line-height:1.45">This is the main reason the standard library will call <span style="color:#273D56">panic!</span> if you attempt an out-of-bounds memory access: trying to access memory that doesn’t belong to the current data structure is a common security problem.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.13 (Contract).</b></span> A function’s requirement on its inputs: its behavior is only guaranteed if the inputs meet particular requirements.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Panicking when the contract is violated makes sense, because a contract violation always indicates a caller-side bug, and it’s not a kind of error you want the calling code to have to explicitly handle.</li>
+<li>In fact, there’s no reasonable way for calling code to recover; the calling <i>programmers</i> need to fix the code.</li>
+<li>Contracts for a function, especially when a violation will cause a panic, should be explained in the API documentation for the function.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Letting the type system do the checks</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Having lots of error checks in all of your functions would be verbose and annoying. Fortunately, you can use Rust’s type system (and thus the type checking done by the compiler) to do many of the checks for you. If your function has a particular type as a parameter, you can proceed with your code’s logic knowing that the compiler has already ensured that you have a valid value.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 9.14.</b> If you have a type rather than an <span style="color:#273D56">Option</span>, your program expects to have <i>something</i> rather than <i>nothing</i>. Your code then doesn’t have to handle two cases for the <span style="color:#273D56">Some</span> and <span style="color:#273D56">None</span> variants: it has only one case, for definitely having a value. Code trying to pass nothing to your function won’t even compile, so your function doesn’t have to check for that case at runtime.</p>
+</div>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 9.15.</b> Using an unsigned integer type such as <span style="color:#273D56">u32</span> ensures that the parameter is never negative.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Custom types for validation: the problem</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s take the idea of using Rust’s type system to ensure we have a valid value one step further, and create a custom type for validation.</p>
+<p style="font-size:30px;line-height:1.45">Recall the guessing game in Chapter 2, which asked the user to guess a number between 1 and 100. We never validated that the guess was between those numbers before checking it against our secret number; we only validated that the guess was positive. The consequences were not very dire: our output of “Too high” or “Too low” would still be correct.</p>
+<p style="font-size:30px;line-height:1.45">But it would be a useful enhancement to guide the user toward valid guesses, and to behave differently when the user guesses a number that’s out of range versus when the user types, for example, letters instead.</p>
+<p style="font-size:30px;line-height:1.45">One way to do this would be to parse the guess as an <span style="color:#273D56">i32</span> instead of only a <span style="color:#273D56">u32</span> to allow potentially negative numbers, and then add a check for the number being in range, as on the next slides.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A range check in the guessing game (1/3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::cmp::Ordering;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let secret_number = rand::rng().random_range(1..=100);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;loop {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-51">
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A range check in the guessing game (2/3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> (continued)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let guess: i32 = match guess.trim().parse() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(num) =&gt; num,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(_) =&gt; continue,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if guess &lt; 1 || guess &gt; 100 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("The secret number will be between 1 and 100.");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;continue;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">if</span> expression checks whether our value is out of range, tells the user about the problem, and calls <span style="color:#273D56">continue</span> to start the next iteration of the loop and ask for another guess.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-52">
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A range check in the guessing game (3/3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> (continued)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("You win!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;break;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">After the <span style="color:#273D56">if</span>, we compare <span style="color:#273D56">guess</span> with the secret number knowing that <span style="color:#273D56">guess</span> is between 1 and 100.</p>
+<p style="font-size:30px;line-height:1.45">This is not ideal: if it were absolutely critical that the program only operated on values between 1 and 100, and many functions had this requirement, a check like this in every function would be tedious (and might impact performance).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-53">
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A Guess type that validates on creation</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Instead, make a new type in a dedicated module and put the validations in a function that creates an instance of the type, rather than repeating them everywhere. Functions can then safely use the new type in their signatures and confidently use the values they receive.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.13:</b></span> A <span style="color:#273D56">Guess</span> type that will only continue with values between 1 and 100 — <i>src/guessing_game.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Guess {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;value: i32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Guess {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn new(value: i32) -&gt; Guess {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if value &lt; 1 || value &gt; 100 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;panic!("Guess value must be between 1 and 100, got {value}.");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Guess { value }</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-54">
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A Guess type that validates on creation (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.13 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn value(&amp;self) -&gt; i32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.value</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This code in <i>src/guessing_game.rs</i> depends on adding a module declaration <span style="color:#273D56">mod guessing_game;</span> in <i>src/lib.rs</i>, which isn’t shown here.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Within this new module’s file, we define a struct named <span style="color:#273D56">Guess</span> that has a field named <span style="color:#273D56">value</span> that holds an <span style="color:#273D56">i32</span>. This is where the number will be stored.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">impl Guess</span> block then provides two things, explained on the next slides: an associated function <span style="color:#273D56">new</span> that creates validated instances, and a method <span style="color:#273D56">value</span> that reads the stored number.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-55">
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Guess::new enforces the contract</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We implement an associated function named <span style="color:#273D56">new</span> on <span style="color:#273D56">Guess</span> that creates instances of <span style="color:#273D56">Guess</span> values. It has one parameter named <span style="color:#273D56">value</span> of type <span style="color:#273D56">i32</span> and returns a <span style="color:#273D56">Guess</span>.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The body of <span style="color:#273D56">new</span> tests <span style="color:#273D56">value</span> to make sure it’s between 1 and 100.</li>
+<li>If <span style="color:#273D56">value</span> doesn’t pass this test, we make a <span style="color:#273D56">panic!</span> call. It alerts the programmer writing the calling code that they have a bug to fix, because creating a <span style="color:#273D56">Guess</span> with a <span style="color:#273D56">value</span> outside this range would violate the contract that <span style="color:#273D56">Guess::new</span> is relying on.</li>
+<li>The conditions in which <span style="color:#273D56">Guess::new</span> might panic should be discussed in its public-facing API documentation; Chapter 14 covers documentation conventions indicating the possibility of a <span style="color:#273D56">panic!</span>.</li>
+<li>If <span style="color:#273D56">value</span> does pass the test, we create a new <span style="color:#273D56">Guess</span> with its <span style="color:#273D56">value</span> field set to the <span style="color:#273D56">value</span> parameter and return the <span style="color:#273D56">Guess</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-56">
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The value getter and the private field</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next, we implement a method named <span style="color:#273D56">value</span> that borrows <span style="color:#273D56">self</span>, doesn’t have any other parameters, and returns an <span style="color:#273D56">i32</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.16 (Getter).</b></span> A method whose purpose is to get some data from its fields and return it.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>This public method is necessary because the <span style="color:#273D56">value</span> field of the <span style="color:#273D56">Guess</span> struct is private.</li>
+<li>It’s important that the field be private, so that code using the <span style="color:#273D56">Guess</span> struct is not allowed to set <span style="color:#273D56">value</span> directly: code outside the <span style="color:#273D56">guessing_game</span> module <i>must</i> use <span style="color:#273D56">Guess::new</span> to create an instance of <span style="color:#273D56">Guess</span>.</li>
+<li>That ensures there’s no way for a <span style="color:#273D56">Guess</span> to have a <span style="color:#273D56">value</span> that hasn’t been checked by the conditions in <span style="color:#273D56">Guess::new</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">A function that has a parameter or returns only numbers between 1 and 100 could then declare in its signature that it takes or returns a <span style="color:#273D56">Guess</span> rather than an <span style="color:#273D56">i32</span>, and wouldn’t need to do any additional checks in its body.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-57">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust’s error-handling features are designed to help you write more robust code.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">panic!</span> macro signals that your program is in a state it can’t handle and lets you tell the process to stop instead of trying to proceed with invalid or incorrect values.</li>
+<li>The <span style="color:#273D56">Result</span> enum uses Rust’s type system to indicate that operations might fail in a way that your code could recover from.</li>
+<li>You can use <span style="color:#273D56">Result</span> to tell code that calls your code that it needs to handle potential success or failure as well.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">panic!</span> and <span style="color:#273D56">Result</span> in the appropriate situations will make your code more reliable in the face of inevitable problems.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Now that you’ve seen useful ways that the standard library uses generics with the <span style="color:#273D56">Option</span> and <span style="color:#273D56">Result</span> enums, Chapter 10 talks about how generics work and how you can use them in your code.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">57</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

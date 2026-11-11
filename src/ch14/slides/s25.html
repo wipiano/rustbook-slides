@@ -1,0 +1,19 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">New versions, and deprecating old ones</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Publishing a new version of an existing crate</h3>
+<p style="font-size:30px;line-height:1.45">When you’ve made changes to your crate and are ready to release a new version, change the <span style="color:#273D56">version</span> value in your <i>Cargo.toml</i> and republish. Use the Semantic Versioning rules (semver.org) to decide on an appropriate next version number, based on the kinds of changes you’ve made. Then run <span style="color:#273D56">cargo publish</span> to upload the new version.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Deprecating versions from crates.io</h3>
+<p style="font-size:30px;line-height:1.45">Although you can’t remove previous versions of a crate, you can prevent any future projects from adding them as a new dependency. This is useful when a crate version is broken for one reason or another. For such situations, Cargo supports <i>yanking</i> a crate version.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.7 (Yanking).</b></span> Preventing new projects from depending on a published crate version while allowing all existing projects that depend on it to continue. Essentially, all projects with a <i>Cargo.lock</i> will not break, and any future <i>Cargo.lock</i> files generated will not use the yanked version.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

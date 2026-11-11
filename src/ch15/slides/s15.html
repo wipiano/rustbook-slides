@@ -1,0 +1,25 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.1 Using Box&lt;T&gt; to Point to Data on the Heap</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A finite Cons, and why Box&lt;T&gt; is a smart pointer</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;justify-content:center">
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;padding:20px 24px;border:1.5px solid #20252B;background:#F3F5F7">
+<p style="font-size:26px;line-height:1.3">Cons</p>
+<div style="padding:10px 20px;border:1.5px solid #20252B;background:#F3F5F7"><p style="font-size:26px;line-height:1.3">i32</p></div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;padding:16px 24px;border:1.5px solid #20252B;background:#F3F5F7">
+<p style="font-size:26px;line-height:1.3">Box</p>
+<div style="padding:10px 20px;border:1.5px solid #20252B;background:#F3F5F7"><p style="font-size:26px;line-height:1.3">usize</p></div>
+</div>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.4;text-align:center"><span style="color:#273D56"><b>Figure 15.2:</b></span> A <span style="color:#273D56">List</span> that is not infinitely sized, because <span style="color:#273D56">Cons</span> holds a <span style="color:#273D56">Box</span> (its pointer is a <span style="color:#273D56">usize</span>-sized value)</p>
+<p style="font-size:30px;line-height:1.45">Boxes provide only the indirection and heap allocation; they have no other special capabilities, like those of the other smart pointer types — and none of the performance overhead those capabilities incur. So they are useful in cases like the cons list, where indirection is the only feature we need. Chapter 18 shows more use cases for boxes.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Box&lt;T&gt;</span> is a smart pointer because it implements the <span style="color:#273D56">Deref</span> trait, which allows <span style="color:#273D56">Box&lt;T&gt;</span> values to be treated like references. When a <span style="color:#273D56">Box&lt;T&gt;</span> goes out of scope, the heap data it points to is cleaned up as well, because of its <span style="color:#273D56">Drop</span> implementation. These two traits matter even more for the other smart pointers in this chapter.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

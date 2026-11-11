@@ -1,0 +1,32 @@
+<section id="s62" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.3 The Slice Type</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The problem: the index is not tied to the String</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We now have a way to find out the index of the end of the first word in the string, but there’s a problem. We’re returning a <span style="color:#273D56">usize</span> on its own, but it’s only a meaningful number in the context of the <span style="color:#273D56">&amp;String</span>.</p>
+<p style="font-size:30px;line-height:1.45">In other words, because it’s a separate value from the <span style="color:#273D56">String</span>, there’s no guarantee that it will still be valid in the future. Consider the program in Listing 4.8 that uses the <span style="color:#273D56">first_word</span> function from Listing 4.7.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 4.8:</b></span> Storing the result from calling the <span style="color:#273D56">first_word</span> function and then changing the <span style="color:#273D56">String</span> contents — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn first_word(s: &amp;String) -&gt; usize {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let bytes = s.as_bytes();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for (i, &amp;item) in bytes.iter().enumerate() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if item == b' ' {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return i;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s.len()</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">64</p>
+</div>
+</section>

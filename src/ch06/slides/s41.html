@@ -1,0 +1,29 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Work nested inside an if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.7:</b></span> Checking whether a state existed in 1900 by using conditionals nested inside an <span style="color:#273D56">if let</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn describe_state_quarter(coin: Coin) -&gt; Option&lt;String&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Coin::Quarter(state) = coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if state.existed_in(1900) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is pretty old, for America!"))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is relatively new."))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">That gets the job done, but it has pushed the work into the body of the <span style="color:#273D56">if let</span> statement; if the work is more complicated, it might be hard to follow exactly how the top-level branches relate. We could also take advantage of the fact that expressions produce a value — either to produce the <span style="color:#273D56">state</span> from the <span style="color:#273D56">if let</span> or to return early, as in Listing 6.8. (You could do something similar with a <span style="color:#273D56">match</span>, too.)</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

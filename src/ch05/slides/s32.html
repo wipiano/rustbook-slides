@@ -1,0 +1,20 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">More derivable traits; from function to method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Beyond Debug</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>Besides <span style="color:#273D56">Debug</span>, Rust provides a number of traits to use with the <span style="color:#273D56">derive</span> attribute that add useful behavior to custom types. They and their behaviors are listed in Appendix C.</li>
+<li>Chapter 10 covers implementing these traits with custom behavior, and creating your own traits.</li>
+<li>There are also many attributes other than <span style="color:#273D56">derive</span>: see the “Attributes” section of the Rust Reference.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Where the refactoring goes next</h3>
+<p style="font-size:30px;line-height:1.45">Our <span style="color:#273D56">area</span> function is very specific: it only computes the area of rectangles. It would help to tie this behavior more closely to our <span style="color:#273D56">Rectangle</span> struct, because it won’t work with any other type. So we continue refactoring by turning the <span style="color:#273D56">area</span> function into an <span style="color:#273D56">area</span> <i>method</i> defined on the <span style="color:#273D56">Rectangle</span> type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

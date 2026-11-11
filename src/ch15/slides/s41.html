@@ -1,0 +1,19 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.4 Rc&lt;T&gt;, the Reference-Counted Smart Pointer</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Multiple owners and reference counting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the majority of cases, ownership is clear: you know exactly which variable owns a given value. But a single value might have multiple owners. In graph data structures, for example, multiple edges might point to the same node, and that node is conceptually owned by all of the edges pointing to it; it shouldn’t be cleaned up unless no edges point to it, so it has no owners.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.10 (Rc&lt;T&gt;).</b></span> The type, short for <i>reference counting</i>, that enables multiple ownership explicitly. It keeps track of the number of references to a value to determine whether the value is still in use; with zero references, the value can be cleaned up without any references becoming invalid.</p>
+</div>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 15.11.</b> Imagine <span style="color:#273D56">Rc&lt;T&gt;</span> as a TV in a family room. When one person enters to watch TV, they turn it on. Others can come into the room and watch. When the last person leaves the room, they turn off the TV because it’s no longer being used. If someone turned it off while others were still watching, there would be an uproar from the remaining TV watchers!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.4 Rc&lt;T&gt;, the Reference-Counted Smart Pointer</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shared ownership, read-only</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">What we can’t see in this example: when <span style="color:#273D56">b</span> and then <span style="color:#273D56">a</span> go out of scope at the end of <span style="color:#273D56">main</span>, the count is 0, and the <span style="color:#273D56">Rc&lt;List&gt;</span> is cleaned up completely. <span style="color:#273D56">Rc&lt;T&gt;</span> allows a single value to have multiple owners, and the count ensures that the value remains valid as long as any of the owners still exist.</p>
+<p style="font-size:30px;line-height:1.45">Via immutable references, <span style="color:#273D56">Rc&lt;T&gt;</span> lets you share data between multiple parts of your program for reading only. If it allowed multiple mutable references too, you might violate one of the borrowing rules of Chapter 4: multiple mutable borrows to the same place can cause data races and inconsistencies.</p>
+<p style="font-size:30px;line-height:1.45">But being able to mutate data is very useful! The next section discusses the interior mutability pattern and the <span style="color:#273D56">RefCell&lt;T&gt;</span> type, which you can use together with an <span style="color:#273D56">Rc&lt;T&gt;</span> to work with this immutability restriction.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>

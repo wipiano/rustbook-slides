@@ -1,0 +1,31 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error: the trait bound String: Draw is not satisfied</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling gui v0.1.0 (file:///projects/gui)</p>
+<p style="white-space:nowrap">error[E0277]: the trait bound `String: Draw` is not satisfied</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:5:26</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;5 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;components: vec![Box::new(String::from("Hi"))],</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Draw` is not implemented for `String`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">help: the trait `Draw` is implemented for `Button`</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:23:1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">23 | impl Draw for Button {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;| ^^^^^^^^^^^^^^^^^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= note: required for the cast from `Box&lt;String&gt;` to `Box&lt;dyn Draw&gt;`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0277`.</p>
+<p style="white-space:nowrap">error: could not compile `gui` (bin "gui") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

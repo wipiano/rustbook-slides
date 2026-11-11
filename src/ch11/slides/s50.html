@@ -1,0 +1,28 @@
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Panic message vs expected substring</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">thread 'tests::greater_than_100' (6021675) panicked at src/lib.rs:12:13:</p>
+<p style="white-space:nowrap">Guess value must be greater than or equal to 1, got 200.</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+<p style="white-space:nowrap">note: panic did not contain expected string</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;panic message: "Guess value must be greater than or equal to 1, got 200."</p>
+<p style="white-space:nowrap">&#160;expected substring: "less than or equal to 100"</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">failures:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;tests::greater_than_100</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">error: test failed, to rerun pass `--lib`</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The failure message indicates that this test did indeed panic as we expected, but the panic message did not include the expected string <span style="color:#273D56">less than or equal to 100</span>. The panic message we did get was <span style="color:#273D56">Guess value must be greater than or equal to 1, got 200</span>. Now we can start figuring out where our bug is!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>

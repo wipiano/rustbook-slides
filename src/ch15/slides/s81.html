@@ -1,0 +1,37 @@
+<section id="s81" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A List whose tail can be changed</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.25:</b></span> A cons list definition that holds a <span style="color:#273D56">RefCell&lt;T&gt;</span> so that we can modify what a <span style="color:#273D56">Cons</span> variant is referring to — <i>src/main.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use crate::List::{Cons, Nil};</p>
+<p style="white-space:nowrap">use std::cell::RefCell;</p>
+<p style="white-space:nowrap">use std::rc::Rc;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">#[derive(Debug)]</p>
+<p style="white-space:nowrap">enum List {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Cons(i32, RefCell&lt;Rc&lt;List&gt;&gt;),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Nil,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl List {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn tail(&amp;self) -&gt; Option&lt;&amp;RefCell&lt;Rc&lt;List&gt;&gt;&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match self {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Cons(_, item) =&gt; Some(item),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Nil =&gt; None,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Another variation of the <span style="color:#273D56">List</span> definition from Listing 15.5: the second element in <span style="color:#273D56">Cons</span> is now <span style="color:#273D56">RefCell&lt;Rc&lt;List&gt;&gt;</span>. Instead of modifying the <span style="color:#273D56">i32</span> value as in Listing 15.24, we want to modify the <span style="color:#273D56">List</span> value a <span style="color:#273D56">Cons</span> variant is pointing to. The <span style="color:#273D56">tail</span> method makes it convenient to access the second item if we have a <span style="color:#273D56">Cons</span> variant.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">82</p>
+</div>
+</section>

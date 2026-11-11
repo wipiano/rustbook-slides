@@ -1,0 +1,20 @@
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Getting the T out of Some</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So how do you get the <span style="color:#273D56">T</span> value out of a <span style="color:#273D56">Some</span> variant when you have a value of type <span style="color:#273D56">Option&lt;T&gt;</span>, so that you can use that value?</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Option&lt;T&gt;</span> has a large number of methods that are useful in a variety of situations; check them out in its documentation (<span style="color:#273D56">std::option::Option</span>). Becoming familiar with them will be extremely useful in your journey with Rust.</li>
+<li>In general, to use an <span style="color:#273D56">Option&lt;T&gt;</span> value you want code that handles each variant: some code that runs only when you have a <span style="color:#273D56">Some(T)</span> value, and is allowed to use the inner <span style="color:#273D56">T</span>; and some other code that runs only if you have a <span style="color:#273D56">None</span> value, which has no <span style="color:#273D56">T</span> value available.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The <span style="color:#273D56">match</span> expression is a control flow construct that does just this when used with enums: it runs different code depending on which variant of the enum it has, and that code can use the data inside the matching value. It is the subject of Section 6.2.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>

@@ -1,0 +1,36 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining Post and creating a new instance</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We need a public <span style="color:#273D56">Post</span> struct that holds some content, plus an associated public <span style="color:#273D56">new</span> function to create an instance. We also make a private <span style="color:#273D56">State</span> trait defining the behavior all state objects for a <span style="color:#273D56">Post</span> must have.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Post</span> holds a trait object of <span style="color:#273D56">Box&lt;dyn State&gt;</span> inside an <span style="color:#273D56">Option&lt;T&gt;</span>, in a private field named <span style="color:#273D56">state</span>. Why the <span style="color:#273D56">Option&lt;T&gt;</span> is necessary becomes clear shortly.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.12:</b></span> Definition of a <span style="color:#273D56">Post</span> struct and a <span style="color:#273D56">new</span> function that creates a new <span style="color:#273D56">Post</span> instance, a <span style="color:#273D56">State</span> trait, and a <span style="color:#273D56">Draft</span> struct — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;state: Option&lt;Box&lt;dyn State&gt;&gt;,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;content: String,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn new() -&gt; Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;state: Some(Box::new(Draft {})),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;content: String::new(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

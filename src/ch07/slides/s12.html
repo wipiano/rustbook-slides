@@ -1,0 +1,21 @@
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Absolute and relative paths</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To show Rust where to find an item in a module tree, we use a path in the same way we use a path when navigating a filesystem. To call a function, we need to know its path. A path can take two forms:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.9 (Absolute path).</b></span> The full path starting from a crate root. For code from an external crate, the absolute path begins with the crate name; for code from the current crate, it starts with the literal <span style="color:#273D56">crate</span>.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.10 (Relative path).</b></span> A path that starts from the current module and uses <span style="color:#273D56">self</span>, <span style="color:#273D56">super</span>, or an identifier in the current module.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Both absolute and relative paths are followed by one or more identifiers separated by double colons (<span style="color:#273D56">::</span>).</p>
+<p style="font-size:30px;line-height:1.45">Returning to Listing 7.1: say we want to call the <span style="color:#273D56">add_to_waitlist</span> function. This is the same as asking: what’s the path of the <span style="color:#273D56">add_to_waitlist</span> function?</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>

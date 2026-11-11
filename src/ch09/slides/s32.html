@@ -1,0 +1,27 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0277: ? in a function that returns ()</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code opens a file, which might fail. The <span style="color:#273D56">?</span> operator follows the <span style="color:#273D56">Result</span> value returned by <span style="color:#273D56">File::open</span>, but this <span style="color:#273D56">main</span> function has the return type <span style="color:#273D56">()</span>, not <span style="color:#273D56">Result</span>. Compiling it gives this error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling error-handling v0.1.0 (file:///projects/error-handling)</p>
+<p style="white-space:nowrap">error[E0277]: the `?` operator can only be used in a function that returns `Result` or `Option`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;(or another type that implements `FromResidual`)</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:4:48</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 | fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;| --------- this function should return `Result` or `Option` to accept `?`</p>
+<p style="white-space:nowrap">4 |&#160;&#160;&#160;&#160;&#160;let greeting_file = File::open("hello.txt")?;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ cannot use the `?` operator in a function</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;that returns `()`</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">help: consider adding return type</p>
+</div></div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

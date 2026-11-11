@@ -1,0 +1,25 @@
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">An exercise; then storing the threads</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you’re feeling ambitious, try to write a function named <span style="color:#273D56">build</span> with the following signature to compare with the <span style="color:#273D56">new</span> function:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn build(size: usize) -&gt; Result&lt;ThreadPool, PoolCreationError&gt; {</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Creating space to store the threads</h3>
+<p style="font-size:30px;line-height:1.45">Now that we know we have a valid number of threads, we can create them and store them in the <span style="color:#273D56">ThreadPool</span> struct before returning it. But how do we “store” a thread? Take another look at the <span style="color:#273D56">thread::spawn</span> signature:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn spawn&lt;F, T&gt;(f: F) -&gt; JoinHandle&lt;T&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;where</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;F: FnOnce() -&gt; T,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;F: Send + 'static,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;T: Send + 'static,</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>

@@ -1,0 +1,22 @@
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shadowing guess and trimming the input</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.14 (Shadowing).</b></span> Declaring a new variable with the name of an existing one, so that the new value shadows the previous one. It lets us reuse the <span style="color:#273D56">guess</span> variable name rather than forcing us to create two unique variables, such as <span style="color:#273D56">guess_str</span> and <span style="color:#273D56">guess</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Chapter 3 covers shadowing in more detail; for now, know that it is often used when you want to convert a value from one type to another type.</p>
+<p style="font-size:30px;line-height:1.45">We bind the new variable to the expression <span style="color:#273D56">guess.trim().parse()</span>. The <span style="color:#273D56">guess</span> in the expression refers to the original <span style="color:#273D56">guess</span> variable that contained the input as a string.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">trim</span> method on a <span style="color:#273D56">String</span> instance eliminates any whitespace at the beginning and end. We must do this before converting the string to a <span style="color:#273D56">u32</span>, which can only contain numerical data.</li>
+<li>The user must press enter to satisfy <span style="color:#273D56">read_line</span> and input their guess, which adds a newline character to the string. Typing 5 and pressing enter makes <span style="color:#273D56">guess</span> look like <span style="color:#273D56">5\n</span>, where <span style="color:#273D56">\n</span> represents “newline.” (On Windows, enter results in a carriage return and a newline, <span style="color:#273D56">\r\n</span>.)</li>
+<li><span style="color:#273D56">trim</span> eliminates <span style="color:#273D56">\n</span> or <span style="color:#273D56">\r\n</span>, resulting in just <span style="color:#273D56">5</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>

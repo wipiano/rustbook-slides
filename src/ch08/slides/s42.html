@@ -1,0 +1,21 @@
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">References as values; updating a hash map</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If we insert references to values into the hash map, the values won’t be moved into the hash map. The values that the references point to must be valid for at least as long as the hash map is valid (more in “Validating References with Lifetimes”, Chapter 10).</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Updating a hash map</h3>
+<p style="font-size:30px;line-height:1.45">Although the number of key and value pairs is growable, each unique key can only have one value associated with it at a time. Not vice versa: both the Blue team and the Yellow team could have the value <span style="color:#273D56">10</span> stored in the <span style="color:#273D56">scores</span> hash map.</p>
+<p style="font-size:30px;line-height:1.45">To change the data, you must decide how to handle the case when a key already has a value assigned. You could:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>replace the old value with the new value, completely disregarding the old value;</li>
+<li>keep the old value and ignore the new one, only adding the new value if the key <i>doesn’t</i> already have a value;</li>
+<li>combine the old value and the new value.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>

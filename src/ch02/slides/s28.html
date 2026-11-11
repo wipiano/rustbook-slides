@@ -1,0 +1,18 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The cmp method and the match expression</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Five new lines at the bottom use the <span style="color:#273D56">Ordering</span> type. The <span style="color:#273D56">cmp</span> method compares two values and can be called on anything that can be compared. It takes a reference to whatever you want to compare with: here, it compares <span style="color:#273D56">guess</span> to <span style="color:#273D56">secret_number</span>. It returns a variant of the <span style="color:#273D56">Ordering</span> enum we brought into scope with the <span style="color:#273D56">use</span> statement.</p>
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">match</span> expression decides what to do next based on which variant of <span style="color:#273D56">Ordering</span> was returned from the call to <span style="color:#273D56">cmp</span> with the values in <span style="color:#273D56">guess</span> and <span style="color:#273D56">secret_number</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.11 (Arm).</b></span> One branch of a <span style="color:#273D56">match</span> expression. An arm consists of a <i>pattern</i> to match against, and the code that should be run if the value given to <span style="color:#273D56">match</span> fits that arm’s pattern.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust takes the value given to <span style="color:#273D56">match</span> and looks through each arm’s pattern in turn. Patterns and the <span style="color:#273D56">match</span> construct are powerful Rust features: they let you express a variety of situations your code might encounter, and they make sure you handle them all. They are covered in detail in Chapter 6 and Chapter 19, respectively.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.2 Controlling How Tests Are Run</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running tests in parallel: no shared state</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When you run multiple tests, by default they run in parallel using threads, meaning they finish running more quickly and you get feedback sooner.</p>
+<p style="font-size:30px;line-height:1.45">Because the tests are running at the same time, you must make sure your tests don’t depend on each other or on any shared state, including a shared environment, such as the current working directory or environment variables.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 11.8.</b> Each of your tests runs some code that creates a file on disk named <i>test-output.txt</i> and writes some data to it. Then each test reads the data in that file and asserts that the file contains a particular value, which is different in each test. Because the tests run at the same time, one test might overwrite the file between when another test writes and reads it. The second test will then fail — not because the code is incorrect, but because the tests interfered with each other while running in parallel.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">One solution is to make sure each test writes to a different file; another solution is to run the tests one at a time.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

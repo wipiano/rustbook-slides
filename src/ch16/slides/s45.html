@@ -1,0 +1,21 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">MutexGuard releases the lock automatically</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The call to <span style="color:#273D56">lock</span> returns a type called <span style="color:#273D56">MutexGuard</span>, wrapped in a <span style="color:#273D56">LockResult</span> that Listing 16.12 handles with the call to <span style="color:#273D56">unwrap</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.15 (MutexGuard).</b></span> The smart pointer returned by <span style="color:#273D56">lock</span>. It implements <span style="color:#273D56">Deref</span> to point at the inner data, and has a <span style="color:#273D56">Drop</span> implementation that releases the lock automatically when the <span style="color:#273D56">MutexGuard</span> goes out of scope.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>In Listing 16.12 the guard goes out of scope at the end of the inner scope, so the lock is released there.</li>
+<li>As a result, we don’t risk forgetting to release the lock and blocking the mutex from being used by other threads, because the lock release happens automatically.</li>
+<li>After dropping the lock, we can print the mutex value and see that we were able to change the inner <span style="color:#273D56">i32</span> to <span style="color:#273D56">6</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

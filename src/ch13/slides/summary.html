@@ -1,0 +1,21 @@
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Closures and iterators are Rust features inspired by functional programming language ideas. They contribute to Rust’s capability to clearly express high-level ideas at low-level performance. The implementations of closures and iterators are such that runtime performance is not affected. This is part of Rust’s goal to strive to provide zero-cost abstractions.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Closures capture their environment by immutable borrow, mutable borrow, or move (forced with <span style="color:#273D56">move</span>), and implement <span style="color:#273D56">FnOnce</span>, <span style="color:#273D56">FnMut</span> and <span style="color:#273D56">Fn</span> according to what their body does.</li>
+<li>Iterators are lazy: adapters such as <span style="color:#273D56">map</span> and <span style="color:#273D56">filter</span> do nothing until a consuming adapter such as <span style="color:#273D56">sum</span> or <span style="color:#273D56">collect</span> uses them up.</li>
+<li>In <span style="color:#273D56">minigrep</span>, taking an iterator removed the <span style="color:#273D56">clone</span> calls, and <span style="color:#273D56">filter</span> replaced the mutable <span style="color:#273D56">results</span> vector.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Now that the expressiveness of the I/O project has improved, the next chapter looks at some more features of <span style="color:#273D56">cargo</span> that will help us share the project with the world.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">66</p>
+</div>
+</section>

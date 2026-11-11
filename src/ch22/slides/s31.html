@@ -1,0 +1,19 @@
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Copy for duplicating values cheaply</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Copy</span> trait lets you duplicate a value by only copying bits stored on the stack; no arbitrary code is necessary. (More on <span style="color:#273D56">Copy</span>: “Stack-Only Data: Copy”, Chapter 4.)</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Copy</span> doesn’t define any methods, to prevent programmers from overloading those methods and violating the assumption that no arbitrary code is being run. That way, all programmers can assume that copying a value will be very fast.</p>
+<p style="font-size:30px;line-height:1.45">You can derive <span style="color:#273D56">Copy</span> on any type whose parts all implement <span style="color:#273D56">Copy</span>. A type that implements <span style="color:#273D56">Copy</span> must also implement <span style="color:#273D56">Clone</span>, because a <span style="color:#273D56">Copy</span> type has a trivial implementation of <span style="color:#273D56">Clone</span> that performs the same task as <span style="color:#273D56">Copy</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Rarely required:</b> types that implement <span style="color:#273D56">Copy</span> have optimizations available, meaning you don’t have to call <span style="color:#273D56">clone</span>, which makes the code more concise.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Everything possible with <span style="color:#273D56">Copy</span> you can also accomplish with <span style="color:#273D56">Clone</span>, but the code might be slower or have to use <span style="color:#273D56">clone</span> in places.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>

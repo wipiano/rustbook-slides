@@ -1,0 +1,40 @@
+<section id="s64" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implementing the execute method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Finally, <span style="color:#273D56">execute</span>. We also change <span style="color:#273D56">Job</span> from a struct to a type alias for a trait object that holds the type of closure <span style="color:#273D56">execute</span> receives. As in “Type Synonyms and Type Aliases” (Chapter 20), type aliases make long types shorter for ease of use.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 21.19:</b></span> Creating a <span style="color:#273D56">Job</span> type alias for a <span style="color:#273D56">Box</span> that holds each closure and then sending the job down the channel — <i>src/lib.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">type Job = Box&lt;dyn FnOnce() + Send + 'static&gt;;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl ThreadPool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn execute&lt;F&gt;(&amp;self, f: F)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;where</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;F: FnOnce() + Send + 'static,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;{</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let job = Box::new(f);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.sender.send(job).unwrap();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">// --snip--</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">65</p>
+</div>
+</section>

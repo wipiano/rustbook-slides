@@ -1,0 +1,23 @@
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.3 Running Code on Cleanup with the Drop Trait</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Drop runs automatically, in reverse order</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In <span style="color:#273D56">main</span>, we create two instances of <span style="color:#273D56">CustomSmartPointer</span> and print <span style="color:#273D56">CustomSmartPointers created</span>. At the end of <span style="color:#273D56">main</span> the instances go out of scope, and Rust calls the code in <span style="color:#273D56">drop</span>, printing our final messages — we didn’t need to call <span style="color:#273D56">drop</span> explicitly. Running the program prints:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling drop-example v0.1.0 (file:///projects/drop-example)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.60s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/drop-example`</p>
+<p style="white-space:nowrap">CustomSmartPointers created</p>
+<p style="white-space:nowrap">Dropping CustomSmartPointer with data `other stuff`!</p>
+<p style="white-space:nowrap">Dropping CustomSmartPointer with data `my stuff`!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust automatically called <span style="color:#273D56">drop</span> when our instances went out of scope. Variables are dropped in the reverse order of their creation, so <span style="color:#273D56">d</span> was dropped before <span style="color:#273D56">c</span>. The print message is only a visual guide to how <span style="color:#273D56">drop</span> works; usually you would specify the cleanup code your type needs to run.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>

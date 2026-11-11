@@ -1,0 +1,19 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why Rust does not offer inheritance</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust has chosen a different set of trade-offs by not offering inheritance. Inheritance has these risks:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>It is often at risk of sharing more code than necessary. Subclasses shouldn’t always share all characteristics of their parent class but will do so with inheritance, which can make a program’s design less flexible.</li>
+<li>It introduces the possibility of calling methods on subclasses that don’t make sense or that cause errors because the methods don’t apply to the subclass.</li>
+<li>Some languages only allow <i>single inheritance</i> (a subclass can inherit from only one class), further restricting the flexibility of a program’s design.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">For these reasons, Rust takes the different approach of using <i>trait objects</i> instead of inheritance to achieve polymorphism at runtime. The next section looks at how trait objects work.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

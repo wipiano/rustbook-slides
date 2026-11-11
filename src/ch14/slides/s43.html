@@ -1,0 +1,18 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.4 Installing Binaries with cargo install</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing binaries with cargo install</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">cargo install</span> command lets you install and use binary crates locally. It isn’t intended to replace system packages; it’s a convenient way for Rust developers to install tools that others have shared on crates.io. You can only install packages that have binary targets.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.10 (Binary target).</b></span> The runnable program created if the crate has a <i>src/main.rs</i> file or another file specified as a binary — as opposed to a <i>library target</i>, which isn’t runnable on its own but is suitable for including within other programs.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Usually, a crate’s README file says whether the crate is a library, has a binary target, or both.</p>
+<p style="font-size:30px;line-height:1.45">All binaries installed with <span style="color:#273D56">cargo install</span> are stored in the installation root’s <i>bin</i> folder. If you installed Rust using <i>rustup.rs</i> and have no custom configurations, this directory is <i>$HOME/.cargo/bin</i>. Ensure that this directory is in your <span style="color:#273D56">$PATH</span> to be able to run programs you’ve installed with <span style="color:#273D56">cargo install</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

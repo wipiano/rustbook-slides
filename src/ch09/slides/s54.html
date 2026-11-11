@@ -1,0 +1,19 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Guess::new enforces the contract</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We implement an associated function named <span style="color:#273D56">new</span> on <span style="color:#273D56">Guess</span> that creates instances of <span style="color:#273D56">Guess</span> values. It has one parameter named <span style="color:#273D56">value</span> of type <span style="color:#273D56">i32</span> and returns a <span style="color:#273D56">Guess</span>.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The body of <span style="color:#273D56">new</span> tests <span style="color:#273D56">value</span> to make sure it’s between 1 and 100.</li>
+<li>If <span style="color:#273D56">value</span> doesn’t pass this test, we make a <span style="color:#273D56">panic!</span> call. It alerts the programmer writing the calling code that they have a bug to fix, because creating a <span style="color:#273D56">Guess</span> with a <span style="color:#273D56">value</span> outside this range would violate the contract that <span style="color:#273D56">Guess::new</span> is relying on.</li>
+<li>The conditions in which <span style="color:#273D56">Guess::new</span> might panic should be discussed in its public-facing API documentation; Chapter 14 covers documentation conventions indicating the possibility of a <span style="color:#273D56">panic!</span>.</li>
+<li>If <span style="color:#273D56">value</span> does pass the test, we create a new <span style="color:#273D56">Guess</span> with its <span style="color:#273D56">value</span> field set to the <span style="color:#273D56">value</span> parameter and return the <span style="color:#273D56">Guess</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

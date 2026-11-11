@@ -1,0 +1,35 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.2 Processing a Series of Items with Iterators</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Calling next directly consumes the iterator</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We can call <span style="color:#273D56">next</span> on iterators directly. Listing 13.12 shows the values returned from repeated calls to <span style="color:#273D56">next</span> on the iterator created from the vector.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">v1_iter</span> must be mutable: calling <span style="color:#273D56">next</span> changes internal state that the iterator uses to keep track of where it is in the sequence. In other words, this code <i>consumes</i>, or uses up, the iterator; each call to <span style="color:#273D56">next</span> eats up an item. With a <span style="color:#273D56">for</span> loop, <span style="color:#273D56">v1_iter</span> didn’t need to be mutable, because the loop took ownership of it and made it mutable behind the scenes.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 13.12:</b></span> Calling the <span style="color:#273D56">next</span> method on an iterator — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[cfg(test)]</p>
+<p style="white-space:nowrap">mod tests {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;#[test]</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn iterator_demonstration() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let v1 = vec![1, 2, 3];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let mut v1_iter = v1.iter();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assert_eq!(v1_iter.next(), Some(&amp;1));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assert_eq!(v1_iter.next(), Some(&amp;2));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assert_eq!(v1_iter.next(), Some(&amp;3));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assert_eq!(v1_iter.next(), None);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

@@ -1,0 +1,21 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.1 What Is Ownership?</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The stack and the heap: the stack</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Many programming languages don’t require you to think about the stack and the heap very often. But in a systems programming language like Rust, whether a value is on the stack or the heap affects how the language behaves and why you have to make certain decisions. Parts of ownership are described in relation to the stack and the heap later in this chapter, so here is a brief explanation in preparation.</p>
+<p style="font-size:30px;line-height:1.45">Both the stack and the heap are parts of memory available to your code to use at runtime, but they are structured in different ways.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 4.2 (Stack).</b></span> Memory that stores values in the order it gets them and removes them in the opposite order: <i>last in, first out (LIFO)</i>. Adding data is called <i>pushing onto the stack</i>; removing data is <i>popping off the stack</i>.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Think of a stack of plates: you put new plates on top of the pile and take a plate off the top. Adding or removing plates from the middle or bottom wouldn’t work as well!</li>
+<li>All data stored on the stack must have a known, fixed size. Data with an unknown size at compile time, or a size that might change, must be stored on the heap instead.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

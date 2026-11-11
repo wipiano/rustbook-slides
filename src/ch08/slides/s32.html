@@ -1,0 +1,16 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">No O(1) indexing; be specific with slices</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust provides different ways of interpreting the raw string data that computers store, so that each program can choose the interpretation it needs, no matter what human language the data is in.</p>
+<p style="font-size:30px;line-height:1.45">A final reason Rust doesn’t allow indexing into a <span style="color:#273D56">String</span> to get a character: indexing operations are expected to always take constant time (O(1)). That performance can’t be guaranteed with a <span style="color:#273D56">String</span>, because Rust would have to walk through the contents from the beginning to the index to determine how many valid characters there were.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Slicing strings</h3>
+<p style="font-size:30px;line-height:1.45">Indexing into a string is often a bad idea because it’s not clear what the return type of the string-indexing operation should be: a byte value, a character, a grapheme cluster, or a string slice. If you really need to use indices to create string slices, therefore, Rust asks you to be more specific: rather than indexing using <span style="color:#273D56">[]</span> with a single number, use <span style="color:#273D56">[]</span> with a range to create a string slice containing particular bytes.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

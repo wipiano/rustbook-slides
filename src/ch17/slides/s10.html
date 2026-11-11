@@ -1,0 +1,21 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.1 Futures and the Async Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Futures, async and await</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The key elements of asynchronous programming in Rust are <i>futures</i> and Rust’s <span style="color:#273D56">async</span> and <span style="color:#273D56">await</span> keywords.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.8 (Future).</b></span> A value that may not be ready now but will become ready at some point in the future. (Other languages have the same concept, sometimes called a <i>task</i> or a <i>promise</i>.) In Rust, futures are types that implement the <span style="color:#273D56">Future</span> trait.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust provides the <span style="color:#273D56">Future</span> trait as a building block so that different async operations can be implemented with different data structures but with a common interface. Each future holds its own information about the progress that has been made and what “ready” means.</p>
+<p style="font-size:30px;line-height:1.45">You can apply the <span style="color:#273D56">async</span> keyword to blocks and functions to specify that they can be interrupted and resumed. Within an async block or async function, you can use the <span style="color:#273D56">await</span> keyword to <i>await a future</i> (that is, wait for it to become ready). Any point where you await a future within an async block or function is a potential spot for that block or function to pause and resume.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.9 (Polling).</b></span> The process of checking with a future to see if its value is available yet.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

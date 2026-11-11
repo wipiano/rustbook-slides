@@ -1,0 +1,18 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Change 1: the return type Result&lt;(), Box&lt;dyn Error&gt;&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 12.12 makes three significant changes. First, we changed the return type of <span style="color:#273D56">run</span> to <span style="color:#273D56">Result&lt;(), Box&lt;dyn Error&gt;&gt;</span>. The function previously returned the unit type, <span style="color:#273D56">()</span>, and we keep that as the value returned in the <span style="color:#273D56">Ok</span> case.</p>
+<p style="font-size:30px;line-height:1.45">For the error type we used the trait object <span style="color:#273D56">Box&lt;dyn Error&gt;</span>, and brought <span style="color:#273D56">std::error::Error</span> into scope with a <span style="color:#273D56">use</span> statement at the top.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 12.5 (Trait object Box&lt;dyn Error&gt;).</b></span> A return type meaning that the function returns some type that implements the <span style="color:#273D56">Error</span> trait, without our having to specify which particular type the return value will be. The <span style="color:#273D56">dyn</span> keyword is short for <i>dynamic</i>. Trait objects are covered in Chapter 18.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This gives us flexibility to return error values that may be of different types in different error cases.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

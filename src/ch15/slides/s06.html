@@ -1,0 +1,20 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.1 Using Box&lt;T&gt; to Point to Data on the Heap</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Enabling recursive types with boxes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.3 (Recursive type).</b></span> A type whose values can have another value of the same type as part of themselves.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Recursive types pose an issue because Rust needs to know at compile time how much space a type takes up, yet the nesting of values could theoretically continue infinitely. Because boxes have a known size, we can enable recursive types by inserting a box in the recursive type definition.</p>
+<p style="font-size:30px;line-height:1.45">The example is the <i>cons list</i>, a data type commonly found in functional programming languages. It is straightforward except for the recursion, so its concepts carry over to more complex recursive types.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.4 (Cons list).</b></span> A data structure from the Lisp programming language and its dialects, made up of nested pairs: the Lisp version of a linked list. Its name comes from Lisp’s <span style="color:#273D56">cons</span> function (short for <i>construct function</i>), which constructs a new pair from its two arguments. Calling <span style="color:#273D56">cons</span> on a pair of a value and another pair builds cons lists of recursive pairs.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

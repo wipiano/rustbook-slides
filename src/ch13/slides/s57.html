@@ -1,0 +1,19 @@
+<section id="s57" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.3 Improving Our I/O Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the new Config::build reads its arguments</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The first value in the return value of <span style="color:#273D56">env::args</span> is the name of the program. We want to ignore it, so we first call <span style="color:#273D56">next</span> and do nothing with the return value.</li>
+<li>Then we call <span style="color:#273D56">next</span> to get the value for the <span style="color:#273D56">query</span> field of <span style="color:#273D56">Config</span>. If <span style="color:#273D56">next</span> returns <span style="color:#273D56">Some</span>, a <span style="color:#273D56">match</span> extracts the value. If it returns <span style="color:#273D56">None</span>, not enough arguments were given, and we return early with an <span style="color:#273D56">Err</span> value.</li>
+<li>We do the same thing for the <span style="color:#273D56">file_path</span> value.</li>
+</ol>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Clarifying code with iterator adapters</h3>
+<p style="font-size:30px;line-height:1.45">We can also take advantage of iterators in the <span style="color:#273D56">search</span> function of the I/O project, reproduced in Listing 13.21 as it was in Listing 12.19.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">58</p>
+</div>
+</section>

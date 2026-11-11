@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.6 — Enums and Pattern Matching · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.6 — Enums and Pattern Matching</h1><nav><a href="ch05.html">← Ch.5</a><a href="ch07.html">Ch.7 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 6</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Enums and Pattern Matching</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">This chapter looks at enumerations, also referred to as <i>enums</i>. Enums allow you to define a type by enumerating its possible variants. First we define and use an enum to show how an enum can encode meaning along with data. Next we explore a particularly useful enum, <span style="color:#273D56">Option</span>, which expresses that a value can be either something or nothing. Then we see how pattern matching in the <span style="color:#273D56">match</span> expression makes it easy to run different code for different values of an enum. Finally, we cover how the <span style="color:#273D56">if let</span> construct is another convenient and concise idiom for handling enums in your code.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>6.1 Defining an Enum</li>
+<li>6.2 The <span style="color:#273D56">match</span> Control Flow Construct</li>
+<li>6.3 Concise Control Flow with <span style="color:#273D56">if let</span> and <span style="color:#273D56">let...else</span></li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Enums: a value is one of a set of possible values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Where structs give you a way of grouping together related fields and data, like a <span style="color:#273D56">Rectangle</span> with its <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span>, enums give you a way of saying a value is one of a possible set of values. For example, we may want to say that <span style="color:#273D56">Rectangle</span> is one of a set of possible shapes that also includes <span style="color:#273D56">Circle</span> and <span style="color:#273D56">Triangle</span>. Rust lets us encode these possibilities as an enum.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.1 (Enum).</b></span> An <i>enumeration</i>: a type defined by enumerating its possible variants. A value of the enum is exactly one of those variants.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Why are enums more appropriate than structs in some cases? Say we need to work with IP addresses. Two major standards are currently used: version four and version six. Because these are the only possibilities our program will come across, we can <i>enumerate</i> all possible variants — which is where enumeration gets its name.</p>
+<p style="font-size:30px;line-height:1.45">Any IP address can be either a version four or a version six address, but not both at the same time. That property makes the enum data structure appropriate, because an enum value can only be one of its variants. Both kinds are still fundamentally IP addresses, so they should be treated as the same type when the code handles situations that apply to any kind of IP address.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining the IpAddrKind enum</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can express this concept in code by defining an <span style="color:#273D56">IpAddrKind</span> enumeration and listing the possible kinds an IP address can be, <span style="color:#273D56">V4</span> and <span style="color:#273D56">V6</span>. These are the variants of the enum:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum IpAddrKind {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.2 (Variant).</b></span> One of the possible values listed in an enum definition, here <span style="color:#273D56">V4</span> and <span style="color:#273D56">V6</span>. Variants are written inside the enum’s curly brackets, separated by commas.</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">IpAddrKind</span> is now a custom data type that we can use elsewhere in our code.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Enum values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can create instances of each of the two variants of <span style="color:#273D56">IpAddrKind</span> like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let four = IpAddrKind::V4;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let six = IpAddrKind::V6;</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The variants of the enum are namespaced under its identifier, and we use a double colon <span style="color:#273D56">::</span> to separate the two. This is useful because now both values <span style="color:#273D56">IpAddrKind::V4</span> and <span style="color:#273D56">IpAddrKind::V6</span> are of the same type: <span style="color:#273D56">IpAddrKind</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">We can then, for instance, define a function that takes any <span style="color:#273D56">IpAddrKind</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn route(ip_kind: IpAddrKind) {}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">And we can call this function with either variant:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;route(IpAddrKind::V4);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;route(IpAddrKind::V6);</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Storing the address data: a struct attempt</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using enums has even more advantages. At the moment we have no way to store the actual IP address <i>data</i>; we only know what <i>kind</i> it is. Having just learned about structs in Chapter 5, you might be tempted to tackle this problem with structs, as in Listing 6.1.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.1:</b></span> Storing the data and <span style="color:#273D56">IpAddrKind</span> variant of an IP address using a <span style="color:#273D56">struct</span></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum IpAddrKind {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;kind: IpAddrKind,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;address: String,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let home = IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;kind: IpAddrKind::V4,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;address: String::from("127.0.0.1"),</p>
+<p style="white-space:nowrap">};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let loopback = IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;kind: IpAddrKind::V6,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;address: String::from("::1"),</p>
+<p style="white-space:nowrap">};</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Putting data directly into enum variants</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Listing 6.1 the struct <span style="color:#273D56">IpAddr</span> has two fields: <span style="color:#273D56">kind</span>, of type <span style="color:#273D56">IpAddrKind</span> (the enum defined previously), and <span style="color:#273D56">address</span>, of type <span style="color:#273D56">String</span>. The instance <span style="color:#273D56">home</span> has <span style="color:#273D56">IpAddrKind::V4</span> as its <span style="color:#273D56">kind</span> with associated address data <span style="color:#273D56">127.0.0.1</span>; <span style="color:#273D56">loopback</span> has the other variant, <span style="color:#273D56">V6</span>, with address <span style="color:#273D56">::1</span>. The struct bundles the <span style="color:#273D56">kind</span> and <span style="color:#273D56">address</span> values together, so the variant is now associated with the value.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">However, representing the same concept using just an enum is more concise: rather than an enum inside a struct, we can put data directly into each enum variant. This new definition of the <span style="color:#273D56">IpAddr</span> enum says that both <span style="color:#273D56">V4</span> and <span style="color:#273D56">V6</span> variants have associated <span style="color:#273D56">String</span> values.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4(String),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6(String),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let home = IpAddr::V4(String::from("127.0.0.1"));</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let loopback = IpAddr::V6(String::from("::1"));</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Variant constructors, and different data per variant</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We attach data to each variant of the enum directly, so there is no need for an extra struct. It is also easier to see another detail of how enums work: the name of each variant we define also becomes a function that constructs an instance of the enum.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.3 (Variant constructor).</b></span> The function each variant name becomes. <span style="color:#273D56">IpAddr::V4()</span> is a function call that takes a <span style="color:#273D56">String</span> argument and returns an instance of the <span style="color:#273D56">IpAddr</span> type. We get it automatically as a result of defining the enum.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another advantage over a struct: each variant can have different types and amounts of associated data. Version four addresses always have four numeric components with values between 0 and 255. To store <span style="color:#273D56">V4</span> addresses as four <span style="color:#273D56">u8</span> values but still express <span style="color:#273D56">V6</span> addresses as one <span style="color:#273D56">String</span>, a struct would not do. Enums handle this case with ease:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4(u8, u8, u8, u8),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6(String),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let home = IpAddr::V4(127, 0, 0, 1);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let loopback = IpAddr::V6(String::from("::1"));</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the standard library defines IpAddr</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Wanting to store IP addresses and encode which kind they are is so common that the standard library has a definition we can use (<span style="color:#273D56">std::net::IpAddr</span>). It has the exact enum and variants we defined and used, but it embeds the address data inside the variants in the form of two different structs, defined differently for each variant:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Ipv4Addr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct Ipv6Addr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">enum IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4(Ipv4Addr),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6(Ipv6Addr),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You can put any kind of data inside an enum variant: strings, numeric types, or structs, for example. You can even include another enum! Also, standard library types are often not much more complicated than what you might come up with.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Even though the standard library contains a definition for <span style="color:#273D56">IpAddr</span>, we can still create and use our own definition without conflict, because we haven’t brought the standard library’s definition into our scope. Bringing types into scope is covered in Chapter 7.</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Message enum: varied data in each variant</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 6.2 shows another enum, with a wide variety of types embedded in its variants.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.2:</b></span> A <span style="color:#273D56">Message</span> enum whose variants each store different amounts and types of values</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quit,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Move { x: i32, y: i32 },</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Write(String),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;ChangeColor(i32, i32, i32),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">This enum has four variants with different types:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Quit</span>: has no data associated with it at all</li>
+<li><span style="color:#273D56">Move</span>: has named fields, like a struct does</li>
+<li><span style="color:#273D56">Write</span>: includes a single <span style="color:#273D56">String</span></li>
+<li><span style="color:#273D56">ChangeColor</span>: includes three <span style="color:#273D56">i32</span> values</li>
+</ul>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Defining an enum with variants such as these is similar to defining different kinds of struct definitions, except the enum doesn’t use the <span style="color:#273D56">struct</span> keyword and all the variants are grouped together under the <span style="color:#273D56">Message</span> type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">One enum versus several structs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The following structs could hold the same data that the variants of the <span style="color:#273D56">Message</span> enum hold:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct QuitMessage; // unit struct</p>
+<p style="white-space:nowrap">struct MoveMessage {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">struct WriteMessage(String); // tuple struct</p>
+<p style="white-space:nowrap">struct ChangeColorMessage(i32, i32, i32); // tuple struct</p>
+</div>
+<p style="font-size:30px;line-height:1.45">But if we used the different structs, each of which has its own type, we couldn’t as easily define a function to take any of these kinds of messages as we could with the <span style="color:#273D56">Message</span> enum defined in Listing 6.2, which is a single type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining methods on enums with impl</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There is one more similarity between enums and structs: just as we can define methods on structs using <span style="color:#273D56">impl</span>, we can also define methods on enums. Here is a method named <span style="color:#273D56">call</span> that we could define on our <span style="color:#273D56">Message</span> enum:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;impl Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn call(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// method body would be defined here</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let m = Message::Write(String::from("hello"));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;m.call();</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The body of the method would use <span style="color:#273D56">self</span> to get the value that we called the method on. Here we created a variable <span style="color:#273D56">m</span> that has the value <span style="color:#273D56">Message::Write(String::from("hello"))</span>, and that is what <span style="color:#273D56">self</span> will be in the body of the <span style="color:#273D56">call</span> method when <span style="color:#273D56">m.call()</span> runs.</p></div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Option enum: something or nothing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another very common and useful enum defined by the standard library is <span style="color:#273D56">Option</span>; this case study explores it. The <span style="color:#273D56">Option</span> type encodes the very common scenario in which a value could be something, or it could be nothing.</p>
+<p style="font-size:30px;line-height:1.45">For example, if you request the first item in a non-empty list, you get a value; if you request the first item in an empty list, you get nothing. Expressing this concept in terms of the type system means the compiler can check whether you’ve handled all the cases you should be handling — which can prevent bugs that are extremely common in other programming languages.</p>
+<p style="font-size:30px;line-height:1.45">Programming language design is often thought of in terms of which features you include, but the features you exclude are important too. Rust doesn’t have the null feature that many other languages have.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.4 (Null).</b></span> A value that means there is no value there. In languages with null, variables can always be in one of two states: null or not-null.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The billion-dollar mistake</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In his 2009 presentation “Null References: The Billion Dollar Mistake,” Tony Hoare, the inventor of null, had this to say:</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>I call it my billion-dollar mistake. At that time, I was designing the first comprehensive type system for references in an object-oriented language. My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.</i></p>
+</div>
+<p style="font-size:30px;line-height:1.45">The problem with null values is that if you try to use a null value as a not-null value, you’ll get an error of some kind. Because this null or not-null property is pervasive, it’s extremely easy to make this kind of error.</p>
+<p style="font-size:30px;line-height:1.45">However, the concept that null is trying to express is still a useful one: a null is a value that is currently invalid or absent for some reason. The problem isn’t really with the concept but with the particular implementation.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Option&lt;T&gt;: Rust’s replacement for null</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust does not have nulls, but it does have an enum that can encode the concept of a value being present or absent. This enum is <span style="color:#273D56">Option&lt;T&gt;</span>, and the standard library defines it as follows:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Option&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;None,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Some(T),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.5 (Option&lt;T&gt;).</b></span> The standard library enum whose variant <span style="color:#273D56">Some(T)</span> holds a present value of type <span style="color:#273D56">T</span> and whose variant <span style="color:#273D56">None</span> means the value is absent.</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Option&lt;T&gt;</span> is so useful that it’s even included in the prelude; you don’t need to bring it into scope explicitly. Its variants are also included in the prelude: you can use <span style="color:#273D56">Some</span> and <span style="color:#273D56">None</span> directly without the <span style="color:#273D56">Option::</span> prefix. It is still just a regular enum, and <span style="color:#273D56">Some(T)</span> and <span style="color:#273D56">None</span> are still variants of type <span style="color:#273D56">Option&lt;T&gt;</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The &lt;T&gt; type parameter and type inference</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">&lt;T&gt;</span> syntax is a <i>generic type parameter</i>, covered in Chapter 10. For now, all you need to know is that <span style="color:#273D56">&lt;T&gt;</span> means the <span style="color:#273D56">Some</span> variant of the <span style="color:#273D56">Option</span> enum can hold one piece of data of any type, and that each concrete type used in place of <span style="color:#273D56">T</span> makes the overall <span style="color:#273D56">Option&lt;T&gt;</span> type a different type. Some examples of <span style="color:#273D56">Option</span> values holding number types and char types:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let some_number = Some(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let some_char = Some('e');</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let absent_number: Option&lt;i32&gt; = None;</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The type of <span style="color:#273D56">some_number</span> is <span style="color:#273D56">Option&lt;i32&gt;</span>. The type of <span style="color:#273D56">some_char</span> is <span style="color:#273D56">Option&lt;char&gt;</span>, a different type. Rust can infer these types because we’ve specified a value inside the <span style="color:#273D56">Some</span> variant. For <span style="color:#273D56">absent_number</span>, Rust requires us to annotate the overall <span style="color:#273D56">Option</span> type: the compiler can’t infer the type that the corresponding <span style="color:#273D56">Some</span> variant will hold by looking only at a <span style="color:#273D56">None</span> value. Here we tell Rust that <span style="color:#273D56">absent_number</span> is of type <span style="color:#273D56">Option&lt;i32&gt;</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why Option&lt;T&gt; is better than null</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When we have a <span style="color:#273D56">Some</span> value, we know that a value is present, and the value is held within the <span style="color:#273D56">Some</span>. When we have a <span style="color:#273D56">None</span> value, in some sense it means the same thing as null: we don’t have a valid value. So why is having <span style="color:#273D56">Option&lt;T&gt;</span> any better than having null?</p>
+<p style="font-size:30px;line-height:1.45">In short, because <span style="color:#273D56">Option&lt;T&gt;</span> and <span style="color:#273D56">T</span> (where <span style="color:#273D56">T</span> can be any type) are different types, the compiler won’t let us use an <span style="color:#273D56">Option&lt;T&gt;</span> value as if it were definitely a valid value. For example, this code won’t compile, because it tries to add an <span style="color:#273D56">i8</span> to an <span style="color:#273D56">Option&lt;i8&gt;</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x: i8 = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y: Option&lt;i8&gt; = Some(5);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let sum = x + y;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If we run this code, we get the error message shown on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0277: cannot add Option&lt;i8&gt; to i8</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running the code gives an error message like this one (the notes listing other <span style="color:#273D56">Add</span> implementations are elided):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling enums v0.1.0 (file:///projects/enums)</p>
+<p style="white-space:nowrap">error[E0277]: cannot add `Option&lt;i8&gt;` to `i8`</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:5:17</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">5 |&#160;&#160;&#160;&#160;&#160;let sum = x + y;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ no implementation for `i8 + Option&lt;i8&gt;`</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= help: the trait `Add&lt;Option&lt;i8&gt;&gt;` is not implemented for `i8`</p>
+<p style="white-space:nowrap">help: the following other types implement trait `Add&lt;Rhs&gt;`</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">&#160;&#160;= note: this error originates in the macro `add_impl` (in Nightly builds,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;run with -Z macro-backtrace for more info)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0277`.</p>
+<p style="white-space:nowrap">error: could not compile `enums` (bin "enums") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What the error means: opting in to “maybe absent”</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Intense! In effect, this error message means that Rust doesn’t understand how to add an <span style="color:#273D56">i8</span> and an <span style="color:#273D56">Option&lt;i8&gt;</span>, because they’re different types. When we have a value of a type like <span style="color:#273D56">i8</span>, the compiler ensures that we always have a valid value. We can proceed confidently without having to check for null before using that value. Only when we have an <span style="color:#273D56">Option&lt;i8&gt;</span> (or whatever type of value we’re working with) do we have to worry about possibly not having a value — and the compiler makes sure we handle that case before using the value.</p>
+<p style="font-size:30px;line-height:1.45">In other words, you have to convert an <span style="color:#273D56">Option&lt;T&gt;</span> to a <span style="color:#273D56">T</span> before you can perform <span style="color:#273D56">T</span> operations with it. Generally, this helps catch one of the most common issues with null: assuming that something isn’t null when it actually is.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Eliminating the risk of incorrectly assuming a not-null value helps you be more confident in your code.</li>
+<li>To have a value that can possibly be null, you must explicitly opt in by making its type <span style="color:#273D56">Option&lt;T&gt;</span>; when you use that value, you are required to explicitly handle the case when the value is null.</li>
+<li>Everywhere a value has a type that isn’t an <span style="color:#273D56">Option&lt;T&gt;</span>, you <i>can</i> safely assume that the value isn’t null — a deliberate design decision to limit null’s pervasiveness and increase the safety of Rust code.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Getting the T out of Some</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So how do you get the <span style="color:#273D56">T</span> value out of a <span style="color:#273D56">Some</span> variant when you have a value of type <span style="color:#273D56">Option&lt;T&gt;</span>, so that you can use that value?</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Option&lt;T&gt;</span> has a large number of methods that are useful in a variety of situations; check them out in its documentation (<span style="color:#273D56">std::option::Option</span>). Becoming familiar with them will be extremely useful in your journey with Rust.</li>
+<li>In general, to use an <span style="color:#273D56">Option&lt;T&gt;</span> value you want code that handles each variant: some code that runs only when you have a <span style="color:#273D56">Some(T)</span> value, and is allowed to use the inner <span style="color:#273D56">T</span>; and some other code that runs only if you have a <span style="color:#273D56">None</span> value, which has no <span style="color:#273D56">T</span> value available.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The <span style="color:#273D56">match</span> expression is a control flow construct that does just this when used with enums: it runs different code depending on which variant of the enum it has, and that code can use the data inside the matching value. It is the subject of Section 6.2.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">match: comparing a value against patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.6 (match).</b></span> An extremely powerful control flow construct that compares a value against a series of patterns and then executes code based on which pattern matches.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Patterns can be made up of literal values, variable names, wildcards, and many other things; Chapter 19 covers all the different kinds of patterns and what they do. The power of <span style="color:#273D56">match</span> comes from the expressiveness of the patterns and the fact that the compiler confirms that all possible cases are handled.</p>
+<p style="font-size:30px;line-height:1.45">Think of a <span style="color:#273D56">match</span> expression as being like a coin-sorting machine: coins slide down a track with variously sized holes along it, and each coin falls through the first hole it encounters that it fits into. In the same way, values go through each pattern in a <span style="color:#273D56">match</span>, and at the first pattern the value “fits,” the value falls into the associated code block to be used during execution.</p>
+<p style="font-size:30px;line-height:1.45">Speaking of coins, let’s use them as an example! We can write a function that takes an unknown US coin and, in a similar way as the counting machine, determines which coin it is and returns its value in cents, as shown in Listing 6.3.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Sorting coins with match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.3:</b></span> An enum and a <span style="color:#273D56">match</span> expression that has the variants of the enum as its patterns</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Penny,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Nickel,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Dime,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quarter,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn value_in_cents(coin: Coin) -&gt; u8 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Penny =&gt; 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Nickel =&gt; 5,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Dime =&gt; 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Quarter =&gt; 25,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s break down the <span style="color:#273D56">match</span> in <span style="color:#273D56">value_in_cents</span>. First we list the <span style="color:#273D56">match</span> keyword followed by an expression, which in this case is the value <span style="color:#273D56">coin</span>.</p>
+<p style="font-size:30px;line-height:1.45">This seems very similar to a conditional expression used with <span style="color:#273D56">if</span>, but there’s a big difference: with <span style="color:#273D56">if</span>, the condition needs to evaluate to a Boolean value, but here it can be any type. The type of <span style="color:#273D56">coin</span> in this example is the <span style="color:#273D56">Coin</span> enum that we defined on the first line.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Match arms and how a match executes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.7 (Match arm).</b></span> One branch of a <span style="color:#273D56">match</span>, with two parts: a pattern and some code, separated by the <span style="color:#273D56">=&gt;</span> operator. Each arm is separated from the next with a comma.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In Listing 6.3 the first arm has a pattern that is the value <span style="color:#273D56">Coin::Penny</span>, then the <span style="color:#273D56">=&gt;</span> operator that separates the pattern and the code to run. The code in this case is just the value <span style="color:#273D56">1</span>.</p>
+<p style="font-size:30px;line-height:1.45">When the <span style="color:#273D56">match</span> expression executes, it compares the resultant value against the pattern of each arm, in order. If a pattern matches the value, the code associated with that pattern is executed. If that pattern doesn’t match the value, execution continues to the next arm, much as in a coin-sorting machine. We can have as many arms as we need: in Listing 6.3, our <span style="color:#273D56">match</span> has four arms.</p>
+<p style="font-size:30px;line-height:1.45">The code associated with each arm is an expression, and the resultant value of the expression in the matching arm is the value that gets returned for the entire <span style="color:#273D56">match</span> expression.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Multiple lines of code in a match arm</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We don’t typically use curly brackets if the match arm code is short, as it is in Listing 6.3, where each arm just returns a value.</p>
+<p style="font-size:30px;line-height:1.45">If you want to run multiple lines of code in a match arm, you must use curly brackets, and the comma following the arm is then optional.</p>
+<p style="font-size:30px;line-height:1.45">For example, this code prints “Lucky penny!” every time the method is called with a <span style="color:#273D56">Coin::Penny</span>, but it still returns the last value of the block, <span style="color:#273D56">1</span>.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn value_in_cents(coin: Coin) -&gt; u8 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Penny =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Lucky penny!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Nickel =&gt; 5,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Dime =&gt; 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Quarter =&gt; 25,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Patterns that bind to values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another useful feature of match arms is that they can bind to the parts of the values that match the pattern. This is how we can extract values out of enum variants.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.25;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.4:</b></span> A <span style="color:#273D56">Coin</span> enum in which the <span style="color:#273D56">Quarter</span> variant also holds a <span style="color:#273D56">UsState</span> value</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)] // so we can inspect the state in a minute</p>
+<p style="white-space:nowrap">enum UsState {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Alabama,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Alaska,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">enum Coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Penny,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Nickel,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Dime,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quarter(UsState),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As an example, let’s change one of our enum variants to hold data inside it. From 1999 through 2008, the United States minted quarters with different designs for each of the 50 states on one side. No other coins got state designs, so only quarters have this extra value. We add this information to our <span style="color:#273D56">enum</span> by changing the <span style="color:#273D56">Quarter</span> variant to include a <span style="color:#273D56">UsState</span> value stored inside it.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Binding the state inside Coin::Quarter</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn value_in_cents(coin: Coin) -&gt; u8 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Penny =&gt; 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Nickel =&gt; 5,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Dime =&gt; 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Quarter(state) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("State quarter from {state:?}!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;25</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Imagine a friend is trying to collect all 50 state quarters. While we sort our loose change by coin type, we also call out the name of the state associated with each quarter, so that if it’s one our friend doesn’t have, they can add it to their collection.</p>
+<p style="font-size:30px;line-height:1.45">In the match expression, we add a variable called <span style="color:#273D56">state</span> to the pattern that matches values of the variant <span style="color:#273D56">Coin::Quarter</span>. When a <span style="color:#273D56">Coin::Quarter</span> matches, the <span style="color:#273D56">state</span> variable binds to the value of that quarter’s state. Then we can use <span style="color:#273D56">state</span> in the code for that arm.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Tracing a binding: an Alaska quarter</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The program calls <span style="color:#273D56">value_in_cents</span> with a quarter from Alaska:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;value_in_cents(Coin::Quarter(UsState::Alaska));</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ol style="font-size:30px;line-height:1.45">
+<li>If we call <span style="color:#273D56">value_in_cents(Coin::Quarter(UsState::Alaska))</span>, <span style="color:#273D56">coin</span> would be <span style="color:#273D56">Coin::Quarter(UsState::Alaska)</span>.</li>
+<li>When we compare that value with each of the match arms, none of them match until we reach <span style="color:#273D56">Coin::Quarter(state)</span>.</li>
+<li>At that point, the binding for <span style="color:#273D56">state</span> will be the value <span style="color:#273D56">UsState::Alaska</span>.</li>
+<li>We can then use that binding in the <span style="color:#273D56">println!</span> expression, thus getting the inner state value out of the <span style="color:#273D56">Coin</span> enum variant for <span style="color:#273D56">Quarter</span>.</li>
+</ol>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 6.8.</b> Because <span style="color:#273D56">UsState</span> derives <span style="color:#273D56">Debug</span>, the <span style="color:#273D56">{state:?}</span> placeholder prints the variant name: this call prints <span style="color:#273D56">State quarter from Alaska!</span> and returns <span style="color:#273D56">25</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Option&lt;T&gt; match pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Earlier we wanted to get the inner <span style="color:#273D56">T</span> value out of the <span style="color:#273D56">Some</span> case when using <span style="color:#273D56">Option&lt;T&gt;</span>. We can handle <span style="color:#273D56">Option&lt;T&gt;</span> using <span style="color:#273D56">match</span>, as we did with the <span style="color:#273D56">Coin</span> enum! Instead of comparing coins, we compare the variants of <span style="color:#273D56">Option&lt;T&gt;</span>, but the way the <span style="color:#273D56">match</span> expression works remains the same.</p>
+<p style="font-size:30px;line-height:1.45">Say we want a function that takes an <span style="color:#273D56">Option&lt;i32&gt;</span> and, if there’s a value inside, adds 1 to that value. If there isn’t a value inside, the function should return the <span style="color:#273D56">None</span> value and not attempt to perform any operations. Thanks to <span style="color:#273D56">match</span>, this is very easy to write.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.5:</b></span> A function that uses a <span style="color:#273D56">match</span> expression on an <span style="color:#273D56">Option&lt;i32&gt;</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn plus_one(x: Option&lt;i32&gt;) -&gt; Option&lt;i32&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; None,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(i) =&gt; Some(i + 1),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let five = Some(5);</p>
+<p style="white-space:nowrap">let six = plus_one(five);</p>
+<p style="white-space:nowrap">let none = plus_one(None);</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Tracing plus_one(five)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s examine the first execution of <span style="color:#273D56">plus_one</span> in more detail. When we call <span style="color:#273D56">plus_one(five)</span>, the variable <span style="color:#273D56">x</span> in the body of <span style="color:#273D56">plus_one</span> has the value <span style="color:#273D56">Some(5)</span>. We then compare that against each match arm, starting with the first:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; None,</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Some(5)</span> value doesn’t match the pattern <span style="color:#273D56">None</span>, so we continue to the next arm:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(i) =&gt; Some(i + 1),</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Does <span style="color:#273D56">Some(5)</span> match <span style="color:#273D56">Some(i)</span>? It does! We have the same variant. The <span style="color:#273D56">i</span> binds to the value contained in <span style="color:#273D56">Some</span>, so <span style="color:#273D56">i</span> takes the value <span style="color:#273D56">5</span>. The code in the match arm is then executed, so we add 1 to the value of <span style="color:#273D56">i</span> and create a new <span style="color:#273D56">Some</span> value with our total <span style="color:#273D56">6</span> inside.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Tracing plus_one(None)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now consider the second call of <span style="color:#273D56">plus_one</span> in Listing 6.5, where <span style="color:#273D56">x</span> is <span style="color:#273D56">None</span>. We enter the <span style="color:#273D56">match</span> and compare to the first arm:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; None,</p>
+</div>
+<p style="font-size:30px;line-height:1.45">It matches! There’s no value to add to, so the program stops and returns the <span style="color:#273D56">None</span> value on the right side of <span style="color:#273D56">=&gt;</span>. Because the first arm matched, no other arms are compared.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Combining <span style="color:#273D56">match</span> and enums is useful in many situations. You’ll see this pattern a lot in Rust code: <span style="color:#273D56">match</span> against an enum, bind a variable to the data inside, and then execute code based on it. It’s a bit tricky at first, but once you get used to it, you’ll wish you had it in all languages. It’s consistently a user favorite.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matches are exhaustive: a buggy plus_one</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There’s one other aspect of <span style="color:#273D56">match</span> we need to discuss: the arms’ patterns must cover all possibilities. Consider this version of our <span style="color:#273D56">plus_one</span> function, which has a bug and won’t compile:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn plus_one(x: Option&lt;i32&gt;) -&gt; Option&lt;i32&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(i) =&gt; Some(i + 1),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We didn’t handle the <span style="color:#273D56">None</span> case, so this code will cause a bug. Luckily, it’s a bug Rust knows how to catch. If we try to compile this code, we get the error shown on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0004: non-exhaustive patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling enums v0.1.0 (file:///projects/enums)</p>
+<p style="white-space:nowrap">error[E0004]: non-exhaustive patterns: `None` not covered</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:3:15</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ pattern `None` not covered</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">note: `Option&lt;i32&gt;` defined here</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">&#160;&#160;= note: the matched value is of type `Option&lt;i32&gt;`</p>
+<p style="white-space:nowrap">help: ensure that all possible cases are being handled by adding a match arm with a wildcard</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;pattern or an explicit pattern as shown</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">4 ~&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(i) =&gt; Some(i + 1),</p>
+<p style="white-space:nowrap">5 ~&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; todo!(),</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0004`.</p>
+<p style="white-space:nowrap">error: could not compile `enums` (bin "enums") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Exhaustiveness prevents the billion-dollar mistake</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust knows that we didn’t cover every possible case and even knows which pattern we forgot: the error points at <span style="color:#273D56">match x</span>, reports that pattern <span style="color:#273D56">None</span> is not covered, and suggests adding an arm such as <span style="color:#273D56">None =&gt; todo!()</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.9 (Exhaustive).</b></span> Matches in Rust are <i>exhaustive</i>: the arms must exhaust every last possibility in order for the code to be valid.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Especially in the case of <span style="color:#273D56">Option&lt;T&gt;</span>, when Rust prevents us from forgetting to explicitly handle the <span style="color:#273D56">None</span> case, it protects us from assuming that we have a value when we might have null — making the billion-dollar mistake discussed earlier impossible.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Catch-all patterns: a dice game</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using enums, we can also take special actions for a few particular values, but for all other values take one default action. Imagine a game where, if you roll a 3, your player doesn’t move but instead gets a fancy new hat. If you roll a 7, your player loses a fancy hat. For all other values, your player moves that number of spaces on the game board. Here is a <span style="color:#273D56">match</span> implementing that logic, with the dice roll hardcoded rather than random, and all other logic represented by functions without bodies, because implementing them is out of scope:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let dice_roll = 9;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match dice_roll {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3 =&gt; add_fancy_hat(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7 =&gt; remove_fancy_hat(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;other =&gt; move_player(other),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn add_fancy_hat() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn remove_fancy_hat() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn move_player(num_spaces: u8) {}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">For the first two arms, the patterns are the literal values <span style="color:#273D56">3</span> and <span style="color:#273D56">7</span>. For the last arm, which covers every other possible value, the pattern is the variable we’ve chosen to name <span style="color:#273D56">other</span>. The code that runs for the <span style="color:#273D56">other</span> arm uses the variable by passing it to the <span style="color:#273D56">move_player</span> function.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Catch-alls go last; the _ placeholder</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code compiles, even though we haven’t listed all the possible values a <span style="color:#273D56">u8</span> can have, because the last pattern matches all values not specifically listed. This catch-all pattern meets the requirement that <span style="color:#273D56">match</span> must be exhaustive.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> We have to put the catch-all arm last, because the patterns are evaluated in order. If we put the catch-all arm earlier, the other arms would never run, so Rust warns us if we add arms after a catch-all!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust also has a pattern we can use when we want a catch-all but don’t want to <i>use</i> the value in the catch-all pattern:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.10 (The _ pattern).</b></span> <span style="color:#273D56">_</span> is a special pattern that matches any value and does not bind to that value. It tells Rust we aren’t going to use the value, so Rust won’t warn us about an unused variable.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using _ when the value isn’t needed</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s change the rules of the game: now, if you roll anything other than a 3 or a 7, you must roll again. We no longer need to use the catch-all value, so we can change our code to use <span style="color:#273D56">_</span> instead of the variable named <span style="color:#273D56">other</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let dice_roll = 9;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match dice_roll {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3 =&gt; add_fancy_hat(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7 =&gt; remove_fancy_hat(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; reroll(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn add_fancy_hat() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn remove_fancy_hat() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn reroll() {}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This example also meets the exhaustiveness requirement, because we’re explicitly ignoring all other values in the last arm; we haven’t forgotten anything.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Doing nothing: the unit value in the _ arm</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let dice_roll = 9;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match dice_roll {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3 =&gt; add_fancy_hat(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7 =&gt; remove_fancy_hat(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; (),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn add_fancy_hat() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn remove_fancy_hat() {}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Finally, we change the rules one more time, so that nothing else happens on your turn if you roll anything other than a 3 or a 7. We express that by using the unit value (the empty tuple type from “The Tuple Type” in Chapter 3) as the code that goes with the <span style="color:#273D56">_</span> arm.</p>
+<p style="font-size:30px;line-height:1.45">Here we tell Rust explicitly that we aren’t going to use any other value that doesn’t match a pattern in an earlier arm, and we don’t want to run any code in this case.</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> There’s more about patterns and matching in Chapter 19. Next comes the <span style="color:#273D56">if let</span> syntax, which can be useful in situations where the <span style="color:#273D56">match</span> expression is a bit wordy.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A match that only cares about one variant</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">if let</span> syntax lets you combine <span style="color:#273D56">if</span> and <span style="color:#273D56">let</span> into a less verbose way to handle values that match one pattern while ignoring the rest. Consider the program in Listing 6.6, which matches on an <span style="color:#273D56">Option&lt;u8&gt;</span> value in the <span style="color:#273D56">config_max</span> variable but only wants to execute code if the value is the <span style="color:#273D56">Some</span> variant.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.6:</b></span> A <span style="color:#273D56">match</span> that only cares about executing code when the value is <span style="color:#273D56">Some</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let config_max = Some(3u8);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match config_max {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(max) =&gt; println!("The maximum is configured to be {max}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; (),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">If the value is <span style="color:#273D56">Some</span>, we print out the value in the <span style="color:#273D56">Some</span> variant by binding the value to the variable <span style="color:#273D56">max</span> in the pattern. We don’t want to do anything with the <span style="color:#273D56">None</span> value. To satisfy the <span style="color:#273D56">match</span> expression, we have to add <span style="color:#273D56">_ =&gt; ()</span> after processing just one variant, which is annoying boilerplate code to add.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The same logic with if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Instead, we could write this in a shorter way using <span style="color:#273D56">if let</span>. The following code behaves the same as the <span style="color:#273D56">match</span> in Listing 6.6:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let config_max = Some(3u8);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Some(max) = config_max {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("The maximum is configured to be {max}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.11 (if let).</b></span> A construct taking a pattern and an expression separated by an equal sign. It works the same way as a <span style="color:#273D56">match</span> where the expression is given to the <span style="color:#273D56">match</span> and the pattern is its first arm; its block runs only if the value matches the pattern.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Here the pattern is <span style="color:#273D56">Some(max)</span>, and <span style="color:#273D56">max</span> binds to the value inside the <span style="color:#273D56">Some</span>. We can then use <span style="color:#273D56">max</span> in the body of the <span style="color:#273D56">if let</span> block in the same way we used <span style="color:#273D56">max</span> in the corresponding <span style="color:#273D56">match</span> arm. The code in the <span style="color:#273D56">if let</span> block only runs if the value matches the pattern.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">match or if let? Conciseness versus exhaustiveness</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">if let</span> means less typing, less indentation, and less boilerplate code. However, you lose the exhaustive checking that <span style="color:#273D56">match</span> enforces to ensure that you aren’t forgetting to handle any cases. Choosing between <span style="color:#273D56">match</span> and <span style="color:#273D56">if let</span> depends on what you’re doing in your particular situation and whether gaining conciseness is an appropriate trade-off for losing exhaustive checking.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> In other words, you can think of <span style="color:#273D56">if let</span> as syntax sugar for a <span style="color:#273D56">match</span> that runs code when the value matches one pattern and then ignores all other values.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">if let with else</h3>
+<p style="font-size:30px;line-height:1.45">We can include an <span style="color:#273D56">else</span> with an <span style="color:#273D56">if let</span>. The block of code that goes with the <span style="color:#273D56">else</span> is the same as the block of code that would go with the <span style="color:#273D56">_</span> case in the <span style="color:#273D56">match</span> expression equivalent to the <span style="color:#273D56">if let</span> and <span style="color:#273D56">else</span>.</p>
+<p style="font-size:30px;line-height:1.45">Recall Listing 6.4, where the <span style="color:#273D56">Quarter</span> variant also held a <span style="color:#273D56">UsState</span> value. Suppose we want to count all non-quarter coins we see while also announcing the state of the quarters.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Counting non-quarters: match versus if let ... else</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">We could do that with a <span style="color:#273D56">match</span> expression, like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let coin = Coin::Penny;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut count = 0;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Quarter(state) =&gt; println!("State quarter from {state:?}!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; count += 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Or we could use an <span style="color:#273D56">if let</span> and <span style="color:#273D56">else</span> expression, like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let coin = Coin::Penny;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut count = 0;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Coin::Quarter(state) = coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("State quarter from {state:?}!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;count += 1;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Staying on the “happy path”: a UsState helper</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A common pattern is to perform some computation when a value is present and return a default value otherwise. Continuing with coins that hold a <span style="color:#273D56">UsState</span> value: if we wanted to say something funny depending on how old the state on the quarter was, we might introduce a method on <span style="color:#273D56">UsState</span> to check the age of a state, like so:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl UsState {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn existed_in(&amp;self, year: u16) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match self {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;UsState::Alabama =&gt; year &gt;= 1819,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;UsState::Alaska =&gt; year &gt;= 1959,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// -- snip --</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Then we might use <span style="color:#273D56">if let</span> to match on the type of coin, introducing a <span style="color:#273D56">state</span> variable within the body of the condition, as in Listing 6.7.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Work nested inside an if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.7:</b></span> Checking whether a state existed in 1900 by using conditionals nested inside an <span style="color:#273D56">if let</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn describe_state_quarter(coin: Coin) -&gt; Option&lt;String&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Coin::Quarter(state) = coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if state.existed_in(1900) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is pretty old, for America!"))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is relatively new."))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">That gets the job done, but it has pushed the work into the body of the <span style="color:#273D56">if let</span> statement; if the work is more complicated, it might be hard to follow exactly how the top-level branches relate. We could also take advantage of the fact that expressions produce a value — either to produce the <span style="color:#273D56">state</span> from the <span style="color:#273D56">if let</span> or to return early, as in Listing 6.8. (You could do something similar with a <span style="color:#273D56">match</span>, too.)</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Producing a value or returning early with if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.8:</b></span> Using <span style="color:#273D56">if let</span> to produce a value or return early</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn describe_state_quarter(coin: Coin) -&gt; Option&lt;String&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let state = if let Coin::Quarter(state) = coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;state</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return None;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if state.existed_in(1900) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is pretty old, for America!"))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is relatively new."))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This is a bit annoying to follow in its own way, though! One branch of the <span style="color:#273D56">if let</span> produces a value, and the other one returns from the function entirely.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">let...else: bind in the outer scope or leave</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To make this common pattern nicer to express, Rust has <span style="color:#273D56">let...else</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.12 (let...else).</b></span> A statement that takes a pattern on the left side and an expression on the right, very similar to <span style="color:#273D56">if let</span>, but with no <span style="color:#273D56">if</span> branch, only an <span style="color:#273D56">else</span> branch. If the pattern matches, it binds the value from the pattern in the outer scope. If the pattern does <i>not</i> match, the program flows into the <span style="color:#273D56">else</span> arm, which must return from the function.</p>
+</div>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 6.1:</b></span> The three ways of matching seen in this chapter</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:24%">Construct</th><th style="width:38%">When the pattern matches</th><th style="width:38%">When it does not match</th></tr>
+<tr><td>match</td><td>Runs the matching arm</td><td>Tries the next arm; every case must be covered</td></tr>
+<tr><td>if let</td><td>Runs the block; bindings live inside it</td><td>Runs the else block, if any</td></tr>
+<tr><td>let...else</td><td>Binds in the outer scope; code continues</td><td>Runs else, which must return</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Listing 6.9, on the next slide, shows how Listing 6.8 looks when using <span style="color:#273D56">let...else</span> in place of <span style="color:#273D56">if let</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">describe_state_quarter with let...else</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.9:</b></span> Using <span style="color:#273D56">let...else</span> to clarify the flow through the function</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn describe_state_quarter(coin: Coin) -&gt; Option&lt;String&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Coin::Quarter(state) = coin else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return None;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if state.existed_in(1900) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is pretty old, for America!"))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(format!("{state:?} is relatively new."))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Notice that it stays on the “happy path” in the main body of the function this way, without having significantly different control flow for two branches the way the <span style="color:#273D56">if let</span> did.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If your program has logic that is too verbose to express using a <span style="color:#273D56">match</span>, remember that <span style="color:#273D56">if let</span> and <span style="color:#273D56">let...else</span> are in your Rust toolbox as well.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In this chapter we covered:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>how to use enums to create custom types that can be one of a set of enumerated values;</li>
+<li>how the standard library’s <span style="color:#273D56">Option&lt;T&gt;</span> type helps you use the type system to prevent errors;</li>
+<li>when enum values have data inside them, how to use <span style="color:#273D56">match</span> or <span style="color:#273D56">if let</span> to extract and use those values, depending on how many cases you need to handle.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Your Rust programs can now express concepts in your domain using structs and enums. Creating custom types to use in your API ensures type safety: the compiler will make certain your functions only get values of the type each function expects.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 7 turns to Rust’s modules, in order to provide a well-organized API to your users that is straightforward to use and only exposes exactly what your users will need.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

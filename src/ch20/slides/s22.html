@@ -1,0 +1,22 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Constants versus static variables</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A subtle difference between constants and immutable static variables is that values in a static variable have a fixed address in memory: using the value will always access the same data. Constants, on the other hand, are allowed to duplicate their data whenever they’re used. Another difference is that static variables can be mutable — and accessing and modifying mutable static variables is <i>unsafe</i>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 20.1:</b></span> Constants and static variables compared</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:28%">Property</th><th style="width:36%">Constant (const)</th><th style="width:36%">Static variable (static)</th></tr>
+<tr><td>Memory address</td><td>Data may be duplicated wherever it’s used</td><td>Fixed address; always the same data</td></tr>
+<tr><td>Mutability</td><td>Never mutable</td><td>Can be mutable (static mut)</td></tr>
+<tr><td>Accessing</td><td>Safe</td><td>Immutable: safe; mutable: unsafe</td></tr>
+<tr><td>Naming</td><td>SCREAMING_SNAKE_CASE</td><td>SCREAMING_SNAKE_CASE</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Listing 20.11 (next slide) declares, accesses, and modifies a mutable static variable named <span style="color:#273D56">COUNTER</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

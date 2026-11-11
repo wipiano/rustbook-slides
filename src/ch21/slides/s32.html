@@ -1,0 +1,18 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Improving throughput with a thread pool</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 21.11 (Thread pool).</b></span> A group of spawned threads that are ready and waiting to handle a task. When the program receives a new task, it assigns one of the threads in the pool to it, and that thread processes the task. The remaining threads are available for any other tasks that come in meanwhile. When a thread finishes its task, it returns to the pool of idle threads, ready for a new task.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">A thread pool lets you process connections concurrently, increasing the throughput of your server.</p>
+<p style="font-size:30px;line-height:1.45">We limit the number of threads in the pool to a small number to protect against DoS attacks. If the program created a new thread for each request, someone making 10 million requests could wreak havoc by using up all our server’s resources and grinding the processing of requests to a halt.</p>
+<p style="font-size:30px;line-height:1.45">So, rather than spawning unlimited threads, a fixed number of threads wait in the pool. Incoming requests are sent to the pool, which maintains a queue of them. Each thread pops a request off this queue, handles it, then asks the queue for another. We can process up to <i>N</i> requests concurrently, where <i>N</i> is the number of threads. If every thread is responding to a long-running request, later requests can still back up in the queue — but we’ve increased how many long-running requests we can handle before reaching that point.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

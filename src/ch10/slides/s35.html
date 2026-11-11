@@ -1,0 +1,30 @@
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">impl Summary for NewsArticle</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 10.13 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Summary for NewsArticle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn summarize(&amp;self) -&gt; String {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;format!("{}, by {} ({})", self.headline, self.author, self.location)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub struct SocialPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub username: String,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub content: String,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub reply: bool,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub repost: bool,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Implementing a trait on a type is similar to implementing regular methods. The difference is that after <span style="color:#273D56">impl</span>, we put the trait name we want to implement, then the <span style="color:#273D56">for</span> keyword, and then the name of the type we want to implement the trait for.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>

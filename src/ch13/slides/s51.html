@@ -1,0 +1,15 @@
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.3 Improving Our I/O Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why clone was needed, and the plan</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We needed <span style="color:#273D56">clone</span> because the parameter <span style="color:#273D56">args</span> is a slice with <span style="color:#273D56">String</span> elements, but the <span style="color:#273D56">build</span> function doesn’t own <span style="color:#273D56">args</span>. To return ownership of a <span style="color:#273D56">Config</span> instance, we had to clone the values for the <span style="color:#273D56">query</span> and <span style="color:#273D56">file_path</span> fields so that the <span style="color:#273D56">Config</span> instance can own its values.</p>
+<p style="font-size:30px;line-height:1.45">Now <span style="color:#273D56">build</span> can take ownership of an iterator as its argument instead of borrowing a slice. We’ll use the iterator functionality instead of the code that checks the length of the slice and indexes into specific locations. This clarifies what <span style="color:#273D56">Config::build</span> is doing, because the iterator will access the values.</p>
+<p style="font-size:30px;line-height:1.45">Once <span style="color:#273D56">Config::build</span> takes ownership of the iterator and stops using indexing operations that borrow, we can move the <span style="color:#273D56">String</span> values from the iterator into <span style="color:#273D56">Config</span> rather than calling <span style="color:#273D56">clone</span> and making a new allocation.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Examples, prototype code, and tests</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Examples</h3>
+<p style="font-size:30px;line-height:1.45">When you’re writing an example to illustrate some concept, also including robust error-handling code can make the example less clear. In examples, it’s understood that a call to a method like <span style="color:#273D56">unwrap</span> that could panic is meant as a placeholder for the way you’d want your application to handle errors, which can differ based on what the rest of your code is doing.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Prototypes</h3>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">unwrap</span> and <span style="color:#273D56">expect</span> methods are very handy when you’re prototyping and not yet ready to decide how to handle errors. They leave clear markers in your code for when you’re ready to make your program more robust.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Tests</h3>
+<p style="font-size:30px;line-height:1.45">If a method call fails in a test, you’d want the whole test to fail, even if that method isn’t the functionality under test. Because <span style="color:#273D56">panic!</span> is how a test is marked as a failure, calling <span style="color:#273D56">unwrap</span> or <span style="color:#273D56">expect</span> is exactly what should happen.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

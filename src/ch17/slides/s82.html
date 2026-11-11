@@ -1,0 +1,24 @@
+<section id="s82" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Output, poll, and the Poll type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First, <span style="color:#273D56">Future</span>’s associated type <span style="color:#273D56">Output</span> says what the future resolves to — analogous to the <span style="color:#273D56">Item</span> associated type of the <span style="color:#273D56">Iterator</span> trait. Second, <span style="color:#273D56">Future</span> has the <span style="color:#273D56">poll</span> method, which takes a special <span style="color:#273D56">Pin</span> reference for its <span style="color:#273D56">self</span> parameter and a mutable reference to a <span style="color:#273D56">Context</span> type, and returns a <span style="color:#273D56">Poll&lt;Self::Output&gt;</span>. (<span style="color:#273D56">Pin</span> and <span style="color:#273D56">Context</span> come in a moment.) For now, focus on the return type, <span style="color:#273D56">Poll</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub enum Poll&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ready(T),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Pending,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Poll</span> is similar to an <span style="color:#273D56">Option</span>: one variant has a value, <span style="color:#273D56">Ready(T)</span>, and one does not, <span style="color:#273D56">Pending</span>. But <span style="color:#273D56">Poll</span> means something quite different from <span style="color:#273D56">Option</span>!</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Pending</span>: the future still has work to do, so the caller will need to check again later.</li>
+<li><span style="color:#273D56">Ready</span>: the <span style="color:#273D56">Future</span> has finished its work and the <span style="color:#273D56">T</span> value is available.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">83</p>
+</div>
+</section>

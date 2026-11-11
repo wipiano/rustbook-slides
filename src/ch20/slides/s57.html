@@ -1,0 +1,32 @@
+<section id="s57" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A Wrapper around Vec&lt;String&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.24:</b></span> Creating a <span style="color:#273D56">Wrapper</span> type around <span style="color:#273D56">Vec&lt;String&gt;</span> to implement <span style="color:#273D56">Display</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fmt;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct Wrapper(Vec&lt;String&gt;);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl fmt::Display for Wrapper {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;write!(f, "[{}]", self.0.join(", "))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let w = Wrapper(vec![String::from("hello"), String::from("world")]);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("w = {w}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Display</span> uses <span style="color:#273D56">self.0</span> to reach the inner <span style="color:#273D56">Vec&lt;T&gt;</span>: <span style="color:#273D56">Wrapper</span> is a tuple struct and <span style="color:#273D56">Vec&lt;T&gt;</span> is the item at index 0. Then we can use <span style="color:#273D56">Display</span>’s functionality on <span style="color:#273D56">Wrapper</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">58</p>
+</div>
+</section>

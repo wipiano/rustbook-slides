@@ -1,0 +1,22 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.1 Accepting Command Line Arguments</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Bringing std::env into scope, and invalid Unicode</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First, we bring the <span style="color:#273D56">std::env</span> module into scope with a <span style="color:#273D56">use</span> statement so that we can use its <span style="color:#273D56">args</span> function. Notice that <span style="color:#273D56">std::env::args</span> is nested in two levels of modules.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>As discussed in Chapter 7, when the desired function is nested in more than one module, we’ve chosen to bring the <i>parent module</i> into scope rather than the function.</li>
+<li>By doing so, we can easily use other functions from <span style="color:#273D56">std::env</span>.</li>
+<li>It’s also less ambiguous than adding <span style="color:#273D56">use std::env::args</span> and then calling the function with just <span style="color:#273D56">args</span>, because <span style="color:#273D56">args</span> might easily be mistaken for a function that’s defined in the current module.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The args function and invalid Unicode</h3>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> <span style="color:#273D56">std::env::args</span> will panic if any argument contains invalid Unicode. If your program needs to accept arguments containing invalid Unicode, use <span style="color:#273D56">std::env::args_os</span> instead: it returns an iterator that produces <span style="color:#273D56">OsString</span> values instead of <span style="color:#273D56">String</span> values. The book uses <span style="color:#273D56">std::env::args</span> for simplicity, because <span style="color:#273D56">OsString</span> values differ per platform and are more complex to work with than <span style="color:#273D56">String</span> values.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

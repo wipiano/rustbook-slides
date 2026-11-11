@@ -1,0 +1,19 @@
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The slow request blocks everyone</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>We switched from <span style="color:#273D56">if</span> to <span style="color:#273D56">match</span> now that there are three cases. We must explicitly match on a slice of <span style="color:#273D56">request_line</span> to pattern-match against the string literal values: <span style="color:#273D56">match</span> doesn’t do automatic referencing and dereferencing, like the equality method does.</li>
+<li>The first arm is the same as the <span style="color:#273D56">if</span> block from Listing 21.9. The second arm matches a request to <i>/sleep</i>: the server sleeps for five seconds before rendering the successful HTML page. The third arm is the same as the <span style="color:#273D56">else</span> block from Listing 21.9.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">You can see how primitive our server is: real libraries would handle the recognition of multiple requests in a much less verbose way!</p>
+<p style="font-size:30px;line-height:1.45">Start the server with <span style="color:#273D56">cargo run</span> and open two browser windows: one for <i>http://127.0.0.1:7878</i>, the other for <i>http://127.0.0.1:7878/sleep</i>. Entering the <i>/</i> URI a few times, it responds quickly. But if you enter <i>/sleep</i> and then load <i>/</i>, <i>/</i> waits until <span style="color:#273D56">sleep</span> has slept its full five seconds before loading.</p>
+<p style="font-size:30px;line-height:1.45">There are multiple techniques to avoid requests backing up behind a slow request, including async as in Chapter 17; the one we’ll implement is a thread pool.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Walking through Listing 9.6</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The body starts by calling <span style="color:#273D56">File::open</span>, then handles the <span style="color:#273D56">Result</span> with a <span style="color:#273D56">match</span> similar to the one in Listing 9.4. If <span style="color:#273D56">File::open</span> succeeds, the file handle in the pattern variable <span style="color:#273D56">file</span> becomes the value in the mutable variable <span style="color:#273D56">username_file</span>, and the function continues.</li>
+<li>In the <span style="color:#273D56">Err</span> case, instead of calling <span style="color:#273D56">panic!</span>, we use the <span style="color:#273D56">return</span> keyword to return early out of the function entirely, passing the error value from <span style="color:#273D56">File::open</span> (now in the pattern variable <span style="color:#273D56">e</span>) back to the calling code as this function’s error value.</li>
+<li>With a file handle in <span style="color:#273D56">username_file</span>, the function creates a new <span style="color:#273D56">String</span> in <span style="color:#273D56">username</span> and calls <span style="color:#273D56">read_to_string</span> on the file handle to read the file’s contents into <span style="color:#273D56">username</span>.</li>
+<li><span style="color:#273D56">read_to_string</span> also returns a <span style="color:#273D56">Result</span>, because it might fail even though <span style="color:#273D56">File::open</span> succeeded — so another <span style="color:#273D56">match</span> handles it. On success, our function has succeeded and returns the username wrapped in an <span style="color:#273D56">Ok</span>. On failure, it returns the error value just as for <span style="color:#273D56">File::open</span>. No explicit <span style="color:#273D56">return</span> is needed, because this is the last expression in the function.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

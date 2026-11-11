@@ -1,0 +1,22 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.3 Hello, Cargo!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building for release, and Cargo’s conventions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Building for release</h3>
+<p style="font-size:30px;line-height:1.45">When the project is ready for release, <span style="color:#273D56">cargo build --release</span> compiles it with optimizations into <i>target/release</i> instead of <i>target/debug</i>. Optimizations make the code run faster but lengthen compile time. Hence two profiles: one for development, rebuilt quickly and often; one for the final program given to users, built once and run as fast as possible. When benchmarking running time, build with <span style="color:#273D56">--release</span> and benchmark the executable in <i>target/release</i>.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Leveraging Cargo’s conventions</h3>
+<p style="font-size:30px;line-height:1.45">For simple projects Cargo adds little over <span style="color:#273D56">rustc</span>, but it proves its worth once programs grow to multiple files or need a dependency. Even <i>hello_cargo</i> already uses the real tooling of a Rust career: to work on any existing project, check it out, enter its directory and build:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ git clone example.org/someproject</p>
+<p style="white-space:nowrap">$ cd someproject</p>
+<p style="white-space:nowrap">$ cargo build</p>
+</div>
+<p style="font-size:26px;line-height:1.45">More about Cargo: its documentation at doc.rust-lang.org/cargo.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

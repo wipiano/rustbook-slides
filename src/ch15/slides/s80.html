@@ -1,0 +1,18 @@
+<section id="s80" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Memory leaks are memory safe</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.17 (Memory leak).</b></span> Memory that is never cleaned up.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust’s memory safety guarantees make it difficult, but not impossible, to accidentally create a memory leak. Preventing memory leaks entirely is not one of Rust’s guarantees, meaning memory leaks are memory safe in Rust. Using <span style="color:#273D56">Rc&lt;T&gt;</span> and <span style="color:#273D56">RefCell&lt;T&gt;</span>, it’s possible to create references where items refer to each other in a cycle. This creates memory leaks, because the reference count of each item in the cycle will never reach 0, and the values will never be dropped.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Creating a reference cycle</h3>
+<p style="font-size:30px;line-height:1.45">To see how a reference cycle might happen and how to prevent it, we start with the definition of the <span style="color:#273D56">List</span> enum and a <span style="color:#273D56">tail</span> method in Listing 15.25.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">81</p>
+</div>
+</section>

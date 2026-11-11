@@ -1,0 +1,24 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Updating a String: appending with push_str</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">String</span> can grow in size and its contents can change, just like the contents of a <span style="color:#273D56">Vec&lt;T&gt;</span>, if you push more data into it. You can also conveniently use the <span style="color:#273D56">+</span> operator or the <span style="color:#273D56">format!</span> macro to concatenate <span style="color:#273D56">String</span> values.</p>
+<p style="font-size:30px;line-height:1.45">We can grow a <span style="color:#273D56">String</span> by using the <span style="color:#273D56">push_str</span> method to append a string slice, as shown in Listing 8.15.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.15:</b></span> Appending a string slice to a <span style="color:#273D56">String</span> using the <span style="color:#273D56">push_str</span> method</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s = String::from("foo");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s.push_str("bar");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">After these two lines, <span style="color:#273D56">s</span> will contain <span style="color:#273D56">foobar</span>. The <span style="color:#273D56">push_str</span> method takes a string slice because we don’t necessarily want to take ownership of the parameter. For example, in Listing 8.16 we want to be able to use <span style="color:#273D56">s2</span> after appending its contents to <span style="color:#273D56">s1</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

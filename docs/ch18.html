@@ -1,0 +1,1589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.18 — Object-Oriented Programming Features · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.18 — Object-Oriented Programming Features</h1><nav><a href="ch17.html">← Ch.17</a><a href="ch19.html">Ch.19 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 18</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Object-Oriented Programming Features</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Object-oriented programming (OOP) is a way of modeling programs. Objects as a programmatic concept were introduced in the language Simula in the 1960s. Those objects influenced Alan Kay’s programming architecture in which objects pass messages to each other; to describe it, he coined the term <i>object-oriented programming</i> in 1967. Many competing definitions describe what OOP is: by some of them Rust is object oriented, by others it is not.</p>
+<p style="font-size:30px;line-height:1.45">This chapter explores characteristics commonly considered object oriented and how they translate to idiomatic Rust. It then implements an object-oriented design pattern in Rust and discusses the trade-offs versus a solution that uses some of Rust’s strengths instead.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>18.1 Characteristics of Object-Oriented Languages</li>
+<li>18.2 Using Trait Objects to Abstract over Shared Behavior</li>
+<li>18.3 Implementing an Object-Oriented Design Pattern</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What makes a language object oriented?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There is no consensus in the programming community about what features a language must have to be considered object oriented. Rust is influenced by many paradigms, including OOP (Chapter 13 explored the features that came from functional programming). Arguably, OOP languages share certain common characteristics — namely, objects, encapsulation, and inheritance. Let’s see what each means and whether Rust supports it.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Objects contain data and behavior</h3>
+<p style="font-size:30px;line-height:1.45"><i>Design Patterns: Elements of Reusable Object-Oriented Software</i> by Gamma, Helm, Johnson, and Vlissides (Addison-Wesley, 1994), colloquially the <i>Gang of Four</i> book, is a catalog of object-oriented design patterns. It defines OOP this way:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.1 (Object).</b></span> “Object-oriented programs are made up of objects. An <b>object</b> packages both data and the procedures that operate on that data. The procedures are typically called <b>methods</b> or <b>operations</b>.”</p>
+</div>
+<p style="font-size:30px;line-height:1.45">By this definition Rust is object oriented: structs and enums have data, and <span style="color:#273D56">impl</span> blocks provide methods on them. Even though structs and enums with methods aren’t <i>called</i> objects, they provide the same functionality.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Encapsulation that hides implementation details</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.2 (Encapsulation).</b></span> The implementation details of an object aren’t accessible to code using that object. The only way to interact with an object is through its public API; code using the object shouldn’t be able to reach into its internals and change data or behavior directly. This lets the programmer change and refactor an object’s internals without changing the code that uses the object.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">Chapter 7 showed how to control encapsulation: the <span style="color:#273D56">pub</span> keyword decides which modules, types, functions, and methods are public; by default everything else is private. For example, a struct <span style="color:#273D56">AveragedCollection</span> can hold a vector of <span style="color:#273D56">i32</span> values plus a field with their average, so the average needn’t be computed on demand — the struct <i>caches</i> the calculated average.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.1:</b></span> An <span style="color:#273D56">AveragedCollection</span> struct that maintains a list of integers and the average of the items in the collection — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct AveragedCollection {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;list: Vec&lt;i32&gt;,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;average: f64,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Public methods guard the private fields</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The struct is marked <span style="color:#273D56">pub</span> so other code can use it, but its fields stay private. That matters here: whenever a value is added to or removed from the list, the average must also be updated. We do this by implementing <span style="color:#273D56">add</span>, <span style="color:#273D56">remove</span>, and <span style="color:#273D56">average</span> methods on the struct.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.2:</b></span> Implementations of the public methods <span style="color:#273D56">add</span>, <span style="color:#273D56">remove</span>, and <span style="color:#273D56">average</span> on <span style="color:#273D56">AveragedCollection</span> — <i>src/lib.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct AveragedCollection {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;list: Vec&lt;i32&gt;,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;average: f64,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl AveragedCollection {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn add(&amp;mut self, value: i32) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.list.push(value);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.update_average();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn remove(&amp;mut self) -&gt; Option&lt;i32&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let result = self.list.pop();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(value) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.update_average();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(value)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; None,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading the average, updating it privately</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.2 (continued)</b></span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn average(&amp;self) -&gt; f64 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.average</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn update_average(&amp;mut self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let total: i32 = self.list.iter().sum();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.average = total as f64 / self.list.len() as f64;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The public methods <span style="color:#273D56">add</span>, <span style="color:#273D56">remove</span>, and <span style="color:#273D56">average</span> are the only ways to access or modify data in an instance of <span style="color:#273D56">AveragedCollection</span>. When an item is added to <span style="color:#273D56">list</span> with <span style="color:#273D56">add</span> or removed with <span style="color:#273D56">remove</span>, each implementation calls the private <span style="color:#273D56">update_average</span> method, which updates the <span style="color:#273D56">average</span> field as well.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the fields stay private</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We leave the <span style="color:#273D56">list</span> and <span style="color:#273D56">average</span> fields private so external code has no way to add or remove items in the <span style="color:#273D56">list</span> field directly; otherwise the <span style="color:#273D56">average</span> field might get out of sync when the <span style="color:#273D56">list</span> changes. The <span style="color:#273D56">average</span> method returns the value of the <span style="color:#273D56">average</span> field, so external code can read the average but not modify it.</p>
+<p style="font-size:30px;line-height:1.45">Because the implementation details are encapsulated, we can easily change aspects such as the data structure later. For instance, the <span style="color:#273D56">list</span> field could use a <span style="color:#273D56">HashSet&lt;i32&gt;</span> instead of a <span style="color:#273D56">Vec&lt;i32&gt;</span>. As long as the signatures of the public methods <span style="color:#273D56">add</span>, <span style="color:#273D56">remove</span>, and <span style="color:#273D56">average</span> stay the same, code using <span style="color:#273D56">AveragedCollection</span> wouldn’t need to change.</p>
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">list</span> were public instead, this wouldn’t necessarily hold: <span style="color:#273D56">HashSet&lt;i32&gt;</span> and <span style="color:#273D56">Vec&lt;i32&gt;</span> have different methods for adding and removing items, so external code that modified <span style="color:#273D56">list</span> directly would likely have to change.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If encapsulation is a required aspect for a language to be considered object oriented, Rust meets that requirement: the option to use <span style="color:#273D56">pub</span> or not for different parts of code enables encapsulation of implementation details.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Inheritance as a type system and as code sharing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.3 (Inheritance).</b></span> A mechanism whereby an object can inherit elements from another object’s definition, thus gaining the parent object’s data and behavior without you having to define them again.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If a language must have inheritance to be object oriented, Rust is not such a language: there is no way to define a struct that inherits the parent struct’s fields and method implementations without using a macro. But if inheritance is in your toolbox, Rust has other solutions, depending on why you reached for it.</p>
+<p style="font-size:30px;line-height:1.45">There are two main reasons. The first is reuse of code:implement behavior for one type, then reuse it for a different type. Rust allows this in a limited way with default trait method implementations — as in Listing 10.14, where the <span style="color:#273D56">Summary</span> trait got a default <span style="color:#273D56">summarize</span> method. Any type implementing <span style="color:#273D56">Summary</span> has <span style="color:#273D56">summarize</span> without further code, like a child class inheriting a parent’s method. Overriding the default when implementing <span style="color:#273D56">Summary</span> is like a child class overriding an inherited method.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Inheritance for the type system: polymorphism</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The other reason to use inheritance relates to the type system: to enable a child type to be used in the same places as the parent type. This is also called polymorphism.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.4 (Polymorphism).</b></span> You can substitute multiple objects for each other at runtime if they share certain characteristics. More generally, polymorphism refers to code that can work with data of multiple types.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Polymorphism</h3>
+<p style="font-size:30px;line-height:1.45">To many people, polymorphism is synonymous with inheritance. But it’s actually a more general concept that refers to code that can work with data of multiple types. For inheritance, those types are generally subclasses.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.5 (Bounded parametric polymorphism).</b></span> Rust’s approach instead: generics abstract over different possible types, and trait bounds impose constraints on what those types must provide.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why Rust does not offer inheritance</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust has chosen a different set of trade-offs by not offering inheritance. Inheritance has these risks:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>It is often at risk of sharing more code than necessary. Subclasses shouldn’t always share all characteristics of their parent class but will do so with inheritance, which can make a program’s design less flexible.</li>
+<li>It introduces the possibility of calling methods on subclasses that don’t make sense or that cause errors because the methods don’t apply to the subclass.</li>
+<li>Some languages only allow <i>single inheritance</i> (a subclass can inherit from only one class), further restricting the flexibility of a program’s design.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">For these reasons, Rust takes the different approach of using <i>trait objects</i> instead of inheritance to achieve polymorphism at runtime. The next section looks at how trait objects work.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">When the set of types must stay open</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 8 noted that vectors can store elements of only one type. Listing 8.9 worked around this with a <span style="color:#273D56">SpreadsheetCell</span> enum whose variants hold integers, floats, and text, so a vector could represent a row of cells. That is a perfectly good solution when the interchangeable items are a fixed set of types known when the code is compiled.</p>
+<p style="font-size:30px;line-height:1.45">Sometimes, though, we want the library user to be able to extend the set of valid types. Example: a GUI tool that iterates through a list of items, calling a <span style="color:#273D56">draw</span> method on each to draw it to the screen — a common technique for GUI tools. We’ll create a library crate called <span style="color:#273D56">gui</span> with the structure of a GUI library. It might include types such as <span style="color:#273D56">Button</span> or <span style="color:#273D56">TextField</span>, and <span style="color:#273D56">gui</span> users will want to create their own drawable types: one programmer might add an <span style="color:#273D56">Image</span>, another a <span style="color:#273D56">SelectBox</span>.</p>
+<p style="font-size:30px;line-height:1.45">When writing the library, we can’t know and define every type other programmers might create. But we do know that <span style="color:#273D56">gui</span> must keep track of many values of different types and call <span style="color:#273D56">draw</span> on each. It doesn’t need to know what exactly happens when <span style="color:#273D56">draw</span> is called — only that the value has that method available.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">From a Component base class to a Draw trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In a language with inheritance, we might define a class <span style="color:#273D56">Component</span> with a method <span style="color:#273D56">draw</span>. Other classes such as <span style="color:#273D56">Button</span>, <span style="color:#273D56">Image</span>, and <span style="color:#273D56">SelectBox</span> would inherit from <span style="color:#273D56">Component</span> and thus inherit <span style="color:#273D56">draw</span>. Each could override <span style="color:#273D56">draw</span> with custom behavior, while the framework treats all of them as <span style="color:#273D56">Component</span> instances and calls <span style="color:#273D56">draw</span> on them. Rust has no inheritance, so <span style="color:#273D56">gui</span> needs another structure that lets users create new compatible types.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Defining a trait for common behavior</h3>
+<p style="font-size:30px;line-height:1.45">We’ll define a trait named <span style="color:#273D56">Draw</span> with one method named <span style="color:#273D56">draw</span>. Then we can define a vector that takes a trait object.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.6 (Trait object).</b></span> A value that points to both an instance of a type implementing a specified trait and a table used to look up trait methods on that type at runtime. It is written as some sort of pointer (a reference or a <span style="color:#273D56">Box&lt;T&gt;</span> smart pointer), then the <span style="color:#273D56">dyn</span> keyword, then the trait — e.g. <span style="color:#273D56">Box&lt;dyn Draw&gt;</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What trait objects guarantee — and what they are not</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can use trait objects in place of a generic or concrete type. Wherever a trait object is used, Rust’s type system ensures at compile time that any value used in that context implements the trait object’s trait. Consequently, we don’t need to know all the possible types at compile time.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Why trait objects must use a pointer is explained in “Dynamically Sized Types and the <span style="color:#273D56">Sized</span> Trait” in Chapter 20.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In Rust we refrain from calling structs and enums “objects” to distinguish them from other languages’ objects. In a struct or enum, the data in the fields and the behavior in <span style="color:#273D56">impl</span> blocks are separated, whereas other languages often label data and behavior combined into one concept an object.</p>
+<p style="font-size:30px;line-height:1.45">Trait objects differ from objects in other languages in that we can’t add data to a trait object. They aren’t as generally useful as objects in other languages: their specific purpose is to allow abstraction across common behavior.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Draw trait and a Screen of trait objects</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 18.3 defines a trait named <span style="color:#273D56">Draw</span> with one method named <span style="color:#273D56">draw</span>; this syntax is familiar from Chapter 10.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.3:</b></span> Definition of the <span style="color:#273D56">Draw</span> trait — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub trait Draw {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn draw(&amp;self);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Next comes new syntax: Listing 18.4 defines a struct <span style="color:#273D56">Screen</span> holding a vector named <span style="color:#273D56">components</span> of type <span style="color:#273D56">Box&lt;dyn Draw&gt;</span>, which is a trait object: a stand-in for any type inside a <span style="color:#273D56">Box</span> that implements the <span style="color:#273D56">Draw</span> trait.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.4:</b></span> Definition of the <span style="color:#273D56">Screen</span> struct with a <span style="color:#273D56">components</span> field holding a vector of trait objects that implement the <span style="color:#273D56">Draw</span> trait — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Screen {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub components: Vec&lt;Box&lt;dyn Draw&gt;&gt;,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Screen::run calls draw on every component</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">On the <span style="color:#273D56">Screen</span> struct we define a method named <span style="color:#273D56">run</span> that calls the <span style="color:#273D56">draw</span> method on each of its <span style="color:#273D56">components</span>, as shown in Listing 18.5.</p>
+<p style="font-size:30px;line-height:1.45">This works differently from defining a struct that uses a generic type parameter with trait bounds. A generic type parameter can be substituted with only one concrete type at a time, whereas trait objects allow multiple concrete types to fill in for the trait object at runtime.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.5:</b></span> A <span style="color:#273D56">run</span> method on <span style="color:#273D56">Screen</span> that calls the <span style="color:#273D56">draw</span> method on each component — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Screen {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub components: Vec&lt;Box&lt;dyn Draw&gt;&gt;,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Screen {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn run(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for component in self.components.iter() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;component.draw();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The alternative: generics and trait bounds</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We could instead have defined the <span style="color:#273D56">Screen</span> struct using a generic type and a trait bound, as in Listing 18.6.</p>
+<p style="font-size:30px;line-height:1.45">This restricts us to a <span style="color:#273D56">Screen</span> instance whose list of components is all of type <span style="color:#273D56">Button</span> or all of type <span style="color:#273D56">TextField</span>. If you’ll only ever have homogeneous collections, generics and trait bounds are preferable, because the definitions will be monomorphized at compile time to use the concrete types.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.6:</b></span> An alternate implementation of the <span style="color:#273D56">Screen</span> struct and its <span style="color:#273D56">run</span> method using generics and trait bounds — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Screen&lt;T: Draw&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub components: Vec&lt;T&gt;,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl&lt;T&gt; Screen&lt;T&gt;</p>
+<p style="white-space:nowrap">where</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;T: Draw,</p>
+<p style="white-space:nowrap">{</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn run(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for component in self.components.iter() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;component.draw();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Homogeneous versus mixed collections</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">On the other hand, with the method using trait objects, one <span style="color:#273D56">Screen</span> instance can hold a <span style="color:#273D56">Vec&lt;T&gt;</span> that contains a <span style="color:#273D56">Box&lt;Button&gt;</span> as well as a <span style="color:#273D56">Box&lt;TextField&gt;</span>. Next we see how this works, and then the runtime performance implications.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 18.1:</b></span> The two <span style="color:#273D56">Screen</span> designs compared</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:22%"> </th><th style="width:39%">Generic + trait bound (Listing 18.6)</th><th style="width:39%">Trait object (Listing 18.5)</th></tr>
+<tr><td>Field type</td><td>Vec&lt;T&gt; where T: Draw</td><td>Vec&lt;Box&lt;dyn Draw&gt;&gt;</td></tr>
+<tr><td>Types per Screen</td><td>One concrete type at a time</td><td>Many concrete types, filled in at runtime</td></tr>
+<tr><td>Example contents</td><td>All Button, or all TextField</td><td>Box&lt;Button&gt; and Box&lt;TextField&gt; together</td></tr>
+<tr><td>Compilation</td><td>Monomorphized to the concrete type</td><td>Method looked up at runtime (dynamic dispatch)</td></tr>
+<tr><td>Prefer when</td><td>Collections are always homogeneous</td><td>Users must be able to add new types</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implementing the trait: a Button</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now we add some types that implement the <span style="color:#273D56">Draw</span> trait, starting with <span style="color:#273D56">Button</span>. Actually implementing a GUI library is beyond the scope of this book, so the <span style="color:#273D56">draw</span> method has no useful body. To imagine what the implementation might look like, a <span style="color:#273D56">Button</span> struct might have fields for <span style="color:#273D56">width</span>, <span style="color:#273D56">height</span>, and <span style="color:#273D56">label</span>, as in Listing 18.7.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.7:</b></span> A <span style="color:#273D56">Button</span> struct that implements the <span style="color:#273D56">Draw</span> trait — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Button {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub height: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub label: String,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Draw for Button {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn draw(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// code to actually draw a button</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A library user adds a SelectBox</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Fields differ between components: a <span style="color:#273D56">TextField</span> might have the same fields plus a <span style="color:#273D56">placeholder</span>. Each drawable type implements <span style="color:#273D56">Draw</span> but uses different code in <span style="color:#273D56">draw</span> to define how to draw itself. <span style="color:#273D56">Button</span> might also have an additional <span style="color:#273D56">impl</span> block with methods for when a user clicks it — methods that don’t apply to types like <span style="color:#273D56">TextField</span>.</p>
+<p style="font-size:30px;line-height:1.45">A library user who implements a <span style="color:#273D56">SelectBox</span> struct with <span style="color:#273D56">width</span>, <span style="color:#273D56">height</span>, and <span style="color:#273D56">options</span> fields implements <span style="color:#273D56">Draw</span> on it as well.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.8:</b></span> Another crate using <span style="color:#273D56">gui</span> and implementing the <span style="color:#273D56">Draw</span> trait on a <span style="color:#273D56">SelectBox</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use gui::Draw;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct SelectBox {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;options: Vec&lt;String&gt;,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Draw for SelectBox {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn draw(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// code to actually draw a select box</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Mixing types in one Screen</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The library’s user can now write their <span style="color:#273D56">main</span> function to create a <span style="color:#273D56">Screen</span> instance. To it they add a <span style="color:#273D56">SelectBox</span> and a <span style="color:#273D56">Button</span> by putting each in a <span style="color:#273D56">Box&lt;T&gt;</span> to become a trait object. They can then call <span style="color:#273D56">run</span> on the <span style="color:#273D56">Screen</span> instance, which calls <span style="color:#273D56">draw</span> on each of the components.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> In the book’s file, the <span style="color:#273D56">SelectBox</span> definition from Listing 18.8 precedes this code.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.9:</b></span> Using trait objects to store values of different types that implement the same trait — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use gui::{Button, Screen};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let screen = Screen {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;components: vec![</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Box::new(SelectBox {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 75,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;options: vec![</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;String::from("Yes"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;String::from("Maybe"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;String::from("No"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;],</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}),</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Screen draws a type it never knew about</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.9 (continued)</b></span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Box::new(Button {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;label: String::from("OK"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;],</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;screen.run();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When we wrote the library, we didn’t know that someone might add the <span style="color:#273D56">SelectBox</span> type. Yet our <span style="color:#273D56">Screen</span> implementation was able to operate on the new type and draw it, because <span style="color:#273D56">SelectBox</span> implements the <span style="color:#273D56">Draw</span> trait, which means it implements the <span style="color:#273D56">draw</span> method.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Like duck typing, but checked at compile time</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.7 (Duck typing).</b></span> In dynamically typed languages, being concerned only with the messages a value responds to rather than the value’s concrete type: if it walks like a duck and quacks like a duck, then it must be a duck!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The concept of trait objects is similar. In the implementation of <span style="color:#273D56">run</span> on <span style="color:#273D56">Screen</span> in Listing 18.5, <span style="color:#273D56">run</span> doesn’t need to know the concrete type of each component. It doesn’t check whether a component is a <span style="color:#273D56">Button</span> or a <span style="color:#273D56">SelectBox</span>; it just calls <span style="color:#273D56">draw</span> on it. By specifying <span style="color:#273D56">Box&lt;dyn Draw&gt;</span> as the type of the values in the <span style="color:#273D56">components</span> vector, we’ve defined <span style="color:#273D56">Screen</span> to need values that we can call the <span style="color:#273D56">draw</span> method on.</p>
+<p style="font-size:30px;line-height:1.45">The advantage of using trait objects and Rust’s type system to write code similar to duck typing: we never have to check at runtime whether a value implements a particular method, or worry about errors if a value doesn’t implement a method but we call it anyway. Rust won’t compile our code if the values don’t implement the traits that the trait objects need.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Trying a type that doesn’t implement Draw</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 18.10 shows what happens if we try to create a <span style="color:#273D56">Screen</span> with a <span style="color:#273D56">String</span> as a component.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.10:</b></span> Attempting to use a type that doesn’t implement the trait object’s trait — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use gui::Screen;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let screen = Screen {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;components: vec![Box::new(String::from("Hi"))],</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;screen.run();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We get the error on the next slide because <span style="color:#273D56">String</span> doesn’t implement the <span style="color:#273D56">Draw</span> trait. It tells us that either we’re passing something to <span style="color:#273D56">Screen</span> we didn’t mean to pass and should pass a different type, or we should implement <span style="color:#273D56">Draw</span> on <span style="color:#273D56">String</span> so that <span style="color:#273D56">Screen</span> is able to call <span style="color:#273D56">draw</span> on it.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error: the trait bound String: Draw is not satisfied</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling gui v0.1.0 (file:///projects/gui)</p>
+<p style="white-space:nowrap">error[E0277]: the trait bound `String: Draw` is not satisfied</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:5:26</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;5 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;components: vec![Box::new(String::from("Hi"))],</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Draw` is not implemented for `String`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">help: the trait `Draw` is implemented for `Button`</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:23:1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">23 | impl Draw for Button {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;| ^^^^^^^^^^^^^^^^^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= note: required for the cast from `Box&lt;String&gt;` to `Box&lt;dyn Draw&gt;`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0277`.</p>
+<p style="white-space:nowrap">error: could not compile `gui` (bin "gui") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Performing dynamic dispatch</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Recall from “Performance of Code Using Generics” in Chapter 10 the monomorphization process the compiler performs on generics: it generates nongeneric implementations of functions and methods for each concrete type used in place of a generic type parameter.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.8 (Static dispatch).</b></span> The compiler knows what method you’re calling at compile time. The code that results from monomorphization does static dispatch.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.9 (Dynamic dispatch).</b></span> The compiler can’t tell at compile time which method you’re calling. Instead, it emits code that at runtime will know which method to call.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">When we use trait objects, Rust must use dynamic dispatch. The compiler doesn’t know all the types that might be used with the code that’s using trait objects, so it doesn’t know which method implemented on which type to call. Instead, at runtime, Rust uses the pointers inside the trait object to know which method to call.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The cost of dynamic dispatch</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The runtime lookup incurs a cost that doesn’t occur with static dispatch.</li>
+<li>Dynamic dispatch also prevents the compiler from choosing to inline a method’s code, which in turn prevents some optimizations.</li>
+<li>Rust has rules about where you can and cannot use dynamic dispatch.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.10 (Dyn compatibility).</b></span> Rust’s rules about where you can and cannot use dynamic dispatch. They are beyond the scope of this chapter; the Rust Reference (doc.rust-lang.org/reference/items/traits.html#dyn-compatibility) describes them.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">However, we did get extra flexibility in the code we wrote in Listing 18.5 and were able to support in Listing 18.9, so it’s a trade-off to consider.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The state pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.11 (State pattern).</b></span> An object-oriented design pattern whose crux is that we define a set of states a value can have internally. The states are represented by a set of <i>state objects</i>, and the value’s behavior changes based on its state.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The example is a blog post struct with a field holding its state: a state object from the set “draft,” “review,” or “published.”</p>
+<p style="font-size:30px;line-height:1.45">The state objects share functionality — in Rust, of course, we use structs and traits rather than objects and inheritance. Each state object is responsible for its own behavior and for governing when it should change into another state. The value that holds a state object knows nothing about the different behavior of the states or when to transition between them.</p>
+<p style="font-size:30px;line-height:1.45">The advantage: when the program’s business requirements change, we won’t need to change the code of the value holding the state or the code that uses the value. We’ll only need to update the code inside one of the state objects to change its rules, or perhaps add more state objects.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The blog post workflow we will build</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First we implement the state pattern in a more traditional object-oriented way; then we use an approach that’s a bit more natural in Rust. We build the blog post workflow incrementally. The final functionality:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>A blog post starts as an empty draft.</li>
+<li>When the draft is done, a review of the post is requested.</li>
+<li>When the post is approved, it gets published.</li>
+<li>Only published blog posts return content to print, so unapproved posts can’t accidentally be published.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Any other changes attempted on a post should have no effect. For example, if we try to approve a draft blog post before we’ve requested a review, the post should remain an unpublished draft.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Attempting traditional object-oriented style</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There are infinite ways to structure code to solve the same problem, each with different trade-offs. This section’s implementation is more of a traditional object-oriented style: possible to write in Rust, but not taking advantage of some of Rust’s strengths.</p>
+<p style="font-size:30px;line-height:1.45">Later we demonstrate a different solution that still uses the object-oriented design pattern but is structured in a way that might look less familiar to programmers with object-oriented experience. Comparing the two solutions shows the trade-offs of designing Rust code differently than code in other languages.</p>
+<p style="font-size:30px;line-height:1.45">Listing 18.11 (next slide) shows the workflow in code form: an example usage of the API we’ll implement in a library crate named <span style="color:#273D56">blog</span>. It won’t compile yet, because we haven’t implemented the <span style="color:#273D56">blog</span> crate.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The desired behavior of the blog crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.11:</b></span> Code that demonstrates the desired behavior we want our <span style="color:#273D56">blog</span> crate to have — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use blog::Post;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut post = Post::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.add_text("I ate a salad for lunch today");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("", post.content());</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.request_review();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("", post.content());</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.approve();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("I ate a salad for lunch today", post.content());</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The <span style="color:#273D56">assert_eq!</span> calls are for demonstration purposes. An excellent unit test for this would assert that a draft blog post returns an empty string from the <span style="color:#273D56">content</span> method, but the book doesn’t write tests for this example.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What the API promises its users</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We want to allow the user to create a new draft blog post with <span style="color:#273D56">Post::new</span> and to add text to it. If we try to get the post’s content immediately, before approval, we shouldn’t get any text, because the post is still a draft.</p>
+<p style="font-size:30px;line-height:1.45">Next, we want to enable a request for a review of the post, and we want <span style="color:#273D56">content</span> to return an empty string while waiting for the review. When the post receives approval, it should get published, meaning the text of the post will be returned when <span style="color:#273D56">content</span> is called.</p>
+<p style="font-size:30px;line-height:1.45">The only type we interact with from the crate is <span style="color:#273D56">Post</span>. It uses the state pattern and holds a value that is one of three state objects — draft, review, or published. Changing from one state to another is managed internally within <span style="color:#273D56">Post</span>: the states change in response to the methods users call on the <span style="color:#273D56">Post</span> instance, but users don’t manage the state changes directly. Users also can’t make a mistake with the states, such as publishing a post before it’s reviewed.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining Post and creating a new instance</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We need a public <span style="color:#273D56">Post</span> struct that holds some content, plus an associated public <span style="color:#273D56">new</span> function to create an instance. We also make a private <span style="color:#273D56">State</span> trait defining the behavior all state objects for a <span style="color:#273D56">Post</span> must have.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Post</span> holds a trait object of <span style="color:#273D56">Box&lt;dyn State&gt;</span> inside an <span style="color:#273D56">Option&lt;T&gt;</span>, in a private field named <span style="color:#273D56">state</span>. Why the <span style="color:#273D56">Option&lt;T&gt;</span> is necessary becomes clear shortly.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.12:</b></span> Definition of a <span style="color:#273D56">Post</span> struct and a <span style="color:#273D56">new</span> function that creates a new <span style="color:#273D56">Post</span> instance, a <span style="color:#273D56">State</span> trait, and a <span style="color:#273D56">Draft</span> struct — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;state: Option&lt;Box&lt;dyn State&gt;&gt;,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;content: String,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn new() -&gt; Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;state: Some(Box::new(Draft {})),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;content: String::new(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Every new Post starts as a Draft</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.12 (continued)</b></span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">trait State {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct Draft {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for Draft {}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">State</span> trait defines the behavior shared by different post states. The state objects are <span style="color:#273D56">Draft</span>, <span style="color:#273D56">PendingReview</span>, and <span style="color:#273D56">Published</span>, and they will all implement <span style="color:#273D56">State</span>. For now the trait has no methods, and we define just the <span style="color:#273D56">Draft</span> state, because that is the state we want a post to start in.</p>
+<p style="font-size:30px;line-height:1.45">When we create a new <span style="color:#273D56">Post</span>, we set its <span style="color:#273D56">state</span> field to a <span style="color:#273D56">Some</span> value holding a <span style="color:#273D56">Box</span> that points to a new instance of the <span style="color:#273D56">Draft</span> struct. So every new <span style="color:#273D56">Post</span> starts out as a draft — and because the <span style="color:#273D56">state</span> field is private, there is no way to create a <span style="color:#273D56">Post</span> in any other state! In <span style="color:#273D56">Post::new</span> we set the <span style="color:#273D56">content</span> field to a new, empty <span style="color:#273D56">String</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Storing the text of the post content</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 18.11 calls a method named <span style="color:#273D56">add_text</span> and passes it a <span style="color:#273D56">&amp;str</span> that is added as the text content of the post. We implement this as a method rather than exposing the <span style="color:#273D56">content</span> field as <span style="color:#273D56">pub</span>, so that later we can implement a method that controls how the <span style="color:#273D56">content</span> field’s data is read. <span style="color:#273D56">add_text</span> is straightforward; we add it to the <span style="color:#273D56">impl Post</span> block.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.13:</b></span> Implementing the <span style="color:#273D56">add_text</span> method to add text to a post’s <span style="color:#273D56">content</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn add_text(&amp;mut self, text: &amp;str) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.content.push_str(text);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">add_text</span> takes <span style="color:#273D56">&amp;mut self</span> because it changes the <span style="color:#273D56">Post</span> it is called on, and calls <span style="color:#273D56">push_str</span> on the <span style="color:#273D56">String</span> in <span style="color:#273D56">content</span> with the <span style="color:#273D56">text</span> argument. This behavior doesn’t depend on the post’s state, so it’s not part of the state pattern — <span style="color:#273D56">add_text</span> never touches the <span style="color:#273D56">state</span> field — but it is behavior we want to support.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ensuring that a draft post’s content is empty</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Even after we’ve called <span style="color:#273D56">add_text</span>, we want the <span style="color:#273D56">content</span> method to return an empty string slice, because the post is still in the draft state (the first <span style="color:#273D56">assert_eq!</span> in Listing 18.11). For now we implement <span style="color:#273D56">content</span> with the simplest thing that fulfills this requirement: always return an empty string slice. So far posts can only be drafts, so the content should always be empty; we change this once a post can be published.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.14:</b></span> Adding a placeholder implementation for the <span style="color:#273D56">content</span> method on <span style="color:#273D56">Post</span> that always returns an empty string slice — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn content(&amp;self) -&gt; &amp;str {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;""</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">With this added <span style="color:#273D56">content</span> method, everything in Listing 18.11 through the first <span style="color:#273D56">assert_eq!</span> works as intended.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Requesting a review changes the post’s state</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next we add functionality to request a review of a post, which should change its state from <span style="color:#273D56">Draft</span> to <span style="color:#273D56">PendingReview</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.15:</b></span> Implementing <span style="color:#273D56">request_review</span> methods on <span style="color:#273D56">Post</span> and the <span style="color:#273D56">State</span> trait — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn request_review(&amp;mut self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if let Some(s) = self.state.take() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.state = Some(s.request_review())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">trait State {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn request_review(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt;;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Draft and PendingReview implement request_review</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.15 (continued)</b></span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Draft {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for Draft {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn request_review(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Box::new(PendingReview {})</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct PendingReview {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for PendingReview {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn request_review(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Consuming the old state: self: Box&lt;Self&gt; and take</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Post</span> gets a public method <span style="color:#273D56">request_review</span> that takes a mutable reference to <span style="color:#273D56">self</span>. It calls an internal <span style="color:#273D56">request_review</span> method on the current state of <span style="color:#273D56">Post</span>, and this second <span style="color:#273D56">request_review</span> consumes the current state and returns a new state.</p>
+<p style="font-size:30px;line-height:1.45">We add <span style="color:#273D56">request_review</span> to the <span style="color:#273D56">State</span> trait, so all implementing types must now implement it. Its first parameter is not <span style="color:#273D56">self</span>, <span style="color:#273D56">&amp;self</span>, or <span style="color:#273D56">&amp;mut self</span> but <span style="color:#273D56">self: Box&lt;Self&gt;</span>: the method is only valid when called on a <span style="color:#273D56">Box</span> holding the type. This syntax takes ownership of <span style="color:#273D56">Box&lt;Self&gt;</span>, invalidating the old state so that the <span style="color:#273D56">Post</span>’s state value can transform into a new state.</p>
+<p style="font-size:30px;line-height:1.45">To consume the old state, <span style="color:#273D56">request_review</span> needs ownership of the state value. That is where the <span style="color:#273D56">Option</span> in <span style="color:#273D56">Post</span>’s <span style="color:#273D56">state</span> field comes in: we call <span style="color:#273D56">take</span> to take the <span style="color:#273D56">Some</span> value out of the <span style="color:#273D56">state</span> field and leave a <span style="color:#273D56">None</span> in its place, because Rust doesn’t let us have unpopulated fields in structs. This lets us move the <span style="color:#273D56">state</span> value out of <span style="color:#273D56">Post</span> rather than borrowing it. Then we set the post’s <span style="color:#273D56">state</span> to the result of this operation.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each state is responsible for its own rules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We need to set <span style="color:#273D56">state</span> to <span style="color:#273D56">None</span> temporarily, rather than writing code like <span style="color:#273D56">self.state = self.state.request_review();</span>, to get ownership of the <span style="color:#273D56">state</span> value. This ensures <span style="color:#273D56">Post</span> can’t use the old <span style="color:#273D56">state</span> value after we’ve transformed it into a new state.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">request_review</span> on <span style="color:#273D56">Draft</span> returns a new, boxed instance of a new <span style="color:#273D56">PendingReview</span> struct, the state of a post waiting for a review. <span style="color:#273D56">PendingReview</span> also implements <span style="color:#273D56">request_review</span> but doesn’t transform anything: it returns itself, because requesting a review on a post already in <span style="color:#273D56">PendingReview</span> should keep it there.</p>
+<p style="font-size:30px;line-height:1.45">Now the advantages of the state pattern start to show: <span style="color:#273D56">request_review</span> on <span style="color:#273D56">Post</span> is the same no matter its <span style="color:#273D56">state</span> value. Each state is responsible for its own rules.</p>
+<p style="font-size:30px;line-height:1.45">We leave <span style="color:#273D56">content</span> on <span style="color:#273D56">Post</span> as is, returning an empty string slice: a <span style="color:#273D56">Post</span> can now be in <span style="color:#273D56">PendingReview</span> as well as <span style="color:#273D56">Draft</span>, and we want the same behavior in both. Listing 18.11 now works up to the second <span style="color:#273D56">assert_eq!</span> call!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding approve to change content’s behavior</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">approve</span> method is similar to <span style="color:#273D56">request_review</span>: it sets <span style="color:#273D56">state</span> to the value that the current state says it should have when that state is approved.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.16:</b></span> Implementing the <span style="color:#273D56">approve</span> method on <span style="color:#273D56">Post</span> and the <span style="color:#273D56">State</span> trait — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn approve(&amp;mut self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if let Some(s) = self.state.take() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.state = Some(s.approve())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">trait State {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn request_review(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt;;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn approve(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt;;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">approve on Draft and PendingReview</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.16 (continued)</b></span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Draft {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for Draft {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn approve(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct PendingReview {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for PendingReview {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn approve(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Box::new(Published {})</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Published state</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.16 (continued)</b></span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Published {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for Published {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn request_review(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn approve(self: Box&lt;Self&gt;) -&gt; Box&lt;dyn State&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We add the <span style="color:#273D56">approve</span> method to the <span style="color:#273D56">State</span> trait and add a new struct that implements <span style="color:#273D56">State</span>: the <span style="color:#273D56">Published</span> state.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How each state answers request_review and approve</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As with <span style="color:#273D56">request_review</span> on <span style="color:#273D56">PendingReview</span>, calling <span style="color:#273D56">approve</span> on a <span style="color:#273D56">Draft</span> has no effect, because <span style="color:#273D56">approve</span> returns <span style="color:#273D56">self</span>. Calling <span style="color:#273D56">approve</span> on <span style="color:#273D56">PendingReview</span> returns a new, boxed <span style="color:#273D56">Published</span> instance. <span style="color:#273D56">Published</span> returns itself from both methods, because the post should stay published in those cases.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 18.2:</b></span> State transitions after Listing 18.16</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:28%">Current state</th><th style="width:36%">request_review returns</th><th style="width:36%">approve returns</th></tr>
+<tr><td>Draft</td><td>Box::new(PendingReview {})</td><td>self (stays Draft)</td></tr>
+<tr><td>PendingReview</td><td>self (stays PendingReview)</td><td>Box::new(Published {})</td></tr>
+<tr><td>Published</td><td>self (stays Published)</td><td>self (stays Published)</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Now we update the <span style="color:#273D56">content</span> method on <span style="color:#273D56">Post</span>. We want its return value to depend on the current state, so <span style="color:#273D56">Post</span> delegates to a <span style="color:#273D56">content</span> method defined on its <span style="color:#273D56">state</span> (Listing 18.17).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Post::content delegates to its state</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.17:</b></span> Updating the <span style="color:#273D56">content</span> method on <span style="color:#273D56">Post</span> to delegate to a <span style="color:#273D56">content</span> method on <span style="color:#273D56">State</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn content(&amp;self) -&gt; &amp;str {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.state.as_ref().unwrap().content(self)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The goal is to keep all of these rules inside the structs that implement <span style="color:#273D56">State</span>. So we call a <span style="color:#273D56">content</span> method on the value in <span style="color:#273D56">state</span>, pass the post instance (that is, <span style="color:#273D56">self</span>) as an argument, and return what that method returns.</p>
+<p style="font-size:30px;line-height:1.45">We call <span style="color:#273D56">as_ref</span> on the <span style="color:#273D56">Option</span> because we want a reference to the value inside it rather than ownership. As <span style="color:#273D56">state</span> is an <span style="color:#273D56">Option&lt;Box&lt;dyn State&gt;&gt;</span>, <span style="color:#273D56">as_ref</span> returns an <span style="color:#273D56">Option&lt;&amp;Box&lt;dyn State&gt;&gt;</span>. Without <span style="color:#273D56">as_ref</span> we’d get an error, because we can’t move <span style="color:#273D56">state</span> out of the borrowed <span style="color:#273D56">&amp;self</span> of the function parameter.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why unwrap is safe here, and where content goes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We then call <span style="color:#273D56">unwrap</span>, which we know will never panic: the methods on <span style="color:#273D56">Post</span> ensure that <span style="color:#273D56">state</span> always contains a <span style="color:#273D56">Some</span> value when they are done. This is one of the cases from “When You Have More Information Than the Compiler” in Chapter 9: we know a <span style="color:#273D56">None</span> value is never possible, even though the compiler isn’t able to understand that.</p>
+<p style="font-size:30px;line-height:1.45">When we call <span style="color:#273D56">content</span> on the <span style="color:#273D56">&amp;Box&lt;dyn State&gt;</span>, deref coercion takes effect on the <span style="color:#273D56">&amp;</span> and the <span style="color:#273D56">Box</span>, so the <span style="color:#273D56">content</span> method is ultimately called on the type that implements the <span style="color:#273D56">State</span> trait.</p>
+<p style="font-size:30px;line-height:1.45">That means we need to add <span style="color:#273D56">content</span> to the <span style="color:#273D56">State</span> trait definition, and that is where we put the logic for what content to return depending on which state we have (Listing 18.18).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A default content, overridden by Published</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.18:</b></span> Adding the <span style="color:#273D56">content</span> method to the <span style="color:#273D56">State</span> trait — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">trait State {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn content&lt;'a&gt;(&amp;self, post: &amp;'a Post) -&gt; &amp;'a str {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;""</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct Published {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl State for Published {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn content&lt;'a&gt;(&amp;self, post: &amp;'a Post) -&gt; &amp;'a str {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&amp;post.content</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The workflow is complete</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We add a default implementation of <span style="color:#273D56">content</span> that returns an empty string slice, so we don’t need to implement <span style="color:#273D56">content</span> on the <span style="color:#273D56">Draft</span> and <span style="color:#273D56">PendingReview</span> structs. The <span style="color:#273D56">Published</span> struct overrides <span style="color:#273D56">content</span> and returns the value in <span style="color:#273D56">post.content</span>. While convenient, having <span style="color:#273D56">content</span> on <span style="color:#273D56">State</span> determine the content of the <span style="color:#273D56">Post</span> blurs the lines between the responsibility of <span style="color:#273D56">State</span> and the responsibility of <span style="color:#273D56">Post</span>.</p>
+<p style="font-size:30px;line-height:1.45">This method needs lifetime annotations, as discussed in Chapter 10: it takes a reference to a <span style="color:#273D56">post</span> as an argument and returns a reference to part of that <span style="color:#273D56">post</span>, so the lifetime of the returned reference is related to the lifetime of the <span style="color:#273D56">post</span> argument.</p>
+<p style="font-size:30px;line-height:1.45">And we’re done — all of Listing 18.11 now works! We’ve implemented the state pattern with the rules of the blog post workflow. The logic related to the rules lives in the state objects rather than being scattered throughout <span style="color:#273D56">Post</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why not an enum? Evaluating the state pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Why not an enum?</h3>
+<p style="font-size:30px;line-height:1.45">An enum with the possible post states as variants is certainly a possible solution — try it and compare the end results to see which you prefer! One disadvantage: every place that checks the value of the enum needs a <span style="color:#273D56">match</span> expression or similar to handle every possible variant, which could get more repetitive than this trait object solution.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Evaluating the state pattern</h3>
+<p style="font-size:30px;line-height:1.45">Rust can implement the object-oriented state pattern to encapsulate the different kinds of behavior a post should have in each state. The methods on <span style="color:#273D56">Post</span> know nothing about the various behaviors. To know the different ways a published post can behave, we look in only one place: the implementation of <span style="color:#273D56">State</span> on <span style="color:#273D56">Published</span>.</p>
+<p style="font-size:30px;line-height:1.45">Without the state pattern, we might use <span style="color:#273D56">match</span> expressions in the methods on <span style="color:#273D56">Post</span>, or even in <span style="color:#273D56">main</span>, that check the state and change behavior there. Then we would have to look in several places to understand all the implications of a post being published.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Easy to extend: exercises</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">With the state pattern, the <span style="color:#273D56">Post</span> methods and the places we use <span style="color:#273D56">Post</span> don’t need <span style="color:#273D56">match</span> expressions. To add a new state, we would only need to add a new struct and implement the trait methods on that one struct, in one location.</p>
+<p style="font-size:30px;line-height:1.45">The implementation is easy to extend with more functionality. To see how simple it is to maintain code that uses the state pattern, try a few of these suggestions:</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 18.12.</b> Extensions to try on the <span style="color:#273D56">blog</span> crate:</p>
+<ul style="font-size:26px;line-height:1.45">
+<li>Add a <span style="color:#273D56">reject</span> method that changes the post’s state from <span style="color:#273D56">PendingReview</span> back to <span style="color:#273D56">Draft</span>.</li>
+<li>Require two calls to <span style="color:#273D56">approve</span> before the state can be changed to <span style="color:#273D56">Published</span>.</li>
+<li>Allow users to add text content only when a post is in the <span style="color:#273D56">Draft</span> state. Hint: have the state object responsible for what might change about the content but not responsible for modifying the <span style="color:#273D56">Post</span>.</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Downsides: coupled states and duplicated logic</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><i>Coupling.</i> Because the states implement the transitions between states, some states are coupled to each other. Adding a state such as <span style="color:#273D56">Scheduled</span> between <span style="color:#273D56">PendingReview</span> and <span style="color:#273D56">Published</span> would mean changing the code in <span style="color:#273D56">PendingReview</span> to transition to <span style="color:#273D56">Scheduled</span> instead. It would be less work if <span style="color:#273D56">PendingReview</span> didn’t need to change, but that would mean switching to another design pattern.</p>
+<p style="font-size:30px;line-height:1.45"><i>Duplicated defaults.</i> We might try default implementations of <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> on the <span style="color:#273D56">State</span> trait that return <span style="color:#273D56">self</span>. This wouldn’t work: when <span style="color:#273D56">State</span> is used as a trait object, the trait doesn’t know what the concrete <span style="color:#273D56">self</span> will be, so the return type isn’t known at compile time. (This is one of the dyn compatibility rules.)</p>
+<p style="font-size:30px;line-height:1.45"><i>Duplicated delegation.</i> <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> on <span style="color:#273D56">Post</span> both use <span style="color:#273D56">Option::take</span> on <span style="color:#273D56">state</span> and, if it is <span style="color:#273D56">Some</span>, delegate to the wrapped value’s same-named method and store the result. With many such methods, we might define a macro to remove the repetition (see “Macros” in Chapter 20).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Encoding states and behavior as types</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">By implementing the state pattern exactly as it’s defined for object-oriented languages, we’re not taking as full advantage of Rust’s strengths as we could. Some changes to the <span style="color:#273D56">blog</span> crate can make invalid states and transitions into compile-time errors.</p>
+<p style="font-size:30px;line-height:1.45">We rethink the state pattern to get a different set of trade-offs. Rather than encapsulating the states and transitions completely so that outside code has no knowledge of them, we encode the states into different types. Consequently, Rust’s type-checking system prevents attempts to use draft posts where only published posts are allowed, by issuing a compiler error.</p>
+<p style="font-size:30px;line-height:1.45">Consider again the first part of <span style="color:#273D56">main</span> from Listing 18.11 (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-51">
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The starting point: main from Listing 18.11</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use blog::Post;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut post = Post::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.add_text("I ate a salad for lunch today");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("", post.content());</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.request_review();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("", post.content());</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.approve();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("I ate a salad for lunch today", post.content());</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-52">
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Draft posts without a content method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We still enable the creation of new posts in the draft state using <span style="color:#273D56">Post::new</span>, and the ability to add text to the post’s content.</p>
+<p style="font-size:30px;line-height:1.45">But instead of a <span style="color:#273D56">content</span> method on a draft post that returns an empty string, draft posts won’t have a <span style="color:#273D56">content</span> method at all. That way, trying to get a draft post’s content gives a compiler error telling us the method doesn’t exist. As a result, it is impossible to accidentally display draft post content in production, because that code won’t even compile.</p>
+<p style="font-size:30px;line-height:1.45">Listing 18.19 (next slide) shows the definition of a <span style="color:#273D56">Post</span> struct and a <span style="color:#273D56">DraftPost</span> struct, as well as methods on each.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-53">
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Post and DraftPost as separate types</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.19:</b></span> A <span style="color:#273D56">Post</span> with a <span style="color:#273D56">content</span> method and a <span style="color:#273D56">DraftPost</span> without a <span style="color:#273D56">content</span> method — <i>src/lib.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;content: String,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub struct DraftPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;content: String,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn new() -&gt; DraftPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DraftPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;content: String::new(),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn content(&amp;self) -&gt; &amp;str {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&amp;self.content</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl DraftPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn add_text(&amp;mut self, text: &amp;str) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.content.push_str(text);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-54">
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The state now lives in the type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Both <span style="color:#273D56">Post</span> and <span style="color:#273D56">DraftPost</span> have a private <span style="color:#273D56">content</span> field that stores the blog post text. The structs no longer have a <span style="color:#273D56">state</span> field, because the encoding of the state moves to the types of the structs. <span style="color:#273D56">Post</span> represents a published post, and its <span style="color:#273D56">content</span> method returns the <span style="color:#273D56">content</span>.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Post::new</span> still exists, but it returns an instance of <span style="color:#273D56">DraftPost</span> instead of <span style="color:#273D56">Post</span>. Because <span style="color:#273D56">content</span> is private and no function returns <span style="color:#273D56">Post</span>, it’s not possible to create an instance of <span style="color:#273D56">Post</span> right now.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">DraftPost</span> has an <span style="color:#273D56">add_text</span> method, so we can add text to <span style="color:#273D56">content</span> as before, but it has no <span style="color:#273D56">content</span> method! So all posts start as draft posts, and draft posts don’t have their content available for display. Any attempt to get around these constraints results in a compiler error.</p>
+<p style="font-size:30px;line-height:1.45">So how do we get a published post? A draft must be reviewed and approved before it can be published, and a post pending review should still not display any content. We add a struct <span style="color:#273D56">PendingReviewPost</span>, define <span style="color:#273D56">request_review</span> on <span style="color:#273D56">DraftPost</span> to return a <span style="color:#273D56">PendingReviewPost</span>, and define <span style="color:#273D56">approve</span> on <span style="color:#273D56">PendingReviewPost</span> to return a <span style="color:#273D56">Post</span> (Listing 18.20).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-55">
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Transitions as transformations into other types</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.20:</b></span> A <span style="color:#273D56">PendingReviewPost</span> that gets created by calling <span style="color:#273D56">request_review</span> on <span style="color:#273D56">DraftPost</span> and an <span style="color:#273D56">approve</span> method that turns a <span style="color:#273D56">PendingReviewPost</span> into a published <span style="color:#273D56">Post</span> — <i>src/lib.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:3;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl DraftPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn request_review(self) -&gt; PendingReviewPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;PendingReviewPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;content: self.content,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:2;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct PendingReviewPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;content: String,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl PendingReviewPost {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn approve(self) -&gt; Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;content: self.content,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-56">
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The workflow encoded into the type system</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> methods take ownership of <span style="color:#273D56">self</span>, consuming the <span style="color:#273D56">DraftPost</span> and <span style="color:#273D56">PendingReviewPost</span> instances and transforming them into a <span style="color:#273D56">PendingReviewPost</span> and a published <span style="color:#273D56">Post</span>, respectively. So no <span style="color:#273D56">DraftPost</span> instances linger after we’ve called <span style="color:#273D56">request_review</span> on them, and so forth.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">PendingReviewPost</span> has no <span style="color:#273D56">content</span> method, so attempting to read its content is a compiler error, as with <span style="color:#273D56">DraftPost</span>. The only way to get a published <span style="color:#273D56">Post</span> — which does have <span style="color:#273D56">content</span> — is to call <span style="color:#273D56">approve</span> on a <span style="color:#273D56">PendingReviewPost</span>, and the only way to get a <span style="color:#273D56">PendingReviewPost</span> is to call <span style="color:#273D56">request_review</span> on a <span style="color:#273D56">DraftPost</span>. We’ve now encoded the blog post workflow into the type system.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">main</span> needs small changes too. <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> return new instances rather than modifying the struct they’re called on, so we add more <span style="color:#273D56">let post =</span> shadowing assignments to save the returned instances. We also can’t — and needn’t — assert that draft and pending posts’ contents are empty strings: code that tries to use the content of posts in those states no longer compiles.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-57">
+<section id="s56" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The updated main</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.21:</b></span> Modifications to <span style="color:#273D56">main</span> to use the new implementation of the blog post workflow — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use blog::Post;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut post = Post::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;post.add_text("I ate a salad for lunch today");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let post = post.request_review();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let post = post.approve();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!("I ate a salad for lunch today", post.content());</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Each <span style="color:#273D56">let post =</span> binds the value returned by the transition to a new <span style="color:#273D56">post</span> of a different type: <span style="color:#273D56">DraftPost</span>, then <span style="color:#273D56">PendingReviewPost</span>, then <span style="color:#273D56">Post</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">57</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-58">
+<section id="s57" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Trading encapsulation for compile-time guarantees</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Reassigning <span style="color:#273D56">post</span> in <span style="color:#273D56">main</span> means this implementation doesn’t quite follow the object-oriented state pattern anymore: the transformations between the states are no longer encapsulated entirely within the <span style="color:#273D56">Post</span> implementation. However, invalid states are now impossible because of the type system and the type checking that happens at compile time! Certain bugs, such as displaying the content of an unpublished post, are discovered before they make it to production.</p>
+<p style="font-size:30px;line-height:1.45">Try the tasks suggested earlier (Example 18.12) on the <span style="color:#273D56">blog</span> crate as it is after Listing 18.21 to see what you think about this version’s design. Some of the tasks might be completed already in this design.</p>
+<p style="font-size:30px;line-height:1.45">Even though Rust is capable of implementing object-oriented design patterns, other patterns, such as encoding state into the type system, are also available, with different trade-offs. You might be very familiar with object-oriented patterns, but rethinking the problem to take advantage of Rust’s features can provide benefits, such as preventing some bugs at compile time. Object-oriented patterns won’t always be the best solution in Rust, due to features like ownership that object-oriented languages don’t have.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">58</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-59">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Regardless of whether you think Rust is an object-oriented language after reading this chapter, you now know that:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>you can use trait objects to get some object-oriented features in Rust;</li>
+<li>dynamic dispatch can give your code some flexibility in exchange for a bit of runtime performance;</li>
+<li>you can use this flexibility to implement object-oriented patterns that can help your code’s maintainability;</li>
+<li>Rust also has other features, like ownership, that object-oriented languages don’t have.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">An object-oriented pattern won’t always be the best way to take advantage of Rust’s strengths, but it is an available option.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 19 looks at patterns, another of Rust’s features that enable lots of flexibility. We’ve seen them briefly throughout the book but haven’t yet seen their full capability.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">59</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

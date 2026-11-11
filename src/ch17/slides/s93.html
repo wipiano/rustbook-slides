@@ -1,0 +1,22 @@
+<section id="s93" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A type annotation on self, and the Pin wrapper</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A type annotation for <span style="color:#273D56">self</span> works like type annotations for other function parameters, with two key differences:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>it tells Rust what type <span style="color:#273D56">self</span> must be for the method to be called;</li>
+<li>it can’t be just any type: it’s restricted to the type on which the method is implemented, a reference or smart pointer to that type, or a <span style="color:#273D56">Pin</span> wrapping a reference to that type.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">More on this syntax in Chapter 18. For now: to poll a future to check whether it is <span style="color:#273D56">Pending</span> or <span style="color:#273D56">Ready(Output)</span>, we need a <span style="color:#273D56">Pin</span>-wrapped mutable reference to the type.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.19 (Pin).</b></span> A wrapper for pointer-like types such as <span style="color:#273D56">&amp;</span>, <span style="color:#273D56">&amp;mut</span>, <span style="color:#273D56">Box</span>, and <span style="color:#273D56">Rc</span>. (Technically, <span style="color:#273D56">Pin</span> works with types that implement <span style="color:#273D56">Deref</span> or <span style="color:#273D56">DerefMut</span>, which is effectively equivalent to working only with references and smart pointers.)</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Pin</span> is not a pointer itself and doesn’t have any behavior of its own, like <span style="color:#273D56">Rc</span> and <span style="color:#273D56">Arc</span> do with reference counting; it’s purely a tool the compiler can use to enforce constraints on pointer usage.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">94</p>
+</div>
+</section>

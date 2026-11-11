@@ -1,0 +1,23 @@
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.2 References and Borrowing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the restriction: preventing data races</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error says that this code is invalid because we cannot borrow <span style="color:#273D56">s</span> as mutable more than once at a time. The first mutable borrow is in <span style="color:#273D56">r1</span> and must last until it’s used in the <span style="color:#273D56">println!</span>, but between the creation of that mutable reference and its usage, we tried to create another mutable reference in <span style="color:#273D56">r2</span> that borrows the same data as <span style="color:#273D56">r1</span>.</p>
+<p style="font-size:30px;line-height:1.45">Preventing multiple mutable references to the same data at the same time allows mutation, but in a very controlled fashion. New Rustaceans struggle with it, because most languages let you mutate whenever you’d like. The benefit is that Rust can prevent data races at compile time.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 4.11 (Data race).</b></span> Similar to a race condition; it happens when these three behaviors occur:</p>
+<ul style="font-size:26px;line-height:1.45">
+<li>Two or more pointers access the same data at the same time.</li>
+<li>At least one of the pointers is being used to write to the data.</li>
+<li>There’s no mechanism being used to synchronize access to the data.</li>
+</ul>
+</div>
+<p style="font-size:30px;line-height:1.45">Data races cause undefined behavior and can be difficult to diagnose and fix when you’re trying to track them down at runtime; Rust prevents this problem by refusing to compile code with data races!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>

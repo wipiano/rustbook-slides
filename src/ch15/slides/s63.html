@@ -1,0 +1,15 @@
+<section id="s63" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.5 RefCell&lt;T&gt; and the Interior Mutability Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What we want to test, and the mock we need</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The other important part: we want to test the behavior of <span style="color:#273D56">set_value</span> on <span style="color:#273D56">LimitTracker</span>. We can change what we pass in for the <span style="color:#273D56">value</span> parameter, but <span style="color:#273D56">set_value</span> doesn’t return anything for us to make assertions on. We want to be able to say: if we create a <span style="color:#273D56">LimitTracker</span> with something that implements <span style="color:#273D56">Messenger</span> and a particular value for <span style="color:#273D56">max</span>, the messenger is told to send the appropriate messages when we pass different numbers for <span style="color:#273D56">value</span>.</p>
+<p style="font-size:30px;line-height:1.45">We need a mock object that, instead of sending an email or text message when we call <span style="color:#273D56">send</span>, only keeps track of the messages it’s told to send. Then we can create a new mock object, create a <span style="color:#273D56">LimitTracker</span> that uses it, call <span style="color:#273D56">set_value</span> on the <span style="color:#273D56">LimitTracker</span>, and check that the mock object has the messages we expect.</p>
+<p style="font-size:30px;line-height:1.45">Listing 15.21 attempts to implement such a mock object — but the borrow checker won’t allow it.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">64</p>
+</div>
+</section>

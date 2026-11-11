@@ -1,0 +1,20 @@
+<section id="s69" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building our own async abstraction: timeout</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can also compose futures together to create new patterns. For example, we can build a <span style="color:#273D56">timeout</span> function with async building blocks we already have. The result will be another building block we could use to create still more async abstractions. Listing 17.18 (next slide) shows how we would expect this <span style="color:#273D56">timeout</span> to work with a slow future.</p>
+<p style="font-size:30px;line-height:1.45">To implement it, first think about the API for <span style="color:#273D56">timeout</span>:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>It needs to be an async function itself so we can await it.</li>
+<li>Its first parameter should be a future to run. We can make it generic to allow it to work with any future.</li>
+<li>Its second parameter will be the maximum time to wait. If we use a <span style="color:#273D56">Duration</span>, that will make it easy to pass along to <span style="color:#273D56">trpl::sleep</span>.</li>
+<li>It should return a <span style="color:#273D56">Result</span>. If the future completes successfully, the <span style="color:#273D56">Result</span> will be <span style="color:#273D56">Ok</span> with the value produced by the future. If the timeout elapses first, the <span style="color:#273D56">Result</span> will be <span style="color:#273D56">Err</span> with the duration that the timeout waited for.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">70</p>
+</div>
+</section>

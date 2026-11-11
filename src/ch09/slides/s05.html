@@ -1,0 +1,24 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A panic from a library: indexing past the end</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can use the backtrace of the functions the <span style="color:#273D56">panic!</span> call came from to figure out the part of our code causing the problem. To see how, look at an example where a <span style="color:#273D56">panic!</span> call comes from a library because of a bug in our code, instead of from our code calling the macro directly. Listing 9.1 tries to access an index in a vector beyond the range of valid indexes.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.1:</b></span> Attempting to access an element beyond the end of a vector, which will cause a call to <span style="color:#273D56">panic!</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec![1, 2, 3];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v[99];</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Here we’re attempting to access the 100th element of our vector (at index 99, because indexing starts at zero), but the vector has only three elements. In this situation, Rust will panic. Using <span style="color:#273D56">[]</span> is supposed to return an element, but if you pass an invalid index, there’s no element that Rust could return here that would be correct.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s56" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.2 Applying Concurrency with Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Joining a number of futures with the join! macro</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First, we clone <span style="color:#273D56">tx</span>, creating <span style="color:#273D56">tx1</span> outside the first async block, and move <span style="color:#273D56">tx1</span> into that block just as we did before with <span style="color:#273D56">tx</span>. Later, we move the original <span style="color:#273D56">tx</span> into a <i>new</i> async block, where we send more messages on a slightly slower delay. We happen to put this new block after the receiving block, but it could go before it just as well. The key is the order in which the futures are awaited, not the order in which they’re created.</p>
+<p style="font-size:30px;line-height:1.45">Both sending blocks need to be <span style="color:#273D56">async move</span> blocks, so that both <span style="color:#273D56">tx</span> and <span style="color:#273D56">tx1</span> get dropped when those blocks finish. Otherwise, we’ll end up back in the same infinite loop we started out in.</p>
+<p style="font-size:30px;line-height:1.45">Finally, we switch from <span style="color:#273D56">trpl::join</span> to <span style="color:#273D56">trpl::join!</span> to handle the additional future: the <span style="color:#273D56">join!</span> macro awaits an arbitrary number of futures where we know the number of futures at compile time. Awaiting a collection of an <i>unknown</i> number of futures comes later in this chapter.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">57</p>
+</div>
+</section>

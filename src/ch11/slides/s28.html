@@ -1,0 +1,19 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Left and right, and when to use assert_ne!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Argument order does not matter</h3>
+<p style="font-size:30px;line-height:1.45">In some languages and test frameworks, the parameters to equality assertion functions are called <span style="color:#273D56">expected</span> and <span style="color:#273D56">actual</span>, and the order in which we specify the arguments matters. In Rust, they’re called <span style="color:#273D56">left</span> and <span style="color:#273D56">right</span>, and the order of the expected value and the value the code produces doesn’t matter. We could write <span style="color:#273D56">assert_eq!(4, result)</span>, which would give the same failure message, <span style="color:#273D56">assertion `left == right` failed</span>.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">assert_ne!</h3>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">assert_ne!</span> passes if the two values we give it are not equal and fails if they are equal. It is most useful when we’re not sure what a value <i>will</i> be, but we know what it definitely <i>shouldn’t</i> be.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 11.5.</b> We test a function that is guaranteed to change its input in some way, but how the input changes depends on the day of the week we run our tests. The best thing to assert might be that the function’s output is not equal to its input.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

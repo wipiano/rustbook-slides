@@ -1,0 +1,24 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">let...else: bind in the outer scope or leave</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To make this common pattern nicer to express, Rust has <span style="color:#273D56">let...else</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.12 (let...else).</b></span> A statement that takes a pattern on the left side and an expression on the right, very similar to <span style="color:#273D56">if let</span>, but with no <span style="color:#273D56">if</span> branch, only an <span style="color:#273D56">else</span> branch. If the pattern matches, it binds the value from the pattern in the outer scope. If the pattern does <i>not</i> match, the program flows into the <span style="color:#273D56">else</span> arm, which must return from the function.</p>
+</div>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 6.1:</b></span> The three ways of matching seen in this chapter</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:24%">Construct</th><th style="width:38%">When the pattern matches</th><th style="width:38%">When it does not match</th></tr>
+<tr><td>match</td><td>Runs the matching arm</td><td>Tries the next arm; every case must be covered</td></tr>
+<tr><td>if let</td><td>Runs the block; bindings live inside it</td><td>Runs the else block, if any</td></tr>
+<tr><td>let...else</td><td>Binds in the outer scope; code continues</td><td>Runs else, which must return</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Listing 6.9, on the next slide, shows how Listing 6.8 looks when using <span style="color:#273D56">let...else</span> in place of <span style="color:#273D56">if let</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

@@ -1,0 +1,23 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Splitting code into a library crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Our <span style="color:#273D56">minigrep</span> project is looking good so far! Now we split <i>src/main.rs</i> and put some code into <i>src/lib.rs</i>. That way, we can test the code and have a <i>src/main.rs</i> file with fewer responsibilities.</p>
+<p style="font-size:30px;line-height:1.45">We define the code responsible for searching text in <i>src/lib.rs</i> rather than <i>src/main.rs</i>, which lets us (or anyone else using our <span style="color:#273D56">minigrep</span> library) call the searching function from more contexts than our <span style="color:#273D56">minigrep</span> binary. First, we define the <span style="color:#273D56">search</span> function signature, with a body that calls the <span style="color:#273D56">unimplemented!</span> macro; the signature is explained when we fill in the implementation.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 12.13:</b></span> Defining the <span style="color:#273D56">search</span> function in <i>src/lib.rs</i> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn search&lt;'a&gt;(query: &amp;str, contents: &amp;'a str) -&gt; Vec&lt;&amp;'a str&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;unimplemented!();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">pub</span> keyword designates <span style="color:#273D56">search</span> as part of our library crate’s public API. We now have a library crate that we can use from our binary crate and that we can test!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

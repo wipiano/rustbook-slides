@@ -1,0 +1,33 @@
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Underscores in one or several places</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 19.18 prints <span style="color:#273D56">Can't overwrite an existing customized value</span> and then <span style="color:#273D56">setting is Some(5)</span>. The first arm doesn’t use the values inside either <span style="color:#273D56">Some</span>, but tests for both being <span style="color:#273D56">Some</span>; then it prints why <span style="color:#273D56">setting_value</span> isn’t changed. In all other cases (either is <span style="color:#273D56">None</span>), the second arm’s <span style="color:#273D56">_</span> lets <span style="color:#273D56">new_setting_value</span> become <span style="color:#273D56">setting_value</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.19:</b></span> Ignoring multiple parts of a tuple</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let numbers = (2, 4, 8, 16, 32);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match numbers {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(first, _, third, _, fifth) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Some numbers: {first}, {third}, {fifth}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We can also use underscores in multiple places within one pattern to ignore particular values. Listing 19.19 ignores the second and fourth values in a tuple of five items.</p>
+<p style="font-size:30px;line-height:1.45">It prints <span style="color:#273D56">Some numbers: 2, 8, 32</span>; the values <span style="color:#273D56">4</span> and <span style="color:#273D56">16</span> are ignored.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>

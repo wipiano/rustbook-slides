@@ -1,0 +1,19 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Cargo.lock and updating a crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>On the first build, Cargo figures out all the versions of the dependencies that fit the criteria and writes them to the <i>Cargo.lock</i> file.</li>
+<li>On later builds, Cargo sees that <i>Cargo.lock</i> exists and uses the versions specified there rather than figuring out versions again. This gives you a reproducible build automatically: the project stays at 0.10.1 until you explicitly upgrade.</li>
+<li>Because <i>Cargo.lock</i> is important for reproducible builds, it’s often checked into source control with the rest of the code in your project.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Updating a crate to get a new version</h3>
+<p style="font-size:30px;line-height:1.45">When you <i>do</i> want to update a crate, Cargo provides the command <span style="color:#273D56">update</span>. It ignores the <i>Cargo.lock</i> file, figures out all the latest versions that fit your specifications in <i>Cargo.toml</i>, and writes those versions to <i>Cargo.lock</i>. By default, Cargo only looks for versions greater than 0.10.1 and less than 0.11.0. If the <span style="color:#273D56">rand</span> crate has released the two new versions 0.10.2 and 0.999.0, running <span style="color:#273D56">cargo update</span> shows what follows on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

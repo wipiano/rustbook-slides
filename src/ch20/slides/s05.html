@@ -1,0 +1,29 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating raw pointers in safe code</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 20.1 creates an immutable and a mutable raw pointer.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.1:</b></span> Creating raw pointers with the raw borrow operators</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut num = 5;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let r1 = &amp;raw const num;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let r2 = &amp;raw mut num;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>There is no <span style="color:#273D56">unsafe</span> keyword here. We can create raw pointers in safe code; we just can’t dereference raw pointers outside an unsafe block, as you’ll see in a bit.</li>
+<li>The raw borrow operators: <span style="color:#273D56">&amp;raw const num</span> creates a <span style="color:#273D56">*const i32</span> immutable raw pointer, and <span style="color:#273D56">&amp;raw mut num</span> creates a <span style="color:#273D56">*mut i32</span> mutable raw pointer.</li>
+<li>Because we created them directly from a local variable, we know these particular raw pointers are valid — but we can’t make that assumption about just any raw pointer.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

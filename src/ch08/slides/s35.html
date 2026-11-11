@@ -1,0 +1,19 @@
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling the complexities of strings</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Be sure to remember that valid Unicode scalar values may be made up of more than 1 byte.</li>
+<li>Getting grapheme clusters from strings, as with the Devanagari script, is complex, so the standard library does not provide this functionality. Crates are available on crates.io if you need it.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To summarize, strings are complicated. Different programming languages make different choices about how to present this complexity to the programmer. Rust has chosen to make the correct handling of <span style="color:#273D56">String</span> data the default behavior for all Rust programs, which means programmers have to put more thought into handling UTF-8 data up front.</p>
+<p style="font-size:30px;line-height:1.45">This trade-off exposes more of the complexity of strings than is apparent in other programming languages, but it prevents you from having to handle errors involving non-ASCII characters later in your development life cycle.</p>
+<p style="font-size:30px;line-height:1.45">The good news: the standard library offers a lot of functionality built off the <span style="color:#273D56">String</span> and <span style="color:#273D56">&amp;str</span> types to handle these complex situations correctly. Check the documentation for useful methods like <span style="color:#273D56">contains</span>, for searching in a string, and <span style="color:#273D56">replace</span>, for substituting parts of a string with another string. Next, something a bit less complex: hash maps!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>

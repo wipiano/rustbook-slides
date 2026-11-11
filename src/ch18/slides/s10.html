@@ -1,0 +1,18 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">From a Component base class to a Draw trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In a language with inheritance, we might define a class <span style="color:#273D56">Component</span> with a method <span style="color:#273D56">draw</span>. Other classes such as <span style="color:#273D56">Button</span>, <span style="color:#273D56">Image</span>, and <span style="color:#273D56">SelectBox</span> would inherit from <span style="color:#273D56">Component</span> and thus inherit <span style="color:#273D56">draw</span>. Each could override <span style="color:#273D56">draw</span> with custom behavior, while the framework treats all of them as <span style="color:#273D56">Component</span> instances and calls <span style="color:#273D56">draw</span> on them. Rust has no inheritance, so <span style="color:#273D56">gui</span> needs another structure that lets users create new compatible types.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Defining a trait for common behavior</h3>
+<p style="font-size:30px;line-height:1.45">We’ll define a trait named <span style="color:#273D56">Draw</span> with one method named <span style="color:#273D56">draw</span>. Then we can define a vector that takes a trait object.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.6 (Trait object).</b></span> A value that points to both an instance of a type implementing a specified trait and a table used to look up trait methods on that type at runtime. It is written as some sort of pointer (a reference or a <span style="color:#273D56">Box&lt;T&gt;</span> smart pointer), then the <span style="color:#273D56">dyn</span> keyword, then the trait — e.g. <span style="color:#273D56">Box&lt;dyn Draw&gt;</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

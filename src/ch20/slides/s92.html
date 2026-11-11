@@ -1,0 +1,19 @@
+<section id="s92" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">TokenStream in, TokenStream out</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The function that defines a procedural macro takes a <span style="color:#273D56">TokenStream</span> as an input and produces a <span style="color:#273D56">TokenStream</span> as an output.</li>
+<li>The <span style="color:#273D56">TokenStream</span> type is defined by the <span style="color:#273D56">proc_macro</span> crate that is included with Rust, and represents a sequence of tokens.</li>
+<li>This is the core of the macro: the source code that the macro is operating on makes up the input <span style="color:#273D56">TokenStream</span>, and the code the macro produces is the output <span style="color:#273D56">TokenStream</span>.</li>
+<li>The function also has an attribute attached to it that specifies which kind of procedural macro we’re creating. We can have multiple kinds of procedural macros in the same crate.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Next: a custom <span style="color:#273D56">derive</span> macro, then the small dissimilarities that make the other forms different.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">93</p>
+</div>
+</section>

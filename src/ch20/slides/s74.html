@@ -1,0 +1,18 @@
+<section id="s74" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.4 Advanced Functions and Closures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Function pointers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This section explores some advanced features related to functions and closures: function pointers and returning closures.</p>
+<p style="font-size:30px;line-height:1.45">We’ve passed closures to functions; you can also pass regular functions to functions! This is useful when you want to pass a function you’ve already defined rather than defining a new closure.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.24 (Function pointer).</b></span> The type <span style="color:#273D56">fn</span> (with a lowercase <i>f</i>) that functions coerce to — not to be confused with the <span style="color:#273D56">Fn</span> closure trait. Passing functions with function pointers lets you use functions as arguments to other functions.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The syntax for a parameter that is a function pointer is similar to that of closures. In Listing 20.28, <span style="color:#273D56">add_one</span> adds 1 to its parameter. <span style="color:#273D56">do_twice</span> takes two parameters: a function pointer to any function that takes an <span style="color:#273D56">i32</span> parameter and returns an <span style="color:#273D56">i32</span>, and one <span style="color:#273D56">i32</span> value. It calls <span style="color:#273D56">f</span> twice, passing it <span style="color:#273D56">arg</span>, then adds the two results together. <span style="color:#273D56">main</span> calls <span style="color:#273D56">do_twice</span> with the arguments <span style="color:#273D56">add_one</span> and <span style="color:#273D56">5</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">75</p>
+</div>
+</section>

@@ -1,0 +1,22 @@
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The value getter and the private field</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next, we implement a method named <span style="color:#273D56">value</span> that borrows <span style="color:#273D56">self</span>, doesn’t have any other parameters, and returns an <span style="color:#273D56">i32</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.16 (Getter).</b></span> A method whose purpose is to get some data from its fields and return it.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>This public method is necessary because the <span style="color:#273D56">value</span> field of the <span style="color:#273D56">Guess</span> struct is private.</li>
+<li>It’s important that the field be private, so that code using the <span style="color:#273D56">Guess</span> struct is not allowed to set <span style="color:#273D56">value</span> directly: code outside the <span style="color:#273D56">guessing_game</span> module <i>must</i> use <span style="color:#273D56">Guess::new</span> to create an instance of <span style="color:#273D56">Guess</span>.</li>
+<li>That ensures there’s no way for a <span style="color:#273D56">Guess</span> to have a <span style="color:#273D56">value</span> that hasn’t been checked by the conditions in <span style="color:#273D56">Guess::new</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">A function that has a parameter or returns only numbers between 1 and 100 could then declare in its signature that it takes or returns a <span style="color:#273D56">Guess</span> rather than an <span style="color:#273D56">i32</span>, and wouldn’t need to do any additional checks in its body.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>

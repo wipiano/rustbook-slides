@@ -1,0 +1,24 @@
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining strings: str and String</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First, what we mean by the term <i>string</i>. Rust has only one string type in the core language: the string slice <span style="color:#273D56">str</span>, usually seen in its borrowed form, <span style="color:#273D56">&amp;str</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.4 (String slice).</b></span> <span style="color:#273D56">str</span> / <span style="color:#273D56">&amp;str</span>: a reference to some UTF-8 encoded string data stored elsewhere (Chapter 4). String literals, for example, are stored in the program’s binary and are therefore string slices.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.5 (String).</b></span> <span style="color:#273D56">String</span>: a growable, mutable, owned, UTF-8 encoded string type, provided by Rust’s standard library rather than coded into the core language.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>When Rustaceans refer to “strings” in Rust, they might mean either the <span style="color:#273D56">String</span> or the string slice <span style="color:#273D56">&amp;str</span> type, not just one of them.</li>
+<li>This section is largely about <span style="color:#273D56">String</span>, but both types are used heavily in Rust’s standard library.</li>
+<li>Both <span style="color:#273D56">String</span> and string slices are UTF-8 encoded.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.1 Futures and the Async Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Awaiting get and text: futures are lazy</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We mark <span style="color:#273D56">page_title</span> with the <span style="color:#273D56">async</span> keyword. We use <span style="color:#273D56">trpl::get</span> to fetch whatever URL is passed in and add <span style="color:#273D56">await</span> to await the response. To get the text of the <span style="color:#273D56">response</span>, we call its <span style="color:#273D56">text</span> method and once again await it. Both steps are asynchronous:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>for <span style="color:#273D56">get</span>, we wait for the server to send back the first part of its response, which includes HTTP headers, cookies, and so on and can be delivered separately from the response body;</li>
+<li>especially if the body is very large, it can take some time for it all to arrive; because we have to wait for the <i>entirety</i> of the response, <span style="color:#273D56">text</span> is also async.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We have to explicitly await both futures, because futures in Rust are <i>lazy</i>: they don’t do anything until you ask them to with <span style="color:#273D56">await</span>. (Rust even shows a compiler warning if you don’t use a future.) This mirrors iterators (Chapter 13), which do nothing unless you call their <span style="color:#273D56">next</span> method — directly, or via <span style="color:#273D56">for</span> loops or methods such as <span style="color:#273D56">map</span> that use <span style="color:#273D56">next</span> under the hood. This laziness allows Rust to avoid running async code until it’s actually needed.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

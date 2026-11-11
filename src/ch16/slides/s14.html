@@ -1,0 +1,19 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.1 Using Threads to Run Code Simultaneously</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using move closures with threads</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We’ll often use the <span style="color:#273D56">move</span> keyword with closures passed to <span style="color:#273D56">thread::spawn</span>, because the closure then takes ownership of the values it uses from the environment, thus transferring ownership of those values from one thread to another.</p>
+<p style="font-size:30px;line-height:1.45">Chapter 13 (“Capturing References or Moving Ownership”) discussed <span style="color:#273D56">move</span> in the context of closures. Here the focus is on the interaction between <span style="color:#273D56">move</span> and <span style="color:#273D56">thread::spawn</span>.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In Listing 16.1, the closure passed to <span style="color:#273D56">thread::spawn</span> takes no arguments: the spawned thread’s code uses no data from the main thread.</li>
+<li>To use data from the main thread in the spawned thread, the spawned thread’s closure must <i>capture</i> the values it needs.</li>
+<li>Listing 16.3 (next slide) attempts to create a vector in the main thread and use it in the spawned thread. However, this won’t work yet, as you’ll see in a moment.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

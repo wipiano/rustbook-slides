@@ -1,0 +1,29 @@
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.2 Transfer Data Between Threads with Message Passing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0382: borrow of moved value val</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 16.9 prints <span style="color:#273D56">val</span> after <span style="color:#273D56">tx.send</span>. A bad idea: once sent, the other thread could modify or drop the value before we use it again, causing errors or unexpected results from inconsistent or nonexistent data. Rust refuses to compile it:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling message-passing v0.1.0 (file:///projects/message-passing)</p>
+<p style="white-space:nowrap">error[E0382]: borrow of moved value: `val`</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:10:27</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;8 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let val = String::from("hi");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--- move occurs because `val` has type `String`, which does not implement the `Copy` trait</p>
+<p style="white-space:nowrap">&#160;9 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tx.send(val).unwrap();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--- value moved here</p>
+<p style="white-space:nowrap">10 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("val is {val}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^ value borrowed here after move</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0382`.</p>
+<p style="white-space:nowrap">error: could not compile `message-passing` (bin "message-passing") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>

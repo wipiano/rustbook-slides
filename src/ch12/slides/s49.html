@@ -1,0 +1,25 @@
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.4 Adding Functionality with Test-Driven Development</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What the test checks, and just enough code</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The test searches for the string <span style="color:#273D56">"duct"</span>. The text searched is three lines, only one of which contains <span style="color:#273D56">"duct"</span>; we assert that <span style="color:#273D56">search</span> returns only the line we expect.</li>
+<li>The backslash after the opening double quote tells Rust not to put a newline character at the beginning of the contents of this string literal.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Run now, the test fails because <span style="color:#273D56">unimplemented!</span> panics with the message “not implemented”. Following TDD, we take a small step: just enough code that calling the function won’t panic, by always returning an empty vector. The test should then compile and fail, because an empty vector doesn’t match a vector containing the line <span style="color:#273D56">"safe, fast, productive."</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 12.16:</b></span> Defining just enough of the <span style="color:#273D56">search</span> function so that calling it won’t panic (the <span style="color:#273D56">tests</span> module is unchanged) — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn search&lt;'a&gt;(query: &amp;str, contents: &amp;'a str) -&gt; Vec&lt;&amp;'a str&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;vec![]</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>

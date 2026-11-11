@@ -1,0 +1,20 @@
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The caller decides</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The code that calls <span style="color:#273D56">read_username_from_file</span> will then handle getting either an <span style="color:#273D56">Ok</span> value that contains a username or an <span style="color:#273D56">Err</span> value that contains an <span style="color:#273D56">io::Error</span>. It’s up to the calling code to decide what to do with those values. If it gets an <span style="color:#273D56">Err</span> value, it could, for example:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>call <span style="color:#273D56">panic!</span> and crash the program,</li>
+<li>use a default username, or</li>
+<li>look up the username from somewhere other than a file.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We don’t have enough information on what the calling code is actually trying to do, so we propagate all the success or error information upward for it to handle appropriately.</p>
+<p style="font-size:30px;line-height:1.45">This pattern of propagating errors is so common in Rust that Rust provides the question mark operator <span style="color:#273D56">?</span> to make it easier.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>

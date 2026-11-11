@@ -1,0 +1,24 @@
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The module body moves to src/front_of_house.rs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next, place the code that was in the curly brackets into a new file named <i>src/front_of_house.rs</i>. The compiler knows to look in this file because it came across the module declaration in the crate root with the name <span style="color:#273D56">front_of_house</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.22:</b></span> Definitions inside the <span style="color:#273D56">front_of_house</span> module in <i>src/front_of_house.rs</i> — <i>src/front_of_house.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> You only need to load a file using a <span style="color:#273D56">mod</span> declaration <i>once</i> in your module tree. Once the compiler knows the file is part of the project (and where in the module tree the code resides, because of where you put the <span style="color:#273D56">mod</span> statement), other files should refer to the loaded file’s code using a path to where it was declared (7.3). In other words, <span style="color:#273D56">mod</span> is <i>not</i> an “include” operation that you may have seen in other programming languages.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>

@@ -1,0 +1,25 @@
+<section id="s59" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.3 Improving Our I/O Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">search with filter and collect</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 13.22:</b></span> Using iterator adapter methods in the implementation of the <span style="color:#273D56">search</span> function — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn search&lt;'a&gt;(query: &amp;str, contents: &amp;'a str) -&gt; Vec&lt;&amp;'a str&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;contents</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.lines()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.filter(|line| line.contains(query))</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.collect()</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The purpose of <span style="color:#273D56">search</span> is to return all lines in <span style="color:#273D56">contents</span> that contain the <span style="color:#273D56">query</span>. Similar to the <span style="color:#273D56">filter</span> example in Listing 13.16, this code uses the <span style="color:#273D56">filter</span> adapter to keep only the lines for which <span style="color:#273D56">line.contains(query)</span> returns <span style="color:#273D56">true</span>. We then collect the matching lines into another vector with <span style="color:#273D56">collect</span>. Much simpler!</p>
+<p style="font-size:30px;line-height:1.45">Feel free to make the same change to use iterator methods in the <span style="color:#273D56">search_case_insensitive</span> function as well.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">60</p>
+</div>
+</section>

@@ -1,0 +1,26 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Same module tree, different files</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We’ve moved each module’s code to a separate file, and the module tree remains the same. The function calls in <span style="color:#273D56">eat_at_restaurant</span> work without any modification, even though the definitions live in different files. This technique lets you move modules to new files as they grow in size.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">pub use crate::front_of_house::hosting</span> statement in <i>src/lib.rs</i> hasn’t changed either, and <span style="color:#273D56">use</span> has no impact on what files are compiled as part of the crate. The <span style="color:#273D56">mod</span> keyword declares modules, and Rust looks in a file with the same name as the module for the code that goes into that module.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">The <i>restaurant</i> crate’s source files after the extraction</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">src</p>
+<p style="white-space:nowrap">├── front_of_house</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;└── hosting.rs</p>
+<p style="white-space:nowrap">├── front_of_house.rs</p>
+<p style="white-space:nowrap">└── lib.rs</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

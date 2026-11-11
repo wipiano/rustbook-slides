@@ -1,0 +1,24 @@
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using Box&lt;T&gt; like a reference</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rewriting Listing 15.6 to use a <span style="color:#273D56">Box&lt;T&gt;</span> instead of a reference: the dereference operator on the box works the same way as on the reference.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.7:</b></span> Using the dereference operator on a <span style="color:#273D56">Box&lt;i32&gt;</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = Box::new(x);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(5, x);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(5, *y);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The main difference from Listing 15.6: <span style="color:#273D56">y</span> is now an instance of a box pointing to a copied value of <span style="color:#273D56">x</span>, rather than a reference pointing to the value of <span style="color:#273D56">x</span>. In the last assertion we use the dereference operator to follow the box’s pointer in the same way we did when <span style="color:#273D56">y</span> was a reference. Next: what is special about <span style="color:#273D56">Box&lt;T&gt;</span> that enables this, by defining our own box type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>

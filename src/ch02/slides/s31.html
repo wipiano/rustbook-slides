@@ -1,0 +1,31 @@
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the types don’t match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The core of the error states that there are <i>mismatched types</i>. Rust has a strong, static type system. However, it also has type inference.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.13 (Type inference).</b></span> Rust working out a type you didn’t write. From <span style="color:#273D56">let mut guess = String::new()</span>, Rust inferred that <span style="color:#273D56">guess</span> should be a <span style="color:#273D56">String</span> and didn’t make us write the type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">secret_number</span>, on the other hand, is a number type.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 2.1:</b></span> A few of Rust’s number types that can hold a value between 1 and 100</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Type</th><th style="width:70%">Description</th></tr>
+<tr><td>i32</td><td>a 32-bit number</td></tr>
+<tr><td>u32</td><td>an unsigned 32-bit number</td></tr>
+<tr><td>i64</td><td>a 64-bit number</td></tr>
+</table>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">There are others as well. Unless otherwise specified, Rust defaults to an <span style="color:#273D56">i32</span>, which is the type of <span style="color:#273D56">secret_number</span> unless you add type information elsewhere that would cause Rust to infer a different numerical type. The reason for the error is that Rust cannot compare a string and a number type.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.2 Applying Concurrency with Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Receiving an unknown number of messages: while let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Listing 16-10 we used a <span style="color:#273D56">for</span> loop to process all the items received from a synchronous channel. Rust doesn’t yet have a way to use a <span style="color:#273D56">for</span> loop with an <i>asynchronously produced</i> series of items, so we use the <span style="color:#273D56">while let</span> conditional loop — the loop version of the <span style="color:#273D56">if let</span> construct from Chapter 6. The loop continues executing as long as the pattern it specifies continues to match the value.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">rx.recv</span> call produces a future, which we await. The runtime pauses the future until it is ready. Once a message arrives, the future resolves to <span style="color:#273D56">Some(message)</span>, as many times as a message arrives. When the channel closes, regardless of whether <i>any</i> messages have arrived, the future instead resolves to <span style="color:#273D56">None</span>: there are no more values, so we should stop polling — that is, stop awaiting.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">while let</span> loop pulls this together. If <span style="color:#273D56">rx.recv().await</span> gives <span style="color:#273D56">Some(message)</span>, we can use the message in the loop body, just as with <span style="color:#273D56">if let</span>. If the result is <span style="color:#273D56">None</span>, the loop ends. Every time the loop completes, it hits the await point again, so the runtime pauses it again until another message arrives.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>

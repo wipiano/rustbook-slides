@@ -1,0 +1,19 @@
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using nightly for one project: rustup override</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As the list shows, the stable toolchain is the default. Most Rust users use stable most of the time. You might want to use stable most of the time but use nightly on a specific project, because you care about a cutting-edge feature.</p>
+<p style="font-size:30px;line-height:1.45">To do so, use <span style="color:#273D56">rustup override</span> in that project’s directory to set the nightly toolchain as the one <span style="color:#273D56">rustup</span> should use when you’re in that directory:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cd ~/projects/needs-nightly</p>
+<p style="white-space:nowrap">$ rustup override set nightly</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now, every time you call <span style="color:#273D56">rustc</span> or <span style="color:#273D56">cargo</span> inside <i>~/projects/needs-nightly</i>, <span style="color:#273D56">rustup</span> makes sure that you are using nightly Rust rather than your default of stable Rust. This comes in handy when you have a lot of Rust projects!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>

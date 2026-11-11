@@ -1,0 +1,32 @@
+<section id="s60" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Type synonyms and type aliases</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.18 (Type alias).</b></span> Another name for an existing type, declared with the <span style="color:#273D56">type</span> keyword. The alias is a <i>synonym</i>, not a separate, new type.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">The alias <span style="color:#273D56">Kilometers</span> to <span style="color:#273D56">i32</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">type Kilometers = i32;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let x: i32 = 5;</p>
+<p style="white-space:nowrap">let y: Kilometers = 5;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">println!("x + y = {}", x + y);</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">Unlike the <span style="color:#273D56">Millimeters</span> and <span style="color:#273D56">Meters</span> types of Listing 20.16, <span style="color:#273D56">Kilometers</span> is not a separate, new type: values of type <span style="color:#273D56">Kilometers</span> are treated the same as values of type <span style="color:#273D56">i32</span>.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Because <span style="color:#273D56">Kilometers</span> and <span style="color:#273D56">i32</span> are the same type, we can add values of both types and pass <span style="color:#273D56">Kilometers</span> values to functions that take <span style="color:#273D56">i32</span> parameters. But we don’t get the type-checking benefits of the newtype pattern: if we mix up <span style="color:#273D56">Kilometers</span> and <span style="color:#273D56">i32</span> values somewhere, the compiler will not give us an error.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">61</p>
+</div>
+</section>

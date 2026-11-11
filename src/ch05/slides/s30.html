@@ -1,0 +1,41 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using dbg! on a field value and on the struct</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)]</p>
+<p style="white-space:nowrap">struct Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let scale = 2;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: dbg!(30 * scale),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;dbg!(&amp;rect1);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Here (left) we want to see the value assigned to the <span style="color:#273D56">width</span> field, as well as the whole struct in <span style="color:#273D56">rect1</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Calling <span style="color:#273D56">dbg!</span> prints to the standard error console stream (<span style="color:#273D56">stderr</span>), as opposed to <span style="color:#273D56">println!</span>, which prints to the standard output console stream (<span style="color:#273D56">stdout</span>). More on both in “Redirecting Errors to Standard Error”, Chapter 12.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>We put <span style="color:#273D56">dbg!</span> around <span style="color:#273D56">30 * scale</span>; because <span style="color:#273D56">dbg!</span> returns ownership of the value, <span style="color:#273D56">width</span> gets the same value as without the call.</li>
+<li>We don’t want <span style="color:#273D56">dbg!</span> to take ownership of <span style="color:#273D56">rect1</span>, so the next call uses a reference, <span style="color:#273D56">&amp;rect1</span>.</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

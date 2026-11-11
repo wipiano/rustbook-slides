@@ -1,0 +1,26 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implicit borrowing for method receivers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 5.19.</b> Let <span style="color:#273D56">p1</span> and <span style="color:#273D56">p2</span> be <span style="color:#273D56">Point</span> values, where <span style="color:#273D56">Point</span> has a method <span style="color:#273D56">fn distance(&amp;self, other: &amp;Point) -&gt; f64</span>. The following two calls are the same:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">p1.distance(&amp;p2);</p>
+<p style="white-space:nowrap">(&amp;p1).distance(&amp;p2);</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The first one looks much cleaner. This automatic referencing works because methods have a clear receiver — the type of <span style="color:#273D56">self</span>. Given the receiver and name of a method, Rust can figure out definitively whether the method is:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>reading (<span style="color:#273D56">&amp;self</span>),</li>
+<li>mutating (<span style="color:#273D56">&amp;mut self</span>), or</li>
+<li>consuming (<span style="color:#273D56">self</span>).</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Making borrowing implicit for method receivers is a big part of making ownership ergonomic in practice.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

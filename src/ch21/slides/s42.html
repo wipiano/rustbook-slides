@@ -1,0 +1,25 @@
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Learning from thread::spawn’s signature</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The documentation shows:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn spawn&lt;F, T&gt;(f: F) -&gt; JoinHandle&lt;T&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;where</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;F: FnOnce() -&gt; T,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;F: Send + 'static,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;T: Send + 'static,</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>We care about <span style="color:#273D56">F</span>; <span style="color:#273D56">T</span> relates to the return value, which doesn’t concern us.</li>
+<li><span style="color:#273D56">spawn</span> uses <span style="color:#273D56">FnOnce</span> as the trait bound on <span style="color:#273D56">F</span>. That’s probably what we want too, because we’ll eventually pass the argument we get in <span style="color:#273D56">execute</span> to <span style="color:#273D56">spawn</span>. And the thread running a request will execute that request’s closure only one time, which matches the <i>Once</i> in <span style="color:#273D56">FnOnce</span>.</li>
+<li><span style="color:#273D56">F</span> also has the trait bound <span style="color:#273D56">Send</span> and the lifetime bound <span style="color:#273D56">'static</span>, both useful here: we need <span style="color:#273D56">Send</span> to transfer the closure from one thread to another, and <span style="color:#273D56">'static</span> because we don’t know how long the thread will take to execute.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>

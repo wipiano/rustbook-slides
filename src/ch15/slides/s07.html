@@ -1,0 +1,22 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.1 Using Box&lt;T&gt; to Point to Data on the Heap</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Understanding the cons list</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A pseudocode representation of a cons list containing the list <span style="color:#273D56">1, 2, 3</span>, with each pair in parentheses:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">(1, (2, (3, Nil)))</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Each item contains two elements: the value of the current item and the next item.</li>
+<li>The last item contains only a value called <span style="color:#273D56">Nil</span>, without a next item. A cons list is produced by recursively calling the <span style="color:#273D56">cons</span> function, and the canonical name for the base case of the recursion is <span style="color:#273D56">Nil</span>.</li>
+<li>This is not the same as the “null” or “nil” concept of Chapter 6, which is an invalid or absent value.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The cons list isn’t commonly used in Rust: most of the time, <span style="color:#273D56">Vec&lt;T&gt;</span> is a better choice for a list of items. Other, more complex recursive data types <i>are</i> useful in various situations, but starting with the cons list lets us explore how boxes enable a recursive data type without much distraction.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

@@ -1,0 +1,31 @@
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Option&lt;T&gt; match pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Earlier we wanted to get the inner <span style="color:#273D56">T</span> value out of the <span style="color:#273D56">Some</span> case when using <span style="color:#273D56">Option&lt;T&gt;</span>. We can handle <span style="color:#273D56">Option&lt;T&gt;</span> using <span style="color:#273D56">match</span>, as we did with the <span style="color:#273D56">Coin</span> enum! Instead of comparing coins, we compare the variants of <span style="color:#273D56">Option&lt;T&gt;</span>, but the way the <span style="color:#273D56">match</span> expression works remains the same.</p>
+<p style="font-size:30px;line-height:1.45">Say we want a function that takes an <span style="color:#273D56">Option&lt;i32&gt;</span> and, if there’s a value inside, adds 1 to that value. If there isn’t a value inside, the function should return the <span style="color:#273D56">None</span> value and not attempt to perform any operations. Thanks to <span style="color:#273D56">match</span>, this is very easy to write.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.5:</b></span> A function that uses a <span style="color:#273D56">match</span> expression on an <span style="color:#273D56">Option&lt;i32&gt;</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn plus_one(x: Option&lt;i32&gt;) -&gt; Option&lt;i32&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; None,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(i) =&gt; Some(i + 1),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let five = Some(5);</p>
+<p style="white-space:nowrap">let six = plus_one(five);</p>
+<p style="white-space:nowrap">let none = plus_one(None);</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>

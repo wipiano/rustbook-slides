@@ -1,0 +1,27 @@
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A better message — but still a panic</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">With these extra few lines in <span style="color:#273D56">new</span>, running the program without any arguments again gives:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling minigrep v0.1.0 (file:///projects/minigrep)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/minigrep`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6023776) panicked at src/main.rs:26:13:</p>
+<p style="white-space:nowrap">not enough arguments</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This output is better: we now have a reasonable error message. However, we also have extraneous information we don’t want to give to our users.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Perhaps the technique of Listing 9.13 isn’t the best one here: as discussed in Chapter 9, a call to <span style="color:#273D56">panic!</span> is more appropriate for a programming problem than a usage problem. Instead we use the other technique from Chapter 9 — returning a <span style="color:#273D56">Result</span> that indicates either success or an error.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>

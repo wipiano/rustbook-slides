@@ -1,0 +1,20 @@
+<section id="s70" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">str is a dynamically sized type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Consider <span style="color:#273D56">str</span>, used throughout the book. That’s right: not <span style="color:#273D56">&amp;str</span>, but <span style="color:#273D56">str</span> on its own, is a DST. In many cases, such as when storing text entered by a user, we can’t know how long the string is until runtime. So we can’t create a variable of type <span style="color:#273D56">str</span>, nor take an argument of type <span style="color:#273D56">str</span>. This code does not work:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s1: str = "Hello there!";</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2: str = "How's it going?";</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust needs to know how much memory to allocate for any value of a particular type, and all values of a type must use the same amount of memory. If Rust allowed this code, these two <span style="color:#273D56">str</span> values would need to take up the same amount of space. But they have different lengths: <span style="color:#273D56">s1</span> needs 12 bytes of storage and <span style="color:#273D56">s2</span> needs 15. This is why it’s not possible to create a variable holding a dynamically sized type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">71</p>
+</div>
+</section>

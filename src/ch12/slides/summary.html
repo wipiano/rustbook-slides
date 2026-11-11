@@ -1,0 +1,24 @@
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This chapter recapped some of the major concepts you’ve learned so far and covered how to perform common I/O operations in Rust. By using command line arguments, files, environment variables, and the <span style="color:#273D56">eprintln!</span> macro for printing errors, you’re now prepared to write command line applications. Combined with the concepts in previous chapters, your code will be well organized, store data effectively in the appropriate data structures, handle errors nicely, and be well tested.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 12.2:</b></span> The I/O tools <span style="color:#273D56">minigrep</span> uses</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Need</th><th style="width:70%">Tool</th></tr>
+<tr><td>Command line arguments</td><td>std::env::args().collect() into a Vec&lt;String&gt;; parsed by Config::build</td></tr>
+<tr><td>Reading a file</td><td>std::fs::read_to_string, errors propagated with ? as Box&lt;dyn Error&gt;</td></tr>
+<tr><td>Environment variables</td><td>std::env::var("IGNORE_CASE").is_ok()</td></tr>
+<tr><td>Errors and exit status</td><td>eprintln! to standard error, then std::process::exit(1)</td></tr>
+</table>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 13 explores some Rust features that were influenced by functional languages: closures and iterators.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">82</p>
+</div>
+</section>

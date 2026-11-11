@@ -1,0 +1,34 @@
+<section id="s62" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">No interleaving without await points</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Output of Listing 17.15:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">'a' started.</p>
+<p style="white-space:nowrap">'a' ran for 30ms</p>
+<p style="white-space:nowrap">'a' ran for 10ms</p>
+<p style="white-space:nowrap">'a' ran for 20ms</p>
+<p style="white-space:nowrap">'b' started.</p>
+<p style="white-space:nowrap">'b' ran for 75ms</p>
+<p style="white-space:nowrap">'b' ran for 10ms</p>
+<p style="white-space:nowrap">'b' ran for 15ms</p>
+<p style="white-space:nowrap">'b' ran for 350ms</p>
+<p style="white-space:nowrap">'a' finished.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Each future hands control back to the runtime only <i>after</i> carrying out a bunch of slow operations.</p>
+<p style="font-size:30px;line-height:1.45">As in Listing 17.5, <span style="color:#273D56">select</span> still finishes as soon as <span style="color:#273D56">a</span> is done. But there’s no interleaving between the calls to <span style="color:#273D56">slow</span>: <span style="color:#273D56">a</span> does all its work until its <span style="color:#273D56">trpl::sleep</span> is awaited, then <span style="color:#273D56">b</span> does all its work until its own <span style="color:#273D56">trpl::sleep</span> is awaited, and finally <span style="color:#273D56">a</span> completes.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">To let both futures make progress between their slow tasks, we need await points to hand control back to the runtime — something we can await! The handoff is already visible: without the <span style="color:#273D56">trpl::sleep</span> at the end of <span style="color:#273D56">a</span>, it would complete without <span style="color:#273D56">b</span> running <i>at all</i>. Let’s use <span style="color:#273D56">trpl::sleep</span> as a starting point for letting operations switch off making progress.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">63</p>
+</div>
+</section>

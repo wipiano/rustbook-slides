@@ -1,0 +1,39 @@
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.1 What Is Ownership?</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">After the move, only s2 is valid</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:64px">
+<div style="flex:none;width:800px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Figure 4.4:</b></span> The representation in memory after <span style="color:#273D56">s1</span> has been invalidated (grayed out)</p>
+<div style="position:relative;width:760px;height:464px">
+<p style="position:absolute;left:0px;top:0px;width:300px;font-size:24px;line-height:1.3;color:#596675">stack</p>
+<p style="position:absolute;left:440px;top:140px;width:320px;font-size:24px;line-height:1.3;color:#596675">heap</p>
+<div style="position:absolute;left:0px;top:40px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px;opacity:0.35"><p style="font-size:26px;line-height:1.2"><b>s1</b></p></div>
+<div style="position:absolute;left:0px;top:88px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px;opacity:0.35"><p style="font-size:26px;line-height:1.2">ptr</p></div>
+<div style="position:absolute;left:0px;top:136px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px;opacity:0.35"><p style="font-size:26px;line-height:1.2">len</p><p style="font-size:26px;line-height:1.2">5</p></div>
+<div style="position:absolute;left:0px;top:184px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px;opacity:0.35"><p style="font-size:26px;line-height:1.2">capacity</p><p style="font-size:26px;line-height:1.2">5</p></div>
+<div style="position:absolute;left:0px;top:272px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2"><b>s2</b></p></div>
+<div style="position:absolute;left:0px;top:320px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">ptr</p></div>
+<div style="position:absolute;left:0px;top:368px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">len</p><p style="font-size:26px;line-height:1.2">5</p></div>
+<div style="position:absolute;left:0px;top:416px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">capacity</p><p style="font-size:26px;line-height:1.2">5</p></div>
+<div style="position:absolute;left:440px;top:184px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">0</p><p style="font-size:26px;line-height:1.2">h</p></div>
+<div style="position:absolute;left:504px;top:184px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">1</p><p style="font-size:26px;line-height:1.2">e</p></div>
+<div style="position:absolute;left:568px;top:184px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">2</p><p style="font-size:26px;line-height:1.2">l</p></div>
+<div style="position:absolute;left:632px;top:184px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">3</p><p style="font-size:26px;line-height:1.2">l</p></div>
+<div style="position:absolute;left:696px;top:184px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">4</p><p style="font-size:26px;line-height:1.2">o</p></div>
+<x-connector x1="300" y1="112" x2="440" y2="210" head="end" route="straight" style="color:#20252B;border-width:1.5px;opacity:0.35"></x-connector>
+<x-connector x1="300" y1="344" x2="440" y2="246" head="end" route="straight" style="color:#20252B;border-width:1.5px"></x-connector>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So, what actually happens is shown in Figure 4.4. Table <span style="color:#273D56">s1</span> is grayed out because <span style="color:#273D56">s1</span> is no longer valid; only <span style="color:#273D56">s2</span> can be used to access the heap data.</p>
+<p style="font-size:30px;line-height:1.45">That solves our problem! With only <span style="color:#273D56">s2</span> valid, when it goes out of scope it alone will free the memory, and we’re done.</p>
+<p style="font-size:30px;line-height:1.45">There is also a design choice implied by this: Rust will never automatically create “deep” copies of your data. Therefore, any <i>automatic</i> copying can be assumed to be inexpensive in terms of runtime performance.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>

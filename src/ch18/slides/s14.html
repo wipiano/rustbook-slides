@@ -1,0 +1,37 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The alternative: generics and trait bounds</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We could instead have defined the <span style="color:#273D56">Screen</span> struct using a generic type and a trait bound, as in Listing 18.6.</p>
+<p style="font-size:30px;line-height:1.45">This restricts us to a <span style="color:#273D56">Screen</span> instance whose list of components is all of type <span style="color:#273D56">Button</span> or all of type <span style="color:#273D56">TextField</span>. If you’ll only ever have homogeneous collections, generics and trait bounds are preferable, because the definitions will be monomorphized at compile time to use the concrete types.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.6:</b></span> An alternate implementation of the <span style="color:#273D56">Screen</span> struct and its <span style="color:#273D56">run</span> method using generics and trait bounds — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub struct Screen&lt;T: Draw&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub components: Vec&lt;T&gt;,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl&lt;T&gt; Screen&lt;T&gt;</p>
+<p style="white-space:nowrap">where</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;T: Draw,</p>
+<p style="white-space:nowrap">{</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn run(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for component in self.components.iter() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;component.draw();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

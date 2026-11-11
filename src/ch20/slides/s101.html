@@ -1,0 +1,18 @@
+<section id="s101" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Output TokenStream, and panicking on errors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Soon we’ll define <span style="color:#273D56">impl_hello_macro</span>, where we build the new Rust code we want to include. Note first that the output of our <span style="color:#273D56">derive</span> macro is also a <span style="color:#273D56">TokenStream</span>. The returned <span style="color:#273D56">TokenStream</span> is added to the code our crate users write, so when they compile their crate, they get the extra functionality that we provide in the modified <span style="color:#273D56">TokenStream</span>.</p>
+<p style="font-size:30px;line-height:1.45">We call <span style="color:#273D56">unwrap</span> so that <span style="color:#273D56">hello_macro_derive</span> panics if the call to <span style="color:#273D56">syn::parse</span> fails. Our procedural macro must panic on errors, because <span style="color:#273D56">proc_macro_derive</span> functions must return <span style="color:#273D56">TokenStream</span> rather than <span style="color:#273D56">Result</span> to conform to the procedural macro API.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The example is simplified by using <span style="color:#273D56">unwrap</span>; in production code, provide more specific error messages about what went wrong by using <span style="color:#273D56">panic!</span> or <span style="color:#273D56">expect</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now that we can turn the annotated Rust code from a <span style="color:#273D56">TokenStream</span> into a <span style="color:#273D56">DeriveInput</span> instance, let’s generate the code that implements the <span style="color:#273D56">HelloMacro</span> trait on the annotated type (Listing 20.42).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">102</p>
+</div>
+</section>

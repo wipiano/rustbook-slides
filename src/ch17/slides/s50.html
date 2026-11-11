@@ -1,0 +1,23 @@
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.2 Applying Concurrency with Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the program still never exits</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The program never exits because of the way the <span style="color:#273D56">while let</span> loop interacts with <span style="color:#273D56">trpl::join</span>:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>The future returned from <span style="color:#273D56">trpl::join</span> completes only once <i>both</i> futures passed to it have completed.</li>
+<li>The <span style="color:#273D56">tx_fut</span> future completes once it finishes sleeping after sending the last message in <span style="color:#273D56">vals</span>.</li>
+<li>The <span style="color:#273D56">rx_fut</span> future won’t complete until the <span style="color:#273D56">while let</span> loop ends.</li>
+<li>The <span style="color:#273D56">while let</span> loop won’t end until awaiting <span style="color:#273D56">rx.recv</span> produces <span style="color:#273D56">None</span>.</li>
+<li>Awaiting <span style="color:#273D56">rx.recv</span> will return <span style="color:#273D56">None</span> only once the other end of the channel is closed.</li>
+<li>The channel will close only if we call <span style="color:#273D56">rx.close</span> or when the sender side, <span style="color:#273D56">tx</span>, is dropped.</li>
+<li>We don’t call <span style="color:#273D56">rx.close</span> anywhere, and <span style="color:#273D56">tx</span> won’t be dropped until the outermost async block passed to <span style="color:#273D56">trpl::block_on</span> ends.</li>
+<li>The block can’t end because it is blocked on <span style="color:#273D56">trpl::join</span> completing, which takes us back to the top of this list.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>

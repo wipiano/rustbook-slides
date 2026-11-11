@@ -1,0 +1,28 @@
+<section id="s64" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">std::io::Result&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So <span style="color:#273D56">std::io</span> has this type alias declaration, and the <span style="color:#273D56">Write</span> trait’s signatures end up looking like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fmt;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">type Result&lt;T&gt; = std::result::Result&lt;T, std::io::Error&gt;;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub trait Write {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn write(&amp;mut self, buf: &amp;[u8]) -&gt; Result&lt;usize&gt;;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn flush(&amp;mut self) -&gt; Result&lt;()&gt;;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn write_all(&amp;mut self, buf: &amp;[u8]) -&gt; Result&lt;()&gt;;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn write_fmt(&amp;mut self, fmt: fmt::Arguments) -&gt; Result&lt;()&gt;;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Because this declaration is in the <span style="color:#273D56">std::io</span> module, we can use the fully qualified alias <span style="color:#273D56">std::io::Result&lt;T&gt;</span>: a <span style="color:#273D56">Result&lt;T, E&gt;</span> with the <span style="color:#273D56">E</span> filled in as <span style="color:#273D56">std::io::Error</span>.</p>
+<p style="font-size:30px;line-height:1.45">It makes code easier to write <i>and</i> gives a consistent interface across <span style="color:#273D56">std::io</span>. As an alias it’s just another <span style="color:#273D56">Result&lt;T, E&gt;</span>: its methods and special syntax like the <span style="color:#273D56">?</span> operator work.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">65</p>
+</div>
+</section>

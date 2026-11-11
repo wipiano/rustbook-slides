@@ -1,0 +1,17 @@
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Where returning impl Trait shines — and its limit</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Specifying a return type only by the trait it implements is especially useful with closures and iterators (Chapter 13). Closures and iterators create types that only the compiler knows, or types that are very long to specify. The <span style="color:#273D56">impl Trait</span> syntax lets you concisely say that a function returns some type that implements the <span style="color:#273D56">Iterator</span> trait without writing out a very long type.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> You can only use <span style="color:#273D56">impl Trait</span> if you’re returning a single type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, the code on the next two slides, which returns either a <span style="color:#273D56">NewsArticle</span> or a <span style="color:#273D56">SocialPost</span> with the return type specified as <span style="color:#273D56">impl Summary</span>, wouldn’t work.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>

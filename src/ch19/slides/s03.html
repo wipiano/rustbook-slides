@@ -1,0 +1,33 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">let statements</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Before this chapter we had only explicitly discussed patterns with <span style="color:#273D56">match</span> and <span style="color:#273D56">if let</span>, but we’ve used patterns elsewhere too — including in <span style="color:#273D56">let</span> statements.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">A straightforward variable assignment:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let x = 5;</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">More formally, a <span style="color:#273D56">let</span> statement looks like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let PATTERN = EXPRESSION;</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Every time you’ve used a <span style="color:#273D56">let</span> statement like this, you’ve been using patterns, although you might not have realized it!</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In <span style="color:#273D56">let x = 5;</span> the variable name in the PATTERN slot is just a particularly simple form of a pattern.</li>
+<li>Rust compares the expression against the pattern and assigns any names it finds.</li>
+<li><span style="color:#273D56">x</span> is a pattern that means “bind what matches here to the variable <span style="color:#273D56">x</span>.” Because the name <span style="color:#273D56">x</span> is the whole pattern, it effectively means “bind everything to the variable <span style="color:#273D56">x</span>, whatever the value is.”</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

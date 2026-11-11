@@ -1,0 +1,22 @@
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Extracting logic from main</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now that we’ve finished refactoring the configuration parsing, we turn to the program’s logic. As stated in “Separating Concerns in Binary Projects”, we extract a function named <span style="color:#273D56">run</span> that will hold all the logic currently in <span style="color:#273D56">main</span> that isn’t involved with setting up configuration or handling errors.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">main</span>: concise and easy to verify by inspection.</p>
+</div>
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">run</span> and the rest: all the other logic, which we can write tests for.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 12.11 (next slide) shows the small, incremental improvement of extracting a <span style="color:#273D56">run</span> function. The <span style="color:#273D56">run</span> function now contains all the remaining logic from <span style="color:#273D56">main</span>, starting from reading the file, and it takes the <span style="color:#273D56">Config</span> instance as an argument.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s94" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why poll needs a pinned self</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Recalling that <span style="color:#273D56">await</span> is implemented in terms of calls to <span style="color:#273D56">poll</span> starts to explain the error message we saw earlier — but that was in terms of <span style="color:#273D56">Unpin</span>, not <span style="color:#273D56">Pin</span>. So how exactly does <span style="color:#273D56">Pin</span> relate to <span style="color:#273D56">Unpin</span>, and why does <span style="color:#273D56">Future</span> need <span style="color:#273D56">self</span> to be in a <span style="color:#273D56">Pin</span> type to call <span style="color:#273D56">poll</span>?</p>
+<p style="font-size:30px;line-height:1.45">A series of await points in a future gets compiled into a state machine, and the compiler makes sure that state machine follows all of Rust’s normal rules around safety, including borrowing and ownership. To make that work, Rust looks at what data is needed between one await point and either the next await point or the end of the async block. It then creates a corresponding variant in the compiled state machine. Each variant gets the access it needs to the data used in that section of the source code, whether by taking ownership of that data or by getting a mutable or immutable reference to it.</p>
+<p style="font-size:30px;line-height:1.45">So far, so good: if we get anything wrong about the ownership or references in a given async block, the borrow checker will tell us. When we want to move around the future that corresponds to that block — like moving it into a <span style="color:#273D56">Vec</span> to pass to <span style="color:#273D56">join_all</span> — things get trickier.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">95</p>
+</div>
+</section>

@@ -1,0 +1,36 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.1 Using Threads to Run Code Simultaneously</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running Listing 16.1: no guaranteed order</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">When the main thread of a Rust program completes, all spawned threads are shut down, whether or not they have finished running. The output might be a little different every time, but it will look similar to this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">hi number 1 from the main thread!</p>
+<p style="white-space:nowrap">hi number 1 from the spawned thread!</p>
+<p style="white-space:nowrap">hi number 2 from the main thread!</p>
+<p style="white-space:nowrap">hi number 2 from the spawned thread!</p>
+<p style="white-space:nowrap">hi number 3 from the main thread!</p>
+<p style="white-space:nowrap">hi number 3 from the spawned thread!</p>
+<p style="white-space:nowrap">hi number 4 from the main thread!</p>
+<p style="white-space:nowrap">hi number 4 from the spawned thread!</p>
+<p style="white-space:nowrap">hi number 5 from the spawned thread!</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">The calls to <span style="color:#273D56">thread::sleep</span> force a thread to stop its execution for a short duration, allowing a different thread to run. The threads will probably take turns, but that isn’t guaranteed: it depends on how your operating system schedules the threads.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In this run, the main thread printed first, even though the spawned thread’s print statement appears first in the code.</li>
+<li>Although the spawned thread was told to print until <span style="color:#273D56">i</span> is <span style="color:#273D56">9</span>, it only got to <span style="color:#273D56">5</span> before the main thread shut down.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If you only see output from the main thread, or no overlap, increase the numbers in the ranges to give the OS more opportunities to switch between the threads.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

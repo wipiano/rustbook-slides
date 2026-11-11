@@ -1,0 +1,18 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Modules cheat sheet: submodules, paths, privacy, use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Declaring submodules.</b> In any file other than the crate root, you can declare submodules — e.g. <span style="color:#273D56">mod vegetables;</span> in <i>src/garden.rs</i>. The compiler looks for the submodule’s code within the directory named for the parent module: inline, directly following <span style="color:#273D56">mod vegetables</span>, within curly brackets instead of the semicolon; in the file <i>src/garden/vegetables.rs</i>; in the file <i>src/garden/vegetables/mod.rs</i>.</li>
+<li><b>Paths to code in modules.</b> Once a module is part of your crate, you can refer to code in that module from anywhere else in that same crate, as long as the privacy rules allow, using the path to the code. An <span style="color:#273D56">Asparagus</span> type in the garden vegetables module would be found at <span style="color:#273D56">crate::garden::vegetables::Asparagus</span>.</li>
+<li><b>Private vs. public.</b> Code within a module is private from its parent modules by default. To make a module public, declare it with <span style="color:#273D56">pub mod</span> instead of <span style="color:#273D56">mod</span>. To make items within a public module public as well, use <span style="color:#273D56">pub</span> before their declarations.</li>
+<li><b>The <span style="color:#273D56">use</span> keyword.</b> Within a scope, <span style="color:#273D56">use</span> creates shortcuts to items to reduce repetition of long paths. In any scope that can refer to <span style="color:#273D56">crate::garden::vegetables::Asparagus</span>, <span style="color:#273D56">use crate::garden::vegetables::Asparagus;</span> creates a shortcut, and from then on you only need to write <span style="color:#273D56">Asparagus</span> in the scope.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

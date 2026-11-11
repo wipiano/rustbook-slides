@@ -1,0 +1,27 @@
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why not make everything atomic? Switching to Arc&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Why aren’t all primitive types atomic, and standard library types implemented with <span style="color:#273D56">Arc&lt;T&gt;</span> by default? Thread safety comes with a performance penalty that you only want to pay when you really need to. Operating on values within a single thread, code runs faster without the guarantees atomics provide.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Arc&lt;T&gt;</span> and <span style="color:#273D56">Rc&lt;T&gt;</span> have the same API, so the fix changes the <span style="color:#273D56">use</span> line, the call to <span style="color:#273D56">new</span>, and the call to <span style="color:#273D56">clone</span>. Listing 16.15 finally compiles and runs.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 16.15:</b></span> Using an <span style="color:#273D56">Arc&lt;T&gt;</span> to wrap the <span style="color:#273D56">Mutex&lt;T&gt;</span> to be able to share ownership across multiple threads — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::sync::{Arc, Mutex};</p>
+<p style="white-space:nowrap">use std::thread;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let counter = Arc::new(Mutex::new(0));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut handles = vec![];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for _ in 0..10 {</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>

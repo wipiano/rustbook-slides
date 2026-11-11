@@ -1,0 +1,22 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Result enum and its expect method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">read_line</span> puts whatever the user enters into the string we pass to it, but it also returns a <span style="color:#273D56">Result</span> value.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.5 (Enumeration).</b></span> A type that can be in one of multiple possible states, often called an <i>enum</i>; each possible state is a <i>variant</i>. <span style="color:#273D56">Result</span> is an enum (enums are covered in Chapter 6).</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The purpose of <span style="color:#273D56">Result</span> types is to encode error-handling information. <span style="color:#273D56">Result</span>’s variants are:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Ok</span> — the operation was successful; it contains the successfully generated value.</li>
+<li><span style="color:#273D56">Err</span> — the operation failed; it contains information about how or why it failed.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Like values of any type, a <span style="color:#273D56">Result</span> has methods, such as <span style="color:#273D56">expect</span>. If the <span style="color:#273D56">Result</span> is an <span style="color:#273D56">Err</span> value, <span style="color:#273D56">expect</span> causes the program to crash and displays the message passed to it; an <span style="color:#273D56">Err</span> from <span style="color:#273D56">read_line</span> would likely come from the underlying operating system. If it is an <span style="color:#273D56">Ok</span> value, <span style="color:#273D56">expect</span> takes the value <span style="color:#273D56">Ok</span> is holding and returns just that value for you to use — here, the number of bytes in the user’s input.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

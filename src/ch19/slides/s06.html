@@ -1,0 +1,17 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Fixing the mismatch; conditional if let expressions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To fix the error, we could ignore one or more of the tuple’s values using <span style="color:#273D56">_</span> or <span style="color:#273D56">..</span> (see “Ignoring Values in a Pattern”). If the problem is too many variables in the pattern, make the types match by removing variables so that the number of variables equals the number of elements in the tuple.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Conditional if let expressions</h3>
+<p style="font-size:30px;line-height:1.45">Chapter 6 used <span style="color:#273D56">if let</span> mainly as a shorter way to write the equivalent of a <span style="color:#273D56">match</span> that only matches one case. Optionally, <span style="color:#273D56">if let</span> can have a corresponding <span style="color:#273D56">else</span> containing code to run if the pattern doesn’t match.</p>
+<p style="font-size:30px;line-height:1.45">You can also mix and match <span style="color:#273D56">if let</span>, <span style="color:#273D56">else if</span>, and <span style="color:#273D56">else if let</span> expressions. This gives more flexibility than a <span style="color:#273D56">match</span>, which can express only one value to compare with the patterns. And Rust doesn’t require the conditions in a series of <span style="color:#273D56">if let</span>, <span style="color:#273D56">else if</span>, and <span style="color:#273D56">else if let</span> arms to relate to each other.</p>
+<p style="font-size:30px;line-height:1.45">Listing 19.3 decides what color to make your background from a series of checks. Its variables have hardcoded values that a real program might receive from user input.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

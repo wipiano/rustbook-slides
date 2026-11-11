@@ -1,0 +1,25 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Refutable and irrefutable patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You’ve now seen several ways to use patterns, but patterns don’t work the same in every place we can use them. In some places the patterns must be irrefutable; in others they can be refutable. Patterns come in these two forms:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.4 (Irrefutable pattern).</b></span> A pattern that will match for any possible value passed. Example: <span style="color:#273D56">x</span> in <span style="color:#273D56">let x = 5;</span> matches anything and therefore cannot fail to match.</p>
+</div>
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.5 (Refutable pattern).</b></span> A pattern that can fail to match for some possible value. Example: <span style="color:#273D56">Some(x)</span> in <span style="color:#273D56">if let Some(x) = a_value</span> — if <span style="color:#273D56">a_value</span> is <span style="color:#273D56">None</span> rather than <span style="color:#273D56">Some</span>, the pattern will not match.</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Function parameters, <span style="color:#273D56">let</span> statements, and <span style="color:#273D56">for</span> loops can only accept irrefutable patterns, because the program cannot do anything meaningful when values don’t match.</li>
+<li><span style="color:#273D56">if let</span> and <span style="color:#273D56">while let</span> expressions and the <span style="color:#273D56">let...else</span> statement accept refutable and irrefutable patterns, but the compiler warns against irrefutable ones: by definition they’re intended to handle possible failure — a conditional’s functionality is its ability to perform differently depending on success or failure.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

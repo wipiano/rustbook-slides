@@ -1,0 +1,19 @@
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.2 Processing a Series of Items with Iterators</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What iterators save you from writing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In languages whose standard libraries don’t provide iterators, you would likely write this same functionality by:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>starting a variable at index 0;</li>
+<li>using that variable to index into the vector to get a value;</li>
+<li>incrementing the variable value in a loop until it reached the total number of items in the vector.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Iterators handle all of that logic for you, cutting down on repetitive code you could potentially mess up. Iterators also give you more flexibility to use the same logic with many different kinds of sequences, not just data structures you can index into, like vectors. The next slides examine how iterators do that.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>

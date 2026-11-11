@@ -1,0 +1,36 @@
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A library user adds a SelectBox</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Fields differ between components: a <span style="color:#273D56">TextField</span> might have the same fields plus a <span style="color:#273D56">placeholder</span>. Each drawable type implements <span style="color:#273D56">Draw</span> but uses different code in <span style="color:#273D56">draw</span> to define how to draw itself. <span style="color:#273D56">Button</span> might also have an additional <span style="color:#273D56">impl</span> block with methods for when a user clicks it — methods that don’t apply to types like <span style="color:#273D56">TextField</span>.</p>
+<p style="font-size:30px;line-height:1.45">A library user who implements a <span style="color:#273D56">SelectBox</span> struct with <span style="color:#273D56">width</span>, <span style="color:#273D56">height</span>, and <span style="color:#273D56">options</span> fields implements <span style="color:#273D56">Draw</span> on it as well.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.8:</b></span> Another crate using <span style="color:#273D56">gui</span> and implementing the <span style="color:#273D56">Draw</span> trait on a <span style="color:#273D56">SelectBox</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use gui::Draw;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct SelectBox {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;options: Vec&lt;String&gt;,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Draw for SelectBox {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn draw(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// code to actually draw a select box</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>

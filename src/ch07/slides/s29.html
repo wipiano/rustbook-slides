@@ -1,0 +1,23 @@
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why enums and structs differ</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because we made the <span style="color:#273D56">Appetizer</span> enum public, we can use the <span style="color:#273D56">Soup</span> and <span style="color:#273D56">Salad</span> variants in <span style="color:#273D56">eat_at_restaurant</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.2:</b></span> What <span style="color:#273D56">pub</span> on a struct or an enum makes public</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:20%">Item</th><th style="width:35%">pub on the definition</th><th style="width:45%">Why this default</th></tr>
+<tr><td>struct</td><td>The struct only; each field stays private unless marked pub</td><td>Structs are often useful without their fields being public</td></tr>
+<tr><td>enum</td><td>The enum and all of its variants</td><td>Enums aren’t very useful unless their variants are public</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">It would be annoying to annotate all enum variants with <span style="color:#273D56">pub</span> in every case, so the default for enum variants is to be public. Struct fields follow the general rule: everything is private by default unless annotated with <span style="color:#273D56">pub</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> One more <span style="color:#273D56">pub</span> situation involves the last feature, <span style="color:#273D56">use</span>: first <span style="color:#273D56">use</span> alone, then <span style="color:#273D56">pub</span> with <span style="color:#273D56">use</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>

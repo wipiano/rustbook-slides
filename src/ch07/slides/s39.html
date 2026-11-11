@@ -1,0 +1,23 @@
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What re-exporting changes for callers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.3:</b></span> The path external code uses to call <span style="color:#273D56">add_to_waitlist</span></p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:24%">When</th><th style="width:76%">Path for external code</th></tr>
+<tr><td>Before pub use</td><td>restaurant::front_of_house::hosting::add_to_waitlist() — also requires front_of_house to be pub</td></tr>
+<tr><td>After pub use</td><td>restaurant::hosting::add_to_waitlist()</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Re-exporting is useful when the internal structure of your code is different from how programmers calling your code would think about the domain. In the restaurant metaphor, the people running the restaurant think about “front of house” and “back of house,” but customers visiting probably won’t think about the parts of the restaurant in those terms.</p>
+<p style="font-size:30px;line-height:1.45">With <span style="color:#273D56">pub use</span>, we can write our code with one structure but expose a different structure. That makes the library well organized both for programmers working on the library and for programmers calling it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> “Exporting a Convenient Public API” in Chapter 14 shows another example of <span style="color:#273D56">pub use</span> and how it affects your crate’s documentation.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>

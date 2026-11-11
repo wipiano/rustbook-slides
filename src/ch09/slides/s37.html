@@ -1,0 +1,17 @@
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">No mixing Result and Option; what main may return</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">You can’t mix and match</h3>
+<p style="font-size:30px;line-height:1.45">You can use <span style="color:#273D56">?</span> on a <span style="color:#273D56">Result</span> in a function that returns <span style="color:#273D56">Result</span>, and on an <span style="color:#273D56">Option</span> in a function that returns <span style="color:#273D56">Option</span>, but you can’t mix and match. The <span style="color:#273D56">?</span> operator won’t automatically convert a <span style="color:#273D56">Result</span> to an <span style="color:#273D56">Option</span> or vice versa; in those cases, use methods like <span style="color:#273D56">ok</span> on <span style="color:#273D56">Result</span> or <span style="color:#273D56">ok_or</span> on <span style="color:#273D56">Option</span> to do the conversion explicitly.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The return type of main</h3>
+<p style="font-size:30px;line-height:1.45">So far, all the <span style="color:#273D56">main</span> functions we’ve used return <span style="color:#273D56">()</span>. The <span style="color:#273D56">main</span> function is special because it’s the entry point and exit point of an executable program, and there are restrictions on what its return type can be for the program to behave as expected.</p>
+<p style="font-size:30px;line-height:1.45">Luckily, <span style="color:#273D56">main</span> can also return a <span style="color:#273D56">Result&lt;(), E&gt;</span>. Listing 9.12 has the code from Listing 9.10, but with the return type of <span style="color:#273D56">main</span> changed to <span style="color:#273D56">Result&lt;(), Box&lt;dyn Error&gt;&gt;</span> and a return value <span style="color:#273D56">Ok(())</span> added at the end. This code will now compile.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>

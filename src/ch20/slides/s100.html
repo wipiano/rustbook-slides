@@ -1,0 +1,42 @@
+<section id="s100" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">From TokenStream to DeriveInput</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">hello_macro_derive</span> first converts the <span style="color:#273D56">input</span> from a <span style="color:#273D56">TokenStream</span> to a data structure we can interpret and operate on — this is where <span style="color:#273D56">syn</span> comes in. Its <span style="color:#273D56">parse</span> function takes a <span style="color:#273D56">TokenStream</span> and returns a <span style="color:#273D56">DeriveInput</span> struct representing the parsed Rust code.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.41:</b></span> The <span style="color:#273D56">DeriveInput</span> instance we get when parsing the code that has the macro’s attribute in Listing 20.37</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">DeriveInput {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;ident: Ident {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ident: "Pancakes",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;span: #0 bytes(95..103)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;},</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;data: Struct(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DataStruct {</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;struct_token: Struct,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fields: Unit,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;semi_token: Some(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Semi</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;)</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The parsed code is a unit struct with the <span style="color:#273D56">ident</span> (<i>identifier</i>, meaning the name) of <span style="color:#273D56">Pancakes</span>. More fields describe all sorts of Rust code; see the <span style="color:#273D56">syn</span> documentation for <span style="color:#273D56">DeriveInput</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">101</p>
+</div>
+</section>

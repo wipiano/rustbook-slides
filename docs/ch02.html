@@ -1,0 +1,1453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.2 — Programming a Guessing Game · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.2 — Programming a Guessing Game</h1><nav><a href="ch01.html">← Ch.1</a><a href="ch03.html">Ch.3 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 2</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Programming a Guessing Game</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Let’s jump into Rust by working through a hands-on project together. This chapter introduces a few common Rust concepts by showing how to use them in a real program: <span style="color:#273D56">let</span>, <span style="color:#273D56">match</span>, methods, associated functions, external crates, and more. The following chapters explore these ideas in more detail; here you just practice the fundamentals.</p>
+<p style="font-size:30px;line-height:1.45">We implement a classic beginner problem, a guessing game. The program generates a random integer between 1 and 100, then prompts the player to enter a guess. After each guess it says whether the guess is too low or too high. If the guess is correct, the game prints a congratulatory message and exits.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>2.1 Setting Up a New Project</li>
+<li>2.2 Processing a Guess</li>
+<li>2.3 Generating a Secret Number</li>
+<li>2.4 Comparing the Guess to the Secret Number</li>
+<li>2.5 Allowing Multiple Guesses with Looping</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.1 Setting Up a New Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating the guessing_game project</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Go to the <i>projects</i> directory you created in Chapter 1 and make a new project using Cargo:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new guessing_game</p>
+<p style="white-space:nowrap">$ cd guessing_game</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The first command, <span style="color:#273D56">cargo new</span>, takes the name of the project (<span style="color:#273D56">guessing_game</span>) as its first argument. The second command changes to the new project’s directory.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Look at the generated <i>Cargo.toml</i> file:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "guessing_game"</p>
+<p style="white-space:nowrap">version = "0.1.0"</p>
+<p style="white-space:nowrap">edition = "2024"</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">[dependencies]</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">As in Chapter 1, <span style="color:#273D56">cargo new</span> generates a “Hello, world!” program:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Hello, world!");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.1 Setting Up a New Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Compiling and running in one step</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Compile this “Hello, world!” program and run it in the same step using the <span style="color:#273D56">cargo run</span> command:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Hello, world!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">run</span> command comes in handy when you need to rapidly iterate on a project, as we’ll do in this game, quickly testing each iteration before moving on to the next one.</p>
+<p style="font-size:30px;line-height:1.45">Reopen the <i>src/main.rs</i> file. You’ll be writing all the code of the game in this file.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Getting a guess from the user</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The first part of the program asks for user input, processes that input, and checks that it is in the expected form. To start, we allow the player to input a guess: enter Listing 2.1 into <i>src/main.rs</i>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.1:</b></span> Code that gets a guess from the user and prints it — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Line by line: io, the prelude, main and println!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To get input and print output, bring the <span style="color:#273D56">io</span> library from the standard library, <span style="color:#273D56">std</span>, into scope:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::io;</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.1 (Prelude).</b></span> The set of items defined in the standard library that Rust brings into the scope of every program by default. Everything in it is listed in the standard library documentation.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If a type you want to use isn’t in the prelude, bring it into scope explicitly with a <span style="color:#273D56">use</span> statement. Using the <span style="color:#273D56">std::io</span> library provides a number of useful features, including the ability to accept user input.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+</div>
+<p style="font-size:26px;line-height:1.45">As in Chapter 1, <span style="color:#273D56">main</span> is the entry point. <span style="color:#273D56">fn</span> declares a new function; <span style="color:#273D56">()</span> indicates there are no parameters; <span style="color:#273D56">{</span> starts the body.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">println!("Please input your guess.");</p>
+</div>
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56">println!</span> is a macro that prints a string to the screen. These lines print a prompt stating what the game is and requesting input.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Storing values with variables</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next, create a <i>variable</i> to store the user input. There’s a lot going on in this little line:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let mut guess = String::new();</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.2 (Variable).</b></span> A name created with the <span style="color:#273D56">let</span> statement and bound to a value. In Rust, variables are immutable by default: once the variable is given a value, the value won’t change (Chapter 3, “Variables and Mutability”).</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Another example: this line creates a new variable named <span style="color:#273D56">apples</span> and binds it to the value <span style="color:#273D56">5</span>.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let apples = 5;</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">To make a variable mutable, add <span style="color:#273D56">mut</span> before the variable name:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let apples = 5; // immutable</p>
+<p style="white-space:nowrap">let mut bananas = 5; // mutable</p>
+</div>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The <span style="color:#273D56">//</span> syntax starts a comment that continues until the end of the line. Rust ignores everything in comments. Chapter 3 discusses comments in more detail.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Binding guess to a new, empty String</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let mut guess = String::new();</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">let mut guess</span> introduces a mutable variable named <span style="color:#273D56">guess</span>. The equal sign (<span style="color:#273D56">=</span>) tells Rust we want to bind something to the variable now. On its right is the value <span style="color:#273D56">guess</span> is bound to: the result of calling <span style="color:#273D56">String::new</span>, a function that returns a new instance of a <span style="color:#273D56">String</span>.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">String</span> is a string type provided by the standard library that is a growable, UTF-8 encoded bit of text.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.3 (Associated function).</b></span> A function that’s implemented on a type, here <span style="color:#273D56">String</span>. The <span style="color:#273D56">::</span> syntax in the <span style="color:#273D56">::new</span> line indicates that <span style="color:#273D56">new</span> is an associated function of the <span style="color:#273D56">String</span> type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This <span style="color:#273D56">new</span> function creates a new, empty string. You’ll find a <span style="color:#273D56">new</span> function on many types, because it’s a common name for a function that makes a new value of some kind.</p>
+<p style="font-size:30px;line-height:1.45">In full, the line has created a mutable variable that is currently bound to a new, empty instance of a <span style="color:#273D56">String</span>. Whew!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Receiving user input with stdin and read_line</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We included the input/output functionality with <span style="color:#273D56">use std::io;</span> on the first line. Now we call the <span style="color:#273D56">stdin</span> function from the <span style="color:#273D56">io</span> module, which lets us handle user input:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Without <span style="color:#273D56">use std::io;</span> at the beginning of the program, we could still call the function by writing <span style="color:#273D56">std::io::stdin</span>. The <span style="color:#273D56">stdin</span> function returns an instance of <span style="color:#273D56">std::io::Stdin</span>, a type that represents a handle to the standard input for your terminal.</p>
+<p style="font-size:30px;line-height:1.45">Next, <span style="color:#273D56">.read_line(&amp;mut guess)</span> calls the <span style="color:#273D56">read_line</span> method on the standard input handle to get input from the user. The argument <span style="color:#273D56">&amp;mut guess</span> tells it what string to store the input in: the full job of <span style="color:#273D56">read_line</span> is to take whatever the user types into standard input and append it to that string (without overwriting its contents). The string argument needs to be mutable so that the method can change the string’s content.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">References: why &amp;mut guess</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">.read_line(&amp;mut guess)</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.4 (Reference).</b></span> An argument marked with <span style="color:#273D56">&amp;</span>. A reference gives you a way to let multiple parts of your code access one piece of data without needing to copy that data into memory multiple times.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>References are a complex feature, and one of Rust’s major advantages is how safe and easy it is to use them.</li>
+<li>You don’t need to know a lot of those details to finish this program; Chapter 4 explains references more thoroughly.</li>
+<li>For now, all you need to know is that, like variables, references are immutable by default.</li>
+<li>Hence you need to write <span style="color:#273D56">&amp;mut guess</span> rather than <span style="color:#273D56">&amp;guess</span> to make it mutable.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling potential failure with Result</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We’re still working on the same line of code. The third line of text below is still part of a single logical line of code; the next part is the <span style="color:#273D56">expect</span> method:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We could have written this code as:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">io::stdin().read_line(&amp;mut guess).expect("Failed to read line");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">However, one long line is difficult to read, so it’s best to divide it. It’s often wise to introduce a newline and other whitespace to help break up long lines when you call a method with the <span style="color:#273D56">.method_name()</span> syntax.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Result enum and its expect method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">read_line</span> puts whatever the user enters into the string we pass to it, but it also returns a <span style="color:#273D56">Result</span> value.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.5 (Enumeration).</b></span> A type that can be in one of multiple possible states, often called an <i>enum</i>; each possible state is a <i>variant</i>. <span style="color:#273D56">Result</span> is an enum (enums are covered in Chapter 6).</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The purpose of <span style="color:#273D56">Result</span> types is to encode error-handling information. <span style="color:#273D56">Result</span>’s variants are:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Ok</span> — the operation was successful; it contains the successfully generated value.</li>
+<li><span style="color:#273D56">Err</span> — the operation failed; it contains information about how or why it failed.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Like values of any type, a <span style="color:#273D56">Result</span> has methods, such as <span style="color:#273D56">expect</span>. If the <span style="color:#273D56">Result</span> is an <span style="color:#273D56">Err</span> value, <span style="color:#273D56">expect</span> causes the program to crash and displays the message passed to it; an <span style="color:#273D56">Err</span> from <span style="color:#273D56">read_line</span> would likely come from the underlying operating system. If it is an <span style="color:#273D56">Ok</span> value, <span style="color:#273D56">expect</span> takes the value <span style="color:#273D56">Ok</span> is holding and returns just that value for you to use — here, the number of bytes in the user’s input.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The warning when expect is missing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45">If you don’t call <span style="color:#273D56">expect</span>, the program will compile, but you’ll get a warning:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">warning: unused `Result` that must be used</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:10:5</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">10 |&#160;&#160;&#160;&#160;&#160;io::stdin().read_line(&amp;mut guess);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= note: this `Result` may be an `Err` variant, which should be handled</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= note: `#[warn(unused_must_use)]` (part of `#[warn(unused)]`) on by default</p>
+<p style="white-space:nowrap">help: use `let _ = ...` to ignore the resulting value</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">10 |&#160;&#160;&#160;&#160;&#160;let _ = io::stdin().read_line(&amp;mut guess);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;+++++++</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">warning: `guessing_game` (bin "guessing_game") generated 1 warning</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.59s</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling the warning; println! placeholders</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust warns that you haven’t used the <span style="color:#273D56">Result</span> value returned from <span style="color:#273D56">read_line</span>, indicating that the program hasn’t handled a possible error.</p>
+<p style="font-size:30px;line-height:1.45">The right way to suppress the warning is to actually write error-handling code, but in our case we just want to crash the program when a problem occurs, so we can use <span style="color:#273D56">expect</span>. Recovering from errors is the subject of Chapter 9.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Printing values with println! placeholders</h3>
+<p style="font-size:30px;line-height:1.45">Aside from the closing curly bracket, there’s only one more line to discuss in the code so far:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">println!("You guessed: {guess}");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This line prints the string that now contains the user’s input. The <span style="color:#273D56">{}</span> set of curly brackets is a placeholder: think of <span style="color:#273D56">{}</span> as little crab pincers that hold a value in place.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Placeholders for variables and expressions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>When printing the value of a variable, the variable name can go inside the curly brackets.</li>
+<li>When printing the result of evaluating an expression, place empty curly brackets in the format string, then follow the format string with a comma-separated list of expressions to print in each empty curly bracket placeholder, in the same order.</li>
+</ul>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 2.6.</b> Printing a variable and the result of an expression in one call to <span style="color:#273D56">println!</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let x = 5;</p>
+<p style="white-space:nowrap">let y = 10;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">println!("x = {x} and y + 2 = {}", y + 2);</p>
+</div>
+<p style="font-size:26px;line-height:1.45">This code would print <span style="color:#273D56">x = 5 and y + 2 = 12</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Testing the first part</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s test the first part of the guessing game. Run it using <span style="color:#273D56">cargo run</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.44s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Guess the number!</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">6</p>
+<p style="white-space:nowrap">You guessed: 6</p>
+</div>
+<p style="font-size:30px;line-height:1.45">At this point, the first part of the game is done: we’re getting input from the keyboard and then printing it.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A secret number from the rand crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next we generate a secret number for the user to guess. It should be different every time, so that the game is fun to play more than once, and between 1 and 100, so that the game isn’t too difficult. Rust doesn’t yet include random number functionality in its standard library, but the Rust team provides a <span style="color:#273D56">rand</span> crate (crates.io/crates/rand) with that functionality.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Increasing functionality with a crate</h3>
+<p style="font-size:30px;line-height:1.45">Remember that a crate is a collection of Rust source code files.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.7 (Binary crate).</b></span> A crate that is an executable, like the project we’ve been building.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.8 (Library crate).</b></span> A crate, like <span style="color:#273D56">rand</span>, containing code intended to be used in other programs; it can’t be executed on its own.</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Coordinating external crates is where Cargo really shines. To use <span style="color:#273D56">rand</span>, first add it as a dependency: put the line shown next beneath the <span style="color:#273D56">[dependencies]</span> header in <i>Cargo.toml</i>. Specify <span style="color:#273D56">rand</span> exactly so, with this version number, or the code examples may not work.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Declaring the dependency with a SemVer version</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[dependencies]</p>
+<p style="white-space:nowrap">rand = "0.10.1"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">In <i>Cargo.toml</i>, everything after a header is part of that section until another section starts. <span style="color:#273D56">[dependencies]</span> tells Cargo which external crates your project depends on and which versions you require — here <span style="color:#273D56">rand</span>, with the semantic version specifier <span style="color:#273D56">0.10.1</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.9 (Semantic Versioning).</b></span> A standard for writing version numbers (semver.org), sometimes called <i>SemVer</i>, which Cargo understands.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The specifier <span style="color:#273D56">0.10.1</span> is shorthand for <span style="color:#273D56">^0.10.1</span>: any version that is at least 0.10.1 but below 0.11.0.</li>
+<li>Cargo considers these versions to have public APIs compatible with 0.10.1, so you get the latest patch release that will still compile with the code in this chapter.</li>
+<li>Any version 0.11.0 or greater is not guaranteed to have the same API as the following examples use.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Building with the new dependency</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now, without changing any of the code, build the project, as shown in Listing 2.2.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.2:</b></span> The output from running <span style="color:#273D56">cargo build</span> after adding the <span style="color:#273D56">rand</span> crate as a dependency</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Locking 8 packages to latest Rust 1.96.0 compatible versions</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded rand_core v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded chacha20 v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded rand v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;Downloaded 3 crates (162.9KiB) in 0.59s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling libc v0.2.186</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rand_core v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling getrandom v0.4.3</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling cfg-if v1.0.4</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling chacha20 v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rand v0.10.1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.03s</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What Cargo did: the registry and dependencies</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You may see different version numbers (all compatible with the code, thanks to SemVer!) and different lines (depending on the operating system), and the lines may be in a different order.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.10 (Registry).</b></span> A copy of data from Crates.io, from which Cargo fetches the latest versions of everything an external dependency needs. Crates.io is where people in the Rust ecosystem post their open source Rust projects for others to use.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">After updating the registry, Cargo checks the <span style="color:#273D56">[dependencies]</span> section and downloads any listed crates that aren’t already downloaded. Although we only listed <span style="color:#273D56">rand</span>, Cargo also grabbed the other crates that <span style="color:#273D56">rand</span> depends on to work. After downloading the crates, Rust compiles them and then compiles the project with the dependencies available.</p>
+<p style="font-size:30px;line-height:1.45">If you immediately run <span style="color:#273D56">cargo build</span> again without making any changes, you get no output aside from the <span style="color:#273D56">Finished</span> line. Cargo knows it has already downloaded and compiled the dependencies, and you haven’t changed anything about them in <i>Cargo.toml</i>. It also knows you haven’t changed your code, so it doesn’t recompile that either. With nothing to do, it simply exits.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Rebuilding after a change; reproducible builds</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you make a trivial change to <i>src/main.rs</i>, save it and build again, you only see two lines of output:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Cargo only updates the build with your tiny change to <i>src/main.rs</i>. Your dependencies haven’t changed, so Cargo reuses what it has already downloaded and compiled for those.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Ensuring reproducible builds</h3>
+<p style="font-size:30px;line-height:1.45">Cargo has a mechanism that ensures you can rebuild the same artifact every time you or anyone else builds your code: it uses only the versions of the dependencies you specified until you indicate otherwise. Say that next week version 0.10.2 of <span style="color:#273D56">rand</span> comes out with an important bug fix, but also a regression that will break your code. To handle this, Rust creates the <i>Cargo.lock</i> file the first time you run <span style="color:#273D56">cargo build</span>, so we now have this file in the <i>guessing_game</i> directory.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Cargo.lock and updating a crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>On the first build, Cargo figures out all the versions of the dependencies that fit the criteria and writes them to the <i>Cargo.lock</i> file.</li>
+<li>On later builds, Cargo sees that <i>Cargo.lock</i> exists and uses the versions specified there rather than figuring out versions again. This gives you a reproducible build automatically: the project stays at 0.10.1 until you explicitly upgrade.</li>
+<li>Because <i>Cargo.lock</i> is important for reproducible builds, it’s often checked into source control with the rest of the code in your project.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Updating a crate to get a new version</h3>
+<p style="font-size:30px;line-height:1.45">When you <i>do</i> want to update a crate, Cargo provides the command <span style="color:#273D56">update</span>. It ignores the <i>Cargo.lock</i> file, figures out all the latest versions that fit your specifications in <i>Cargo.toml</i>, and writes those versions to <i>Cargo.lock</i>. By default, Cargo only looks for versions greater than 0.10.1 and less than 0.11.0. If the <span style="color:#273D56">rand</span> crate has released the two new versions 0.10.2 and 0.999.0, running <span style="color:#273D56">cargo update</span> shows what follows on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running cargo update</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo update</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Locking 1 package to latest Rust 1.96.0 compatible version</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating rand v0.10.1 -&gt; v0.10.2 (available: v0.999.0)</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Cargo ignores the 0.999.0 release. Your <i>Cargo.lock</i> file now notes that the version of <span style="color:#273D56">rand</span> you are using is 0.10.2. To use <span style="color:#273D56">rand</span> version 0.999.0 or any version in the 0.999.<i>x</i> series, you’d have to update <i>Cargo.toml</i> to look like this instead (don’t actually make this change: the following examples assume <span style="color:#273D56">rand</span> 0.10):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[dependencies]</p>
+<p style="white-space:nowrap">rand = "0.999.0"</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The next time you run <span style="color:#273D56">cargo build</span>, Cargo will update the registry of crates available and reevaluate your <span style="color:#273D56">rand</span> requirements according to the new version you have specified.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Generating a random number</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There’s a lot more to say about Cargo and its ecosystem (Chapter 14), but that’s all you need for now. Cargo makes it very easy to reuse libraries, so Rustaceans are able to write smaller projects that are assembled from a number of packages.</p>
+<p style="font-size:30px;line-height:1.45">Let’s start using <span style="color:#273D56">rand</span> to generate a number to guess. Update <i>src/main.rs</i> as shown in Listing 2.3.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.3:</b></span> Adding code to generate a random number — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let secret_number = rand::rng().random_range(1..=100);</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Bringing rand::prelude into scope</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.3 (continued):</b></span> Adding code to generate a random number — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The secret number is: {secret_number}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">First, we add the line <span style="color:#273D56">use rand::prelude::*;</span>. The <span style="color:#273D56">prelude</span> module contains the most commonly used parts of the <span style="color:#273D56">rand</span> crate, and <span style="color:#273D56">use</span> makes those items available in our program’s scope.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">rand::rng and random_range</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let secret_number = rand::rng().random_range(1..=100);</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">rand::rng</span> function gives us the particular random number generator we use: one that is local to the current thread of execution and is seeded by the operating system.</li>
+<li>Then we call the <span style="color:#273D56">random_range</span> method on the generator. It is defined by the <span style="color:#273D56">RngExt</span> trait, part of the <span style="color:#273D56">rand::prelude</span> module that <span style="color:#273D56">use rand::prelude::*;</span> brought into scope.</li>
+<li><span style="color:#273D56">random_range</span> takes a range expression as an argument and generates a random number in the range. The form <span style="color:#273D56">start..=end</span> is inclusive on the lower and upper bounds, so <span style="color:#273D56">1..=100</span> requests a number between 1 and 100.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> You won’t just know what to bring into scope and which methods and functions to call from a crate, so each crate has documentation with instructions for using it. Another neat feature of Cargo: <span style="color:#273D56">cargo doc --open</span> builds the documentation provided by all your dependencies locally and opens it in your browser. For other functionality in the <span style="color:#273D56">rand</span> crate, for example, run <span style="color:#273D56">cargo doc --open</span> and click <span style="color:#273D56">rand</span> in the sidebar on the left.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Printing the secret number while testing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The second new line prints the secret number. This is useful while we’re developing the program, to be able to test it, but we’ll delete it from the final version. It’s not much of a game if the program prints the answer as soon as it starts!</p>
+<p style="font-size:30px;line-height:1.45">Try running the program a few times. The first run:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Guess the number!</p>
+<p style="white-space:nowrap">The secret number is: 7</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">4</p>
+<p style="white-space:nowrap">You guessed: 4</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A different number on every run</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The second run, without changes to the code:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Guess the number!</p>
+<p style="white-space:nowrap">The secret number is: 83</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">5</p>
+<p style="white-space:nowrap">You guessed: 5</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>You should get different random numbers, and they should all be numbers between 1 and 100.</li>
+<li>If you get warnings, they are safe to ignore.</li>
+<li>If you get errors, check that you have <span style="color:#273D56">rand = "0.10.1"</span> in your <i>Cargo.toml</i>: future versions of <span style="color:#273D56">rand</span> may have a different API, but any version in the <span style="color:#273D56">0.10</span> series should work with the code in this chapter.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Comparing two numbers with Ordering</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.4:</b></span> Handling the possible return values of comparing two numbers — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::cmp::Ordering;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Now that we have user input and a random number, we can compare them, as in Listing 2.4. Note that this code won’t compile just yet, as explained shortly.</p>
+<p style="font-size:30px;line-height:1.45">First, another <span style="color:#273D56">use</span> statement brings a type called <span style="color:#273D56">std::cmp::Ordering</span> into scope from the standard library.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Ordering</span> type is another enum and has the variants <span style="color:#273D56">Less</span>, <span style="color:#273D56">Greater</span>, and <span style="color:#273D56">Equal</span>. These are the three outcomes that are possible when you compare two values.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The cmp method and the match expression</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Five new lines at the bottom use the <span style="color:#273D56">Ordering</span> type. The <span style="color:#273D56">cmp</span> method compares two values and can be called on anything that can be compared. It takes a reference to whatever you want to compare with: here, it compares <span style="color:#273D56">guess</span> to <span style="color:#273D56">secret_number</span>. It returns a variant of the <span style="color:#273D56">Ordering</span> enum we brought into scope with the <span style="color:#273D56">use</span> statement.</p>
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">match</span> expression decides what to do next based on which variant of <span style="color:#273D56">Ordering</span> was returned from the call to <span style="color:#273D56">cmp</span> with the values in <span style="color:#273D56">guess</span> and <span style="color:#273D56">secret_number</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.11 (Arm).</b></span> One branch of a <span style="color:#273D56">match</span> expression. An arm consists of a <i>pattern</i> to match against, and the code that should be run if the value given to <span style="color:#273D56">match</span> fits that arm’s pattern.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust takes the value given to <span style="color:#273D56">match</span> and looks through each arm’s pattern in turn. Patterns and the <span style="color:#273D56">match</span> construct are powerful Rust features: they let you express a variety of situations your code might encounter, and they make sure you handle them all. They are covered in detail in Chapter 6 and Chapter 19, respectively.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Walking through a match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 2.12.</b> Say the user has guessed 50 and the randomly generated secret number this time is 38.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ol style="font-size:26px;line-height:1.45">
+<li>Comparing 50 to 38, the <span style="color:#273D56">cmp</span> method returns <span style="color:#273D56">Ordering::Greater</span>, because 50 is greater than 38.</li>
+<li>The <span style="color:#273D56">match</span> expression gets the <span style="color:#273D56">Ordering::Greater</span> value and starts checking each arm’s pattern. The first arm’s pattern, <span style="color:#273D56">Ordering::Less</span>, does not match <span style="color:#273D56">Ordering::Greater</span>, so it ignores the code in that arm and moves to the next arm.</li>
+<li>The next arm’s pattern, <span style="color:#273D56">Ordering::Greater</span>, <i>does</i> match! The associated code in that arm executes and prints <span style="color:#273D56">Too big!</span> to the screen.</li>
+<li>The <span style="color:#273D56">match</span> expression ends after the first successful match, so it won’t look at the last arm in this scenario.</li>
+</ol>
+</div>
+<p style="font-size:30px;line-height:1.45">However, the code in Listing 2.4 won’t compile yet. Let’s try it — the output follows on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0308: mismatched types</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">error[E0308]: mismatched types</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:23:21</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">23 |&#160;&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--- ^^^^^^^^^^^^^^ expected `&amp;String`, found `&amp;{integer}`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;arguments to this method are incorrect</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= note: expected reference `&amp;String`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;found reference `&amp;{integer}`</p>
+<p style="white-space:nowrap">note: method defined here</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/cmp.rs:1000:7</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0308`.</p>
+<p style="white-space:nowrap">error: could not compile `guessing_game` (bin "guessing_game") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the types don’t match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The core of the error states that there are <i>mismatched types</i>. Rust has a strong, static type system. However, it also has type inference.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.13 (Type inference).</b></span> Rust working out a type you didn’t write. From <span style="color:#273D56">let mut guess = String::new()</span>, Rust inferred that <span style="color:#273D56">guess</span> should be a <span style="color:#273D56">String</span> and didn’t make us write the type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">secret_number</span>, on the other hand, is a number type.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 2.1:</b></span> A few of Rust’s number types that can hold a value between 1 and 100</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Type</th><th style="width:70%">Description</th></tr>
+<tr><td>i32</td><td>a 32-bit number</td></tr>
+<tr><td>u32</td><td>an unsigned 32-bit number</td></tr>
+<tr><td>i64</td><td>a 64-bit number</td></tr>
+</table>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">There are others as well. Unless otherwise specified, Rust defaults to an <span style="color:#273D56">i32</span>, which is the type of <span style="color:#273D56">secret_number</span> unless you add type information elsewhere that would cause Rust to infer a different numerical type. The reason for the error is that Rust cannot compare a string and a number type.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Converting the input to a number</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Ultimately, we want to convert the <span style="color:#273D56">String</span> the program reads as input into a number type, so that we can compare it numerically to the secret number. We do so by adding this line to the <span style="color:#273D56">main</span> function body:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let guess: u32 = guess.trim().parse().expect("Please type a number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The conversion line</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> (continued)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The new line is:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let guess: u32 = guess.trim().parse().expect("Please type a number!");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We create a variable named <span style="color:#273D56">guess</span>. But wait, doesn’t the program already have a variable named <span style="color:#273D56">guess</span>? It does — but helpfully, Rust allows us to shadow the previous value of <span style="color:#273D56">guess</span> with a new one.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shadowing guess and trimming the input</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.14 (Shadowing).</b></span> Declaring a new variable with the name of an existing one, so that the new value shadows the previous one. It lets us reuse the <span style="color:#273D56">guess</span> variable name rather than forcing us to create two unique variables, such as <span style="color:#273D56">guess_str</span> and <span style="color:#273D56">guess</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Chapter 3 covers shadowing in more detail; for now, know that it is often used when you want to convert a value from one type to another type.</p>
+<p style="font-size:30px;line-height:1.45">We bind the new variable to the expression <span style="color:#273D56">guess.trim().parse()</span>. The <span style="color:#273D56">guess</span> in the expression refers to the original <span style="color:#273D56">guess</span> variable that contained the input as a string.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">trim</span> method on a <span style="color:#273D56">String</span> instance eliminates any whitespace at the beginning and end. We must do this before converting the string to a <span style="color:#273D56">u32</span>, which can only contain numerical data.</li>
+<li>The user must press enter to satisfy <span style="color:#273D56">read_line</span> and input their guess, which adds a newline character to the string. Typing 5 and pressing enter makes <span style="color:#273D56">guess</span> look like <span style="color:#273D56">5\n</span>, where <span style="color:#273D56">\n</span> represents “newline.” (On Windows, enter results in a carriage return and a newline, <span style="color:#273D56">\r\n</span>.)</li>
+<li><span style="color:#273D56">trim</span> eliminates <span style="color:#273D56">\n</span> or <span style="color:#273D56">\r\n</span>, resulting in just <span style="color:#273D56">5</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">parse, the u32 annotation, and failure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">parse</span> method on strings converts a string to another type — here, from a string to a number. We tell Rust the exact number type we want with <span style="color:#273D56">let guess: u32</span>: the colon (<span style="color:#273D56">:</span>) after <span style="color:#273D56">guess</span> tells Rust we’ll annotate the variable’s type.</p>
+<p style="font-size:30px;line-height:1.45">Rust has a few built-in number types; <span style="color:#273D56">u32</span> is an unsigned, 32-bit integer, a good default choice for a small positive number (other number types: Chapter 3).</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">u32</span> annotation and the comparison with <span style="color:#273D56">secret_number</span> mean Rust infers that <span style="color:#273D56">secret_number</span> should be a <span style="color:#273D56">u32</span> as well. So now the comparison is between two values of the same type!</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">parse</span> only works on characters that can logically be converted into numbers, so it can easily cause errors: a string such as <span style="color:#273D56">A👍%</span> cannot be converted to a number. Because it might fail, <span style="color:#273D56">parse</span> returns a <span style="color:#273D56">Result</span>, much as <span style="color:#273D56">read_line</span> does, and we treat it the same way, with <span style="color:#273D56">expect</span>:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Err</span> (no number could be created from the string): <span style="color:#273D56">expect</span> crashes the game and prints the message we give it.</li>
+<li><span style="color:#273D56">Ok</span> (the conversion succeeded): <span style="color:#273D56">expect</span> returns the number that we want from the <span style="color:#273D56">Ok</span> value.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running the comparison</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s run the program now:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.26s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Guess the number!</p>
+<p style="white-space:nowrap">The secret number is: 58</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">&#160;&#160;76</p>
+<p style="white-space:nowrap">You guessed: 76</p>
+<p style="white-space:nowrap">Too big!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Nice! Even though spaces were added before the guess, the program still figured out that the user guessed 76. Run the program a few times to verify the different behavior with different kinds of input: guess the number correctly, guess a number that is too high, and guess a number that is too low.</p>
+<p style="font-size:30px;line-height:1.45">Most of the game works now, but the user can make only one guess. Let’s change that by adding a loop!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding a loop</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">loop</span> keyword creates an infinite loop; add one to <i>src/main.rs</i> to give users more chances:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The secret number is: {secret_number}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;loop {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A loop with no way out</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>We’ve moved everything from the guess input prompt onward into the loop. Be sure to indent the lines inside the loop another four spaces each, and run the program again.</li>
+<li>The program now asks for another guess forever, which introduces a new problem: it doesn’t seem like the user can quit!</li>
+<li>The user could always interrupt the program with the keyboard shortcut ctrl-C.</li>
+<li>But there’s another way to escape this insatiable monster, as mentioned in the <span style="color:#273D56">parse</span> discussion in “Comparing the Guess to the Secret Number”: if the user enters a non-number answer, the program crashes. We can take advantage of that to allow the user to quit, as the session on the next two slides shows.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Guessing in a loop</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The game now keeps asking for guesses:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.23s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Guess the number!</p>
+<p style="white-space:nowrap">The secret number is: 59</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">45</p>
+<p style="white-space:nowrap">You guessed: 45</p>
+<p style="white-space:nowrap">Too small!</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">60</p>
+<p style="white-space:nowrap">You guessed: 60</p>
+<p style="white-space:nowrap">Too big!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Quitting by crashing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The session continues — even after a win:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">59</p>
+<p style="white-space:nowrap">You guessed: 59</p>
+<p style="white-space:nowrap">You win!</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">quit</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6694925) panicked at src/main.rs:28:47:</p>
+<p style="white-space:nowrap">Please type a number!: ParseIntError { kind: InvalidDigit }</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Typing <span style="color:#273D56">quit</span> will quit the game, but as you’ll notice, so will entering any other non-number input. This is suboptimal, to say the least; we want the game to also stop when the correct number is guessed.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Quitting after a correct guess</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Program the game to quit when the user wins by adding a <span style="color:#273D56">break</span> statement in <i>src/main.rs</i>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("You win!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;break;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Adding the <span style="color:#273D56">break</span> line after <span style="color:#273D56">You win!</span> makes the program exit the loop when the user guesses the secret number correctly. Exiting the loop also means exiting the program, because the loop is the last part of <span style="color:#273D56">main</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling invalid input</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.5:</b></span> Ignoring a non-number guess and asking for another guess instead of crashing the program — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let guess: u32 = match guess.trim().parse() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(num) =&gt; num,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(_) =&gt; continue,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// --snip--</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Rather than crashing the program when the user inputs a non-number, let’s make the game ignore a non-number so that the user can continue guessing. We do that by altering the line where <span style="color:#273D56">guess</span> is converted from a <span style="color:#273D56">String</span> to a <span style="color:#273D56">u32</span>.</p>
+<p style="font-size:30px;line-height:1.45">We switch from an <span style="color:#273D56">expect</span> call to a <span style="color:#273D56">match</span> expression, moving from crashing on an error to handling the error. <span style="color:#273D56">parse</span> returns a <span style="color:#273D56">Result</span>, an enum with the variants <span style="color:#273D56">Ok</span> and <span style="color:#273D56">Err</span>; we match on it just as we did with the <span style="color:#273D56">Ordering</span> result of <span style="color:#273D56">cmp</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the match handles Ok and Err</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">parse</span> is able to turn the string into a number, it returns an <span style="color:#273D56">Ok</span> value that contains the resultant number. That <span style="color:#273D56">Ok</span> value matches the first arm’s pattern, and the <span style="color:#273D56">match</span> expression just returns the <span style="color:#273D56">num</span> value that <span style="color:#273D56">parse</span> produced and put inside the <span style="color:#273D56">Ok</span> value. That number ends up right where we want it, in the new <span style="color:#273D56">guess</span> variable we’re creating.</p>
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">parse</span> is <i>not</i> able to turn the string into a number, it returns an <span style="color:#273D56">Err</span> value that contains more information about the error. The <span style="color:#273D56">Err</span> value does not match the <span style="color:#273D56">Ok(num)</span> pattern in the first arm, but it does match the <span style="color:#273D56">Err(_)</span> pattern in the second arm.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.15 (Catch-all value).</b></span> The underscore, <span style="color:#273D56">_</span>, in a pattern. <span style="color:#273D56">Err(_)</span> says we want to match all <span style="color:#273D56">Err</span> values, no matter what information they have inside them.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">So the program executes the second arm’s code, <span style="color:#273D56">continue</span>, which tells the program to go to the next iteration of the <span style="color:#273D56">loop</span> and ask for another guess. Effectively, the program ignores all errors that <span style="color:#273D56">parse</span> might encounter!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Trying the finished logic</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now everything in the program should work as expected. Let’s try it:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling guessing_game v0.1.0 (file:///projects/guessing_game)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/guessing_game`</p>
+<p style="white-space:nowrap">Guess the number!</p>
+<p style="white-space:nowrap">The secret number is: 61</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">10</p>
+<p style="white-space:nowrap">You guessed: 10</p>
+<p style="white-space:nowrap">Too small!</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">99</p>
+<p style="white-space:nowrap">You guessed: 99</p>
+<p style="white-space:nowrap">Too big!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ignoring invalid input, stopping on a win</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The session continues: <span style="color:#273D56">foo</span> is ignored, and the correct guess ends the game.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">foo</p>
+<p style="white-space:nowrap">Please input your guess.</p>
+<p style="white-space:nowrap">61</p>
+<p style="white-space:nowrap">You guessed: 61</p>
+<p style="white-space:nowrap">You win!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Awesome! With one tiny final tweak, we will finish the guessing game. Recall that the program is still printing the secret number. That worked well for testing, but it ruins the game. Let’s delete the <span style="color:#273D56">println!</span> that outputs the secret number. Listing 2.6 shows the final code.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The complete guessing game (1/3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.6:</b></span> Complete guessing game code — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::cmp::Ordering;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let secret_number = rand::rng().random_range(1..=100);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;loop {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The complete guessing game (2/3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.6 (continued):</b></span> Complete guessing game code — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let guess: u32 = match guess.trim().parse() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ok(num) =&gt; num,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Err(_) =&gt; continue,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The complete guessing game (3/3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 2.6 (continued):</b></span> Complete guessing game code — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("You win!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;break;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">At this point, you’ve successfully built the guessing game. Congratulations!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This project was a hands-on way to introduce many new Rust concepts: <span style="color:#273D56">let</span>, <span style="color:#273D56">match</span>, functions, the use of external crates, and more. Along the way the guessing game used:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>variables, immutable by default, made mutable with <span style="color:#273D56">mut</span>, and shadowing to convert a value’s type;</li>
+<li>associated functions (<span style="color:#273D56">String::new</span>), methods, and references (<span style="color:#273D56">&amp;mut guess</span>);</li>
+<li><span style="color:#273D56">Result</span> with <span style="color:#273D56">Ok</span>/<span style="color:#273D56">Err</span>, handled by <span style="color:#273D56">expect</span> or by a <span style="color:#273D56">match</span>;</li>
+<li>the <span style="color:#273D56">rand</span> crate as a dependency, SemVer specifiers, <i>Cargo.lock</i> and <span style="color:#273D56">cargo update</span>;</li>
+<li><span style="color:#273D56">Ordering</span> and <span style="color:#273D56">cmp</span>, <span style="color:#273D56">loop</span>, <span style="color:#273D56">break</span> and <span style="color:#273D56">continue</span>.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The next few chapters cover these concepts in more detail. Chapter 3 covers concepts that most programming languages have, such as variables, data types, and functions, and shows how to use them in Rust. Chapter 4 explores ownership, a feature that makes Rust different from other languages. Chapter 5 discusses structs and method syntax, and Chapter 6 explains how enums work.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

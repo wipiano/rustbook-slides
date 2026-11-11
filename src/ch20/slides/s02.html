@@ -1,0 +1,24 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Performing unsafe superpowers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To switch to unsafe Rust, use the <span style="color:#273D56">unsafe</span> keyword and then start a new block that holds the unsafe code.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.2 (Unsafe superpowers).</b></span> The five actions you can take in unsafe Rust that you can’t in safe Rust.</p>
+</div>
+<ol style="font-size:30px;line-height:1.45">
+<li>Dereference a raw pointer.</li>
+<li>Call an unsafe function or method.</li>
+<li>Access or modify a mutable static variable.</li>
+<li>Implement an unsafe trait.</li>
+<li>Access fields of <span style="color:#273D56">union</span>s.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">unsafe</span> doesn’t turn off the borrow checker or disable any of Rust’s other safety checks: if you use a reference in unsafe code, it will still be checked. The keyword only gives you access to these five features, which are then not checked by the compiler for memory safety. You still get some degree of safety inside an unsafe block.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

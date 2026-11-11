@@ -1,0 +1,32 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the unsafe split_at_mut works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.6 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut vector = vec![1, 2, 3, 4, 5, 6];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let (left, right) = split_at_mut(&amp;mut vector, 3);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Recall from Chapter 4 (“The Slice Type”) that a slice is a pointer to some data and the length of the slice.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">len</span> gets the length of a slice; <span style="color:#273D56">as_mut_ptr</span> accesses its raw pointer. For a mutable slice of <span style="color:#273D56">i32</span> values, <span style="color:#273D56">as_mut_ptr</span> returns a <span style="color:#273D56">*mut i32</span>, stored in <span style="color:#273D56">ptr</span>.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We keep the assertion that <span style="color:#273D56">mid</span> is within the slice. Then the unsafe code: <span style="color:#273D56">slice::from_raw_parts_mut</span> takes a raw pointer and a length and creates a slice. We use it to create a slice that starts from <span style="color:#273D56">ptr</span> and is <span style="color:#273D56">mid</span> items long. Then we call <span style="color:#273D56">add</span> on <span style="color:#273D56">ptr</span> with <span style="color:#273D56">mid</span> as an argument to get a raw pointer that starts at <span style="color:#273D56">mid</span>, and create a slice from that pointer with the remaining number of items after <span style="color:#273D56">mid</span> as the length.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

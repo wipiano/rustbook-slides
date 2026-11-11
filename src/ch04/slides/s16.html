@@ -1,0 +1,35 @@
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.1 What Is Ownership?</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Variables and data interacting with move</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Multiple variables can interact with the same data in different ways in Rust:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 4.2:</b></span> Assigning the integer value of variable <span style="color:#273D56">x</span> to <span style="color:#273D56">y</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = x;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">The <span style="color:#273D56">String</span> version</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s1 = String::from("hello");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2 = s1;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We can probably guess what Listing 4.2 does: “Bind the value <span style="color:#273D56">5</span> to <span style="color:#273D56">x</span>; then, make a copy of the value in <span style="color:#273D56">x</span> and bind it to <span style="color:#273D56">y</span>.” We now have two variables, <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span>, and both equal <span style="color:#273D56">5</span>. This is indeed what happens, because integers are simple values with a known, fixed size, and these two <span style="color:#273D56">5</span> values are pushed onto the stack.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">String</span> version looks very similar, so we might assume it works the same way: that the second line makes a copy of the value in <span style="color:#273D56">s1</span> and binds it to <span style="color:#273D56">s2</span>. But this isn’t quite what happens.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>

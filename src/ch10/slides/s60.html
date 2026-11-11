@@ -1,0 +1,21 @@
+<section id="s60" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What goes wrong in Listing 10.16</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 10.11 (Dangling reference).</b></span> A reference that would point to data other than the data it’s intended to reference, because the referenced value has gone out of scope.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The outer scope declares a variable named <span style="color:#273D56">r</span> with no initial value.</li>
+<li>The inner scope declares a variable named <span style="color:#273D56">x</span> with the initial value <span style="color:#273D56">5</span>, and sets the value of <span style="color:#273D56">r</span> as a reference to <span style="color:#273D56">x</span>.</li>
+<li>Then the inner scope ends, and we attempt to print the value in <span style="color:#273D56">r</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">This code won’t compile, because the value that <span style="color:#273D56">r</span> is referring to has gone out of scope before we try to use it. The error message is on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">61</p>
+</div>
+</section>

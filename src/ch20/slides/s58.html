@@ -1,0 +1,19 @@
+<section id="s58" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The downside of a newtype</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Wrapper</span> is a new type, so it doesn’t have the methods of the value it’s holding. Three options:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Implement all the methods of <span style="color:#273D56">Vec&lt;T&gt;</span> directly on <span style="color:#273D56">Wrapper</span>, delegating to <span style="color:#273D56">self.0</span> — then we can treat <span style="color:#273D56">Wrapper</span> exactly like a <span style="color:#273D56">Vec&lt;T&gt;</span>.</li>
+<li>If the new type should have every method the inner type has, implement the <span style="color:#273D56">Deref</span> trait on <span style="color:#273D56">Wrapper</span> to return the inner type (Chapter 15, “Treating Smart Pointers Like Regular References”).</li>
+<li>If <span style="color:#273D56">Wrapper</span> should <i>not</i> have all the inner type’s methods — for example, to restrict its behavior — implement manually just the methods we do want.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The newtype pattern is also useful even when traits are not involved. Next, the focus switches to some advanced ways to interact with Rust’s type system.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">59</p>
+</div>
+</section>

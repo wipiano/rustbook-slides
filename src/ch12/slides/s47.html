@@ -1,0 +1,24 @@
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.4 Adding Functionality with Test-Driven Development</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Writing a failing test</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In <i>src/lib.rs</i>, we add a <span style="color:#273D56">tests</span> module with a test function, as in Chapter 11. The test function specifies the behavior we want <span style="color:#273D56">search</span> to have: it takes a query and the text to search, and returns only the lines from the text that contain the query. Listing 12.15 shows this test; the <span style="color:#273D56">search</span> stub from Listing 12.13 stays at the top of the file.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 12.15:</b></span> Creating a failing test for the <span style="color:#273D56">search</span> function for the functionality we wish we had — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn search&lt;'a&gt;(query: &amp;str, contents: &amp;'a str) -&gt; Vec&lt;&amp;'a str&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;unimplemented!();</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">// --snip--</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">tests</span> module follows on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>

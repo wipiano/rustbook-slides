@@ -1,0 +1,27 @@
+<section id="s83" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">await compiles to calls to poll</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> It’s rare to need to call <span style="color:#273D56">poll</span> directly, but if you do, keep in mind that with most futures, the caller should not call <span style="color:#273D56">poll</span> again after the future has returned <span style="color:#273D56">Ready</span>. Many futures will panic if polled again after becoming ready. Futures that are safe to poll again will say so explicitly in their documentation. This is similar to how <span style="color:#273D56">Iterator::next</span> behaves.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">When you see code that uses <span style="color:#273D56">await</span>, Rust compiles it under the hood to code that calls <span style="color:#273D56">poll</span>. Listing 17.4, where we printed the page title for a single URL once it resolved, compiles into something kind of (although not exactly) like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match page_title(url).poll() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ready(page_title) =&gt; match page_title {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(title) =&gt; println!("The title for {url} was {title}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; println!("{url} had no title"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Pending =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// But what goes here?</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">84</p>
+</div>
+</section>

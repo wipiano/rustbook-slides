@@ -1,0 +1,19 @@
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Rules for mutable static variables</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>As with regular variables, mutability is specified with <span style="color:#273D56">mut</span>. Any code that reads or writes <span style="color:#273D56">COUNTER</span> must be within an <span style="color:#273D56">unsafe</span> block.</li>
+<li>Listing 20.11 compiles and prints <span style="color:#273D56">COUNTER: 3</span> as expected because it’s single threaded. Multiple threads accessing <span style="color:#273D56">COUNTER</span> would likely result in data races, so it is undefined behavior. Therefore the entire function is marked <span style="color:#273D56">unsafe</span>, with the safety limitation documented, so callers know what they are and are not allowed to do safely.</li>
+<li>Whenever we write an unsafe function, it is idiomatic to write a comment starting with <span style="color:#273D56">SAFETY</span> explaining what the caller needs to do to call it safely; whenever we perform an unsafe operation, a <span style="color:#273D56">SAFETY</span> comment explains how the safety rules are upheld.</li>
+<li>A compiler lint denies by default any attempt to create references to a mutable static. Either opt out with <span style="color:#273D56">#[allow(static_mut_refs)]</span> or access it via a raw pointer from a raw borrow operator — including where a reference is created invisibly, as in this listing’s <span style="color:#273D56">println!</span>. This makes the safety requirements more obvious.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Globally accessible mutable data makes data races hard to rule out — hence mutable statics are unsafe. Where possible, prefer Chapter 16’s concurrency techniques and thread-safe smart pointers, so the compiler checks cross-thread access.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>

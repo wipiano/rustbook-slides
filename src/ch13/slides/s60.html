@@ -1,0 +1,19 @@
+<section id="s60" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.3 Improving Our I/O Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Going further: return an iterator from search</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">For a further improvement, return an iterator from the <span style="color:#273D56">search</span> function, so that the function becomes an iterator adapter:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>remove the call to <span style="color:#273D56">collect</span>;</li>
+<li>change the return type to <span style="color:#273D56">impl Iterator&lt;Item = &amp;'a str&gt;</span>;</li>
+<li>note that you’ll also need to update the tests!</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Search through a large file using your <span style="color:#273D56">minigrep</span> tool before and after making this change to observe the difference in behavior. Before the change, the program won’t print any results until it has collected all of the results. After the change, the results are printed as each matching line is found, because the <span style="color:#273D56">for</span> loop in the <span style="color:#273D56">run</span> function is able to take advantage of the laziness of the iterator.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">61</p>
+</div>
+</section>

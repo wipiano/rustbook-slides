@@ -1,0 +1,16 @@
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The inner match, and alternatives to match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The inner match checks whether the value returned by <span style="color:#273D56">error.kind()</span> is the <span style="color:#273D56">NotFound</span> variant of the <span style="color:#273D56">ErrorKind</span> enum. If it is, we try to create the file with <span style="color:#273D56">File::create</span>. However, because <span style="color:#273D56">File::create</span> could also fail, we need a second arm in the inner <span style="color:#273D56">match</span>: when the file can’t be created, a different error message is printed. The second arm of the outer <span style="color:#273D56">match</span> stays the same, so the program panics on any error besides the missing file error.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Alternatives to using match with Result&lt;T, E&gt;</h3>
+<p style="font-size:30px;line-height:1.45">That’s a lot of <span style="color:#273D56">match</span>! The <span style="color:#273D56">match</span> expression is very useful but also very much a primitive. In Chapter 13, you’ll learn about closures, which are used with many of the methods defined on <span style="color:#273D56">Result&lt;T, E&gt;</span>. These methods can be more concise than using <span style="color:#273D56">match</span> when handling <span style="color:#273D56">Result&lt;T, E&gt;</span> values in your code.</p>
+<p style="font-size:30px;line-height:1.45">For example, the next slide writes the same logic as Listing 9.5, this time using closures and the <span style="color:#273D56">unwrap_or_else</span> method.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>

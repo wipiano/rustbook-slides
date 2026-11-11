@@ -1,0 +1,16 @@
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">From parse_config toward a constructor</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Our code now more clearly conveys that <span style="color:#273D56">query</span> and <span style="color:#273D56">file_path</span> are related and that their purpose is to configure how the program will work. Any code that uses these values knows to find them in the <span style="color:#273D56">config</span> instance, in the fields named for their purpose.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Creating a constructor for Config</h3>
+<p style="font-size:30px;line-height:1.45">So far, we’ve extracted the logic that parses the command line arguments from <span style="color:#273D56">main</span> into <span style="color:#273D56">parse_config</span>. That helped us see that <span style="color:#273D56">query</span> and <span style="color:#273D56">file_path</span> were related, and that the relationship should be conveyed in our code. We then added a <span style="color:#273D56">Config</span> struct to name their related purpose and to return the values’ names as struct field names.</p>
+<p style="font-size:30px;line-height:1.45">Now that the purpose of <span style="color:#273D56">parse_config</span> is to create a <span style="color:#273D56">Config</span> instance, we can change it from a plain function to a function named <span style="color:#273D56">new</span> that is associated with the <span style="color:#273D56">Config</span> struct. This makes the code more idiomatic: just as we create a <span style="color:#273D56">String</span> by calling <span style="color:#273D56">String::new</span>, we’ll create a <span style="color:#273D56">Config</span> by calling <span style="color:#273D56">Config::new</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>

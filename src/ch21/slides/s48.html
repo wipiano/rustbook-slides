@@ -1,0 +1,26 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A vector of JoinHandles</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">spawn</span> returns a <span style="color:#273D56">JoinHandle&lt;T&gt;</span>, where <span style="color:#273D56">T</span> is the type the closure returns. Let’s try using <span style="color:#273D56">JoinHandle</span> too. Our closures will handle the connection and not return anything, so <span style="color:#273D56">T</span> will be the unit type <span style="color:#273D56">()</span>. Listing 21.14 compiles but doesn’t create any threads yet: <span style="color:#273D56">ThreadPool</span> now holds a vector of <span style="color:#273D56">thread::JoinHandle&lt;()&gt;</span>, initialized with a capacity of <span style="color:#273D56">size</span>; a <span style="color:#273D56">for</span> loop will run code to create the threads; and the instance containing them is returned.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 21.14:</b></span> Creating a vector for <span style="color:#273D56">ThreadPool</span> to hold the threads — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::thread;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub struct ThreadPool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;threads: Vec&lt;thread::JoinHandle&lt;()&gt;&gt;,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl ThreadPool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

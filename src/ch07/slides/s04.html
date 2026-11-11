@@ -1,0 +1,25 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How Cargo finds crate roots</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Cargo follows conventions instead of listing crate roots in <i>Cargo.toml</i>, and passes the crate root files to <span style="color:#273D56">rustc</span> to build the library or binary.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.1:</b></span> Cargo’s crate-root conventions</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">File in the package</th><th style="width:70%">Meaning</th></tr>
+<tr><td>src/main.rs</td><td>Crate root of a binary crate with the same name as the package</td></tr>
+<tr><td>src/lib.rs</td><td>Crate root of a library crate with the same name as the package</td></tr>
+<tr><td>src/bin/*.rs</td><td>Each file is a separate binary crate</td></tr>
+</table>
+<ul style="font-size:30px;line-height:1.45">
+<li>Our <i>my-project</i> package only contains <i>src/main.rs</i>, so it only contains a binary crate named <span style="color:#273D56">my-project</span>.</li>
+<li>If a package contains <i>src/main.rs</i> and <i>src/lib.rs</i>, it has two crates: a binary and a library, both with the same name as the package.</li>
+<li>A package can have multiple binary crates by placing files in the <i>src/bin</i> directory: each file will be a separate binary crate.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

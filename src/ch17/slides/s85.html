@@ -1,0 +1,19 @@
+<section id="s85" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The runtime polls futures and puts them to sleep</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Instead of a blocking loop, Rust ensures that the loop can hand off control to something that can pause work on this future to work on other futures and then check this one again later. As we’ve seen, that something is an async runtime, and this scheduling and coordination work is one of its main jobs.</p>
+<p style="font-size:30px;line-height:1.45">In Section 17.2 we described waiting on <span style="color:#273D56">rx.recv</span>: the <span style="color:#273D56">recv</span> call returns a future, and awaiting the future polls it. A runtime pauses the future until it’s ready with either <span style="color:#273D56">Some(message)</span> or <span style="color:#273D56">None</span> when the channel closes. Now we can see how that works:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>the runtime knows the future isn’t ready when <span style="color:#273D56">poll</span> returns <span style="color:#273D56">Poll::Pending</span>;</li>
+<li>the runtime knows the future <i>is</i> ready, and advances it, when <span style="color:#273D56">poll</span> returns <span style="color:#273D56">Poll::Ready(Some(message))</span> or <span style="color:#273D56">Poll::Ready(None)</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The exact details of how a runtime does that are beyond the scope of this book, but the key is the basic mechanics of futures: a runtime <i>polls</i> each future it is responsible for, putting the future back to sleep when it is not yet ready.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">86</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.4 Rc&lt;T&gt;, the Reference-Counted Smart Pointer</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Rc::clone versus a deep clone</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We could have called <span style="color:#273D56">a.clone()</span> rather than <span style="color:#273D56">Rc::clone(&amp;a)</span>, but Rust’s convention is to use <span style="color:#273D56">Rc::clone</span> in this case:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The implementation of <span style="color:#273D56">Rc::clone</span> doesn’t make a deep copy of all the data, as most types’ <span style="color:#273D56">clone</span> implementations do. It only increments the reference count, which doesn’t take much time; deep copies of data can take a lot of time.</li>
+<li>Using <span style="color:#273D56">Rc::clone</span> for reference counting visually distinguishes the deep-copy kinds of clones from the kinds that increase the reference count. When looking for performance problems, we only need to consider the deep-copy clones and can disregard calls to <span style="color:#273D56">Rc::clone</span>.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Cloning to increase the reference count</h3>
+<p style="font-size:30px;line-height:1.45">Let’s change Listing 15.18 so we can see the reference counts change as we create and drop references to the <span style="color:#273D56">Rc&lt;List&gt;</span> in <span style="color:#273D56">a</span>. In Listing 15.19, <span style="color:#273D56">main</span> gets an inner scope around list <span style="color:#273D56">c</span>, so we can see how the count changes when <span style="color:#273D56">c</span> goes out of scope.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

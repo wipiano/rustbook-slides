@@ -1,0 +1,21 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Multiple trait bounds with the + syntax</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can also specify more than one trait bound. Say we wanted <span style="color:#273D56">notify</span> to use display formatting as well as <span style="color:#273D56">summarize</span> on <span style="color:#273D56">item</span>: we specify in the <span style="color:#273D56">notify</span> definition that <span style="color:#273D56">item</span> must implement both <span style="color:#273D56">Display</span> and <span style="color:#273D56">Summary</span>, using the <span style="color:#273D56">+</span> syntax:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn notify(item: &amp;(impl Summary + Display)) {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">+</span> syntax is also valid with trait bounds on generic types:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn notify&lt;T: Summary + Display&gt;(item: &amp;T) {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">With the two trait bounds specified, the body of <span style="color:#273D56">notify</span> can call <span style="color:#273D56">summarize</span> and use <span style="color:#273D56">{}</span> to format <span style="color:#273D56">item</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

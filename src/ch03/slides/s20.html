@@ -1,0 +1,23 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.2 Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Overflow in release builds, and handling it explicitly</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When you’re compiling in release mode with the <span style="color:#273D56">--release</span> flag, Rust does <i>not</i> include checks for integer overflow that cause panics. Instead, if overflow occurs, Rust performs two’s complement wrapping.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 3.13 (Two’s complement wrapping).</b></span> Values greater than the maximum value the type can hold “wrap around” to the minimum of the values the type can hold. For a <span style="color:#273D56">u8</span>, 256 becomes 0, 257 becomes 1, and so on.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The program won’t panic, but the variable will have a value that probably isn’t what you were expecting. Relying on integer overflow’s wrapping behavior is considered an error. To explicitly handle the possibility of overflow, use these families of methods the standard library provides for primitive numeric types:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Wrap in all compilation modes with the <span style="color:#273D56">wrapping_*</span> methods, such as <span style="color:#273D56">wrapping_add</span>.</li>
+<li>Return the <span style="color:#273D56">None</span> value if there is overflow with the <span style="color:#273D56">checked_*</span> methods.</li>
+<li>Return the value and a Boolean indicating whether there was overflow with the <span style="color:#273D56">overflowing_*</span> methods.</li>
+<li>Saturate at the value’s minimum or maximum values with the <span style="color:#273D56">saturating_*</span> methods.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

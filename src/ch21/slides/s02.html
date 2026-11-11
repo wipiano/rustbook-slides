@@ -1,0 +1,22 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The protocols: HTTP over TCP</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We start by getting a single-threaded web server working. The details of the protocols involved are beyond the scope of this book, but a brief overview gives the information we need.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 21.2 (Request-response protocol).</b></span> A protocol in which a <i>client</i> initiates requests and a <i>server</i> listens to the requests and provides a response to the client. The protocol defines the contents of those requests and responses.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The two main protocols involved in web servers are <i>Hypertext Transfer Protocol (HTTP)</i> and <i>Transmission Control Protocol (TCP)</i>. Both are request-response protocols.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>TCP is the lower-level protocol: it describes the details of how information gets from one server to another, but doesn’t specify what that information is.</li>
+<li>HTTP builds on top of TCP by defining the contents of the requests and responses. It’s technically possible to use HTTP with other protocols, but in the vast majority of cases HTTP sends its data over TCP.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We’ll work with the raw bytes of TCP and HTTP requests and responses.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

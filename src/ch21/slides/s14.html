@@ -1,0 +1,20 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">HTTP version, CRLF and headers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The last part of the request line is the HTTP version the client uses; then the request line ends in a CRLF sequence.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 21.8 (CRLF sequence).</b></span> <i>Carriage return</i> and <i>line feed</i> — terms from the typewriter days — written <span style="color:#273D56">\r\n</span>, where <span style="color:#273D56">\r</span> is a carriage return and <span style="color:#273D56">\n</span> is a line feed. It separates the request line from the rest of the request data. When the CRLF is printed, we see a new line start rather than <span style="color:#273D56">\r\n</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In the request line we received, <span style="color:#273D56">GET</span> is the method, <i>/</i> is the request URI, and <span style="color:#273D56">HTTP/1.1</span> is the version.</p>
+<p style="font-size:30px;line-height:1.45">After the request line, the remaining lines starting from <span style="color:#273D56">Host:</span> onward are headers. <span style="color:#273D56">GET</span> requests have no body.</p>
+<p style="font-size:30px;line-height:1.45">Try making a request from a different browser, or asking for a different address such as <i>127.0.0.1:7878/test</i>, to see how the request data changes.</p>
+<p style="font-size:30px;line-height:1.45">Now that we know what the browser is asking for, let’s send back some data!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

@@ -1,0 +1,32 @@
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Satisfying the supertrait: implement Display</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To fix this, implement <span style="color:#273D56">Display</span> on <span style="color:#273D56">Point</span> (<i>src/main.rs</i>; trait and struct unchanged):</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl OutlinePrint for Point {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use std::fmt;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl fmt::Display for Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;write!(f, "({}, {})", self.x, self.y)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let p = Point { x: 1, y: 3 };</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;p.outline_print();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Now implementing <span style="color:#273D56">OutlinePrint</span> on <span style="color:#273D56">Point</span> compiles, and <span style="color:#273D56">outline_print</span> displays a <span style="color:#273D56">Point</span> within an outline of asterisks.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>

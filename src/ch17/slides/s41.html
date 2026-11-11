@@ -1,0 +1,22 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.2 Applying Concurrency with Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Try it: variations on awaiting the futures</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Starting from Listing 17.8, try some of these variations and see what they do:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Remove the async block from around either or both of the loops.</li>
+<li>Await each async block immediately after defining it.</li>
+<li>Wrap only the first loop in an async block, and await the resulting future after the body of the second loop.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">For an extra challenge, see if you can figure out what the output will be in each case <i>before</i> running the code!</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Each variation changes <i>where the await points are</i> and <i>which futures are polled together</i> — the two things that decide whether work interleaves.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

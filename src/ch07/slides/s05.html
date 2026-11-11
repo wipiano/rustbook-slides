@@ -1,0 +1,24 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Modules cheat sheet: crate root and modules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This section covers modules and the other parts of the module system: <i>paths</i>, which name items; the <span style="color:#273D56">use</span> keyword that brings a path into scope; the <span style="color:#273D56">pub</span> keyword to make items public; plus the <span style="color:#273D56">as</span> keyword, external packages, and the glob operator.</p>
+<p style="font-size:30px;line-height:1.45">First, a quick reference on how modules, paths, <span style="color:#273D56">use</span> and <span style="color:#273D56">pub</span> work in the compiler, and how most developers organize their code — a place to refer back to as a reminder:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Start from the crate root.</b> When compiling a crate, the compiler first looks in the crate root file (usually <i>src/lib.rs</i> for a library crate and <i>src/main.rs</i> for a binary crate) for code to compile.</li>
+<li><b>Declaring modules.</b> In the crate root file, you can declare new modules; say you declare a “garden” module with <span style="color:#273D56">mod garden;</span>. The compiler looks for the module’s code in these places:
+<ul>
+<li>inline, within curly brackets that replace the semicolon following <span style="color:#273D56">mod garden</span>;</li>
+<li>in the file <i>src/garden.rs</i>;</li>
+<li>in the file <i>src/garden/mod.rs</i>.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

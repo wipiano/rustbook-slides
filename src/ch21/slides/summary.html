@@ -1,0 +1,23 @@
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Well done! You’ve made it to the end of the book. In this final project you:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>listened for TCP connections with <span style="color:#273D56">TcpListener</span>, read HTTP request lines through a <span style="color:#273D56">BufReader</span>, and wrote raw HTTP responses (status line, <span style="color:#273D56">Content-Length</span>, body) to the <span style="color:#273D56">TcpStream</span>;</li>
+<li>served <i>hello.html</i> for <i>/</i> and <i>404.html</i> for anything else, and saw how a slow <i>/sleep</i> request blocks a single-threaded server;</li>
+<li>built a <span style="color:#273D56">ThreadPool</span> by compiler-driven development: <span style="color:#273D56">Worker</span>s fed through a channel whose receiver is shared as <span style="color:#273D56">Arc&lt;Mutex&lt;Receiver&lt;Job&gt;&gt;&gt;</span>;</li>
+<li>shut the pool down gracefully with <span style="color:#273D56">Drop</span>: dropping the sender closes the channel, the <span style="color:#273D56">Worker</span>s break out of their loops, and <span style="color:#273D56">join</span> waits for them.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Thank you for joining this tour of Rust. You’re now ready to implement your own Rust projects and help with other people’s.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This is the last chapter; the appendices follow as reference material. Keep in mind that there is a welcoming community of other Rustaceans who would love to help you with any challenges you encounter on your Rust journey.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">98</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s86" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.3 Graceful Shutdown and Cleanup</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading the shutdown output</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You might see a different ordering of <span style="color:#273D56">Worker</span> IDs and messages. From the messages: <span style="color:#273D56">Worker</span> instances 0 and 3 got the first two requests. The server stopped accepting connections after the second connection, and the <span style="color:#273D56">Drop</span> implementation on <span style="color:#273D56">ThreadPool</span> starts executing before <span style="color:#273D56">Worker 3</span> even starts its job. Dropping the <span style="color:#273D56">sender</span> disconnects all the <span style="color:#273D56">Worker</span> instances and tells them to shut down. Each prints a message when it disconnects, and then the thread pool calls <span style="color:#273D56">join</span> to wait for each <span style="color:#273D56">Worker</span> thread to finish.</p>
+<p style="font-size:30px;line-height:1.45">One interesting aspect of this particular execution: the <span style="color:#273D56">ThreadPool</span> dropped the <span style="color:#273D56">sender</span>, and before any <span style="color:#273D56">Worker</span> received an error, we tried to join <span style="color:#273D56">Worker 0</span>. <span style="color:#273D56">Worker 0</span> had not yet gotten an error from <span style="color:#273D56">recv</span>, so the main thread blocked, waiting for it to finish. Meanwhile, <span style="color:#273D56">Worker 3</span> received a job, and then all threads received an error. When <span style="color:#273D56">Worker 0</span> finished, the main thread waited for the rest; by then they had all exited their loops and stopped.</p>
+<p style="font-size:30px;line-height:1.45">Congrats! The project is complete: a basic web server that uses a thread pool to respond asynchronously, with a graceful shutdown that cleans up all the threads in the pool.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">87</p>
+</div>
+</section>

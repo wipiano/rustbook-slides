@@ -1,0 +1,30 @@
+<section id="s62" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Thunk alias</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A type alias makes this code more manageable by reducing the repetition. Listing 20.26 introduces an alias named <span style="color:#273D56">Thunk</span> for the verbose type and replaces all uses of the type with it.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.26:</b></span> Introducing a type alias, <span style="color:#273D56">Thunk</span>, to reduce repetition</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">type Thunk = Box&lt;dyn Fn() + Send + 'static&gt;;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let f: Thunk = Box::new(|| println!("hi"));</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn takes_long_type(f: Thunk) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn returns_long_type() -&gt; Thunk {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This code is much easier to read and write! A meaningful alias name also communicates intent: <i>thunk</i> is a word for code to be evaluated at a later time, so it’s an appropriate name for a closure that gets stored.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">63</p>
+</div>
+</section>

@@ -1,0 +1,35 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Re-exporting names with pub use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A name brought into scope with <span style="color:#273D56">use</span> is private to the scope into which we imported it. To let code outside that scope refer to the name as if it had been defined in that scope, combine <span style="color:#273D56">pub</span> and <span style="color:#273D56">use</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.16 (Re-exporting).</b></span> Bringing an item into scope with <span style="color:#273D56">pub use</span>, which also makes that item available for others to bring into their scope.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 7.17 is Listing 7.11 with <span style="color:#273D56">use</span> in the root module changed to <span style="color:#273D56">pub use</span>.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.17:</b></span> Making a name available for any code to use from a new scope with <span style="color:#273D56">pub use</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub use crate::front_of_house::hosting;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

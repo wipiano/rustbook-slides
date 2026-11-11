@@ -1,0 +1,25 @@
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What get returns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let score = scores.get(&amp;team_name).copied().unwrap_or(0);</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Here, <span style="color:#273D56">score</span> will have the value associated with the Blue team, and the result will be <span style="color:#273D56">10</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 8.1:</b></span> How Listing 8.21 handles the <span style="color:#273D56">Option</span> that <span style="color:#273D56">get</span> returns</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Step</th><th style="width:70%">Result</th></tr>
+<tr><td>get(&amp;team_name)</td><td>Option&lt;&amp;V&gt;: None if there’s no value for that key</td></tr>
+<tr><td>.copied()</td><td>Option&lt;i32&gt; rather than Option&lt;&amp;i32&gt;</td></tr>
+<tr><td>.unwrap_or(0)</td><td>sets score to zero if scores has no entry for the key</td></tr>
+</table>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Iterating over a hash map</h3>
+<p style="font-size:30px;line-height:1.45">We can iterate over each key-value pair in a hash map in a similar manner as we do with vectors, using a <span style="color:#273D56">for</span> loop — shown on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>

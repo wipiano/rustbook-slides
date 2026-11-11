@@ -1,0 +1,28 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Contained item comments: //!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 14.4 (Contained item comment).</b></span> A doc comment written <span style="color:#273D56">//!</span>. It adds documentation to the item that <i>contains</i> the comments rather than to the items <i>following</i> the comments. It is typically used inside the crate root file (<i>src/lib.rs</i> by convention) or inside a module, to document the crate or the module as a whole.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, to describe the purpose of the <span style="color:#273D56">my_crate</span> crate that contains the <span style="color:#273D56">add_one</span> function, we add documentation comments that start with <span style="color:#273D56">//!</span> to the beginning of the <i>src/lib.rs</i> file, as in Listing 14.2.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 14.2:</b></span> The documentation for the <span style="color:#273D56">my_crate</span> crate as a whole — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">//! # My Crate</p>
+<p style="white-space:nowrap">//!</p>
+<p style="white-space:nowrap">//! `my_crate` is a collection of utilities to make performing certain</p>
+<p style="white-space:nowrap">//! calculations more convenient.</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">/// Adds one to the number given.</p>
+<p style="white-space:nowrap">// --snip--</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s58" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Yielding control to the runtime</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">At each await point, Rust gives a runtime a chance to pause the task and switch to another one if the future being awaited isn’t ready. The inverse is also true: Rust <i>only</i> pauses async blocks and hands control back to a runtime at an await point. Everything between await points is synchronous.</p>
+<p style="font-size:30px;line-height:1.45">So if you do a bunch of work in an async block without an await point, that future will block any other futures from making progress.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.14 (Starvation).</b></span> A future <i>starves</i> other futures when it does work without reaching an await point, keeping them from making progress.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In some cases, that may not be a big deal. However, if you are doing some kind of expensive setup or long-running work, or if you have a future that will keep doing some particular task indefinitely, you’ll need to think about when and where to hand control back to the runtime.</p>
+<p style="font-size:30px;line-height:1.45">Let’s simulate a long-running operation to illustrate the starvation problem, then explore how to solve it.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">59</p>
+</div>
+</section>

@@ -1,0 +1,17 @@
+<section id="s68" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.5 RefCell&lt;T&gt; and the Interior Mutability Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Interior mutability to the rescue</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can’t modify the <span style="color:#273D56">MockMessenger</span> to keep track of the messages, because the <span style="color:#273D56">send</span> method takes an immutable reference to <span style="color:#273D56">self</span>.</p>
+<p style="font-size:30px;line-height:1.45">We also can’t take the error text’s suggestion to use <span style="color:#273D56">&amp;mut self</span> in both the <span style="color:#273D56">impl</span> method and the trait definition: we do not want to change the <span style="color:#273D56">Messenger</span> trait solely for the sake of testing. Instead, we need a way to make our test code work correctly with our existing design.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 15.15.</b> This is a situation in which interior mutability can help! We store <span style="color:#273D56">sent_messages</span> within a <span style="color:#273D56">RefCell&lt;T&gt;</span>; then the <span style="color:#273D56">send</span> method — still taking <span style="color:#273D56">&amp;self</span> — is able to modify <span style="color:#273D56">sent_messages</span> to store the messages we’ve seen. Listing 15.22 (next two slides) shows what that looks like.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">69</p>
+</div>
+</section>

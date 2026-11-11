@@ -1,0 +1,15 @@
+<section id="s73" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.3 Test Organization</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the private test compiles; integration tests</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Listing 11.12, <span style="color:#273D56">internal_adder</span> is not marked as <span style="color:#273D56">pub</span>. Tests are just Rust code, and the <span style="color:#273D56">tests</span> module is just another module. As discussed in “Paths for Referring to an Item in the Module Tree” (Chapter 7), items in child modules can use the items in their ancestor modules. The test brings all of the items of the <span style="color:#273D56">tests</span> module’s parent into scope with <span style="color:#273D56">use super::*</span>, and then it can call <span style="color:#273D56">internal_adder</span>. If you don’t think private functions should be tested, there’s nothing in Rust that will compel you to do so.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Integration tests</h3>
+<p style="font-size:30px;line-height:1.45">In Rust, integration tests are entirely external to your library. They use your library in the same way any other code would, so they can only call functions that are part of your library’s public API. Their purpose is to test whether many parts of your library work together correctly: units of code that work correctly on their own could have problems when integrated, so test coverage of the integrated code is important as well. To create integration tests, you first need a <i>tests</i> directory.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">77</p>
+</div>
+</section>

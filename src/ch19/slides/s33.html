@@ -1,0 +1,19 @@
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How each variant’s pattern is shaped</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><b>No data</b>, like <span style="color:#273D56">Message::Quit</span>: we can’t destructure the value any further. We can only match on the literal <span style="color:#273D56">Message::Quit</span> value, and no variables are in that pattern.</li>
+<li><b>Struct-like</b>, such as <span style="color:#273D56">Message::Move</span>: a pattern similar to the one for structs. After the variant name, place curly brackets and list the fields with variables, breaking apart the pieces to use in this arm’s code. Here we use the shorthand form, as in Listing 19.13.</li>
+<li><b>Tuple-like</b>, like <span style="color:#273D56">Message::Write</span> (a tuple with one element) and <span style="color:#273D56">Message::ChangeColor</span> (three elements): a pattern similar to the one for tuples. The number of variables in the pattern must match the number of elements in the variant we’re matching.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Nested structs and enums</h3>
+<p style="font-size:30px;line-height:1.45">So far our examples have all matched structs or enums one level deep, but matching works on nested items too! Listing 19.16 refactors Listing 19.15 to support RGB and HSV colors in the <span style="color:#273D56">ChangeColor</span> message.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>

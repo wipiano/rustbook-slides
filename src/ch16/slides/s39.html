@@ -1,0 +1,32 @@
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.2 Transfer Data Between Threads with Message Passing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Two producers, one receiver</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Before creating the first spawned thread, Listing 16.11 calls <span style="color:#273D56">clone</span> on the transmitter. This gives a new transmitter, passed to the first spawned thread; the original transmitter goes to a second spawned thread. That gives two threads, each sending different messages to the one receiver.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Output should look something like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Got: hi</p>
+<p style="white-space:nowrap">Got: more</p>
+<p style="white-space:nowrap">Got: from</p>
+<p style="white-space:nowrap">Got: messages</p>
+<p style="white-space:nowrap">Got: for</p>
+<p style="white-space:nowrap">Got: the</p>
+<p style="white-space:nowrap">Got: thread</p>
+<p style="white-space:nowrap">Got: you</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">You might see the values in another order, depending on your system. This is what makes concurrency interesting as well as difficult.</p>
+<p style="font-size:30px;line-height:1.45">Experiment with <span style="color:#273D56">thread::sleep</span>, giving it various values in the different threads: each run will be more nondeterministic and create different output each time.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>

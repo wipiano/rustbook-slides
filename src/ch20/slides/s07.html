@@ -1,0 +1,36 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Dereferencing raw pointers in an unsafe block</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.3:</b></span> Dereferencing raw pointers within an <span style="color:#273D56">unsafe</span> block</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut num = 5;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let r1 = &amp;raw const num;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let r2 = &amp;raw mut num;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;unsafe {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("r1 is: {}", *r1);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("r2 is: {}", *r2);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Reading the data a raw pointer points to needs the dereference operator <span style="color:#273D56">*</span>, which requires an <span style="color:#273D56">unsafe</span> block.</p>
+<p style="font-size:30px;line-height:1.45">Creating a pointer does no harm; only accessing the value it points at might mean dealing with an invalid value.</p>
+<p style="font-size:30px;line-height:1.45">In Listings 20.1 and 20.3, <span style="color:#273D56">*const i32</span> and <span style="color:#273D56">*mut i32</span> both point to where <span style="color:#273D56">num</span> is stored. With an immutable and a mutable <i>reference</i> to <span style="color:#273D56">num</span>, the code would not compile. With raw pointers we can change data through the mutable pointer, potentially creating a data race. Be careful!</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Why use raw pointers at all? One major use case is interfacing with C code (next section). Another is building up safe abstractions that the borrow checker doesn’t understand — shown after unsafe functions are introduced.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

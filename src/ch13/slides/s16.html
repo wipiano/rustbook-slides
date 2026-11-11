@@ -1,0 +1,28 @@
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.1 Closures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Capturing references or moving ownership</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Closures can capture values from their environment in three ways, mapping directly to the three ways a function can take a parameter: borrowing immutably, borrowing mutably, and taking ownership. The closure decides which to use based on what its body does with the captured values. In Listing 13.4 it captures an immutable reference to the vector <span style="color:#273D56">list</span>, because that is all it needs to print the value.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 13.4:</b></span> Defining and calling a closure that captures an immutable reference — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let list = vec![1, 2, 3];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Before defining closure: {list:?}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let only_borrows = || println!("From closure: {list:?}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Before calling closure: {list:?}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;only_borrows();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("After calling closure: {list:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>

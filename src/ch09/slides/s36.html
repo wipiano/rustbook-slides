@@ -1,0 +1,19 @@
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How Listing 9.11 works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The code takes the <span style="color:#273D56">text</span> string slice argument and calls the <span style="color:#273D56">lines</span> method on it, which returns an iterator over the lines in the string.</li>
+<li>Because the function wants to examine the first line, it calls <span style="color:#273D56">next</span> on the iterator to get its first value. If <span style="color:#273D56">text</span> is the empty string, <span style="color:#273D56">next</span> returns <span style="color:#273D56">None</span>, and we use <span style="color:#273D56">?</span> to stop and return <span style="color:#273D56">None</span> from <span style="color:#273D56">last_char_of_first_line</span>. Otherwise <span style="color:#273D56">next</span> returns a <span style="color:#273D56">Some</span> value containing a string slice of the first line.</li>
+<li>The <span style="color:#273D56">?</span> extracts the string slice, and we call <span style="color:#273D56">chars</span> on it to get an iterator of its characters, then <span style="color:#273D56">last</span> to return the last item in the iterator.</li>
+<li><span style="color:#273D56">last</span> returns an <span style="color:#273D56">Option</span>, because the first line may be the empty string — for example, if <span style="color:#273D56">text</span> starts with a blank line but has characters on other lines, as in <span style="color:#273D56">"\nhi"</span>. If there is a last character on the first line, it is returned in the <span style="color:#273D56">Some</span> variant.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">?</span> in the middle gives a concise way to express this logic, implementing the function in one line. Without <span style="color:#273D56">?</span> on <span style="color:#273D56">Option</span>, we’d need more method calls or a <span style="color:#273D56">match</span> expression.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>

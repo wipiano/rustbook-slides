@@ -1,0 +1,24 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.3 Generating a Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Running cargo update</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo update</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating crates.io index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Locking 1 package to latest Rust 1.96.0 compatible version</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Updating rand v0.10.1 -&gt; v0.10.2 (available: v0.999.0)</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Cargo ignores the 0.999.0 release. Your <i>Cargo.lock</i> file now notes that the version of <span style="color:#273D56">rand</span> you are using is 0.10.2. To use <span style="color:#273D56">rand</span> version 0.999.0 or any version in the 0.999.<i>x</i> series, you’d have to update <i>Cargo.toml</i> to look like this instead (don’t actually make this change: the following examples assume <span style="color:#273D56">rand</span> 0.10):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[dependencies]</p>
+<p style="white-space:nowrap">rand = "0.999.0"</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The next time you run <span style="color:#273D56">cargo build</span>, Cargo will update the registry of crates available and reevaluate your <span style="color:#273D56">rand</span> requirements according to the new version you have specified.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

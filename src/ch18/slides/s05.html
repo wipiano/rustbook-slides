@@ -1,0 +1,18 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the fields stay private</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We leave the <span style="color:#273D56">list</span> and <span style="color:#273D56">average</span> fields private so external code has no way to add or remove items in the <span style="color:#273D56">list</span> field directly; otherwise the <span style="color:#273D56">average</span> field might get out of sync when the <span style="color:#273D56">list</span> changes. The <span style="color:#273D56">average</span> method returns the value of the <span style="color:#273D56">average</span> field, so external code can read the average but not modify it.</p>
+<p style="font-size:30px;line-height:1.45">Because the implementation details are encapsulated, we can easily change aspects such as the data structure later. For instance, the <span style="color:#273D56">list</span> field could use a <span style="color:#273D56">HashSet&lt;i32&gt;</span> instead of a <span style="color:#273D56">Vec&lt;i32&gt;</span>. As long as the signatures of the public methods <span style="color:#273D56">add</span>, <span style="color:#273D56">remove</span>, and <span style="color:#273D56">average</span> stay the same, code using <span style="color:#273D56">AveragedCollection</span> wouldn’t need to change.</p>
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">list</span> were public instead, this wouldn’t necessarily hold: <span style="color:#273D56">HashSet&lt;i32&gt;</span> and <span style="color:#273D56">Vec&lt;i32&gt;</span> have different methods for adding and removing items, so external code that modified <span style="color:#273D56">list</span> directly would likely have to change.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If encapsulation is a required aspect for a language to be considered object oriented, Rust meets that requirement: the option to use <span style="color:#273D56">pub</span> or not for different parts of code enables encapsulation of implementation details.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

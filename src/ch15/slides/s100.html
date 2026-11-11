@@ -1,0 +1,21 @@
+<section id="s100" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">After the scope: back to one owner</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 15.3:</b></span> Reference counts printed by Listing 15.29</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:34%">Point in the program</th><th style="width:16%">leaf strong</th><th style="width:16%">leaf weak</th><th style="width:17%">branch strong</th><th style="width:17%">branch weak</th></tr>
+<tr><td>After creating leaf</td><td>1</td><td>0</td><td>n/a</td><td>n/a</td></tr>
+<tr><td>Inner scope, after linking</td><td>2</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>After the inner scope</td><td>1</td><td>0</td><td>dropped</td><td>dropped</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Accessing the parent of <span style="color:#273D56">leaf</span> after the end of the scope gives <span style="color:#273D56">None</span> again. At the end of the program, the <span style="color:#273D56">Rc&lt;Node&gt;</span> in <span style="color:#273D56">leaf</span> has a strong count of 1 and a weak count of 0, because the variable <span style="color:#273D56">leaf</span> is again the only reference to the <span style="color:#273D56">Rc&lt;Node&gt;</span>.</p>
+<p style="font-size:30px;line-height:1.45">All of the logic that manages the counts and value dropping is built into <span style="color:#273D56">Rc&lt;T&gt;</span> and <span style="color:#273D56">Weak&lt;T&gt;</span> and their implementations of the <span style="color:#273D56">Drop</span> trait. By specifying in the definition of <span style="color:#273D56">Node</span> that the relationship from a child to its parent should be a <span style="color:#273D56">Weak&lt;T&gt;</span> reference, parent nodes can point to child nodes and vice versa without creating a reference cycle and memory leaks.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">101</p>
+</div>
+</section>

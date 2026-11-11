@@ -1,0 +1,21 @@
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why a command line tool: our own grep</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust’s speed, safety, single binary output, and cross-platform support make it an ideal language for creating command line tools. So for our project we’ll make our own version of the classic command line search tool <span style="color:#273D56">grep</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 12.1 (grep).</b></span> <b>G</b>lobally search a <b>r</b>egular <b>e</b>xpression and <b>p</b>rint. In the simplest use case, <span style="color:#273D56">grep</span> takes a file path and a string as its arguments; it reads the file, finds the lines in that file that contain the string argument, and prints those lines.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Along the way, our tool will use the terminal features that many other command line tools use:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>We’ll read the value of an <i>environment variable</i> to allow the user to configure the behavior of our tool.</li>
+<li>We’ll print error messages to the standard error console stream (<span style="color:#273D56">stderr</span>) instead of standard output (<span style="color:#273D56">stdout</span>), so that, for example, the user can redirect successful output to a file while still seeing error messages onscreen.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>

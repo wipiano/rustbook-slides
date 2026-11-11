@@ -1,0 +1,16 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.2 Processing a Series of Items with Iterators</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chaining adapters; closures that capture</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because <span style="color:#273D56">map</span> takes a closure, we can specify any operation we want to perform on each item. This is a great example of how closures let you customize some behavior while reusing the iteration behavior that the <span style="color:#273D56">Iterator</span> trait provides.</p>
+<p style="font-size:30px;line-height:1.45">You can chain multiple calls to iterator adapters to perform complex actions in a readable way. But because all iterators are lazy, you have to call one of the consuming adapter methods to get results from calls to iterator adapters.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Closures that capture their environment</h3>
+<p style="font-size:30px;line-height:1.45">Many iterator adapters take closures as arguments, and commonly those closures capture their environment. Take the <span style="color:#273D56">filter</span> method: its closure gets an item from the iterator and returns a <span style="color:#273D56">bool</span>. If the closure returns <span style="color:#273D56">true</span>, the value is included in the iterator produced by <span style="color:#273D56">filter</span>; if it returns <span style="color:#273D56">false</span>, the value isn’t included.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

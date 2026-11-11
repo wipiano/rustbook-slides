@@ -1,0 +1,36 @@
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.2 Applying Concurrency with Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The same order every time: join is fair</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;line-height:1.45">Output of Listing 17.8:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">hi number 1 from the first task!</p>
+<p style="white-space:nowrap">hi number 1 from the second task!</p>
+<p style="white-space:nowrap">hi number 2 from the first task!</p>
+<p style="white-space:nowrap">hi number 2 from the second task!</p>
+<p style="white-space:nowrap">hi number 3 from the first task!</p>
+<p style="white-space:nowrap">hi number 3 from the second task!</p>
+<p style="white-space:nowrap">hi number 4 from the first task!</p>
+<p style="white-space:nowrap">hi number 4 from the second task!</p>
+<p style="white-space:nowrap">hi number 5 from the first task!</p>
+<p style="white-space:nowrap">hi number 6 from the first task!</p>
+<p style="white-space:nowrap">hi number 7 from the first task!</p>
+<p style="white-space:nowrap">hi number 8 from the first task!</p>
+<p style="white-space:nowrap">hi number 9 from the first task!</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Now you’ll see the exact same order every time, which is very different from what we saw with threads and with <span style="color:#273D56">trpl::spawn_task</span> in Listing 17.7. That is because the <span style="color:#273D56">trpl::join</span> function is <i>fair</i>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.13 (Fair).</b></span> A fair operation checks each future equally often, alternating between them, and never lets one race ahead if the other is ready.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>

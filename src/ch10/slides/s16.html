@@ -1,0 +1,22 @@
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.1 Generic Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why it fails: not every T can be compared</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The help text mentions <span style="color:#273D56">std::cmp::PartialOrd</span>, which is a <i>trait</i> — the topic of the next section. For now, know that the error states that the body of <span style="color:#273D56">largest</span> won’t work for all possible types that <span style="color:#273D56">T</span> could be.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Because we want to compare values of type <span style="color:#273D56">T</span> in the body, we can only use types whose values can be ordered.</li>
+<li>To enable comparisons, the standard library has the <span style="color:#273D56">std::cmp::PartialOrd</span> trait that you can implement on types (more in Appendix C).</li>
+<li>To fix Listing 10.5, follow the help text’s suggestion: restrict the types valid for <span style="color:#273D56">T</span> to only those that implement <span style="color:#273D56">PartialOrd</span>.</li>
+<li>The listing will then compile, because the standard library implements <span style="color:#273D56">PartialOrd</span> on both <span style="color:#273D56">i32</span> and <span style="color:#273D56">char</span>.</li>
+</ul>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn largest&lt;T: std::cmp::PartialOrd&gt;(list: &amp;[T]) -&gt; &amp;T {</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>

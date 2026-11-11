@@ -1,0 +1,31 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Variant constructors, and different data per variant</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We attach data to each variant of the enum directly, so there is no need for an extra struct. It is also easier to see another detail of how enums work: the name of each variant we define also becomes a function that constructs an instance of the enum.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.3 (Variant constructor).</b></span> The function each variant name becomes. <span style="color:#273D56">IpAddr::V4()</span> is a function call that takes a <span style="color:#273D56">String</span> argument and returns an instance of the <span style="color:#273D56">IpAddr</span> type. We get it automatically as a result of defining the enum.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another advantage over a struct: each variant can have different types and amounts of associated data. Version four addresses always have four numeric components with values between 0 and 255. To store <span style="color:#273D56">V4</span> addresses as four <span style="color:#273D56">u8</span> values but still express <span style="color:#273D56">V6</span> addresses as one <span style="color:#273D56">String</span>, a struct would not do. Enums handle this case with ease:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4(u8, u8, u8, u8),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6(String),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let home = IpAddr::V4(127, 0, 0, 1);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let loopback = IpAddr::V6(String::from("::1"));</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

@@ -1,0 +1,22 @@
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Different types, or the same type?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">impl Trait: the types may differ</h3>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn notify(item1: &amp;impl Summary, item2: &amp;impl Summary) {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">impl Trait</span> is appropriate if we want this function to allow <span style="color:#273D56">item1</span> and <span style="color:#273D56">item2</span> to have different types (as long as both types implement <span style="color:#273D56">Summary</span>).</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Trait bound: one shared type</h3>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn notify&lt;T: Summary&gt;(item1: &amp;T, item2: &amp;T) {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To force both parameters to have the same type, we must use a trait bound. The generic type <span style="color:#273D56">T</span>, specified as the type of <span style="color:#273D56">item1</span> and <span style="color:#273D56">item2</span>, constrains the function so that the concrete type of the value passed as an argument for <span style="color:#273D56">item1</span> and <span style="color:#273D56">item2</span> must be the same.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>

@@ -1,0 +1,21 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Which constructs accept which patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 19.1:</b></span> Pattern refutability required by each construct</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:42%">Construct</th><th style="width:58%">Accepts</th></tr>
+<tr><td>Function parameters, let, for</td><td>Irrefutable patterns only</td></tr>
+<tr><td>if let, while let, let...else</td><td>Refutable and irrefutable (warning on irrefutable)</td></tr>
+<tr><td>match arms</td><td>Refutable arms; the last arm irrefutable</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">In general, you shouldn’t have to worry about the distinction. But you do need to be familiar with refutability so that you can respond when you see it in an error message: then you’ll need to change either the pattern or the construct you’re using the pattern with, depending on the intended behavior of the code.</p>
+<p style="font-size:30px;line-height:1.45">Next: what happens when we use a refutable pattern where Rust requires an irrefutable one, and vice versa. Listing 19.8 shows a <span style="color:#273D56">let</span> statement whose pattern is <span style="color:#273D56">Some(x)</span>, a refutable pattern. As you might expect, this code will not compile.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

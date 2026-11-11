@@ -1,0 +1,18 @@
+<section id="s65" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Sending the job — and receiving it</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">After creating a new <span style="color:#273D56">Job</span> instance from the closure we get in <span style="color:#273D56">execute</span>, we send that job down the sending end of the channel.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>We call <span style="color:#273D56">unwrap</span> on <span style="color:#273D56">send</span> for the case that sending fails. That might happen if, for example, we stop all our threads from executing, meaning the receiving end has stopped receiving new messages.</li>
+<li>At the moment we can’t stop our threads from executing: they continue as long as the pool exists. We use <span style="color:#273D56">unwrap</span> because we know the failure case won’t happen, but the compiler doesn’t know that.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">But we’re not quite done yet! In the <span style="color:#273D56">Worker</span>, the closure passed to <span style="color:#273D56">thread::spawn</span> still only <i>references</i> the receiving end of the channel. Instead, the closure needs to loop forever, asking the receiving end of the channel for a job and running the job when it gets one. Listing 21.20 makes that change to <span style="color:#273D56">Worker::new</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">66</p>
+</div>
+</section>

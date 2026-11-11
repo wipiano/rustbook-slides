@@ -1,0 +1,18 @@
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Doing other work while we wait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Many operations we ask the computer to do can take a while to finish. It would be nice to do something else while we’re waiting for those long-running processes to complete. Modern computers offer two techniques for working on more than one operation at a time: parallelism and concurrency.</p>
+<p style="font-size:30px;line-height:1.45">Our programs’ logic, however, is written in a mostly linear fashion. We’d like to specify the operations a program should perform and the points at which a function could pause and some other part of the program could run instead — without specifying up front exactly the order and manner in which each bit of code should run.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.1 (Asynchronous programming).</b></span> An abstraction that lets us express our code in terms of potential pausing points and eventual results, and that takes care of the details of coordination for us.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This chapter builds on Chapter 16’s use of threads for parallelism and concurrency by introducing an alternative approach: Rust’s futures, streams, and the <span style="color:#273D56">async</span> and <span style="color:#273D56">await</span> syntax that let us express how operations could be asynchronous, and the third-party crates that implement <i>asynchronous runtimes</i> — code that manages and coordinates the execution of asynchronous operations.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>

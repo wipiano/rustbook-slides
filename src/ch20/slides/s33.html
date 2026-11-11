@@ -1,0 +1,25 @@
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Example: Iterator and its associated type Item</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The standard library’s <span style="color:#273D56">Iterator</span> trait has an associated type named <span style="color:#273D56">Item</span>, which stands in for the type of the values the implementing type is iterating over.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.13:</b></span> The definition of the <span style="color:#273D56">Iterator</span> trait that has an associated type <span style="color:#273D56">Item</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub trait Iterator {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;type Item;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The type <span style="color:#273D56">Item</span> is a placeholder, and <span style="color:#273D56">next</span> returns values of type <span style="color:#273D56">Option&lt;Self::Item&gt;</span>. Implementors of <span style="color:#273D56">Iterator</span> specify the concrete type for <span style="color:#273D56">Item</span>, and <span style="color:#273D56">next</span> returns an <span style="color:#273D56">Option</span> containing a value of that concrete type.</p>
+<p style="font-size:30px;line-height:1.45">Associated types might seem similar to generics, which also let us define a function without specifying what types it can handle. To examine the difference, the next slide implements <span style="color:#273D56">Iterator</span> on a type named <span style="color:#273D56">Counter</span> that specifies the <span style="color:#273D56">Item</span> type is <span style="color:#273D56">u32</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>

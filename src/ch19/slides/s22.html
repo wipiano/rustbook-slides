@@ -1,0 +1,33 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matching named variables</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.11:</b></span> A <span style="color:#273D56">match</span> expression with an arm that introduces a new variable which shadows an existing variable <span style="color:#273D56">y</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = Some(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = 10;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(50) =&gt; println!("Got 50"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(y) =&gt; println!("Matched, y = {y}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("Default case, x = {x:?}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("at the end: x = {x:?}, y = {y}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Named variables are irrefutable patterns that match any value, and we’ve used them many times. But there is a complication in <span style="color:#273D56">match</span>, <span style="color:#273D56">if let</span>, or <span style="color:#273D56">while let</span> expressions: each starts a new scope, so variables declared as part of a pattern inside them shadow those with the same name outside, as is the case with all variables.</p>
+<p style="font-size:30px;line-height:1.45">In Listing 19.11, <span style="color:#273D56">x</span> has the value <span style="color:#273D56">Some(5)</span> and <span style="color:#273D56">y</span> the value <span style="color:#273D56">10</span>; then we <span style="color:#273D56">match</span> on <span style="color:#273D56">x</span>. Look at the patterns in the arms and the <span style="color:#273D56">println!</span> at the end, and try to figure out what the code will print before reading further.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

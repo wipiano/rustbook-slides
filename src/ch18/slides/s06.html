@@ -1,0 +1,17 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.1 Characteristics of Object-Oriented Languages</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Inheritance as a type system and as code sharing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.3 (Inheritance).</b></span> A mechanism whereby an object can inherit elements from another object’s definition, thus gaining the parent object’s data and behavior without you having to define them again.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If a language must have inheritance to be object oriented, Rust is not such a language: there is no way to define a struct that inherits the parent struct’s fields and method implementations without using a macro. But if inheritance is in your toolbox, Rust has other solutions, depending on why you reached for it.</p>
+<p style="font-size:30px;line-height:1.45">There are two main reasons. The first is reuse of code:implement behavior for one type, then reuse it for a different type. Rust allows this in a limited way with default trait method implementations — as in Listing 10.14, where the <span style="color:#273D56">Summary</span> trait got a default <span style="color:#273D56">summarize</span> method. Any type implementing <span style="color:#273D56">Summary</span> has <span style="color:#273D56">summarize</span> without further code, like a child class inheriting a parent’s method. Overriding the default when implementing <span style="color:#273D56">Summary</span> is like a child class overriding an inherited method.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

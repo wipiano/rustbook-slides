@@ -1,0 +1,18 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Grouping configuration values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can take another small step to improve <span style="color:#273D56">parse_config</span>. Two signs show we don’t have the right abstraction yet:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>We return a tuple, but then immediately break that tuple into individual parts again.</li>
+<li>The <span style="color:#273D56">config</span> part of <span style="color:#273D56">parse_config</span> implies that the two values we return are related and are both part of one configuration value. We don’t currently convey this meaning in the structure of the data, other than by grouping the two values into a tuple.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Instead, we put the two values into one struct and give each of the struct fields a meaningful name. Doing so makes it easier for future maintainers of this code to understand how the different values relate to each other and what their purpose is. Listing 12.6 shows the improvements to <span style="color:#273D56">parse_config</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

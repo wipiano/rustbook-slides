@@ -1,0 +1,22 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Dog::baby_name calls the type’s own function</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Naming all puppies Spot is done by <span style="color:#273D56">Dog</span>’s own <span style="color:#273D56">baby_name</span>. <span style="color:#273D56">Dog</span> also implements <span style="color:#273D56">Animal</span>, which describes characteristics all animals have; baby dogs are called puppies, expressed in <span style="color:#273D56">Animal</span>’s <span style="color:#273D56">baby_name</span> on <span style="color:#273D56">Dog</span>.</p>
+<p style="font-size:30px;line-height:1.45">In <span style="color:#273D56">main</span>, we call <span style="color:#273D56">Dog::baby_name</span>, which calls the associated function defined on <span style="color:#273D56">Dog</span> directly. This prints:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling traits-example v0.1.0 (file:///projects/traits-example)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.54s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/traits-example`</p>
+<p style="white-space:nowrap">A baby dog is called a Spot</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This output isn’t what we wanted: we want the <span style="color:#273D56">baby_name</span> function that is part of the <span style="color:#273D56">Animal</span> trait implemented on <span style="color:#273D56">Dog</span>, so that the code prints <span style="color:#273D56">A baby dog is called a puppy</span>. Specifying the trait name, as in Listing 20.19, doesn’t help here: changing <span style="color:#273D56">main</span> to Listing 20.21 gives a compilation error.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

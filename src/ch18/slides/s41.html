@@ -1,0 +1,21 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How each state answers request_review and approve</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As with <span style="color:#273D56">request_review</span> on <span style="color:#273D56">PendingReview</span>, calling <span style="color:#273D56">approve</span> on a <span style="color:#273D56">Draft</span> has no effect, because <span style="color:#273D56">approve</span> returns <span style="color:#273D56">self</span>. Calling <span style="color:#273D56">approve</span> on <span style="color:#273D56">PendingReview</span> returns a new, boxed <span style="color:#273D56">Published</span> instance. <span style="color:#273D56">Published</span> returns itself from both methods, because the post should stay published in those cases.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 18.2:</b></span> State transitions after Listing 18.16</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:28%">Current state</th><th style="width:36%">request_review returns</th><th style="width:36%">approve returns</th></tr>
+<tr><td>Draft</td><td>Box::new(PendingReview {})</td><td>self (stays Draft)</td></tr>
+<tr><td>PendingReview</td><td>self (stays PendingReview)</td><td>Box::new(Published {})</td></tr>
+<tr><td>Published</td><td>self (stays Published)</td><td>self (stays Published)</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Now we update the <span style="color:#273D56">content</span> method on <span style="color:#273D56">Post</span>. We want its return value to depend on the current state, so <span style="color:#273D56">Post</span> delegates to a <span style="color:#273D56">content</span> method defined on its <span style="color:#273D56">state</span> (Listing 18.17).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

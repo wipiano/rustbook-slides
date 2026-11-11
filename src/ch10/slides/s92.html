@@ -1,0 +1,19 @@
+<section id="s92" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Lifetimes in method definitions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because the third rule really only applies in method signatures, we look at lifetimes in that context next, to see why the third rule means we don’t have to annotate lifetimes in method signatures very often.</p>
+<p style="font-size:30px;line-height:1.45">When we implement methods on a struct with lifetimes, we use the same syntax as that of generic type parameters (Listing 10.11). Where we declare and use the lifetime parameters depends on whether they’re related to the struct fields or to the method parameters and return values.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Lifetime names for struct fields always need to be declared after the <span style="color:#273D56">impl</span> keyword and then used after the struct’s name, because those lifetimes are part of the struct’s type.</li>
+<li>In method signatures inside the <span style="color:#273D56">impl</span> block, references might be tied to the lifetime of references in the struct’s fields, or they might be independent.</li>
+<li>The lifetime elision rules often make lifetime annotations unnecessary in method signatures.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">93</p>
+</div>
+</section>

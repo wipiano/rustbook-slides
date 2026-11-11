@@ -1,0 +1,26 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.1 Using Threads to Run Code Simultaneously</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Processes, threads and the problems they bring</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.4 (Process).</b></span> In most current operating systems, the unit in which an executed program’s code is run; the OS manages multiple processes at once.</p>
+</div>
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.5 (Thread).</b></span> The feature that runs independent parts of a program simultaneously, within one program.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, a web server could have multiple threads so that it can respond to more than one request at the same time. Splitting the computation into multiple threads to run multiple tasks at the same time can improve performance, but it also adds complexity. Because threads can run simultaneously, there’s no inherent guarantee about the order in which parts of your code on different threads will run. This can lead to problems, such as:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><i>Race conditions</i>, in which threads are accessing data or resources in an inconsistent order;</li>
+<li><i>Deadlocks</i>, in which two threads are waiting for each other, preventing both threads from continuing;</li>
+<li>Bugs that only happen in certain situations and are hard to reproduce and fix reliably.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

@@ -1,0 +1,17 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Four problems to fix (1–2): structure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To improve our program, we fix four problems that have to do with the program’s structure and how it handles potential errors.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">1. main performs two tasks</h3>
+<p style="font-size:30px;line-height:1.45">Our <span style="color:#273D56">main</span> function now parses arguments <i>and</i> reads files. As the program grows, the number of separate tasks <span style="color:#273D56">main</span> handles will increase. As a function gains responsibilities, it becomes more difficult to reason about, harder to test, and harder to change without breaking one of its parts. It’s best to separate functionality so that each function is responsible for one task.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">2. Configuration and logic variables are mixed</h3>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">query</span> and <span style="color:#273D56">file_path</span> are configuration variables, while variables like <span style="color:#273D56">contents</span> are used to perform the program’s logic. The longer <span style="color:#273D56">main</span> becomes, the more variables we bring into scope, and the harder it is to keep track of the purpose of each. It’s best to group the configuration variables into one structure to make their purpose clear.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

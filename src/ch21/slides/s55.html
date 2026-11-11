@@ -1,0 +1,21 @@
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Sending requests to threads via channels</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The closures given to <span style="color:#273D56">thread::spawn</span> do absolutely nothing. We get the closure to execute in <span style="color:#273D56">execute</span>, but we must give <span style="color:#273D56">thread::spawn</span> a closure when we create each <span style="color:#273D56">Worker</span> during the creation of the <span style="color:#273D56">ThreadPool</span>. We want each <span style="color:#273D56">Worker</span> to fetch the code to run from a queue held in the <span style="color:#273D56">ThreadPool</span> and send it to its thread to run.</p>
+<p style="font-size:30px;line-height:1.45">The channels of Chapter 16 — a simple way to communicate between two threads — are perfect for this. A channel functions as the queue of jobs, and <span style="color:#273D56">execute</span> sends a job from the <span style="color:#273D56">ThreadPool</span> to the <span style="color:#273D56">Worker</span> instances, which send it to their thread. The plan:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">ThreadPool</span> creates a channel and holds on to the sender.</li>
+<li>Each <span style="color:#273D56">Worker</span> holds on to the receiver.</li>
+<li>A new <span style="color:#273D56">Job</span> struct holds the closures we want to send down the channel.</li>
+<li>The <span style="color:#273D56">execute</span> method sends the job it wants to execute through the sender.</li>
+<li>In its thread, the <span style="color:#273D56">Worker</span> loops over its receiver and executes the closures of any jobs it receives.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>

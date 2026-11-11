@@ -1,0 +1,33 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The module tree</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Earlier we said that <i>src/main.rs</i> and <i>src/lib.rs</i> are called <i>crate roots</i>. The reason for the name: the contents of either file form a module named <span style="color:#273D56">crate</span> at the root of the crate’s module structure.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.7 (Module tree).</b></span> The crate’s module structure: the modules and items nested inside one another, rooted under the implicit module named <span style="color:#273D56">crate</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 7.2 shows the module tree for the structure in Listing 7.1.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.2:</b></span> The module tree for the code in Listing 7.1</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">crate</p>
+<p style="white-space:nowrap">&#160;└── front_of_house</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;├── hosting</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;│&#160;&#160;&#160;├── add_to_waitlist</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;│&#160;&#160;&#160;└── seat_at_table</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;└── serving</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;├── take_order</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;├── serve_order</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;└── take_payment</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

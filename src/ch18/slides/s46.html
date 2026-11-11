@@ -1,0 +1,17 @@
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why not an enum? Evaluating the state pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Why not an enum?</h3>
+<p style="font-size:30px;line-height:1.45">An enum with the possible post states as variants is certainly a possible solution — try it and compare the end results to see which you prefer! One disadvantage: every place that checks the value of the enum needs a <span style="color:#273D56">match</span> expression or similar to handle every possible variant, which could get more repetitive than this trait object solution.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Evaluating the state pattern</h3>
+<p style="font-size:30px;line-height:1.45">Rust can implement the object-oriented state pattern to encapsulate the different kinds of behavior a post should have in each state. The methods on <span style="color:#273D56">Post</span> know nothing about the various behaviors. To know the different ways a published post can behave, we look in only one place: the implementation of <span style="color:#273D56">State</span> on <span style="color:#273D56">Published</span>.</p>
+<p style="font-size:30px;line-height:1.45">Without the state pattern, we might use <span style="color:#273D56">match</span> expressions in the methods on <span style="color:#273D56">Post</span>, or even in <span style="color:#273D56">main</span>, that check the state and change behavior there. Then we would have to look in several places to understand all the implications of a post being published.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>

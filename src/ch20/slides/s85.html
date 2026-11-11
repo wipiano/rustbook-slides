@@ -1,0 +1,21 @@
+<section id="s85" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The difference between macros and functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.26 (Metaprogramming).</b></span> Writing code that writes other code — fundamentally, what macros are.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Appendix C discusses the <span style="color:#273D56">derive</span> attribute, which generates an implementation of various traits for you; we’ve also used the <span style="color:#273D56">println!</span> and <span style="color:#273D56">vec!</span> macros throughout the book. All of these macros <i>expand</i> to produce more code than the code you’ve written manually.</p>
+<p style="font-size:30px;line-height:1.45">Metaprogramming is useful for reducing the amount of code you have to write and maintain, which is also one of the roles of functions. However, macros have some additional powers that functions don’t have:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>A function signature must declare the number and type of its parameters. Macros can take a variable number of parameters: <span style="color:#273D56">println!("hello")</span> with one argument or <span style="color:#273D56">println!("hello {}", name)</span> with two.</li>
+<li>Macros are expanded before the compiler interprets the meaning of the code, so a macro can, for example, implement a trait on a given type. A function can’t, because it gets called at runtime and a trait needs to be implemented at compile time.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">86</p>
+</div>
+</section>

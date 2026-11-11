@@ -1,0 +1,23 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why Option&lt;T&gt; is better than null</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When we have a <span style="color:#273D56">Some</span> value, we know that a value is present, and the value is held within the <span style="color:#273D56">Some</span>. When we have a <span style="color:#273D56">None</span> value, in some sense it means the same thing as null: we don’t have a valid value. So why is having <span style="color:#273D56">Option&lt;T&gt;</span> any better than having null?</p>
+<p style="font-size:30px;line-height:1.45">In short, because <span style="color:#273D56">Option&lt;T&gt;</span> and <span style="color:#273D56">T</span> (where <span style="color:#273D56">T</span> can be any type) are different types, the compiler won’t let us use an <span style="color:#273D56">Option&lt;T&gt;</span> value as if it were definitely a valid value. For example, this code won’t compile, because it tries to add an <span style="color:#273D56">i8</span> to an <span style="color:#273D56">Option&lt;i8&gt;</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x: i8 = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y: Option&lt;i8&gt; = Some(5);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let sum = x + y;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If we run this code, we get the error message shown on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

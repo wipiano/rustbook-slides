@@ -1,0 +1,33 @@
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each crate must declare its own dependencies</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The top-level <i>Cargo.lock</i> now records that <span style="color:#273D56">add_one</span> depends on <span style="color:#273D56">rand</span>. But other crates in the workspace can’t use <span style="color:#273D56">rand</span> unless we add it to their <i>Cargo.toml</i> files as well. Adding <span style="color:#273D56">use rand;</span> to <i>adder/src/main.rs</i> gives an error:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;--snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/add/adder)</p>
+<p style="white-space:nowrap">error[E0432]: unresolved import `rand`</p>
+<p style="white-space:nowrap">&#160;--&gt; adder/src/main.rs:2:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 | use rand;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^ no external crate `rand`</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">To fix this, list <span style="color:#273D56">rand</span> as a dependency in the <span style="color:#273D56">adder</span> package’s <i>Cargo.toml</i> too. Building <span style="color:#273D56">adder</span> then adds <span style="color:#273D56">rand</span> to its dependencies in <i>Cargo.lock</i>, but no additional copies are downloaded: every crate in the workspace using <span style="color:#273D56">rand</span> uses the same version, as long as they specify compatible versions — saving space and keeping the crates compatible.</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If crates in the workspace specify incompatible versions of the same dependency, Cargo resolves each of them, but still tries to resolve as few versions as possible.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>

@@ -1,0 +1,23 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using traits as parameters: impl Trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now we can use traits to define functions that accept many different types. Using the <span style="color:#273D56">Summary</span> trait implemented on <span style="color:#273D56">NewsArticle</span> and <span style="color:#273D56">SocialPost</span> in Listing 10.13, we define a <span style="color:#273D56">notify</span> function that calls <span style="color:#273D56">summarize</span> on its <span style="color:#273D56">item</span> parameter, which is of some type that implements <span style="color:#273D56">Summary</span>. We use the <span style="color:#273D56">impl Trait</span> syntax:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn notify(item: &amp;impl Summary) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Breaking news! {}", item.summarize());</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Instead of a concrete type for <span style="color:#273D56">item</span>, we specify the <span style="color:#273D56">impl</span> keyword and the trait name. The parameter accepts any type that implements the specified trait.</li>
+<li>In the body of <span style="color:#273D56">notify</span>, we can call any methods on <span style="color:#273D56">item</span> that come from <span style="color:#273D56">Summary</span>, such as <span style="color:#273D56">summarize</span>.</li>
+<li>We can pass in any instance of <span style="color:#273D56">NewsArticle</span> or <span style="color:#273D56">SocialPost</span>. Calling it with any other type, such as a <span style="color:#273D56">String</span> or an <span style="color:#273D56">i32</span>, won’t compile, because those types don’t implement <span style="color:#273D56">Summary</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

@@ -1,0 +1,33 @@
+<section id="s101" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Replacing a pinned String is fine</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As a result, we can do things that would be illegal if <span style="color:#273D56">String</span> implemented <span style="color:#273D56">!Unpin</span> instead, such as replacing one string with another at the exact same location in memory. This doesn’t violate the <span style="color:#273D56">Pin</span> contract, because <span style="color:#273D56">String</span> has no internal references that make it unsafe to move around. That is precisely why it implements <span style="color:#273D56">Unpin</span> rather than <span style="color:#273D56">!Unpin</span>.</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Figure 17.9:</b></span> Replacing the <span style="color:#273D56">String</span> with an entirely different <span style="color:#273D56">String</span> in memory</p>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center">
+<div style="border:1px solid #273D56;padding:10px 28px"><p style="font-size:26px;line-height:1.3;color:#273D56">Pin</p></div>
+<p style="font-size:26px;color:#596675">→</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="border:1px dashed #D5DCE3;padding:10px 20px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="font-size:26px;color:#596675">s1 (replaced)</p>
+<div style="border:1px solid #D5DCE3;padding:6px 16px"><p style="font-size:26px;line-height:1.3;color:#596675">5usize</p></div>
+<div style="border:1px solid #D5DCE3;padding:6px 16px"><p style="font-size:26px;line-height:1.3;color:#596675">h e l l o</p></div>
+</div>
+<div style="border:2px dotted #596675;padding:10px 20px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="font-size:26px;color:#596675">s2</p>
+<div style="border:1px solid #273D56;background:#F3F5F7;padding:6px 16px"><p style="font-size:26px;line-height:1.3">7usize</p></div>
+<div style="border:1px solid #273D56;background:#F3F5F7;padding:6px 16px"><p style="font-size:26px;line-height:1.3">g o o d b y e</p></div>
+</div>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Now we can understand the errors for <span style="color:#273D56">join_all</span> in Listing 17.23. We tried to move the futures produced by async blocks into a <span style="color:#273D56">Vec&lt;Box&lt;dyn Future&lt;Output = ()&gt;&gt;&gt;</span>, but those futures may have internal references, so they don’t automatically implement <span style="color:#273D56">Unpin</span>. Once we pin them, we can pass the resulting <span style="color:#273D56">Pin</span> type into the <span style="color:#273D56">Vec</span>, confident that the underlying data in the futures will <i>not</i> be moved.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">102</p>
+</div>
+</section>

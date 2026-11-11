@@ -1,0 +1,30 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Homogeneous keys and values; get</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This <span style="color:#273D56">HashMap</span> has keys of type <span style="color:#273D56">String</span> and values of type <span style="color:#273D56">i32</span>. Just like vectors, hash maps store their data on the heap, and they are homogeneous: all of the keys must have the same type, and all of the values must have the same type.</p>
+<p style="font-size:30px;line-height:1.45">We get a value out of the hash map by providing its key to the <span style="color:#273D56">get</span> method, as in Listing 8.21.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.21:</b></span> Accessing the score for the Blue team stored in the hash map</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut scores = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 10);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Yellow"), 50);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let team_name = String::from("Blue");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let score = scores.get(&amp;team_name).copied().unwrap_or(0);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

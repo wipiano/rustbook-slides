@@ -1,0 +1,26 @@
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Post::content delegates to its state</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 18.17:</b></span> Updating the <span style="color:#273D56">content</span> method on <span style="color:#273D56">Post</span> to delegate to a <span style="color:#273D56">content</span> method on <span style="color:#273D56">State</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Post {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn content(&amp;self) -&gt; &amp;str {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.state.as_ref().unwrap().content(self)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The goal is to keep all of these rules inside the structs that implement <span style="color:#273D56">State</span>. So we call a <span style="color:#273D56">content</span> method on the value in <span style="color:#273D56">state</span>, pass the post instance (that is, <span style="color:#273D56">self</span>) as an argument, and return what that method returns.</p>
+<p style="font-size:30px;line-height:1.45">We call <span style="color:#273D56">as_ref</span> on the <span style="color:#273D56">Option</span> because we want a reference to the value inside it rather than ownership. As <span style="color:#273D56">state</span> is an <span style="color:#273D56">Option&lt;Box&lt;dyn State&gt;&gt;</span>, <span style="color:#273D56">as_ref</span> returns an <span style="color:#273D56">Option&lt;&amp;Box&lt;dyn State&gt;&gt;</span>. Without <span style="color:#273D56">as_ref</span> we’d get an error, because we can’t move <span style="color:#273D56">state</span> out of the borrowed <span style="color:#273D56">&amp;self</span> of the function parameter.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>

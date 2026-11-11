@@ -1,0 +1,21 @@
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.1 Futures and the Async Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Who runs the state machine: runtimes and executors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Writing the state transitions by hand would be tedious and error-prone, especially as you add more functionality and states later. Fortunately, the compiler creates and manages the state machine data structures for async code automatically. The normal borrowing and ownership rules still apply, and the compiler checks them and gives useful error messages.</p>
+<p style="font-size:30px;line-height:1.45">Ultimately, something has to execute this state machine, and that something is a runtime.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.12 (Executor).</b></span> The part of a runtime responsible for executing the async code.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This is why <span style="color:#273D56">main</span> can’t be async (Listing 17.3): something else would need to manage the state machine for whatever future <span style="color:#273D56">main</span> returned, but <span style="color:#273D56">main</span> is the starting point of the program! Instead, we call <span style="color:#273D56">trpl::block_on</span> in <span style="color:#273D56">main</span> to set up a runtime and run the future returned by the <span style="color:#273D56">async</span> block until it’s done.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Some runtimes provide macros so you <i>can</i> write an async <span style="color:#273D56">main</span>. Those macros rewrite <span style="color:#273D56">async fn main() { ... }</span> to be a normal <span style="color:#273D56">fn main</span>, which does what we did by hand in Listing 17.4: call a function that runs a future to completion the way <span style="color:#273D56">trpl::block_on</span> does.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>

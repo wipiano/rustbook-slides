@@ -1,0 +1,21 @@
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">&amp;self is short for self: &amp;Self</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the signature for <span style="color:#273D56">area</span>, we use <span style="color:#273D56">&amp;self</span> instead of <span style="color:#273D56">rectangle: &amp;Rectangle</span>. The <span style="color:#273D56">&amp;self</span> is actually short for <span style="color:#273D56">self: &amp;Self</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.16 (Self).</b></span> Within an <span style="color:#273D56">impl</span> block, the type <span style="color:#273D56">Self</span> is an alias for the type that the <span style="color:#273D56">impl</span> block is for.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Methods must have a parameter named <span style="color:#273D56">self</span> of type <span style="color:#273D56">Self</span> as their first parameter, so Rust lets you abbreviate this with only the name <span style="color:#273D56">self</span> in the first parameter spot.</li>
+<li>We still need the <span style="color:#273D56">&amp;</span> in front of the <span style="color:#273D56">self</span> shorthand to indicate that this method borrows the <span style="color:#273D56">Self</span> instance, just as in <span style="color:#273D56">rectangle: &amp;Rectangle</span>.</li>
+<li>Methods can take ownership of <span style="color:#273D56">self</span>, borrow <span style="color:#273D56">self</span> immutably (as here), or borrow <span style="color:#273D56">self</span> mutably, just as they can any other parameter.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>

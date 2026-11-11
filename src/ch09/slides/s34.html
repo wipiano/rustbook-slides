@@ -1,0 +1,22 @@
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using ? on Option&lt;T&gt; values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error message also mentioned that <span style="color:#273D56">?</span> can be used with <span style="color:#273D56">Option&lt;T&gt;</span> values as well. As with using <span style="color:#273D56">?</span> on <span style="color:#273D56">Result</span>, you can only use <span style="color:#273D56">?</span> on <span style="color:#273D56">Option</span> in a function that returns an <span style="color:#273D56">Option</span>. The behavior of <span style="color:#273D56">?</span> on an <span style="color:#273D56">Option&lt;T&gt;</span> is similar to its behavior on a <span style="color:#273D56">Result&lt;T, E&gt;</span>:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 9.3:</b></span> What the ? operator does with each value</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:24%">Value</th><th style="width:76%">Effect of ?</th></tr>
+<tr><td>Ok(v)</td><td>v is the resultant value of the expression; the function continues</td></tr>
+<tr><td>Err(e)</td><td>Err is returned early from the function (after conversion by From::from)</td></tr>
+<tr><td>Some(v)</td><td>v is the resultant value of the expression; the function continues</td></tr>
+<tr><td>None</td><td>None is returned early from the function at that point</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Listing 9.11 (next slide) has an example: a function that finds the last character of the first line in the given text.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>

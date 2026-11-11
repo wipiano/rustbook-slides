@@ -1,0 +1,22 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">area borrows a Rectangle</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.10 (continued):</b></span> Defining a <span style="color:#273D56">Rectangle</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn area(rectangle: &amp;Rectangle) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;rectangle.width * rectangle.height</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We’ve defined a struct named <span style="color:#273D56">Rectangle</span>. Inside the curly brackets we defined the fields <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span>, both of type <span style="color:#273D56">u32</span>. Then, in <span style="color:#273D56">main</span>, we created a particular instance of <span style="color:#273D56">Rectangle</span> with a width of <span style="color:#273D56">30</span> and a height of <span style="color:#273D56">50</span>.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">area</span> function now has one parameter, <span style="color:#273D56">rectangle</span>, whose type is an immutable borrow of a <span style="color:#273D56">Rectangle</span> instance. As in Chapter 4, we want to borrow the struct rather than take ownership of it: this way <span style="color:#273D56">main</span> retains ownership and can continue using <span style="color:#273D56">rect1</span>. That is why we use the <span style="color:#273D56">&amp;</span> both in the function signature and where we call the function.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

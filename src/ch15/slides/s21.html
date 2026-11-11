@@ -1,0 +1,36 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Trying to dereference MyBox&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We add the <span style="color:#273D56">main</span> function of Listing 15.7 to Listing 15.8 and change it to use <span style="color:#273D56">MyBox&lt;T&gt;</span> instead of <span style="color:#273D56">Box&lt;T&gt;</span>. The code in Listing 15.9 won’t compile, because Rust doesn’t know how to dereference <span style="color:#273D56">MyBox</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.9:</b></span> Attempting to use <span style="color:#273D56">MyBox&lt;T&gt;</span> in the same way we used references and <span style="color:#273D56">Box&lt;T&gt;</span> — <i>src/main.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct MyBox&lt;T&gt;(T);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl&lt;T&gt; MyBox&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn new(x: T) -&gt; MyBox&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;MyBox(x)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = MyBox::new(x);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(5, x);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(5, *y);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The two panels are one file: the definitions (left) followed by <span style="color:#273D56">main</span> (right).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

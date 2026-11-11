@@ -1,0 +1,21 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What deref coercion saves us from writing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Listing 15.12, <span style="color:#273D56">&amp;m</span> is a reference to a <span style="color:#273D56">MyBox&lt;String&gt;</span>. Because <span style="color:#273D56">MyBox&lt;T&gt;</span> implements <span style="color:#273D56">Deref</span> (Listing 15.10), Rust can turn <span style="color:#273D56">&amp;MyBox&lt;String&gt;</span> into <span style="color:#273D56">&amp;String</span> by calling <span style="color:#273D56">deref</span>. The standard library implements <span style="color:#273D56">Deref</span> on <span style="color:#273D56">String</span> to return a string slice (see the API documentation for <span style="color:#273D56">Deref</span>), so Rust calls <span style="color:#273D56">deref</span> again to turn <span style="color:#273D56">&amp;String</span> into <span style="color:#273D56">&amp;str</span>, which matches the definition of <span style="color:#273D56">hello</span>.</p>
+<p style="font-size:30px;line-height:1.45">Without deref coercion, we would have to write the code in Listing 15.13 to call <span style="color:#273D56">hello</span> with a value of type <span style="color:#273D56">&amp;MyBox&lt;String&gt;</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.13:</b></span> The code we would have to write if Rust didn’t have deref coercion — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let m = MyBox::new(String::from("Rust"));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;hello(&amp;(*m)[..]);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

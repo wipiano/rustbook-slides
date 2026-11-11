@@ -1,0 +1,24 @@
+<section id="s89" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why trait objects, and why it fails to compile</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This might be surprising: none of the async blocks returns anything, so each one produces a <span style="color:#273D56">Future&lt;Output = ()&gt;</span>. But <span style="color:#273D56">Future</span> is a trait, and the compiler creates a unique enum for each async block, even when they have identical output types. Just as you can’t put two different handwritten structs in a <span style="color:#273D56">Vec</span>, you can’t mix compiler-generated enums.</p>
+<p style="font-size:30px;line-height:1.45">Then we pass the collection of futures to <span style="color:#273D56">trpl::join_all</span> and await the result. However, this doesn’t compile; here’s the relevant part of the error messages:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error[E0277]: `dyn Future&lt;Output = ()&gt;` cannot be unpinned</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:48:33</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">48 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;trpl::join_all(futures).await;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^ the trait `Unpin` is not implemented for `dyn Future&lt;Output = ()&gt;`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= note: consider using the `pin!` macro</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;consider using `Box::pin` if you need to access the pinned value outside of the current scope</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">90</p>
+</div>
+</section>

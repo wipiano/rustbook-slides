@@ -1,0 +1,27 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Values that don’t make sense, and expected failure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">When to panic</h3>
+<p style="font-size:30px;line-height:1.45">If someone calls your code and passes in values that don’t make sense, it’s best to return an error if you can, so that the user of the library can decide what they want to do in that case.</p>
+<p style="font-size:30px;line-height:1.45">However, where continuing could be insecure or harmful, the best choice might be to call <span style="color:#273D56">panic!</span> and alert the person using your library to the bug in their code so they can fix it during development.</p>
+<p style="font-size:30px;line-height:1.45">Similarly, <span style="color:#273D56">panic!</span> is often appropriate if you’re calling external code that is out of your control and returns an invalid state that you have no way of fixing.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">When to return Result</h3>
+<p style="font-size:30px;line-height:1.45">When failure is expected, it’s more appropriate to return a <span style="color:#273D56">Result</span> than to make a <span style="color:#273D56">panic!</span> call. Examples:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>a parser being given malformed data;</li>
+<li>an HTTP request returning a status that indicates you have hit a rate limit.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Returning a <span style="color:#273D56">Result</span> indicates that failure is an expected possibility that the calling code must decide how to handle.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

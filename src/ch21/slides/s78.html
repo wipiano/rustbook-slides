@@ -1,0 +1,19 @@
+<section id="s78" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.3 Graceful Shutdown and Cleanup</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Signaling the threads to stop listening for jobs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">With these changes, the code compiles without any warnings. The bad news: it doesn’t function the way we want yet. The key is the logic in the closures run by the <span style="color:#273D56">Worker</span> threads. We call <span style="color:#273D56">join</span>, but that won’t shut down the threads, because they <span style="color:#273D56">loop</span> forever looking for jobs. If we drop our <span style="color:#273D56">ThreadPool</span> with the current <span style="color:#273D56">drop</span>, the main thread will block forever, waiting for the first thread to finish.</p>
+<p style="font-size:30px;line-height:1.45">The fix needs two changes:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>in the <span style="color:#273D56">ThreadPool</span> <span style="color:#273D56">drop</span> implementation, explicitly drop the <span style="color:#273D56">sender</span> before waiting for the threads to finish (Listing 21.23);</li>
+<li>in the <span style="color:#273D56">Worker</span> loop, exit gracefully when the channel is closed (Listing 21.24).</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Unlike with the thread, here we <i>do</i> need an <span style="color:#273D56">Option</span>, to be able to move <span style="color:#273D56">sender</span> out of <span style="color:#273D56">ThreadPool</span> with <span style="color:#273D56">Option::take</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">79</p>
+</div>
+</section>

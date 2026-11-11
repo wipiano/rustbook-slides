@@ -1,0 +1,1747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.7 — Packages, Crates, and Modules · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.7 — Packages, Crates, and Modules</h1><nav><a href="ch06.html">← Ch.6</a><a href="ch08.html">Ch.8 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:24px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 7</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Packages, Crates, and Modules</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:26px;line-height:1.45">As programs grow, organizing code matters: group related functionality, separate distinct features, and split one module in one file into multiple modules and then multiple files. A package can contain multiple binary crates and optionally one library crate; parts can be extracted into separate crates that become external dependencies (very large sets of interrelated packages use Cargo <i>workspaces</i>, Chapter 14). Encapsulation lets other code call yours through its public interface while private details stay yours to change. Scope decides which names are defined at each spot; two items can’t share a name in one scope. Together these features form the <i>module system</i>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<ul style="flex:1;font-size:26px;line-height:1.45;color:#20252B">
+<li><b>Packages</b>: a Cargo feature that lets you build, test, and share crates</li>
+<li><b>Crates</b>: a tree of modules that produces a library or executable</li>
+<li><b>Modules and use</b>: control the organization, scope, and privacy of paths</li>
+<li><b>Paths</b>: a way of naming an item, such as a struct, function, or module</li>
+</ul>
+<ul style="flex:1;font-size:26px;line-height:1.45;color:#20252B">
+<li>7.1 Packages and Crates</li>
+<li>7.2 Control Scope and Privacy with Modules</li>
+<li>7.3 Paths for Referring to an Item in the Module Tree</li>
+<li>7.4 Bringing Paths into Scope with the <span style="color:#273D56">use</span> Keyword</li>
+<li>7.5 Separating Modules into Different Files</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Crates: binary and library</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The first parts of the module system are packages and crates.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.1 (Crate).</b></span> The smallest amount of code that the Rust compiler considers at a time. Even if you run <span style="color:#273D56">rustc</span> rather than <span style="color:#273D56">cargo</span> on a single source file (as in Chapter 1), the compiler considers that file to be a crate. Crates can contain modules, and the modules may be defined in other files that get compiled with the crate.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">A crate comes in one of two forms:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.2 (Binary crate).</b></span> A program you can compile to an executable that you can run, such as a command line program or a server. Each must have a function called <span style="color:#273D56">main</span> that defines what happens when the executable runs. All the crates created so far have been binary crates.</p>
+</div>
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.3 (Library crate).</b></span> A crate with no <span style="color:#273D56">main</span> function that doesn’t compile to an executable; it defines functionality intended to be shared with multiple projects — e.g. the <span style="color:#273D56">rand</span> crate from Chapter 2, which generates random numbers.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Most of the time when Rustaceans say “crate,” they mean library crate, and they use “crate” interchangeably with the general programming concept of a “library.”</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Crate roots and packages</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.4 (Crate root).</b></span> A source file that the Rust compiler starts from and that makes up the root module of your crate (modules are explained in 7.2).</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.5 (Package).</b></span> A bundle of one or more crates that provides a set of functionality. A package contains a <i>Cargo.toml</i> file that describes how to build those crates.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Cargo itself is a package: it contains the binary crate for the command line tool you’ve been using to build your code, and also a library crate that the binary crate depends on. Other projects can depend on the Cargo library crate to use the same logic the Cargo command line tool uses.</p>
+<p style="font-size:30px;line-height:1.45">Rules on what a package may contain:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>as many binary crates as you like;</li>
+<li>at most only one library crate;</li>
+<li>at least one crate, whether that’s a library or binary crate.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating a package with cargo new</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s walk through what happens when we create a package. First, enter the command <span style="color:#273D56">cargo new my-project</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new my-project</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Created binary (application) `my-project` package</p>
+<p style="white-space:nowrap">$ ls my-project</p>
+<p style="white-space:nowrap">Cargo.toml</p>
+<p style="white-space:nowrap">src</p>
+<p style="white-space:nowrap">$ ls my-project/src</p>
+<p style="white-space:nowrap">main.rs</p>
+</div>
+<p style="font-size:30px;line-height:1.45">After <span style="color:#273D56">cargo new my-project</span>, we use <span style="color:#273D56">ls</span> to see what Cargo creates:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In the <i>my-project</i> directory there’s a <i>Cargo.toml</i> file, giving us a package.</li>
+<li>There’s also a <i>src</i> directory that contains <i>main.rs</i>.</li>
+<li>Open <i>Cargo.toml</i> in your text editor and note that there’s no mention of <i>src/main.rs</i>: Cargo finds it by convention (next slide).</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How Cargo finds crate roots</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Cargo follows conventions instead of listing crate roots in <i>Cargo.toml</i>, and passes the crate root files to <span style="color:#273D56">rustc</span> to build the library or binary.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.1:</b></span> Cargo’s crate-root conventions</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">File in the package</th><th style="width:70%">Meaning</th></tr>
+<tr><td>src/main.rs</td><td>Crate root of a binary crate with the same name as the package</td></tr>
+<tr><td>src/lib.rs</td><td>Crate root of a library crate with the same name as the package</td></tr>
+<tr><td>src/bin/*.rs</td><td>Each file is a separate binary crate</td></tr>
+</table>
+<ul style="font-size:30px;line-height:1.45">
+<li>Our <i>my-project</i> package only contains <i>src/main.rs</i>, so it only contains a binary crate named <span style="color:#273D56">my-project</span>.</li>
+<li>If a package contains <i>src/main.rs</i> and <i>src/lib.rs</i>, it has two crates: a binary and a library, both with the same name as the package.</li>
+<li>A package can have multiple binary crates by placing files in the <i>src/bin</i> directory: each file will be a separate binary crate.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Modules cheat sheet: crate root and modules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This section covers modules and the other parts of the module system: <i>paths</i>, which name items; the <span style="color:#273D56">use</span> keyword that brings a path into scope; the <span style="color:#273D56">pub</span> keyword to make items public; plus the <span style="color:#273D56">as</span> keyword, external packages, and the glob operator.</p>
+<p style="font-size:30px;line-height:1.45">First, a quick reference on how modules, paths, <span style="color:#273D56">use</span> and <span style="color:#273D56">pub</span> work in the compiler, and how most developers organize their code — a place to refer back to as a reminder:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Start from the crate root.</b> When compiling a crate, the compiler first looks in the crate root file (usually <i>src/lib.rs</i> for a library crate and <i>src/main.rs</i> for a binary crate) for code to compile.</li>
+<li><b>Declaring modules.</b> In the crate root file, you can declare new modules; say you declare a “garden” module with <span style="color:#273D56">mod garden;</span>. The compiler looks for the module’s code in these places:
+<ul>
+<li>inline, within curly brackets that replace the semicolon following <span style="color:#273D56">mod garden</span>;</li>
+<li>in the file <i>src/garden.rs</i>;</li>
+<li>in the file <i>src/garden/mod.rs</i>.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Modules cheat sheet: submodules, paths, privacy, use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Declaring submodules.</b> In any file other than the crate root, you can declare submodules — e.g. <span style="color:#273D56">mod vegetables;</span> in <i>src/garden.rs</i>. The compiler looks for the submodule’s code within the directory named for the parent module: inline, directly following <span style="color:#273D56">mod vegetables</span>, within curly brackets instead of the semicolon; in the file <i>src/garden/vegetables.rs</i>; in the file <i>src/garden/vegetables/mod.rs</i>.</li>
+<li><b>Paths to code in modules.</b> Once a module is part of your crate, you can refer to code in that module from anywhere else in that same crate, as long as the privacy rules allow, using the path to the code. An <span style="color:#273D56">Asparagus</span> type in the garden vegetables module would be found at <span style="color:#273D56">crate::garden::vegetables::Asparagus</span>.</li>
+<li><b>Private vs. public.</b> Code within a module is private from its parent modules by default. To make a module public, declare it with <span style="color:#273D56">pub mod</span> instead of <span style="color:#273D56">mod</span>. To make items within a public module public as well, use <span style="color:#273D56">pub</span> before their declarations.</li>
+<li><b>The <span style="color:#273D56">use</span> keyword.</b> Within a scope, <span style="color:#273D56">use</span> creates shortcuts to items to reduce repetition of long paths. In any scope that can refer to <span style="color:#273D56">crate::garden::vegetables::Asparagus</span>, <span style="color:#273D56">use crate::garden::vegetables::Asparagus;</span> creates a shortcut, and from then on you only need to write <span style="color:#273D56">Asparagus</span> in the scope.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The rules in one crate: backyard</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A binary crate named <span style="color:#273D56">backyard</span> illustrates these rules. The crate’s directory, also named <i>backyard</i>, contains these files and directories, and the crate root file is <i>src/main.rs</i>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">backyard</p>
+<p style="white-space:nowrap">├── Cargo.lock</p>
+<p style="white-space:nowrap">├── Cargo.toml</p>
+<p style="white-space:nowrap">└── src</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;├── garden</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;│&#160;&#160;&#160;└── vegetables.rs</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;├── garden.rs</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;└── main.rs</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">…so <i>src/garden/vegetables.rs</i> is included too:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)]</p>
+<p style="white-space:nowrap">pub struct Asparagus {}</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use crate::garden::vegetables::Asparagus;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub mod garden;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let plant = Asparagus {};</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("I'm growing {plant:?}!");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56">pub mod garden;</span> includes <i>src/garden.rs</i>, where <span style="color:#273D56">pub mod vegetables;</span>…</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub mod vegetables;</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Grouping related code in modules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.6 (Module).</b></span> A unit that organizes code within a crate for readability and easy reuse. Modules also control the <i>privacy</i> of items: code within a module is private by default.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Private items are internal implementation details not available for outside use. We can choose to make modules and the items within them public, which exposes them to allow external code to use and depend on them.</p>
+<p style="font-size:30px;line-height:1.45">As an example, we write a library crate that provides the functionality of a restaurant. We define the signatures of functions but leave their bodies empty, to concentrate on the organization of the code rather than the implementation of a restaurant. In the restaurant industry:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><i>Front of house</i> is where customers are: where the hosts seat customers, servers take orders and payment, and bartenders make drinks.</li>
+<li><i>Back of house</i> is where the chefs and cooks work in the kitchen, dishwashers clean up, and managers do administrative work.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We organize its functions into nested modules; create the library with <span style="color:#273D56">cargo new restaurant --lib</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining modules with mod</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.1:</b></span> A <span style="color:#273D56">front_of_house</span> module containing other modules that then contain functions — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn seat_at_table() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;mod serving {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn take_order() {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn serve_order() {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn take_payment() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code, entered into <i>src/lib.rs</i>, is the front of house section.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>A module is defined with the <span style="color:#273D56">mod</span> keyword followed by its name (here <span style="color:#273D56">front_of_house</span>); its body goes inside curly brackets.</li>
+<li>Modules can hold other modules (here <span style="color:#273D56">hosting</span> and <span style="color:#273D56">serving</span>) and definitions of other items: structs, enums, constants, traits, and functions.</li>
+<li>Grouping related definitions names why they’re related: readers navigate by group instead of reading every definition, and contributors know where to place new code to keep the program organized.</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The module tree</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Earlier we said that <i>src/main.rs</i> and <i>src/lib.rs</i> are called <i>crate roots</i>. The reason for the name: the contents of either file form a module named <span style="color:#273D56">crate</span> at the root of the crate’s module structure.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.7 (Module tree).</b></span> The crate’s module structure: the modules and items nested inside one another, rooted under the implicit module named <span style="color:#273D56">crate</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 7.2 shows the module tree for the structure in Listing 7.1.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.2:</b></span> The module tree for the code in Listing 7.1</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">crate</p>
+<p style="white-space:nowrap">&#160;└── front_of_house</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;├── hosting</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;│&#160;&#160;&#160;├── add_to_waitlist</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;│&#160;&#160;&#160;└── seat_at_table</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;└── serving</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;├── take_order</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;├── serve_order</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;└── take_payment</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.2 Control Scope and Privacy with Modules</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading the module tree</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The tree in Listing 7.2 shows how modules relate:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Nesting.</b> Some modules nest inside other modules; for example, <span style="color:#273D56">hosting</span> nests inside <span style="color:#273D56">front_of_house</span>.</li>
+<li><b>Siblings.</b> Modules defined in the same module are <i>siblings</i>: <span style="color:#273D56">hosting</span> and <span style="color:#273D56">serving</span> are siblings defined within <span style="color:#273D56">front_of_house</span>.</li>
+<li><b>Child and parent.</b> If module A is contained inside module B, module A is the <i>child</i> of module B, and module B is the <i>parent</i> of module A.</li>
+<li><b>Root.</b> The entire module tree is rooted under the implicit module named <span style="color:#273D56">crate</span>.</li>
+</ul>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 7.8.</b> The module tree is like the filesystem’s directory tree on your computer — a very apt comparison. Just like directories in a filesystem, you use modules to organize your code. And just like files in a directory, we need a way to find our modules: that is what paths are for (7.3).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Absolute and relative paths</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To show Rust where to find an item in a module tree, we use a path in the same way we use a path when navigating a filesystem. To call a function, we need to know its path. A path can take two forms:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.9 (Absolute path).</b></span> The full path starting from a crate root. For code from an external crate, the absolute path begins with the crate name; for code from the current crate, it starts with the literal <span style="color:#273D56">crate</span>.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.10 (Relative path).</b></span> A path that starts from the current module and uses <span style="color:#273D56">self</span>, <span style="color:#273D56">super</span>, or an identifier in the current module.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Both absolute and relative paths are followed by one or more identifiers separated by double colons (<span style="color:#273D56">::</span>).</p>
+<p style="font-size:30px;line-height:1.45">Returning to Listing 7.1: say we want to call the <span style="color:#273D56">add_to_waitlist</span> function. This is the same as asking: what’s the path of the <span style="color:#273D56">add_to_waitlist</span> function?</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Calling add_to_waitlist two ways</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.3:</b></span> Calling the <span style="color:#273D56">add_to_waitlist</span> function using absolute and relative paths — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Absolute path</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;crate::front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Relative path</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Listing 7.3 is Listing 7.1 with some of the modules and functions removed.</li>
+<li>It shows two ways to call <span style="color:#273D56">add_to_waitlist</span> from a new function, <span style="color:#273D56">eat_at_restaurant</span>, defined in the crate root.</li>
+<li>These paths are correct, but another problem remains that prevents this example from compiling as is — explained shortly.</li>
+<li><span style="color:#273D56">eat_at_restaurant</span> is part of our library crate’s public API, so we mark it with the <span style="color:#273D56">pub</span> keyword (more on <span style="color:#273D56">pub</span> later in this section).</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Absolute or relative: which to choose</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">First call: absolute</h3>
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56">add_to_waitlist</span> is in the same crate as <span style="color:#273D56">eat_at_restaurant</span>, so the path can start with the <span style="color:#273D56">crate</span> keyword, then include each successive module down to <span style="color:#273D56">add_to_waitlist</span>. Filesystem equivalent: <span style="color:#273D56">/front_of_house/hosting/add_to_waitlist</span> — starting with <span style="color:#273D56">crate</span> is like starting from the filesystem root <span style="color:#273D56">/</span> in your shell.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Second call: relative</h3>
+<p style="font-size:26px;line-height:1.45">The path starts with <span style="color:#273D56">front_of_house</span>, the name of the module defined at the same level of the module tree as <span style="color:#273D56">eat_at_restaurant</span>. Filesystem equivalent: <span style="color:#273D56">front_of_house/hosting/add_to_waitlist</span>. Starting with a module name means that the path is relative.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The choice depends on whether you’re more likely to move an item’s definition separately from or together with the code that uses it:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Move <span style="color:#273D56">front_of_house</span> and <span style="color:#273D56">eat_at_restaurant</span> together into a module <span style="color:#273D56">customer_experience</span>: the absolute path must be updated; the relative path stays valid.</li>
+<li>Move only <span style="color:#273D56">eat_at_restaurant</span> into a module <span style="color:#273D56">dining</span>: the absolute path stays the same; the relative path must be updated.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The book generally prefers absolute paths: it’s more likely we’ll want to move definitions and item calls independently.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error: module hosting is private</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s try to compile Listing 7.3 and find out why it won’t compile yet:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.4:</b></span> Compiler errors from building the code in Listing 7.3 (first error)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling restaurant v0.1.0 (file:///projects/restaurant)</p>
+<p style="white-space:nowrap">error[E0603]: module `hosting` is private</p>
+<p style="white-space:nowrap">&#160;--&gt; src/lib.rs:9:28</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">9 |&#160;&#160;&#160;&#160;&#160;crate::front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^&#160;&#160;--------------- function `add_to_waitlist` is not publicly re-exported</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;private module</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">note: the module `hosting` is defined here</p>
+<p style="white-space:nowrap">&#160;--&gt; src/lib.rs:2:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The same error for the relative path</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The relative path in the second call fails the same way:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.4 (continued):</b></span> Compiler errors from building the code in Listing 7.3 (second error)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error[E0603]: module `hosting` is private</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:12:21</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">12 |&#160;&#160;&#160;&#160;&#160;front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^&#160;&#160;--------------- function `add_to_waitlist` is not publicly re-exported</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;private module</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">note: the module `hosting` is defined here</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:2:5</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;2 |&#160;&#160;&#160;&#160;&#160;mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0603`.</p>
+<p style="white-space:nowrap">error: could not compile `restaurant` (lib) due to 2 previous errors</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Everything is private by default</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The errors say module <span style="color:#273D56">hosting</span> is private. We have the correct paths for the <span style="color:#273D56">hosting</span> module and the <span style="color:#273D56">add_to_waitlist</span> function, but Rust won’t let us use them because it doesn’t have access to the private sections.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.11 (Privacy rule).</b></span> In Rust, all items (functions, methods, structs, enums, modules, and constants) are private to parent modules by default. Items in a parent module can’t use the private items inside child modules, but items in child modules can use the items in their ancestor modules. To make an item like a function or struct private, put it in a module.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Why: child modules wrap and hide their implementation details, but they can see the context in which they’re defined. Rust made hiding inner implementation details the default, so you know which parts of the inner code you can change without breaking the outer code. The <span style="color:#273D56">pub</span> keyword is the option to expose inner parts of child modules to outer ancestor modules.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 7.12.</b> Think of the privacy rules as the back office of a restaurant: what goes on in there is private to restaurant customers, but office managers can see and do everything in the restaurant they operate.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Exposing paths with pub: a public module</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.5:</b></span> Declaring the <span style="color:#273D56">hosting</span> module as <span style="color:#273D56">pub</span> to use it from <span style="color:#273D56">eat_at_restaurant</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">// -- snip --</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Absolute path</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;crate::front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Relative path</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Back to the error in Listing 7.4 that told us the <span style="color:#273D56">hosting</span> module is private.</p>
+<p style="font-size:30px;line-height:1.45">We want <span style="color:#273D56">eat_at_restaurant</span> in the parent module to have access to <span style="color:#273D56">add_to_waitlist</span> in the child module, so we mark the <span style="color:#273D56">hosting</span> module with the <span style="color:#273D56">pub</span> keyword.</p>
+<p style="font-size:30px;line-height:1.45">Unfortunately, the code in Listing 7.5 still results in compiler errors, shown in Listing 7.6.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error: function add_to_waitlist is private</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.6:</b></span> Compiler errors from building the code in Listing 7.5 (first error)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling restaurant v0.1.0 (file:///projects/restaurant)</p>
+<p style="white-space:nowrap">error[E0603]: function `add_to_waitlist` is private</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:10:37</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">10 |&#160;&#160;&#160;&#160;&#160;crate::front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^ private function</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">note: the function `add_to_waitlist` is defined here</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:3:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;3 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^^^^^^</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This time the error points at <span style="color:#273D56">add_to_waitlist</span> itself, not at the module <span style="color:#273D56">hosting</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The same error for the relative path</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.6 (continued):</b></span> Compiler errors from building the code in Listing 7.5 (second error)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error[E0603]: function `add_to_waitlist` is private</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:13:30</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">13 |&#160;&#160;&#160;&#160;&#160;front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^ private function</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">note: the function `add_to_waitlist` is defined here</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:3:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;3 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^^^^^^</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0603`.</p>
+<p style="white-space:nowrap">error: could not compile `restaurant` (lib) due to 2 previous errors</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A public module doesn’t make its contents public</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">What happened? Adding the <span style="color:#273D56">pub</span> keyword in front of <span style="color:#273D56">mod hosting</span> makes the module public. With this change, if we can access <span style="color:#273D56">front_of_house</span>, we can access <span style="color:#273D56">hosting</span>.</p>
+<p style="font-size:30px;line-height:1.45">But the <i>contents</i> of <span style="color:#273D56">hosting</span> are still private; making the module public doesn’t make its contents public. The <span style="color:#273D56">pub</span> keyword on a module only lets code in its ancestor modules refer to it, not access its inner code.</p>
+<p style="font-size:30px;line-height:1.45">Because modules are containers, there’s not much we can do by only making the module public; we need to go further and choose to make one or more of the items within the module public as well.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The errors in Listing 7.6 say that the <span style="color:#273D56">add_to_waitlist</span> function is private. The privacy rules apply to structs, enums, functions, and methods as well as modules.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Making the function public too</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.7:</b></span> Adding the <span style="color:#273D56">pub</span> keyword to <span style="color:#273D56">mod hosting</span> and <span style="color:#273D56">fn add_to_waitlist</span> lets us call the function from <span style="color:#273D56">eat_at_restaurant</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">// -- snip --</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Absolute path</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;crate::front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Relative path</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;front_of_house::hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s also make the <span style="color:#273D56">add_to_waitlist</span> function public by adding the <span style="color:#273D56">pub</span> keyword before its definition.</p>
+<p style="font-size:30px;line-height:1.45">Now the code will compile!</p>
+<p style="font-size:30px;line-height:1.45">To see why adding <span style="color:#273D56">pub</span> lets us use these paths in <span style="color:#273D56">eat_at_restaurant</span> with respect to the privacy rules, the next slide walks through the absolute and the relative paths step by step.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why both paths now work</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The absolute path</h3>
+<ol style="font-size:30px;line-height:1.45">
+<li>It starts with <span style="color:#273D56">crate</span>, the root of our crate’s module tree.</li>
+<li><span style="color:#273D56">front_of_house</span> is defined in the crate root. It isn’t public, but <span style="color:#273D56">eat_at_restaurant</span> is defined in the same module (they are siblings), so we can refer to it.</li>
+<li><span style="color:#273D56">hosting</span> is marked <span style="color:#273D56">pub</span>, and we can access its parent module, so we can access <span style="color:#273D56">hosting</span>.</li>
+<li><span style="color:#273D56">add_to_waitlist</span> is marked <span style="color:#273D56">pub</span>, and we can access its parent module, so this function call works!</li>
+</ol>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The relative path</h3>
+<p style="font-size:30px;line-height:1.45">Same logic except the first step: the path starts from <span style="color:#273D56">front_of_house</span>, which is defined within the same module as <span style="color:#273D56">eat_at_restaurant</span>. Then, because <span style="color:#273D56">hosting</span> and <span style="color:#273D56">add_to_waitlist</span> are <span style="color:#273D56">pub</span>, the rest of the path works, and the call is valid!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Public APIs, and packages with a binary and a library</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you share your library crate so other projects can use your code, your public API is your contract with users of your crate: it determines how they can interact with your code. Managing changes to a public API so people can depend on your crate is beyond the scope of this book; see the Rust API Guidelines (rust-lang.github.io/api-guidelines).</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Best practices for packages with a binary and a library</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>A package can contain both a <i>src/main.rs</i> binary crate root and a <i>src/lib.rs</i> library crate root; both crates have the package name by default.</li>
+<li>Typically the binary crate has just enough code to start an executable that calls code defined in the library crate, so other projects benefit from the most functionality, because the library crate’s code can be shared.</li>
+<li>Define the module tree in <i>src/lib.rs</i>. Public items can then be used in the binary crate by starting paths with the name of the package.</li>
+<li>The binary crate becomes a user of the library crate just like a completely external crate: it can only use the public API. This helps you design a good API — you’re not only the author but also a client!</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Chapter 12 demonstrates this organizational practice with a command line program containing both a binary crate and a library crate.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Starting relative paths with super</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.13 (super).</b></span> A keyword at the start of a path that makes it a relative path beginning in the parent module, rather than the current module or the crate root — like starting a filesystem path with <span style="color:#273D56">..</span> to go to the parent directory.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.8:</b></span> Calling a function using a relative path starting with <span style="color:#273D56">super</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn deliver_order() {}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">mod back_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn fix_incorrect_order() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cook_order();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;super::deliver_order();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn cook_order() {}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;line-height:1.45">Using <span style="color:#273D56">super</span> references an item we know is in the parent module, which makes rearranging the module tree easier when the module is closely related to the parent but the parent might be moved elsewhere someday.</p>
+<p style="font-size:26px;line-height:1.45">A chef fixes an incorrect order and personally brings it out. From <span style="color:#273D56">back_of_house</span>, <span style="color:#273D56">super</span> goes to its parent — <span style="color:#273D56">crate</span>, the root — where <span style="color:#273D56">deliver_order</span> is found. Success!</p>
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56">back_of_house</span> and <span style="color:#273D56">deliver_order</span> are likely to stay in the same relationship and get moved together, so <span style="color:#273D56">super</span> leaves fewer places to update if the code moves.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Making structs public</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.9:</b></span> A struct with some public fields and some private fields — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod back_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub struct Breakfast {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub toast: String,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;seasonal_fruit: String,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;impl Breakfast {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn summer(toast: &amp;str) -&gt; Breakfast {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Breakfast {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;toast: String::from(toast),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;seasonal_fruit: String::from("peaches"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">pub</span> before a struct definition makes the struct public, but its fields stay private. Each field can be made public or not on a case-by-case basis.</p>
+<p style="font-size:30px;line-height:1.45">Here <span style="color:#273D56">back_of_house::Breakfast</span> is public, with a public <span style="color:#273D56">toast</span> field but a private <span style="color:#273D56">seasonal_fruit</span> field. In the restaurant, the customer picks the bread that comes with a meal, but the chef decides which fruit accompanies it based on what’s in season and in stock. The fruit changes quickly, so customers can’t choose it or even see which fruit they’ll get.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using public and private fields</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.9 (continued):</b></span> A struct with some public fields and some private fields — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Order a breakfast in the summer with Rye toast.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut meal = back_of_house::Breakfast::summer("Rye");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// Change our mind about what bread we'd like.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;meal.toast = String::from("Wheat");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("I'd like {} toast please", meal.toast);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// The next line won't compile if we uncomment it; we're not allowed</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// to see or modify the seasonal fruit that comes with the meal.</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// meal.seasonal_fruit = String::from("blueberries");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Because the <span style="color:#273D56">toast</span> field in <span style="color:#273D56">back_of_house::Breakfast</span> is public, <span style="color:#273D56">eat_at_restaurant</span> can write and read it using dot notation. It can’t use the <span style="color:#273D56">seasonal_fruit</span> field, because <span style="color:#273D56">seasonal_fruit</span> is private. Try uncommenting the line that modifies <span style="color:#273D56">seasonal_fruit</span> to see what error you get!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Constructors for private fields; public enums</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because <span style="color:#273D56">back_of_house::Breakfast</span> has a private field, the struct needs to provide a public associated function that constructs an instance of <span style="color:#273D56">Breakfast</span> (here named <span style="color:#273D56">summer</span>). Without such a function, we couldn’t create an instance of <span style="color:#273D56">Breakfast</span> in <span style="color:#273D56">eat_at_restaurant</span>, because we couldn’t set the value of the private <span style="color:#273D56">seasonal_fruit</span> field there.</p>
+<p style="font-size:30px;line-height:1.45">In contrast, if we make an enum public, all of its variants are then public. We only need the <span style="color:#273D56">pub</span> before the <span style="color:#273D56">enum</span> keyword.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.10:</b></span> Designating an enum as public makes all its variants public. — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod back_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub enum Appetizer {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Soup,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Salad,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let order1 = back_of_house::Appetizer::Soup;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let order2 = back_of_house::Appetizer::Salad;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why enums and structs differ</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because we made the <span style="color:#273D56">Appetizer</span> enum public, we can use the <span style="color:#273D56">Soup</span> and <span style="color:#273D56">Salad</span> variants in <span style="color:#273D56">eat_at_restaurant</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.2:</b></span> What <span style="color:#273D56">pub</span> on a struct or an enum makes public</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:20%">Item</th><th style="width:35%">pub on the definition</th><th style="width:45%">Why this default</th></tr>
+<tr><td>struct</td><td>The struct only; each field stays private unless marked pub</td><td>Structs are often useful without their fields being public</td></tr>
+<tr><td>enum</td><td>The enum and all of its variants</td><td>Enums aren’t very useful unless their variants are public</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">It would be annoying to annotate all enum variants with <span style="color:#273D56">pub</span> in every case, so the default for enum variants is to be public. Struct fields follow the general rule: everything is private by default unless annotated with <span style="color:#273D56">pub</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> One more <span style="color:#273D56">pub</span> situation involves the last feature, <span style="color:#273D56">use</span>: first <span style="color:#273D56">use</span> alone, then <span style="color:#273D56">pub</span> with <span style="color:#273D56">use</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating a shortcut with use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Writing out paths to call functions can feel inconvenient and repetitive: in Listing 7.7, every call to <span style="color:#273D56">add_to_waitlist</span> had to specify <span style="color:#273D56">front_of_house</span> and <span style="color:#273D56">hosting</span> too. Instead, we can create a shortcut to a path with the <span style="color:#273D56">use</span> keyword once and then use the shorter name everywhere else in the scope.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 7.14.</b> <span style="color:#273D56">use</span> plus a path is like a symbolic link in the filesystem: after <span style="color:#273D56">use crate::front_of_house::hosting</span> in the crate root, <span style="color:#273D56">hosting</span> is a valid name there, as though the module had been defined in the crate root. Paths brought into scope with <span style="color:#273D56">use</span> also check privacy, like any other paths.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.11:</b></span> Bringing a module into scope with <span style="color:#273D56">use</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use crate::front_of_house::hosting;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A use shortcut applies only in its own scope</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.12:</b></span> A <span style="color:#273D56">use</span> statement only applies in the scope it’s in. — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use crate::front_of_house::hosting;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">mod customer {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">use</span> only creates the shortcut for the particular scope in which the <span style="color:#273D56">use</span> occurs.</p>
+<p style="font-size:30px;line-height:1.45">Listing 7.12 moves the <span style="color:#273D56">eat_at_restaurant</span> function into a new child module named <span style="color:#273D56">customer</span>. That is a different scope than the <span style="color:#273D56">use</span> statement, so the function body won’t compile.</p>
+<p style="font-size:30px;line-height:1.45">The compiler error on the next slides shows that the shortcut no longer applies within the <span style="color:#273D56">customer</span> module.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error: cannot find hosting in this scope</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Building Listing 7.12 — the error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling restaurant v0.1.0 (file:///projects/restaurant)</p>
+<p style="white-space:nowrap">error[E0433]: cannot find module or crate `hosting` in this scope</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/lib.rs:11:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">11 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^ use of unresolved module or unlinked crate `hosting`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;= help: if you wanted to use a crate named `hosting`,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;use `cargo add hosting` to add it to your `Cargo.toml`</p>
+<p style="white-space:nowrap">help: consider importing this module through its public re-export</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">10 +&#160;&#160;&#160;&#160;&#160;use crate::hosting;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">…and an unused import warning</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">warning: unused import: `crate::front_of_house::hosting`</p>
+<p style="white-space:nowrap">&#160;--&gt; src/lib.rs:7:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">7 | use crate::front_of_house::hosting;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0433`.</p>
+<p style="white-space:nowrap">warning: `restaurant` (lib) generated 1 warning</p>
+<p style="white-space:nowrap">error: could not compile `restaurant` (lib) due to 1 previous error; 1 warning emitted</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Notice there’s also a warning that the <span style="color:#273D56">use</span> is no longer used in its scope! To fix this problem, move the <span style="color:#273D56">use</span> within the <span style="color:#273D56">customer</span> module too, or reference the shortcut in the parent module with <span style="color:#273D56">super::hosting</span> within the child <span style="color:#273D56">customer</span> module.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Idiomatic use paths for functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.13:</b></span> Bringing the <span style="color:#273D56">add_to_waitlist</span> function into scope with <span style="color:#273D56">use</span>, which is unidiomatic — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use crate::front_of_house::hosting::add_to_waitlist;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Why did Listing 7.11 write <span style="color:#273D56">use crate::front_of_house::hosting</span> and call <span style="color:#273D56">hosting::add_to_waitlist</span>, rather than taking the <span style="color:#273D56">use</span> path all the way out to the function, as in Listing 7.13?</p>
+<p style="font-size:30px;line-height:1.45">Both work, but Listing 7.11 is idiomatic: bringing the parent module into scope means specifying it when calling the function, which makes clear the function isn’t locally defined while still minimizing repetition of the full path. Listing 7.13 is unclear as to where <span style="color:#273D56">add_to_waitlist</span> is defined.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Idiomatic use paths for structs and enums</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">On the other hand, when bringing in structs, enums, and other items with <span style="color:#273D56">use</span>, it’s idiomatic to specify the full path. Listing 7.14 shows the idiomatic way to bring the standard library’s <span style="color:#273D56">HashMap</span> struct into the scope of a binary crate.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.14:</b></span> Bringing <span style="color:#273D56">HashMap</span> into scope in an idiomatic way — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut map = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;map.insert(1, 2);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> There’s no strong reason behind this idiom: it’s just the convention that has emerged, and folks have gotten used to reading and writing Rust code this way.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The exception: two items with the same name</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.15:</b></span> Bringing two types with the same name into the same scope requires using their parent modules. — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fmt;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function1() -&gt; fmt::Result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function2() -&gt; io::Result&lt;()&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The exception to the full-path idiom: bringing two items with the same name into scope with <span style="color:#273D56">use</span> statements, because Rust doesn’t allow that.</p>
+<p style="font-size:30px;line-height:1.45">Listing 7.15 brings two <span style="color:#273D56">Result</span> types with different parent modules into scope and refers to them through those parents, which distinguishes them.</p>
+<p style="font-size:30px;line-height:1.45">If instead we specified <span style="color:#273D56">use std::fmt::Result</span> and <span style="color:#273D56">use std::io::Result</span>, we’d have two <span style="color:#273D56">Result</span> types in the same scope, and Rust wouldn’t know which one we meant when we used <span style="color:#273D56">Result</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Providing new names with the as keyword</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.16:</b></span> Renaming a type when it’s brought into scope with the <span style="color:#273D56">as</span> keyword — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fmt::Result;</p>
+<p style="white-space:nowrap">use std::io::Result as IoResult;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function1() -&gt; Result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function2() -&gt; IoResult&lt;()&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another solution to bringing two types of the same name into the same scope with <span style="color:#273D56">use</span>: after the path, specify <span style="color:#273D56">as</span> and a new local name.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.15 (Alias).</b></span> A new local name for a type, given with <span style="color:#273D56">as</span> after the path in a <span style="color:#273D56">use</span> statement.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 7.16 rewrites Listing 7.15: the second <span style="color:#273D56">use</span> chooses the new name <span style="color:#273D56">IoResult</span> for <span style="color:#273D56">std::io::Result</span>, which won’t conflict with the <span style="color:#273D56">Result</span> from <span style="color:#273D56">std::fmt</span> also in scope. Listings 7.15 and 7.16 are both considered idiomatic, so the choice is up to you!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Re-exporting names with pub use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A name brought into scope with <span style="color:#273D56">use</span> is private to the scope into which we imported it. To let code outside that scope refer to the name as if it had been defined in that scope, combine <span style="color:#273D56">pub</span> and <span style="color:#273D56">use</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.16 (Re-exporting).</b></span> Bringing an item into scope with <span style="color:#273D56">pub use</span>, which also makes that item available for others to bring into their scope.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 7.17 is Listing 7.11 with <span style="color:#273D56">use</span> in the root module changed to <span style="color:#273D56">pub use</span>.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.17:</b></span> Making a name available for any code to use from a new scope with <span style="color:#273D56">pub use</span> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub use crate::front_of_house::hosting;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What re-exporting changes for callers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.3:</b></span> The path external code uses to call <span style="color:#273D56">add_to_waitlist</span></p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:24%">When</th><th style="width:76%">Path for external code</th></tr>
+<tr><td>Before pub use</td><td>restaurant::front_of_house::hosting::add_to_waitlist() — also requires front_of_house to be pub</td></tr>
+<tr><td>After pub use</td><td>restaurant::hosting::add_to_waitlist()</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Re-exporting is useful when the internal structure of your code is different from how programmers calling your code would think about the domain. In the restaurant metaphor, the people running the restaurant think about “front of house” and “back of house,” but customers visiting probably won’t think about the parts of the restaurant in those terms.</p>
+<p style="font-size:30px;line-height:1.45">With <span style="color:#273D56">pub use</span>, we can write our code with one structure but expose a different structure. That makes the library well organized both for programmers working on the library and for programmers calling it.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> “Exporting a Convenient Public API” in Chapter 14 shows another example of <span style="color:#273D56">pub use</span> and how it affects your crate’s documentation.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using external packages</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The Chapter 2 guessing game used an external package called <span style="color:#273D56">rand</span> to get random numbers. To use <span style="color:#273D56">rand</span> in the project, we added this line to <i>Cargo.toml</i>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">rand = "0.10.1"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Adding <span style="color:#273D56">rand</span> as a dependency in <i>Cargo.toml</i> tells Cargo to download the <span style="color:#273D56">rand</span> package and any dependencies from crates.io and make <span style="color:#273D56">rand</span> available to our project.</p>
+<p style="font-size:30px;line-height:1.45">Then, to bring <span style="color:#273D56">rand</span> definitions into the scope of our package, we added a <span style="color:#273D56">use</span> line starting with the name of the crate, <span style="color:#273D56">rand</span>, and listed the items we wanted to bring into scope. In “Generating a Random Number” (Chapter 2) we brought the items in the <span style="color:#273D56">rand::prelude</span> module into scope and called the <span style="color:#273D56">rand::rng</span> function — shown on the next two slides.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Bringing rand items into scope</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">use</span> line starts with the crate name <span style="color:#273D56">rand</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let secret_number = rand::rng().random_range(1..=100);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The secret number is: {secret_number}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Any crate from crates.io works the same way</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The rest of the snippet (continued):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Members of the Rust community have made many packages available at crates.io, and pulling any of them into your package involves these same steps:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>list them in your package’s <i>Cargo.toml</i> file;</li>
+<li>use <span style="color:#273D56">use</span> to bring items from their crates into scope.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The standard library is external too</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The standard <span style="color:#273D56">std</span> library is also a crate that’s external to our package. Because the standard library is shipped with the Rust language, we don’t need to change <i>Cargo.toml</i> to include <span style="color:#273D56">std</span>. But we do need to refer to it with <span style="color:#273D56">use</span> to bring items from there into our package’s scope. For example, with <span style="color:#273D56">HashMap</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::collections::HashMap;</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This is an absolute path starting with <span style="color:#273D56">std</span>, the name of the standard library crate.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Using nested paths to clean up use lists</h3>
+<p style="font-size:30px;line-height:1.45">When using multiple items defined in the same crate or same module, listing each item on its own line can take up a lot of vertical space in our files. For example, the guessing game in Listing 2.4 has two <span style="color:#273D56">use</span> statements that bring items from <span style="color:#273D56">std</span> into scope (next two slides).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Before: one use line per item</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> — two separate <span style="color:#273D56">use</span> statements for <span style="color:#273D56">std</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">// --snip--</p>
+<p style="white-space:nowrap">use std::cmp::Ordering;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let secret_number = rand::rng().random_range(1..=100);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The secret number is: {secret_number}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Before: one use line per item (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> (continued)</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Instead, nested paths bring the same items into scope in one line: the common part of the path, two colons, then curly brackets around a list of the parts of the paths that differ.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">After: a nested path</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.18:</b></span> Specifying a nested path to bring multiple items with the same prefix into scope — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use rand::prelude::*;</p>
+<p style="white-space:nowrap">// --snip--</p>
+<p style="white-space:nowrap">use std::{cmp::Ordering, io};</p>
+<p style="white-space:nowrap">// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Guess the number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let secret_number = rand::rng().random_range(1..=100);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The secret number is: {secret_number}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Please input your guess.");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut guess = String::new();</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">After: a nested path (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.18 (continued):</b></span> Specifying a nested path — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;io::stdin()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.read_line(&amp;mut guess)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;.expect("Failed to read line");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let guess: u32 = guess.trim().parse().expect("Please type a number!");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("You guessed: {guess}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">In bigger programs, nested paths can reduce the number of separate <span style="color:#273D56">use</span> statements needed by a lot!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Nesting at any level, with self</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A nested path can be used at any level in a path, which is useful when combining two <span style="color:#273D56">use</span> statements that share a subpath.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 7.19 has two <span style="color:#273D56">use</span> statements: one brings <span style="color:#273D56">std::io</span> into scope and one brings <span style="color:#273D56">std::io::Write</span> into scope.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.19:</b></span> Two <span style="color:#273D56">use</span> statements where one is a subpath of the other — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">use std::io::Write;</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The common part of these two paths is <span style="color:#273D56">std::io</span>, and that’s the complete first path. To merge them into one <span style="color:#273D56">use</span> statement, use <span style="color:#273D56">self</span> in the nested path:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.20:</b></span> Combining the paths in Listing 7.19 into one <span style="color:#273D56">use</span> statement — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::io::{self, Write};</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This line brings <span style="color:#273D56">std::io</span> and <span style="color:#273D56">std::io::Write</span> into scope.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Importing items with the glob operator</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.17 (Glob operator).</b></span> The <span style="color:#273D56">*</span> written after a path in a <span style="color:#273D56">use</span> statement; it brings <i>all</i> public items defined in that path into scope.</p>
+</div>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::collections::*;</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This <span style="color:#273D56">use</span> statement brings all public items defined in <span style="color:#273D56">std::collections</span> into the current scope. Be careful when using the glob operator:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Glob can make it harder to tell what names are in scope and where a name used in your program was defined.</li>
+<li>If the dependency changes its definitions, what you’ve imported changes as well — e.g. compiler errors when you upgrade a dependency that adds a definition with the same name as one of yours in the same scope.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Glob is often used when testing, to bring everything under test into the <span style="color:#273D56">tests</span> module (Chapter 11), and sometimes as part of the prelude pattern (see the standard library documentation).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-51">
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Extracting front_of_house into its own file</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So far, every example defined multiple modules in one file. When modules get large, you might move their definitions to a separate file to make the code easier to navigate. Starting from Listing 7.17, we extract modules into files; here the crate root file is <i>src/lib.rs</i>, but the procedure also works with binary crates whose crate root file is <i>src/main.rs</i>.</p>
+<p style="font-size:30px;line-height:1.45">First, extract <span style="color:#273D56">front_of_house</span>: remove the code inside its curly brackets, leaving only the <span style="color:#273D56">mod front_of_house;</span> declaration. This won’t compile until we create <i>src/front_of_house.rs</i> in Listing 7.22.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.21:</b></span> Declaring the <span style="color:#273D56">front_of_house</span> module whose body will be in <i>src/front_of_house.rs</i> — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">mod front_of_house;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub use crate::front_of_house::hosting;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">pub fn eat_at_restaurant() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;hosting::add_to_waitlist();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-52">
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The module body moves to src/front_of_house.rs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Next, place the code that was in the curly brackets into a new file named <i>src/front_of_house.rs</i>. The compiler knows to look in this file because it came across the module declaration in the crate root with the name <span style="color:#273D56">front_of_house</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.22:</b></span> Definitions inside the <span style="color:#273D56">front_of_house</span> module in <i>src/front_of_house.rs</i> — <i>src/front_of_house.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub mod hosting {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;pub fn add_to_waitlist() {}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> You only need to load a file using a <span style="color:#273D56">mod</span> declaration <i>once</i> in your module tree. Once the compiler knows the file is part of the project (and where in the module tree the code resides, because of where you put the <span style="color:#273D56">mod</span> statement), other files should refer to the loaded file’s code using a path to where it was declared (7.3). In other words, <span style="color:#273D56">mod</span> is <i>not</i> an “include” operation that you may have seen in other programming languages.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-53">
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Extracting a child module: hosting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Extracting <span style="color:#273D56">hosting</span> is a bit different, because <span style="color:#273D56">hosting</span> is a child module of <span style="color:#273D56">front_of_house</span>, not of the root module. Its file goes in a new directory named for its ancestors in the module tree, here <i>src/front_of_house</i>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">1. Change <i>src/front_of_house.rs</i> to contain only the declaration of the <span style="color:#273D56">hosting</span> module — <i>src/front_of_house.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub mod hosting;</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">2. Create a <i>src/front_of_house</i> directory and a <i>hosting.rs</i> file with the definitions made in the <span style="color:#273D56">hosting</span> module — <i>src/front_of_house/hosting.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn add_to_waitlist() {}</p>
+</div>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If we instead put <i>hosting.rs</i> in the <i>src</i> directory, the compiler would expect the <i>hosting.rs</i> code to be in a <span style="color:#273D56">hosting</span> module declared in the crate root, not declared as a child of the <span style="color:#273D56">front_of_house</span> module. The compiler’s rules for which files to check for which modules’ code mean the directories and files more closely match the module tree.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-54">
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Alternate file paths</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So far we’ve covered the most idiomatic file paths the Rust compiler uses, but Rust also supports an older style of file path.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 7.4:</b></span> Where the compiler looks for a module’s code</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:36%">Module</th><th style="width:32%">Idiomatic (what we covered)</th><th style="width:32%">Older style, still supported</th></tr>
+<tr><td>front_of_house, declared in the crate root</td><td>src/front_of_house.rs</td><td>src/front_of_house/mod.rs</td></tr>
+<tr><td>hosting, a submodule of front_of_house</td><td>src/front_of_house/hosting.rs</td><td>src/front_of_house/hosting/mod.rs</td></tr>
+</table>
+<ul style="font-size:30px;line-height:1.45">
+<li>Using both styles for the same module gives a compiler error.</li>
+<li>Mixing both styles for different modules in the same project is allowed but might be confusing for people navigating your project.</li>
+<li>The main downside of the <i>mod.rs</i> style: your project can end up with many files named <i>mod.rs</i>, which can get confusing when you have them open in your editor at the same time.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-55">
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Same module tree, different files</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We’ve moved each module’s code to a separate file, and the module tree remains the same. The function calls in <span style="color:#273D56">eat_at_restaurant</span> work without any modification, even though the definitions live in different files. This technique lets you move modules to new files as they grow in size.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">pub use crate::front_of_house::hosting</span> statement in <i>src/lib.rs</i> hasn’t changed either, and <span style="color:#273D56">use</span> has no impact on what files are compiled as part of the crate. The <span style="color:#273D56">mod</span> keyword declares modules, and Rust looks in a file with the same name as the module for the code that goes into that module.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">The <i>restaurant</i> crate’s source files after the extraction</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">src</p>
+<p style="white-space:nowrap">├── front_of_house</p>
+<p style="white-space:nowrap">│&#160;&#160;&#160;└── hosting.rs</p>
+<p style="white-space:nowrap">├── front_of_house.rs</p>
+<p style="white-space:nowrap">└── lib.rs</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-56">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust lets you organize code and control what other code can see:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>split a package into multiple crates, and a crate into modules, so that you can refer to items defined in one module from another module;</li>
+<li>refer to items by specifying absolute paths (starting from <span style="color:#273D56">crate</span> or a crate name) or relative paths (starting from <span style="color:#273D56">self</span>, <span style="color:#273D56">super</span>, or an identifier in the current module);</li>
+<li>bring paths into scope with a <span style="color:#273D56">use</span> statement, so you can use a shorter path for multiple uses of the item in that scope;</li>
+<li>rely on module code being private by default, and make definitions public by adding the <span style="color:#273D56">pub</span> keyword.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, Chapter 8 looks at some collection data structures in the standard library that you can use in your neatly organized code.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

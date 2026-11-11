@@ -1,0 +1,30 @@
+<section id="s59" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A slow, blocking operation</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 17.14:</b></span> Using <span style="color:#273D56">thread::sleep</span> to simulate slow operations — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::{thread, time::Duration};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;trpl::block_on(async {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// We will call `slow` here later</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;});</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn slow(name: &amp;str, ms: u64) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;thread::sleep(Duration::from_millis(ms));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("'{name}' ran for {ms}ms");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This code uses <span style="color:#273D56">std::thread::sleep</span> instead of <span style="color:#273D56">trpl::sleep</span>, so calling <span style="color:#273D56">slow</span> blocks the current thread for some number of milliseconds. We can use <span style="color:#273D56">slow</span> to stand in for real-world operations that are both long-running and blocking.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">60</p>
+</div>
+</section>

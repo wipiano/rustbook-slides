@@ -1,0 +1,28 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Calling an unsafe function without unsafe</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling unsafe-example v0.1.0 (file:///projects/unsafe-example)</p>
+<p style="white-space:nowrap">error[E0133]: call to unsafe function `dangerous` is unsafe and requires unsafe block</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:4:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">4 |&#160;&#160;&#160;&#160;&#160;dangerous();</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^^^^^^^^ call to unsafe function</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: consult the function's documentation for information on how to avoid undefined behavior</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0133`.</p>
+<p style="white-space:nowrap">error: could not compile `unsafe-example` (bin "unsafe-example") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">With the <span style="color:#273D56">unsafe</span> block, we’re asserting to Rust that we’ve read the function’s documentation, we understand how to use it properly, and we’ve verified that we’re fulfilling the contract of the function.</p>
+<p style="font-size:30px;line-height:1.45">To perform unsafe operations in the body of an <span style="color:#273D56">unsafe</span> function, you still need an <span style="color:#273D56">unsafe</span> block, just as within a regular function, and the compiler warns you if you forget. This keeps <span style="color:#273D56">unsafe</span> blocks as small as possible, as unsafe operations may not be needed across the whole function body.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

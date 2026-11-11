@@ -1,0 +1,22 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What changed in Listing 21.15</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The field on <span style="color:#273D56">ThreadPool</span> is renamed from <span style="color:#273D56">threads</span> to <span style="color:#273D56">workers</span>, because it now holds <span style="color:#273D56">Worker</span> instances instead of <span style="color:#273D56">JoinHandle&lt;()&gt;</span> instances.</li>
+<li>The counter in the <span style="color:#273D56">for</span> loop is the argument to <span style="color:#273D56">Worker::new</span>, and each new <span style="color:#273D56">Worker</span> is stored in the vector named <span style="color:#273D56">workers</span>.</li>
+<li>External code (like our server in <i>src/main.rs</i>) doesn’t need to know that <span style="color:#273D56">ThreadPool</span> uses a <span style="color:#273D56">Worker</span> struct, so <span style="color:#273D56">Worker</span> and its <span style="color:#273D56">new</span> function are private.</li>
+<li><span style="color:#273D56">Worker::new</span> uses the <span style="color:#273D56">id</span> we give it and stores a <span style="color:#273D56">JoinHandle&lt;()&gt;</span> created by spawning a new thread with an empty closure.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If the operating system can’t create a thread because there aren’t enough system resources, <span style="color:#273D56">thread::spawn</span> will panic. That causes our whole server to panic, even though the creation of some threads might succeed. For simplicity this is fine, but a production thread pool would likely use <span style="color:#273D56">std::thread::Builder</span> and its <span style="color:#273D56">spawn</span> method, which returns <span style="color:#273D56">Result</span> instead.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This compiles and stores the number of <span style="color:#273D56">Worker</span> instances we passed to <span style="color:#273D56">ThreadPool::new</span>. But we’re <i>still</i> not processing the closure we get in <span style="color:#273D56">execute</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

@@ -1,0 +1,24 @@
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each tuple struct is its own type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">black</span> and <span style="color:#273D56">origin</span> values are different types, because they’re instances of different tuple structs. Each struct you define is its own type, even though the fields within the struct might have the same types.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>A function that takes a parameter of type <span style="color:#273D56">Color</span> cannot take a <span style="color:#273D56">Point</span> as an argument, even though both types are made up of three <span style="color:#273D56">i32</span> values.</li>
+<li>Otherwise, tuple struct instances are similar to tuples: you can destructure them into their individual pieces, and use a <span style="color:#273D56">.</span> followed by the index to access an individual value.</li>
+<li>Unlike tuples, tuple structs require you to name the type of the struct when you destructure them.</li>
+</ul>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 5.8.</b> To destructure the values in the <span style="color:#273D56">origin</span> point into variables named <span style="color:#273D56">x</span>, <span style="color:#273D56">y</span> and <span style="color:#273D56">z</span>, name the type <span style="color:#273D56">Point</span> in the pattern:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let Point(x, y, z) = origin;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>

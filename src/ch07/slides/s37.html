@@ -1,0 +1,36 @@
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Providing new names with the as keyword</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.16:</b></span> Renaming a type when it’s brought into scope with the <span style="color:#273D56">as</span> keyword — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fmt::Result;</p>
+<p style="white-space:nowrap">use std::io::Result as IoResult;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function1() -&gt; Result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function2() -&gt; IoResult&lt;()&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another solution to bringing two types of the same name into the same scope with <span style="color:#273D56">use</span>: after the path, specify <span style="color:#273D56">as</span> and a new local name.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.15 (Alias).</b></span> A new local name for a type, given with <span style="color:#273D56">as</span> after the path in a <span style="color:#273D56">use</span> statement.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 7.16 rewrites Listing 7.15: the second <span style="color:#273D56">use</span> chooses the new name <span style="color:#273D56">IoResult</span> for <span style="color:#273D56">std::io::Result</span>, which won’t conflict with the <span style="color:#273D56">Result</span> from <span style="color:#273D56">std::fmt</span> also in scope. Listings 7.15 and 7.16 are both considered idiomatic, so the choice is up to you!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>

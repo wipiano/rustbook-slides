@@ -1,0 +1,20 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.1 What Is Ownership?</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the String type illustrates ownership</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To illustrate the rules of ownership, we need a data type that is more complex than those covered in the “Data Types” section of Chapter 3. The types covered previously:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>are of a known size;</li>
+<li>can be stored on the stack and popped off the stack when their scope is over;</li>
+<li>can be quickly and trivially copied to make a new, independent instance if another part of code needs to use the same value in a different scope.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">But we want to look at data that is stored on the heap and explore how Rust knows when to clean up that data — and the <span style="color:#273D56">String</span> type is a great example.</p>
+<p style="font-size:30px;line-height:1.45">We’ll concentrate on the parts of <span style="color:#273D56">String</span> that relate to ownership. These aspects also apply to other complex data types, whether they are provided by the standard library or created by you. Non-ownership aspects of <span style="color:#273D56">String</span> are discussed in Chapter 8.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s59" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Mutex&lt;T&gt; and the risk of deadlocks</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust can’t protect you from all kinds of logic errors when you use <span style="color:#273D56">Mutex&lt;T&gt;</span>. Recall from Chapter 15 that using <span style="color:#273D56">Rc&lt;T&gt;</span> came with the risk of creating reference cycles, where two <span style="color:#273D56">Rc&lt;T&gt;</span> values refer to each other, causing memory leaks. Similarly, <span style="color:#273D56">Mutex&lt;T&gt;</span> comes with the risk of creating <i>deadlocks</i>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.17 (Deadlock).</b></span> A situation that occurs when an operation needs to lock two resources and two threads have each acquired one of the locks, causing them to wait for each other forever.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If you’re interested in deadlocks, try creating a Rust program that has a deadlock; then research deadlock mitigation strategies for mutexes in any language and have a go at implementing them in Rust. The standard library API documentation for <span style="color:#273D56">Mutex&lt;T&gt;</span> and <span style="color:#273D56">MutexGuard</span> offers useful information.</p>
+<p style="font-size:30px;line-height:1.45">The chapter rounds out with the <span style="color:#273D56">Send</span> and <span style="color:#273D56">Sync</span> traits and how to use them with custom types.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">60</p>
+</div>
+</section>

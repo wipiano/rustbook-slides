@@ -1,0 +1,25 @@
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.1 How to Write Tests</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The expected substring</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 11.9 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;#[test]</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;#[should_panic(expected = "less than or equal to 100")]</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn greater_than_100() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Guess::new(200);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This test passes because the value in the <span style="color:#273D56">expected</span> parameter is a substring of the message that <span style="color:#273D56">Guess::new</span> panics with. We could have specified the entire panic message, <span style="color:#273D56">Guess value must be less than or equal to 100, got 200</span>. What you choose depends on how much of the panic message is unique or dynamic and how precise you want your test to be. Here, a substring is enough to ensure that the code executes the <span style="color:#273D56">else if value &gt; 100</span> case.</p>
+<p style="font-size:30px;line-height:1.45">To see a <span style="color:#273D56">should_panic</span> test with an <span style="color:#273D56">expected</span> message fail, we introduce a bug by swapping the bodies of the <span style="color:#273D56">if value &lt; 1</span> and <span style="color:#273D56">else if value &gt; 100</span> blocks.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>

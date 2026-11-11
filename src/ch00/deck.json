@@ -1,0 +1,47 @@
+{
+ "title": "Rust Book Ch.0 — Introduction",
+ "order": [
+  "cover",
+  "s01",
+  "s02",
+  "s03",
+  "s04",
+  "s05",
+  "s06",
+  "s07",
+  "s08",
+  "s09",
+  "s10",
+  "s11",
+  "s12",
+  "s13",
+  "s14",
+  "summary"
+ ],
+ "sections": {
+  "intro": {
+   "description": "Chapter opening: what Rust is and what the book is",
+   "start": "cover"
+  },
+  "who-rust": {
+   "description": "Who Rust Is For: teams, students, companies, open source developers, people who value speed and stability",
+   "start": "s01"
+  },
+  "who-book": {
+   "description": "Who This Book Is For: readers who already program in another language",
+   "start": "s06"
+  },
+  "how-to-use": {
+   "description": "How to Use This Book: reading order, concept and project chapters, chapter roadmap, compiler errors and Ferris",
+   "start": "s07"
+  },
+  "source": {
+   "description": "Source Code: where the book’s source files live",
+   "start": "s14"
+  },
+  "wrap": {
+   "description": "Chapter summary",
+   "start": "summary"
+  }
+ }
+}

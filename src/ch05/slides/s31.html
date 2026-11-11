@@ -1,0 +1,28 @@
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading dbg! output</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rectangles v0.1.0 (file:///projects/rectangles)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/rectangles`</p>
+<p style="white-space:nowrap">[src/main.rs:10:16] 30 * scale = 60</p>
+<p style="white-space:nowrap">[src/main.rs:14:5] &amp;rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: 60,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The first bit of output comes from <i>src/main.rs</i> line 10, where we debug the expression <span style="color:#273D56">30 * scale</span>; its resultant value is <span style="color:#273D56">60</span> (the <span style="color:#273D56">Debug</span> formatting for integers prints only their value).</li>
+<li>The <span style="color:#273D56">dbg!</span> call on line 14 outputs the value of <span style="color:#273D56">&amp;rect1</span>, the <span style="color:#273D56">Rectangle</span> struct, using the pretty <span style="color:#273D56">Debug</span> formatting of the type.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">dbg!</span> macro can be really helpful when you’re trying to figure out what your code is doing!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>

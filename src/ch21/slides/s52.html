@@ -1,0 +1,20 @@
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The plan for Worker</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Here is the new process when we create a <span style="color:#273D56">ThreadPool</span>. We’ll implement the code that sends the closure to the thread after <span style="color:#273D56">Worker</span> is set up this way:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Define a <span style="color:#273D56">Worker</span> struct that holds an <span style="color:#273D56">id</span> and a <span style="color:#273D56">JoinHandle&lt;()&gt;</span>.</li>
+<li>Change <span style="color:#273D56">ThreadPool</span> to hold a vector of <span style="color:#273D56">Worker</span> instances.</li>
+<li>Define a <span style="color:#273D56">Worker::new</span> function that takes an <span style="color:#273D56">id</span> number and returns a <span style="color:#273D56">Worker</span> instance holding the <span style="color:#273D56">id</span> and a thread spawned with an empty closure.</li>
+<li>In <span style="color:#273D56">ThreadPool::new</span>, use the <span style="color:#273D56">for</span> loop counter to generate an <span style="color:#273D56">id</span>, create a new <span style="color:#273D56">Worker</span> with that <span style="color:#273D56">id</span>, and store the <span style="color:#273D56">Worker</span> in the vector.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">If you’re up for a challenge, try implementing these changes on your own before looking at the code in Listing 21.15.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>

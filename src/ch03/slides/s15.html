@@ -1,0 +1,31 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.2 Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">When the compiler needs a type annotation</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Without the <span style="color:#273D56">: u32</span> annotation, the compiler needs more information about the type we want:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling no_type_annotations v0.1.0 (file:///projects/no_type_annotations)</p>
+<p style="white-space:nowrap">error[E0284]: type annotations needed</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:2:9</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let guess = "42".parse().expect("Not a number!");</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;----- type must be known at this point</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: cannot satisfy `&lt;_ as FromStr&gt;::Err == _`</p>
+<p style="white-space:nowrap">help: consider giving `guess` an explicit type</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let guess: /* Type */ = "42".parse().expect("Not a number!");</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;++++++++++++</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0284`.</p>
+<p style="white-space:nowrap">error: could not compile `no_type_annotations` (bin "no_type_annotations") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

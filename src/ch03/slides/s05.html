@@ -1,0 +1,25 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.1 Variables and Mutability</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Opting in to mutability with mut</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">But mutability can be very useful and can make code more convenient to write. Although variables are immutable by default, you can make them mutable by adding <span style="color:#273D56">mut</span> in front of the variable name, as you did in Chapter 2. Adding <span style="color:#273D56">mut</span> also conveys intent to future readers of the code: it indicates that other parts of the code will be changing this variable’s value.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 3.3 (Mutable variable).</b></span> A variable declared with <span style="color:#273D56">let mut</span>, whose bound value may be changed later.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, change <i>src/main.rs</i> to the following:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut x = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The value of x is: {x}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x = 6;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The value of x is: {x}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

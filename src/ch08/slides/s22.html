@@ -1,0 +1,39 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">push_str borrows; push adds one character</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.16:</b></span> Using a string slice after appending its contents to a <span style="color:#273D56">String</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s1 = String::from("foo");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2 = "bar";</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s1.push_str(s2);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("s2 is {s2}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">If the <span style="color:#273D56">push_str</span> method took ownership of <span style="color:#273D56">s2</span>, we wouldn’t be able to print its value on the last line. However, this code works as we’d expect!</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">push</span> method takes a single character as a parameter and adds it to the <span style="color:#273D56">String</span>. Listing 8.17 adds the letter <i>l</i> to a <span style="color:#273D56">String</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.17:</b></span> Adding one character to a <span style="color:#273D56">String</span> value using <span style="color:#273D56">push</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s = String::from("lo");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s.push('l');</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">As a result, <span style="color:#273D56">s</span> will contain <span style="color:#273D56">lol</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

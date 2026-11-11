@@ -1,0 +1,30 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A backtrace with RUST_BACKTRACE=1 (continued)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.2 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;4: core::slice::index::&lt;impl core::ops::index::Index&lt;I&gt; for [T]&gt;::index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/core/src/slice/index.rs:16:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;5: &lt;alloc::vec::Vec&lt;T,A&gt; as core::ops::index::Index&lt;I&gt;&gt;::index</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/alloc/src/vec/mod.rs:3361:9</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;6: panic::main</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at ./src/main.rs:4:6</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;7: core::ops::function::FnOnce::call_once</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;at file:///home/.rustup/toolchains/1.85/lib/rustlib/</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;src/rust/library/core/src/ops/function.rs:250:5</p>
+<p style="white-space:nowrap">note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">That’s a lot of output! The exact output you see might differ depending on your operating system and Rust version. To get backtraces with this information, debug symbols must be enabled. They are enabled by default when using <span style="color:#273D56">cargo build</span> or <span style="color:#273D56">cargo run</span> without the <span style="color:#273D56">--release</span> flag, as we have here.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

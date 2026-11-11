@@ -1,0 +1,21 @@
+<section id="s56" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implementing external traits with the newtype pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 10 (“Implementing a Trait on a Type”) introduced the <i>orphan rule</i>: we may implement a trait on a type only if the trait or the type, or both, are local to our crate. The newtype pattern gets around this restriction.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.17 (Newtype pattern).</b></span> Creating a new type in a tuple struct (Chapter 5) with one field: a thin wrapper around the type for which we want to implement a trait. The wrapper type is local to our crate, so we can implement the trait on it. <i>Newtype</i> is a term that originates from the Haskell programming language.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>There is no runtime performance penalty for using this pattern: the wrapper type is elided at compile time.</li>
+<li>Example: we want to implement <span style="color:#273D56">Display</span> on <span style="color:#273D56">Vec&lt;T&gt;</span>, which the orphan rule prevents directly because <span style="color:#273D56">Display</span> and <span style="color:#273D56">Vec&lt;T&gt;</span> are both defined outside our crate.</li>
+<li>Instead we make a <span style="color:#273D56">Wrapper</span> struct that holds an instance of <span style="color:#273D56">Vec&lt;T&gt;</span>, then implement <span style="color:#273D56">Display</span> on <span style="color:#273D56">Wrapper</span> and use the <span style="color:#273D56">Vec&lt;T&gt;</span> value (Listing 20.24, next slide).</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">57</p>
+</div>
+</section>

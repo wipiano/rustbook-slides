@@ -1,0 +1,36 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.2 References and Borrowing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A reference points at the owner</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Figure 4.6:</b></span> A diagram of <span style="color:#273D56">&amp;String</span> <span style="color:#273D56">s</span> pointing at <span style="color:#273D56">String</span> <span style="color:#273D56">s1</span></p>
+<div style="position:relative;width:1140px;height:232px">
+<p style="position:absolute;left:0px;top:0px;width:680px;font-size:24px;line-height:1.3;color:#596675">stack</p>
+<p style="position:absolute;left:820px;top:0px;width:320px;font-size:24px;line-height:1.3;color:#596675">heap</p>
+<div style="position:absolute;left:0px;top:40px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2"><b>s</b></p></div>
+<div style="position:absolute;left:0px;top:88px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">ptr</p></div>
+<div style="position:absolute;left:380px;top:40px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2"><b>s1</b></p></div>
+<div style="position:absolute;left:380px;top:88px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">ptr</p></div>
+<div style="position:absolute;left:380px;top:136px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">len</p><p style="font-size:26px;line-height:1.2">5</p></div>
+<div style="position:absolute;left:380px;top:184px;width:300px;height:48px;background:#F3F5F7;border:1.5px solid #20252B;border-top:none;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px"><p style="font-size:26px;line-height:1.2">capacity</p><p style="font-size:26px;line-height:1.2">5</p></div>
+<div style="position:absolute;left:820px;top:68px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">0</p><p style="font-size:26px;line-height:1.2">h</p></div>
+<div style="position:absolute;left:884px;top:68px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">1</p><p style="font-size:26px;line-height:1.2">e</p></div>
+<div style="position:absolute;left:948px;top:68px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">2</p><p style="font-size:26px;line-height:1.2">l</p></div>
+<div style="position:absolute;left:1012px;top:68px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">3</p><p style="font-size:26px;line-height:1.2">l</p></div>
+<div style="position:absolute;left:1076px;top:68px;width:64px;height:88px;background:#F3F5F7;border:1.5px solid #20252B;border-left:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px"><p style="font-size:24px;line-height:1.2;color:#596675">4</p><p style="font-size:26px;line-height:1.2">o</p></div>
+<x-connector x1="300" y1="112" x2="380" y2="64" head="end" route="straight" style="color:#20252B;border-width:1.5px"></x-connector>
+<x-connector x1="680" y1="112" x2="820" y2="112" head="end" route="straight" style="color:#20252B;border-width:1.5px"></x-connector>
+</div>
+<p style="font-size:26px;line-height:1.45">The table for <span style="color:#273D56">s</span> contains only a pointer to the table for <span style="color:#273D56">s1</span>. The table for <span style="color:#273D56">s1</span> contains the stack data for <span style="color:#273D56">s1</span> and points to the string data on the heap.</p>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The opposite of referencing by using <span style="color:#273D56">&amp;</span> is <i>dereferencing</i>, which is accomplished with the dereference operator, <span style="color:#273D56">*</span>. Some uses of the dereference operator appear in Chapter 8, and details of dereferencing are discussed in Chapter 15.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>

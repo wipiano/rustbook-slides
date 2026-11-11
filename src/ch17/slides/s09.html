@@ -1,0 +1,19 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · Parallelism and Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Where they intersect, in teams and in hardware</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Parallelism and concurrency can intersect with each other, too. If you learn that a colleague is stuck until you finish one of your tasks, you’ll probably focus all your efforts on that task to “unblock” your colleague. You and your coworker are no longer able to work in parallel, and you’re also no longer able to work concurrently on your own tasks.</p>
+<p style="font-size:30px;line-height:1.45">The same basic dynamics come into play with software and hardware:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>On a machine with a single CPU core, the CPU can perform only one operation at a time, but it can still work concurrently. Using tools such as threads, processes, and async, the computer can pause one activity and switch to others before eventually cycling back to the first.</li>
+<li>On a machine with multiple CPU cores, it can also do work in parallel. One core can perform one task while another core performs a completely unrelated one, and those operations actually happen at the same time.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Running async code in Rust usually happens concurrently. Depending on the hardware, the operating system, and the async runtime we are using (more on runtimes shortly), that concurrency may also use parallelism under the hood.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

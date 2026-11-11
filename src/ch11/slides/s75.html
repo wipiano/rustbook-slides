@@ -1,0 +1,25 @@
+<section id="s75" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.3 Test Organization</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each test file is its own crate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Each file in the <i>tests</i> directory is a separate crate, so we need to bring our library into each test crate’s scope — hence <span style="color:#273D56">use adder::add_two;</span> at the top, which we didn’t need in the unit tests. We don’t annotate any code in <i>tests/integration_test.rs</i> with <span style="color:#273D56">#[cfg(test)]</span>: Cargo treats the <i>tests</i> directory specially and compiles its files only when we run <span style="color:#273D56">cargo test</span>. Run <span style="color:#273D56">cargo test</span> now:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo test</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling adder v0.1.0 (file:///projects/adder)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `test` profile [unoptimized + debuginfo] target(s) in 1.31s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running unittests src/lib.rs (target/debug/deps/adder-1082c4b063a8fbe6)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">running 1 test</p>
+<p style="white-space:nowrap">test tests::internal ... ok</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">79</p>
+</div>
+</section>

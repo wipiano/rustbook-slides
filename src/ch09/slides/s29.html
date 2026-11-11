@@ -1,0 +1,29 @@
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chaining method calls after ?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">?</span> eliminates a lot of boilerplate; we can shorten further by chaining calls right after the <span style="color:#273D56">?</span>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 9.8:</b></span> Chaining method calls after the <span style="color:#273D56">?</span> operator — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fs::File;</p>
+<p style="white-space:nowrap">use std::io::{self, Read};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut username = String::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;File::open("hello.txt")?.read_to_string(&amp;mut username)?;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(username)</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The new <span style="color:#273D56">String</span> moved to the start. Instead of a variable <span style="color:#273D56">username_file</span>, we chain <span style="color:#273D56">read_to_string</span> directly onto <span style="color:#273D56">File::open("hello.txt")?</span>, keep its <span style="color:#273D56">?</span>, and still return <span style="color:#273D56">Ok(username)</span> when both succeed: the same functionality as Listings 9.6 and 9.7, just more ergonomic.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>

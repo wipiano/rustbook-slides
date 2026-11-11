@@ -1,0 +1,16 @@
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each state is responsible for its own rules</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We need to set <span style="color:#273D56">state</span> to <span style="color:#273D56">None</span> temporarily, rather than writing code like <span style="color:#273D56">self.state = self.state.request_review();</span>, to get ownership of the <span style="color:#273D56">state</span> value. This ensures <span style="color:#273D56">Post</span> can’t use the old <span style="color:#273D56">state</span> value after we’ve transformed it into a new state.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">request_review</span> on <span style="color:#273D56">Draft</span> returns a new, boxed instance of a new <span style="color:#273D56">PendingReview</span> struct, the state of a post waiting for a review. <span style="color:#273D56">PendingReview</span> also implements <span style="color:#273D56">request_review</span> but doesn’t transform anything: it returns itself, because requesting a review on a post already in <span style="color:#273D56">PendingReview</span> should keep it there.</p>
+<p style="font-size:30px;line-height:1.45">Now the advantages of the state pattern start to show: <span style="color:#273D56">request_review</span> on <span style="color:#273D56">Post</span> is the same no matter its <span style="color:#273D56">state</span> value. Each state is responsible for its own rules.</p>
+<p style="font-size:30px;line-height:1.45">We leave <span style="color:#273D56">content</span> on <span style="color:#273D56">Post</span> as is, returning an empty string slice: a <span style="color:#273D56">Post</span> can now be in <span style="color:#273D56">PendingReview</span> as well as <span style="color:#273D56">Draft</span>, and we want the same behavior in both. Listing 18.11 now works up to the second <span style="color:#273D56">assert_eq!</span> call!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>

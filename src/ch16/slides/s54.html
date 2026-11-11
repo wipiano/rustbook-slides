@@ -1,0 +1,17 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Atomic reference counting with Arc&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Unfortunately, <span style="color:#273D56">Rc&lt;T&gt;</span> is not safe to share across threads. It adds to the reference count for each call to <span style="color:#273D56">clone</span> and subtracts when each clone is dropped, but it doesn’t use any concurrency primitives to make sure that changes to the count can’t be interrupted by another thread. This could lead to wrong counts — subtle bugs that could in turn lead to memory leaks or a value being dropped before we’re done with it. We need a type exactly like <span style="color:#273D56">Rc&lt;T&gt;</span>, but that changes the reference count in a thread-safe way.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.16 (Arc&lt;T&gt;).</b></span> A type like <span style="color:#273D56">Rc&lt;T&gt;</span> that is safe to use in concurrent situations. The <i>a</i> stands for <i>atomic</i>: it’s an <i>atomically reference-counted</i> type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Atomics are an additional kind of concurrency primitive not covered in detail here (see the standard library documentation for <span style="color:#273D56">std::sync::atomic</span>). For now, just know that atomics work like primitive types but are safe to share across threads.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

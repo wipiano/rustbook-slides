@@ -1,0 +1,18 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.5 Allowing Multiple Guesses with Looping</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A loop with no way out</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>We’ve moved everything from the guess input prompt onward into the loop. Be sure to indent the lines inside the loop another four spaces each, and run the program again.</li>
+<li>The program now asks for another guess forever, which introduces a new problem: it doesn’t seem like the user can quit!</li>
+<li>The user could always interrupt the program with the keyboard shortcut ctrl-C.</li>
+<li>But there’s another way to escape this insatiable monster, as mentioned in the <span style="color:#273D56">parse</span> discussion in “Comparing the Guess to the Secret Number”: if the user enters a non-number answer, the program crashes. We can take advantage of that to allow the user to quit, as the session on the next two slides shows.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

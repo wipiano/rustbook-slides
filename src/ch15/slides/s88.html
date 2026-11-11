@@ -1,0 +1,15 @@
+<section id="s88" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Weak&lt;T&gt;, weak_count, and upgrade</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Calling <span style="color:#273D56">Rc::downgrade</span> gives a smart pointer of type <span style="color:#273D56">Weak&lt;T&gt;</span>. Instead of increasing the <span style="color:#273D56">strong_count</span> of the <span style="color:#273D56">Rc&lt;T&gt;</span> instance by 1, it increases the <span style="color:#273D56">weak_count</span> by 1. <span style="color:#273D56">Rc&lt;T&gt;</span> uses <span style="color:#273D56">weak_count</span> to keep track of how many <span style="color:#273D56">Weak&lt;T&gt;</span> references exist, similar to <span style="color:#273D56">strong_count</span>. The difference: <span style="color:#273D56">weak_count</span> doesn’t need to be 0 for the <span style="color:#273D56">Rc&lt;T&gt;</span> instance to be cleaned up.</p>
+<p style="font-size:30px;line-height:1.45">Because the value a <span style="color:#273D56">Weak&lt;T&gt;</span> references might have been dropped, to do anything with it you must make sure the value still exists. Call the <span style="color:#273D56">upgrade</span> method on a <span style="color:#273D56">Weak&lt;T&gt;</span> instance, which returns an <span style="color:#273D56">Option&lt;Rc&lt;T&gt;&gt;</span>: <span style="color:#273D56">Some</span> if the <span style="color:#273D56">Rc&lt;T&gt;</span> value has not been dropped yet, and <span style="color:#273D56">None</span> if it has. Because <span style="color:#273D56">upgrade</span> returns an <span style="color:#273D56">Option&lt;Rc&lt;T&gt;&gt;</span>, Rust ensures that both the <span style="color:#273D56">Some</span> and <span style="color:#273D56">None</span> cases are handled, and there won’t be an invalid pointer.</p>
+<p style="font-size:30px;line-height:1.45">As an example, rather than a list whose items know only about the next item, we create a tree whose items know about their child items <i>and</i> their parent items.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">89</p>
+</div>
+</section>

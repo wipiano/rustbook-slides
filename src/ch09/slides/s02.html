@@ -1,0 +1,24 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.1 Unrecoverable Errors with panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The panic! macro: unwinding or aborting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Sometimes bad things happen in your code, and there’s nothing you can do about it. For these cases Rust has the <span style="color:#273D56">panic!</span> macro. There are two ways to cause a panic in practice:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>by taking an action that causes our code to panic (such as accessing an array past the end), or</li>
+<li>by explicitly calling the <span style="color:#273D56">panic!</span> macro.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">By default, these panics print a failure message, unwind, clean up the stack, and quit. Via an environment variable, you can also have Rust display the call stack when a panic occurs, to make it easier to track down the source of the panic.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.3 (Unwinding).</b></span> The default response to a panic: Rust walks back up the stack and cleans up the data from each function it encounters. Walking back and cleaning up is a lot of work.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.4 (Aborting).</b></span> The alternative you may choose: immediately ending the program without cleaning up. Memory the program was using must then be cleaned up by the operating system.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

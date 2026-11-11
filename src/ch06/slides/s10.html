@@ -1,0 +1,23 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining methods on enums with impl</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There is one more similarity between enums and structs: just as we can define methods on structs using <span style="color:#273D56">impl</span>, we can also define methods on enums. Here is a method named <span style="color:#273D56">call</span> that we could define on our <span style="color:#273D56">Message</span> enum:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;impl Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fn call(&amp;self) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// method body would be defined here</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let m = Message::Write(String::from("hello"));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;m.call();</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The body of the method would use <span style="color:#273D56">self</span> to get the value that we called the method on. Here we created a variable <span style="color:#273D56">m</span> that has the value <span style="color:#273D56">Message::Write(String::from("hello"))</span>, and that is what <span style="color:#273D56">self</span> will be in the body of the <span style="color:#273D56">call</span> method when <span style="color:#273D56">m.call()</span> runs.</p></div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

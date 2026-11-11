@@ -1,0 +1,19 @@
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Trait bounds that conditionally implement methods</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">By using a trait bound with an <span style="color:#273D56">impl</span> block that uses generic type parameters, we can implement methods conditionally for types that implement the specified traits.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 10.9.</b> In Listing 10.15, the type <span style="color:#273D56">Pair&lt;T&gt;</span> always implements the <span style="color:#273D56">new</span> function to return a new instance of <span style="color:#273D56">Pair&lt;T&gt;</span>. But in the next <span style="color:#273D56">impl</span> block, <span style="color:#273D56">Pair&lt;T&gt;</span> only implements the <span style="color:#273D56">cmp_display</span> method if its inner type <span style="color:#273D56">T</span> implements the <span style="color:#273D56">PartialOrd</span> trait that enables comparison <i>and</i> the <span style="color:#273D56">Display</span> trait that enables printing.</p>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Recall from “Method Syntax” in Chapter 5 that <span style="color:#273D56">Self</span> is a type alias for the type of the <span style="color:#273D56">impl</span> block, which in this case is <span style="color:#273D56">Pair&lt;T&gt;</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>

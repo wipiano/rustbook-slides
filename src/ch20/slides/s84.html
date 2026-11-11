@@ -1,0 +1,22 @@
+<section id="s84" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Macros: a family of features</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We’ve used macros like <span style="color:#273D56">println!</span> throughout this book, but haven’t fully explored what a macro is and how it works. The term <i>macro</i> refers to a family of features in Rust: declarative macros with <span style="color:#273D56">macro_rules!</span> and three kinds of procedural macros.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 20.2:</b></span> The kinds of macros in Rust</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Kind</th><th style="width:70%">What it does</th></tr>
+<tr><td>Declarative (macro_rules!)</td><td>Matches the code passed in against patterns and replaces it with code</td></tr>
+<tr><td>Custom #[derive] (procedural)</td><td>Specifies code added with the derive attribute used on structs and enums</td></tr>
+<tr><td>Attribute-like (procedural)</td><td>Defines custom attributes usable on any item</td></tr>
+<tr><td>Function-like (procedural)</td><td>Looks like a function call but operates on the tokens specified as its argument</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">We’ll talk about each of these in turn, but first: why do we even need macros when we already have functions?</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">85</p>
+</div>
+</section>

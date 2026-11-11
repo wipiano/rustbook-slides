@@ -1,0 +1,23 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Documenting the crate as a whole</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Notice there isn’t any code after the last line that begins with <span style="color:#273D56">//!</span>. Because these comments start with <span style="color:#273D56">//!</span> instead of <span style="color:#273D56">///</span>, they document the item that contains them rather than an item that follows them. Here that item is the <i>src/lib.rs</i> file, the crate root: these comments describe the entire crate.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 14.2:</b></span> The two kinds of documentation comment</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:16%">Comment</th><th style="width:84%">Documents</th></tr>
+<tr><td>///</td><td>the item that follows the comment (a function, struct, enum, …)</td></tr>
+<tr><td>//!</td><td>the item that contains the comment (the crate root file, or a module)</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">When we run <span style="color:#273D56">cargo doc --open</span>, these comments display on the front page of the documentation for <span style="color:#273D56">my_crate</span>, above the list of public items in the crate (the book’s Figure 14-2: the rendered documentation for <span style="color:#273D56">my_crate</span>, including the comment describing the crate as a whole).</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Documentation comments within items are useful for describing crates and modules especially. Use them to explain the overall purpose of the container, to help your users understand the crate’s organization.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

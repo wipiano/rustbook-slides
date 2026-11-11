@@ -1,0 +1,27 @@
+<section id="s100" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Unpin is the normal case; !Unpin the special one</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Just as with <span style="color:#273D56">Send</span> and <span style="color:#273D56">Sync</span>, the compiler implements <span style="color:#273D56">Unpin</span> automatically for all types where it can prove it is safe. The special case is where <span style="color:#273D56">Unpin</span> is <i>not</i> implemented for a type, written <span style="color:#273D56">impl !Unpin for SomeType</span>, where <span style="color:#273D56">SomeType</span> is a type that <i>does</i> need to uphold those guarantees to be safe whenever a pointer to it is used in a <span style="color:#273D56">Pin</span>.</p>
+<p style="font-size:30px;line-height:1.45">Two things to keep in mind about <span style="color:#273D56">Pin</span> and <span style="color:#273D56">Unpin</span>: first, <span style="color:#273D56">Unpin</span> is the “normal” case, and <span style="color:#273D56">!Unpin</span> is the special case. Second, whether a type implements <span style="color:#273D56">Unpin</span> or <span style="color:#273D56">!Unpin</span> <i>only</i> matters when you’re using a pinned pointer to that type, like <span style="color:#273D56">Pin&lt;&amp;mut SomeType&gt;</span>.</p>
+<p style="font-size:30px;line-height:1.45">Concretely, a <span style="color:#273D56">String</span> has a length and the Unicode characters that make it up. We can wrap a <span style="color:#273D56">String</span> in <span style="color:#273D56">Pin</span>, but <span style="color:#273D56">String</span> automatically implements <span style="color:#273D56">Unpin</span>, as do most other types in Rust.</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Figure 17.8:</b></span> Pinning a <span style="color:#273D56">String</span>; the dotted line indicates that the <span style="color:#273D56">String</span> implements the <span style="color:#273D56">Unpin</span> trait and thus is not pinned</p>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center">
+<div style="border:1px solid #273D56;padding:10px 28px"><p style="font-size:26px;line-height:1.3;color:#273D56">Pin</p></div>
+<p style="font-size:26px;color:#596675">→</p>
+<div style="border:2px dotted #596675;padding:12px 20px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="font-size:26px;color:#596675">String</p>
+<div style="border:1px solid #273D56;background:#F3F5F7;padding:6px 16px"><p style="font-size:26px;line-height:1.3">5usize</p></div>
+<div style="border:1px solid #273D56;background:#F3F5F7;padding:6px 16px"><p style="font-size:26px;line-height:1.3">h e l l o</p></div>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">101</p>
+</div>
+</section>

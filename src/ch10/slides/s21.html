@@ -1,0 +1,21 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.1 Generic Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Generics in enum definitions: Option&lt;T&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As with structs, enums can hold generic data types in their variants. Take another look at the <span style="color:#273D56">Option&lt;T&gt;</span> enum that the standard library provides, which we used in Chapter 6:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Option&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Some(T),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;None,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This definition should now make more sense. <span style="color:#273D56">Option&lt;T&gt;</span> is generic over type <span style="color:#273D56">T</span> and has two variants: <span style="color:#273D56">Some</span>, which holds one value of type <span style="color:#273D56">T</span>, and <span style="color:#273D56">None</span>, which doesn’t hold any value.</p>
+<p style="font-size:30px;line-height:1.45">By using <span style="color:#273D56">Option&lt;T&gt;</span> we can express the abstract concept of an optional value, and because <span style="color:#273D56">Option&lt;T&gt;</span> is generic, we can use this abstraction no matter what the type of the optional value is.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

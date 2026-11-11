@@ -1,0 +1,18 @@
+<section id="s113" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.6 Putting It All Together: Futures, Tasks, and Threads</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Blocking work on a thread, awaited in async</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>We begin by creating an async channel.</li>
+<li>We spawn a thread that takes ownership of the sender side of the channel using the <span style="color:#273D56">move</span> keyword. Within the thread, we send the numbers 1 through 10, sleeping for a second between each.</li>
+<li>Finally, we run a future created with an async block passed to <span style="color:#273D56">trpl::block_on</span>, just as throughout the chapter. In that future, we await those messages, just as in the other message-passing examples.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">To return to the scenario we opened the chapter with: imagine running a set of video encoding tasks using a dedicated thread (because video encoding is compute-bound) but notifying the UI that those operations are done with an async channel. There are countless examples of these kinds of combinations in real-world use cases.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">114</p>
+</div>
+</section>

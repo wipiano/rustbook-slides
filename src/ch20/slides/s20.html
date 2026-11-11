@@ -1,0 +1,24 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Calling Rust functions from other languages</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">extern</span> can also create an interface that lets other languages call Rust functions. Instead of a whole <span style="color:#273D56">extern</span> block, add the <span style="color:#273D56">extern</span> keyword and the ABI just before the <span style="color:#273D56">fn</span> keyword of the function, plus an <span style="color:#273D56">#[unsafe(no_mangle)]</span> annotation telling the compiler not to mangle its name.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.7 (Mangling).</b></span> A compiler changing the name we’ve given a function to a different name that contains more information for other parts of the compilation process to consume but is less human readable.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Every compiler mangles names slightly differently, so for a Rust function to be nameable by other languages, we must disable Rust’s name mangling. This is unsafe because there might be name collisions across libraries without the built-in mangling: it is our responsibility to make sure the name we choose is safe to export without mangling.</p>
+<p style="font-size:30px;line-height:1.45">Here <span style="color:#273D56">call_from_c</span> becomes accessible from C code, after it’s compiled to a shared library and linked from C. This usage of <span style="color:#273D56">extern</span> requires <span style="color:#273D56">unsafe</span> only in the attribute, not on the <span style="color:#273D56">extern</span> block.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[unsafe(no_mangle)]</p>
+<p style="white-space:nowrap">pub extern "C" fn call_from_c() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Just called a Rust function from C!");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

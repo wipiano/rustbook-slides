@@ -1,0 +1,36 @@
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Patterns that bind to values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Another useful feature of match arms is that they can bind to the parts of the values that match the pattern. This is how we can extract values out of enum variants.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1.25;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.4:</b></span> A <span style="color:#273D56">Coin</span> enum in which the <span style="color:#273D56">Quarter</span> variant also holds a <span style="color:#273D56">UsState</span> value</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)] // so we can inspect the state in a minute</p>
+<p style="white-space:nowrap">enum UsState {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Alabama,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Alaska,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">enum Coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Penny,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Nickel,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Dime,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quarter(UsState),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As an example, let’s change one of our enum variants to hold data inside it. From 1999 through 2008, the United States minted quarters with different designs for each of the 50 states on one side. No other coins got state designs, so only quarters have this extra value. We add this information to our <span style="color:#273D56">enum</span> by changing the <span style="color:#273D56">Quarter</span> variant to include a <span style="color:#273D56">UsState</span> value stored inside it.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>

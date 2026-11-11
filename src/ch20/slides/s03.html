@@ -1,0 +1,17 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What unsafe does not mean</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">unsafe</span> does not mean the code inside the block is necessarily dangerous or that it will definitely have memory safety problems. The intent is that you, the programmer, ensure that the code inside an <span style="color:#273D56">unsafe</span> block accesses memory in a valid way.</p>
+<p style="font-size:30px;line-height:1.45">People are fallible and mistakes will happen, but because these five operations must be inside blocks annotated with <span style="color:#273D56">unsafe</span>, you’ll know that any errors related to memory safety must be within an <span style="color:#273D56">unsafe</span> block. Keep <span style="color:#273D56">unsafe</span> blocks small; you’ll be thankful later when you investigate memory bugs.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Safe abstractions</h3>
+<p style="font-size:30px;line-height:1.45">To isolate unsafe code as much as possible, enclose it within a safe abstraction and provide a safe API (shown later with unsafe functions and methods). Parts of the standard library are implemented as safe abstractions over unsafe code that has been audited. Wrapping unsafe code in a safe abstraction prevents uses of <span style="color:#273D56">unsafe</span> from leaking out into all the places that you or your users might want to use the functionality, because using a safe abstraction is safe.</p>
+<p style="font-size:30px;line-height:1.45">Next: each of the five superpowers in turn, plus some abstractions that provide a safe interface to unsafe code.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

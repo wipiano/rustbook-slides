@@ -1,0 +1,23 @@
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.1 What Is Ownership?</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Returning memory: the hard part</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The second part — returning memory to the allocator — is different across languages.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 4.5 (Garbage collector).</b></span> A <i>garbage collector (GC)</i> keeps track of and cleans up memory that isn’t being used anymore, so the programmer doesn’t need to think about it.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In most languages without a GC, it’s our responsibility to identify when memory is no longer being used and to call code to explicitly free it, just as we did to request it. Doing this correctly has historically been a difficult programming problem:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>If we forget, we’ll waste memory.</li>
+<li>If we do it too early, we’ll have an invalid variable.</li>
+<li>If we do it twice, that’s a bug too.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We need to pair exactly one <span style="color:#273D56">allocate</span> with exactly one <span style="color:#273D56">free</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>

@@ -1,0 +1,20 @@
+<section id="s61" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.4 Extensible Concurrency with Send and Sync</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Send is checked by the type system</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust’s type system and trait bounds ensure that you can never accidentally send an <span style="color:#273D56">Rc&lt;T&gt;</span> value across threads unsafely.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In Listing 16.14, trying to do so produced the error <span style="color:#273D56">the trait `Send` is not implemented for `Rc&lt;Mutex&lt;i32&gt;&gt;`</span>.</li>
+<li>Switching to <span style="color:#273D56">Arc&lt;T&gt;</span>, which does implement <span style="color:#273D56">Send</span>, made the code compile (Listing 16.15).</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Any type composed entirely of <span style="color:#273D56">Send</span> types is automatically marked as <span style="color:#273D56">Send</span> as well. Almost all primitive types are <span style="color:#273D56">Send</span>, aside from raw pointers, which Chapter 20 discusses.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">62</p>
+</div>
+</section>

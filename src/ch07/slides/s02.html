@@ -1,0 +1,25 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.1 Packages and Crates</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Crate roots and packages</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.4 (Crate root).</b></span> A source file that the Rust compiler starts from and that makes up the root module of your crate (modules are explained in 7.2).</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 7.5 (Package).</b></span> A bundle of one or more crates that provides a set of functionality. A package contains a <i>Cargo.toml</i> file that describes how to build those crates.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Cargo itself is a package: it contains the binary crate for the command line tool you’ve been using to build your code, and also a library crate that the binary crate depends on. Other projects can depend on the Cargo library crate to use the same logic the Cargo command line tool uses.</p>
+<p style="font-size:30px;line-height:1.45">Rules on what a package may contain:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>as many binary crates as you like;</li>
+<li>at most only one library crate;</li>
+<li>at least one crate, whether that’s a library or binary crate.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

@@ -1,0 +1,24 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Hash for mapping a value to a value of fixed size</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Hash</span> trait lets you take an instance of a type of arbitrary size and map that instance to a value of fixed size using a hash function.</p>
+<p style="font-size:30px;line-height:1.45">Deriving <span style="color:#273D56">Hash</span> implements the <span style="color:#273D56">hash</span> method. The derived implementation combines the result of calling <span style="color:#273D56">hash</span> on each of the parts of the type, meaning all fields or values must also implement <span style="color:#273D56">Hash</span> to derive <span style="color:#273D56">Hash</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> storing keys in a <span style="color:#273D56">HashMap&lt;K, V&gt;</span> to store data efficiently.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.10.</b> A type used as a <span style="color:#273D56">HashMap</span> key needs <span style="color:#273D56">Hash</span> plus <span style="color:#273D56">Eq</span> (and so <span style="color:#273D56">PartialEq</span>):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(PartialEq, Eq, Hash)]</p>
+<p style="white-space:nowrap">struct UserId(u32);</p>
+<p style="white-space:nowrap">let mut names: HashMap&lt;UserId, String&gt; = HashMap::new();</p>
+<p style="white-space:nowrap">names.insert(UserId(7), String::from("Ferris"));</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

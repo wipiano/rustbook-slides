@@ -1,0 +1,16 @@
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The state now lives in the type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Both <span style="color:#273D56">Post</span> and <span style="color:#273D56">DraftPost</span> have a private <span style="color:#273D56">content</span> field that stores the blog post text. The structs no longer have a <span style="color:#273D56">state</span> field, because the encoding of the state moves to the types of the structs. <span style="color:#273D56">Post</span> represents a published post, and its <span style="color:#273D56">content</span> method returns the <span style="color:#273D56">content</span>.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Post::new</span> still exists, but it returns an instance of <span style="color:#273D56">DraftPost</span> instead of <span style="color:#273D56">Post</span>. Because <span style="color:#273D56">content</span> is private and no function returns <span style="color:#273D56">Post</span>, it’s not possible to create an instance of <span style="color:#273D56">Post</span> right now.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">DraftPost</span> has an <span style="color:#273D56">add_text</span> method, so we can add text to <span style="color:#273D56">content</span> as before, but it has no <span style="color:#273D56">content</span> method! So all posts start as draft posts, and draft posts don’t have their content available for display. Any attempt to get around these constraints results in a compiler error.</p>
+<p style="font-size:30px;line-height:1.45">So how do we get a published post? A draft must be reviewed and approved before it can be published, and a post pending review should still not display any content. We add a struct <span style="color:#273D56">PendingReviewPost</span>, define <span style="color:#273D56">request_review</span> on <span style="color:#273D56">DraftPost</span> to return a <span style="color:#273D56">PendingReviewPost</span>, and define <span style="color:#273D56">approve</span> on <span style="color:#273D56">PendingReviewPost</span> to return a <span style="color:#273D56">Post</span> (Listing 18.20).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>

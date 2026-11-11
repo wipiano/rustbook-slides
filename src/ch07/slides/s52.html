@@ -1,0 +1,30 @@
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.5 Separating Modules into Different Files</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Extracting a child module: hosting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Extracting <span style="color:#273D56">hosting</span> is a bit different, because <span style="color:#273D56">hosting</span> is a child module of <span style="color:#273D56">front_of_house</span>, not of the root module. Its file goes in a new directory named for its ancestors in the module tree, here <i>src/front_of_house</i>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">1. Change <i>src/front_of_house.rs</i> to contain only the declaration of the <span style="color:#273D56">hosting</span> module — <i>src/front_of_house.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub mod hosting;</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">2. Create a <i>src/front_of_house</i> directory and a <i>hosting.rs</i> file with the definitions made in the <span style="color:#273D56">hosting</span> module — <i>src/front_of_house/hosting.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub fn add_to_waitlist() {}</p>
+</div>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If we instead put <i>hosting.rs</i> in the <i>src</i> directory, the compiler would expect the <i>hosting.rs</i> code to be in a <span style="color:#273D56">hosting</span> module declared in the crate root, not declared as a child of the <span style="color:#273D56">front_of_house</span> module. The compiler’s rules for which files to check for which modules’ code mean the directories and files more closely match the module tree.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>

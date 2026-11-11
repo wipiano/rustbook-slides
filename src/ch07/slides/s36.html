@@ -1,0 +1,34 @@
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.4 Bringing Paths into Scope with the use Keyword</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The exception: two items with the same name</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 7.15:</b></span> Bringing two types with the same name into the same scope requires using their parent modules. — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::fmt;</p>
+<p style="white-space:nowrap">use std::io;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function1() -&gt; fmt::Result {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn function2() -&gt; io::Result&lt;()&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ok(())</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The exception to the full-path idiom: bringing two items with the same name into scope with <span style="color:#273D56">use</span> statements, because Rust doesn’t allow that.</p>
+<p style="font-size:30px;line-height:1.45">Listing 7.15 brings two <span style="color:#273D56">Result</span> types with different parent modules into scope and refers to them through those parents, which distinguishes them.</p>
+<p style="font-size:30px;line-height:1.45">If instead we specified <span style="color:#273D56">use std::fmt::Result</span> and <span style="color:#273D56">use std::io::Result</span>, we’d have two <span style="color:#273D56">Result</span> types in the same scope, and Rust wouldn’t know which one we meant when we used <span style="color:#273D56">Result</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>

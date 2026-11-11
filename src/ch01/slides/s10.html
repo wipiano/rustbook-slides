@@ -1,0 +1,25 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.2 Hello, World!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Anatomy of a Rust program: println!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The body of <span style="color:#273D56">main</span> holds the one line that does all the work — printing text to the screen:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">println!("Hello, world!");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Three details matter here:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">println!</span> calls a Rust <i>macro</i>. A function call would be written <span style="color:#273D56">println</span>, without the <span style="color:#273D56">!</span>. The <span style="color:#273D56">!</span> means you are calling a macro, and macros don’t always follow the same rules as functions (Chapter 20 covers them).</li>
+<li><span style="color:#273D56">"Hello, world!"</span> is a string, passed as an argument to <span style="color:#273D56">println!</span>, which prints it to the screen.</li>
+<li>The line ends with a semicolon <span style="color:#273D56">;</span>, which says this expression is over and the next one is ready to begin. Most lines of Rust code end with a semicolon.</li>
+</ol>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.5 (Macro).</b></span> A way to write code that generates code, extending Rust’s syntax.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

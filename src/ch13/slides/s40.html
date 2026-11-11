@@ -1,0 +1,17 @@
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.2 Processing a Series of Items with Iterators</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Methods that consume the iterator</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Iterator</span> trait has a number of different methods with default implementations provided by the standard library; you can find out about them in the standard library API documentation for the <span style="color:#273D56">Iterator</span> trait. Some of these methods call the <span style="color:#273D56">next</span> method in their definition, which is why you’re required to implement <span style="color:#273D56">next</span> when implementing the <span style="color:#273D56">Iterator</span> trait.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 13.9 (Consuming adapter).</b></span> A method that calls <span style="color:#273D56">next</span>, so that calling it uses up the iterator.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">One example is the <span style="color:#273D56">sum</span> method, which takes ownership of the iterator and iterates through the items by repeatedly calling <span style="color:#273D56">next</span>, thus consuming the iterator. As it iterates through, it adds each item to a running total and returns the total when iteration is complete. Listing 13.13 has a test illustrating a use of <span style="color:#273D56">sum</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>

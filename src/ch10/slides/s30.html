@@ -1,0 +1,23 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.1 Generic Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">No runtime cost — and where generics are declared</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The generic <span style="color:#273D56">Option&lt;T&gt;</span> is replaced with the specific definitions created by the compiler. Because Rust compiles generic code into code that specifies the type in each instance, we pay no runtime cost for using generics: the code performs just as it would if we had duplicated each definition by hand. Monomorphization makes Rust’s generics extremely efficient at runtime.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 10.1:</b></span> Where generic type parameters are declared (Section 10.1 recap)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:42%">Declaration</th><th style="width:58%">Where the parameter goes</th></tr>
+<tr><td>fn largest&lt;T&gt;(list: &amp;[T]) -&gt; &amp;T</td><td>After the function name, before the parameter list</td></tr>
+<tr><td>struct Point&lt;T, U&gt; { x: T, y: U }</td><td>After the struct name</td></tr>
+<tr><td>enum Result&lt;T, E&gt; { Ok(T), Err(E) }</td><td>After the enum name</td></tr>
+<tr><td>impl&lt;T&gt; Point&lt;T&gt; { … }</td><td>After impl, then used after the type name</td></tr>
+<tr><td>impl Point&lt;f32&gt; { … }</td><td>None: methods only for one concrete type</td></tr>
+<tr><td>fn mixup&lt;X2, Y2&gt;(self, …)</td><td>After the method name, for method-only types</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

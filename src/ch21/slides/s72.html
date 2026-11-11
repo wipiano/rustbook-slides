@@ -1,0 +1,23 @@
+<section id="s72" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.2 From a Single-Threaded to a Multithreaded Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why while let holds the lock too long</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The reason is somewhat subtle. The <span style="color:#273D56">Mutex</span> struct has no public <span style="color:#273D56">unlock</span> method, because ownership of the lock is based on the lifetime of the <span style="color:#273D56">MutexGuard&lt;T&gt;</span> within the <span style="color:#273D56">LockResult&lt;MutexGuard&lt;T&gt;&gt;</span> that the <span style="color:#273D56">lock</span> method returns. At compile time, the borrow checker can then enforce the rule that a resource guarded by a <span style="color:#273D56">Mutex</span> cannot be accessed unless we hold the lock. But this can also result in the lock being held longer than intended if we aren’t mindful of the lifetime of the <span style="color:#273D56">MutexGuard&lt;T&gt;</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">let (Listing 21.20) — works</h3>
+<p style="font-size:30px;line-height:1.45">With <span style="color:#273D56">let job = receiver.lock().unwrap().recv().unwrap();</span>, any temporary values used in the expression on the right of the equal sign are dropped immediately when the <span style="color:#273D56">let</span> statement ends.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">while let (Listing 21.21) — doesn’t</h3>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">while let</span> (and <span style="color:#273D56">if let</span> and <span style="color:#273D56">match</span>) does not drop temporary values until the end of the associated block. The lock stays held during the call to <span style="color:#273D56">job()</span>, so other <span style="color:#273D56">Worker</span> instances cannot receive jobs.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">73</p>
+</div>
+</section>

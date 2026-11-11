@@ -1,0 +1,25 @@
+<section id="s98" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Syntax recap: generics, bounds and lifetimes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 10.2:</b></span> The chapter’s generic syntax at a glance</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:44%">Syntax</th><th style="width:56%">Meaning</th></tr>
+<tr><td>fn f&lt;T&gt;(x: &amp;[T]) -&gt; &amp;T</td><td>Generic type parameter T</td></tr>
+<tr><td>fn notify(item: &amp;impl Summary)</td><td>Any type implementing Summary</td></tr>
+<tr><td>fn notify&lt;T: Summary + Display&gt;(item: &amp;T)</td><td>Trait bounds, combined with +</td></tr>
+<tr><td>where T: Display + Clone,</td><td>Trait bounds moved after the signature</td></tr>
+<tr><td>fn f() -&gt; impl Summary</td><td>Returns one type implementing Summary</td></tr>
+<tr><td>impl&lt;T: Display&gt; ToString for T</td><td>Blanket implementation</td></tr>
+<tr><td>fn f&lt;'a&gt;(x: &amp;'a str) -&gt; &amp;'a str</td><td>Output lives as long as the input</td></tr>
+<tr><td>struct S&lt;'a&gt; { part: &amp;'a str }</td><td>Instance can’t outlive the reference</td></tr>
+<tr><td>&amp;'static str</td><td>Can live for the whole program</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">99</p>
+</div>
+</section>

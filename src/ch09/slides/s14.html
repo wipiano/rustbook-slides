@@ -1,0 +1,26 @@
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.2 Recoverable Errors with Result</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The two arms of the match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Ok arm.</b> When the result is <span style="color:#273D56">Ok</span>, this code returns the inner <span style="color:#273D56">file</span> value out of the <span style="color:#273D56">Ok</span> variant, and we assign that file handle to the variable <span style="color:#273D56">greeting_file</span>. After the <span style="color:#273D56">match</span>, we can use the file handle for reading or writing.</li>
+<li><b>Err arm.</b> It handles the case where we get an <span style="color:#273D56">Err</span> value from <span style="color:#273D56">File::open</span>. Here we’ve chosen to call the <span style="color:#273D56">panic!</span> macro.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">If there’s no file named <i>hello.txt</i> in our current directory and we run this code, we’ll see the output below from the <span style="color:#273D56">panic!</span> macro. As usual, it tells us exactly what has gone wrong.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling error-handling v0.1.0 (file:///projects/error-handling)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.73s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/error-handling`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6018048) panicked at src/main.rs:8:23:</p>
+<p style="white-space:nowrap">Problem opening the file: Os { code: 2, kind: NotFound, message: "No such file or directory" }</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div></div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>

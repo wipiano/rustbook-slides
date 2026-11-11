@@ -1,0 +1,1444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.5 — Using Structs to Structure Related Data · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.5 — Using Structs to Structure Related Data</h1><nav><a href="ch04.html">← Ch.4</a><a href="ch06.html">Ch.6 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 5</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Using Structs to Structure Related Data</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">A <i>struct</i>, or <i>structure</i>, is a custom data type that lets you package together and name multiple related values that make up a meaningful group. If you know an object-oriented language, a struct is like an object’s data attributes. The chapter compares and contrasts tuples with structs, to build on what you already know and show when structs are a better way to group data.</p>
+<p style="font-size:30px;line-height:1.45">It shows how to define and instantiate structs, and how to define associated functions — especially the kind called <i>methods</i> — to specify behavior associated with a struct type. Structs and enums (Chapter 6) are the building blocks for creating new types in your program’s domain, to take full advantage of Rust’s compile-time type checking.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>5.1 Defining and Instantiating Structs</li>
+<li>5.2 An Example Program Using Structs</li>
+<li>5.3 Methods</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Structs versus tuples</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Structs are similar to tuples (“The Tuple Type”, Chapter 3): both hold multiple related values, and the pieces can be of different types. Unlike with tuples, in a struct you name each piece of data, so it’s clear what the values mean.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.1 (Struct).</b></span> A custom data type that packages together and names multiple related values that make up a meaningful group.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Adding these names makes structs more flexible than tuples: you don’t have to rely on the order of the data to specify or access the values of an instance.</p>
+<p style="font-size:30px;line-height:1.45">To define a struct, enter the keyword <span style="color:#273D56">struct</span> and name the entire struct; the name should describe the significance of the pieces of data being grouped together. Then, inside curly brackets, define the names and types of the pieces of data.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.2 (Field).</b></span> One named, typed piece of data declared inside a struct’s curly brackets.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining a struct, then making an instance</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 5.1 shows a struct that stores information about a user account.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.1:</b></span> A <span style="color:#273D56">User</span> struct definition — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;active: bool,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;username: String,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;email: String,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;sign_in_count: u64,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.3 (Instance).</b></span> A value of a struct type, created by specifying concrete values for each of the struct’s fields.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Create an instance by stating the struct’s name, then curly brackets containing <i>key: value</i> pairs: the keys are the field names, the values the data to store in those fields.</li>
+<li>The fields need not appear in the order in which they were declared in the struct.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating an instance of User</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The struct definition is like a general template for the type; instances fill in that template with particular data to create values of the type. For example, we can declare a particular user:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.2:</b></span> Creating an instance of the <span style="color:#273D56">User</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let user1 = User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;active: true,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;username: String::from("someusername123"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: String::from("someone@example.com"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sign_in_count: 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">To get a specific value from a struct, use dot notation: this user’s email address is <span style="color:#273D56">user1.email</span>. If the instance is mutable, you can change a value by using dot notation and assigning into a particular field (Listing 5.3, next).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Changing a field of a mutable instance</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 5.3 changes the value in the <span style="color:#273D56">email</span> field of a mutable <span style="color:#273D56">User</span> instance.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.3:</b></span> Changing the value in the <span style="color:#273D56">email</span> field of a <span style="color:#273D56">User</span> instance — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut user1 = User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;active: true,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;username: String::from("someusername123"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: String::from("someone@example.com"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sign_in_count: 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;user1.email = String::from("anotheremail@example.com");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The entire instance must be mutable; Rust doesn’t allow marking only certain fields as mutable.</li>
+<li>As with any expression, a new struct instance can be the last expression in a function body, to implicitly return that new instance.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Returning an instance from a function</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 5.4 shows a <span style="color:#273D56">build_user</span> function that returns a <span style="color:#273D56">User</span> instance with the given email and username. The <span style="color:#273D56">active</span> field gets the value <span style="color:#273D56">true</span>, and <span style="color:#273D56">sign_in_count</span> gets a value of <span style="color:#273D56">1</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.4:</b></span> A <span style="color:#273D56">build_user</span> function that takes an email and username and returns a <span style="color:#273D56">User</span> instance — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn build_user(email: String, username: String) -&gt; User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;active: true,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;username: username,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: email,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sign_in_count: 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">It makes sense to name the function parameters the same as the struct fields, but repeating the <span style="color:#273D56">email</span> and <span style="color:#273D56">username</span> field names and variables is a bit tedious. With more fields, repeating each name would get even more annoying. Luckily, there’s a convenient shorthand!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using the field init shorthand</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.4 (Field init shorthand).</b></span> When a variable or parameter has exactly the same name as a struct field, you may write just <span style="color:#273D56">email</span> instead of <span style="color:#273D56">email: email</span> when creating the instance.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.5:</b></span> A <span style="color:#273D56">build_user</span> function that uses field init shorthand because the <span style="color:#273D56">username</span> and <span style="color:#273D56">email</span> parameters have the same name as struct fields — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn build_user(email: String, username: String) -&gt; User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;active: true,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;username,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sign_in_count: 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">It behaves exactly like Listing 5.4: the <span style="color:#273D56">email</span> field gets the value of the <span style="color:#273D56">email</span> parameter, and because both have the same name, writing <span style="color:#273D56">email</span> is enough.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating instances from other instances</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">It’s often useful to create a new instance of a struct that includes most of the values from another instance of the same type, but changes some of them. You can do this using <i>struct update syntax</i>.</p>
+<p style="font-size:30px;line-height:1.45">First, the regular way: <span style="color:#273D56">user2</span> gets a new <span style="color:#273D56">email</span> but otherwise the same values as the <span style="color:#273D56">user1</span> of Listing 5.2.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.6:</b></span> Creating a new <span style="color:#273D56">User</span> instance using all but one of the values from <span style="color:#273D56">user1</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let user2 = User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;active: user1.active,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;username: user1.username,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: String::from("another@example.com"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sign_in_count: user1.sign_in_count,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Struct update syntax</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.5 (Struct update syntax).</b></span> The syntax <span style="color:#273D56">..instance</span> at the end of a struct expression: the remaining fields not explicitly set get the same values as the fields in the given instance.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.7:</b></span> Using struct update syntax to set a new <span style="color:#273D56">email</span> value for a <span style="color:#273D56">User</span> instance but to use the rest of the values from <span style="color:#273D56">user1</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// --snip--</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let user2 = User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: String::from("another@example.com"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;..user1</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Same effect as Listing 5.6 with less code: <span style="color:#273D56">user2</span> has a different <span style="color:#273D56">email</span> but the same <span style="color:#273D56">username</span>, <span style="color:#273D56">active</span> and <span style="color:#273D56">sign_in_count</span> as <span style="color:#273D56">user1</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Struct update syntax moves data</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">..user1</span> must come last; before it, you can set as many fields as you want, in any order, regardless of the order of the fields in the struct’s definition.</p>
+<p style="font-size:30px;line-height:1.45">Struct update syntax uses <span style="color:#273D56">=</span> like an assignment, because it moves the data, just as in “Variables and Data Interacting with Move” (Chapter 4).</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 5.6.</b> In Listing 5.7, which fields of <span style="color:#273D56">user1</span> can still be used after creating <span style="color:#273D56">user2</span>?</p>
+<ul style="font-size:26px;line-height:1.45">
+<li><span style="color:#273D56">user1</span> as a whole can no longer be used: the <span style="color:#273D56">String</span> in its <span style="color:#273D56">username</span> field was moved into <span style="color:#273D56">user2</span>.</li>
+<li><span style="color:#273D56">user1.email</span> can still be used, because its value was not moved out of <span style="color:#273D56">user1</span>.</li>
+<li><span style="color:#273D56">active</span> and <span style="color:#273D56">sign_in_count</span> are types that implement the <span style="color:#273D56">Copy</span> trait, so their values are copied (“Stack-Only Data: Copy”, Chapter 4), not moved.</li>
+</ul>
+</div>
+<p style="font-size:30px;line-height:1.45">Had we given <span style="color:#273D56">user2</span> new <span style="color:#273D56">String</span> values for both <span style="color:#273D56">email</span> and <span style="color:#273D56">username</span>, and thus only used the <span style="color:#273D56">active</span> and <span style="color:#273D56">sign_in_count</span> values from <span style="color:#273D56">user1</span>, then <span style="color:#273D56">user1</span> would still be valid after creating <span style="color:#273D56">user2</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating different types with tuple structs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.7 (Tuple struct).</b></span> A struct that looks similar to a tuple: it has the added meaning the struct name provides, but its fields have no names, only types.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Tuple structs are useful when you want to give the whole tuple a name and make it a different type from other tuples, and when naming each field as in a regular struct would be verbose or redundant.</p>
+<p style="font-size:30px;line-height:1.45">To define one, start with the <span style="color:#273D56">struct</span> keyword and the struct name, followed by the types in the tuple. Here we define and use two tuple structs named <span style="color:#273D56">Color</span> and <span style="color:#273D56">Point</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Color(i32, i32, i32);</p>
+<p style="white-space:nowrap">struct Point(i32, i32, i32);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let black = Color(0, 0, 0);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let origin = Point(0, 0, 0);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Each tuple struct is its own type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">black</span> and <span style="color:#273D56">origin</span> values are different types, because they’re instances of different tuple structs. Each struct you define is its own type, even though the fields within the struct might have the same types.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>A function that takes a parameter of type <span style="color:#273D56">Color</span> cannot take a <span style="color:#273D56">Point</span> as an argument, even though both types are made up of three <span style="color:#273D56">i32</span> values.</li>
+<li>Otherwise, tuple struct instances are similar to tuples: you can destructure them into their individual pieces, and use a <span style="color:#273D56">.</span> followed by the index to access an individual value.</li>
+<li>Unlike tuples, tuple structs require you to name the type of the struct when you destructure them.</li>
+</ul>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 5.8.</b> To destructure the values in the <span style="color:#273D56">origin</span> point into variables named <span style="color:#273D56">x</span>, <span style="color:#273D56">y</span> and <span style="color:#273D56">z</span>, name the type <span style="color:#273D56">Point</span> in the pattern:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let Point(x, y, z) = origin;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining unit-like structs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.9 (Unit-like struct).</b></span> A struct without any fields. It behaves similarly to <span style="color:#273D56">()</span>, the unit type (“The Tuple Type”, Chapter 3).</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Unit-like structs are useful when you need to implement a trait on some type but don’t have any data you want to store in the type itself (traits: Chapter 10). Declaring and instantiating a unit struct named <span style="color:#273D56">AlwaysEqual</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct AlwaysEqual;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let subject = AlwaysEqual;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Define it with the <span style="color:#273D56">struct</span> keyword, the name, then a semicolon: no curly brackets or parentheses. Create an instance the same way, with just the name.</li>
+<li>Imagine later implementing behavior so every <span style="color:#273D56">AlwaysEqual</span> is always equal to every instance of any other type — perhaps for a known result in tests. That behavior needs no data! Chapter 10 shows how.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ownership of struct data</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">User</span> struct in Listing 5.1 uses the owned <span style="color:#273D56">String</span> type rather than the <span style="color:#273D56">&amp;str</span> string slice type. This is a deliberate choice: we want each instance of this struct to own all of its data, and that data to be valid for as long as the entire struct is valid.</p>
+<p style="font-size:30px;line-height:1.45">Structs can also store references to data owned by something else, but that requires <i>lifetimes</i>, a Rust feature discussed in Chapter 10.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.10 (Lifetimes).</b></span> A Rust feature that ensures the data referenced by a struct is valid for as long as the struct is.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If you try to store a reference in a struct without specifying lifetimes, as on the next slide, it won’t work: the compiler complains that it needs lifetime specifiers.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Storing references without lifetimes fails</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This <i>src/main.rs</i> won’t compile: <span style="color:#273D56">username</span> and <span style="color:#273D56">email</span> are references (<span style="color:#273D56">&amp;str</span>) with no lifetimes specified.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;active: bool,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;username: &amp;str,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;email: &amp;str,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;sign_in_count: u64,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let user1 = User {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;active: true,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;username: "someusername123",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;email: "someone@example.com",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;sign_in_count: 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0106: missing lifetime specifier (1/2)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The compiler complains that it needs lifetime specifiers — first for <span style="color:#273D56">username</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling structs v0.1.0 (file:///projects/structs)</p>
+<p style="white-space:nowrap">error[E0106]: missing lifetime specifier</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:3:15</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;username: &amp;str,</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ expected named lifetime parameter</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">help: consider introducing a named lifetime parameter</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">1 ~ struct User&lt;'a&gt; {</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;active: bool,</p>
+<p style="white-space:nowrap">3 ~&#160;&#160;&#160;&#160;&#160;username: &amp;'a str,</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0106: missing lifetime specifier (2/2)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error[E0106]: missing lifetime specifier</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:4:12</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">4 |&#160;&#160;&#160;&#160;&#160;email: &amp;str,</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ expected named lifetime parameter</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">help: consider introducing a named lifetime parameter</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">1 ~ struct User&lt;'a&gt; {</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;active: bool,</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;username: &amp;str,</p>
+<p style="white-space:nowrap">4 ~&#160;&#160;&#160;&#160;&#160;email: &amp;'a str,</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0106`.</p>
+<p style="white-space:nowrap">error: could not compile `structs` (bin "structs") due to 2 previous errors</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Chapter 10 fixes these; for now, use owned types like <span style="color:#273D56">String</span> instead of references like <span style="color:#273D56">&amp;str</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The rectangles program, with separate variables</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To see when structs help, we write a program that calculates a rectangle’s area, starting with single variables and refactoring until we use structs. A new Cargo binary project, <i>rectangles</i>, takes the width and height in pixels and calculates the area:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.8:</b></span> Calculating the area of a rectangle specified by separate width and height variables — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let width1 = 30;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let height1 = 50;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"The area of the rectangle is {} square pixels.",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;area(width1, height1)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;);</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn area(width: u32, height: u32) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width * height</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">It works, but the signature hides the meaning</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Run the program with <span style="color:#273D56">cargo run</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rectangles v0.1.0 (file:///projects/rectangles)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.42s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/rectangles`</p>
+<p style="white-space:nowrap">The area of the rectangle is 1500 square pixels.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Calling <span style="color:#273D56">area</span> with each dimension succeeds, but we can make this code clearer and more readable. The issue is evident in the signature of <span style="color:#273D56">area</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn area(width: u32, height: u32) -&gt; u32 {</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">area</span> is supposed to calculate the area of one rectangle, yet it has two parameters, and nothing in the program says they are related. Grouping width and height together would be more readable and manageable — one way is tuples (“The Tuple Type”, Chapter 3).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Refactoring with tuples</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.9:</b></span> Specifying the width and height of the rectangle with a tuple — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = (30, 50);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"The area of the rectangle is {} square pixels.",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;area(rect1)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;);</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn area(dimensions: (u32, u32)) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;dimensions.0 * dimensions.1</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">In one way, this is better: tuples add a bit of structure, and we now pass just one argument. In another way it is less clear: tuples don’t name their elements, so we index into the parts, making the calculation less obvious.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why tuples invite errors; labeling with structs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Mixing up width and height wouldn’t matter for the area calculation, but it would if we wanted to draw the rectangle on the screen!</li>
+<li>We would have to keep in mind that <span style="color:#273D56">width</span> is the tuple index <span style="color:#273D56">0</span> and <span style="color:#273D56">height</span> is the tuple index <span style="color:#273D56">1</span>.</li>
+<li>That would be even harder for someone else to figure out and keep in mind if they used our code.</li>
+<li>Because we haven’t conveyed the meaning of our data in our code, it’s now easier to introduce errors.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Refactoring with structs</h3>
+<p style="font-size:30px;line-height:1.45">We use structs to add meaning by labeling the data. We can transform the tuple into a struct with a name for the whole as well as names for the parts, as Listing 5.10 (next slide) shows.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining a Rectangle struct</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.10:</b></span> Defining a <span style="color:#273D56">Rectangle</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"The area of the rectangle is {} square pixels.",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;area(&amp;rect1)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">area borrows a Rectangle</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.10 (continued):</b></span> Defining a <span style="color:#273D56">Rectangle</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn area(rectangle: &amp;Rectangle) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;rectangle.width * rectangle.height</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We’ve defined a struct named <span style="color:#273D56">Rectangle</span>. Inside the curly brackets we defined the fields <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span>, both of type <span style="color:#273D56">u32</span>. Then, in <span style="color:#273D56">main</span>, we created a particular instance of <span style="color:#273D56">Rectangle</span> with a width of <span style="color:#273D56">30</span> and a height of <span style="color:#273D56">50</span>.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">area</span> function now has one parameter, <span style="color:#273D56">rectangle</span>, whose type is an immutable borrow of a <span style="color:#273D56">Rectangle</span> instance. As in Chapter 4, we want to borrow the struct rather than take ownership of it: this way <span style="color:#273D56">main</span> retains ownership and can continue using <span style="color:#273D56">rect1</span>. That is why we use the <span style="color:#273D56">&amp;</span> both in the function signature and where we call the function.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A win for clarity</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">area</span> accesses the <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span> fields of the <span style="color:#273D56">Rectangle</span> instance. Accessing fields of a borrowed struct instance does not move the field values, which is why you often see borrows of structs.</li>
+<li>The signature now says exactly what we mean: calculate the area of <span style="color:#273D56">Rectangle</span>, using its <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span> fields.</li>
+<li>It conveys that width and height are related, and gives the values descriptive names instead of the tuple indexes <span style="color:#273D56">0</span> and <span style="color:#273D56">1</span>.</li>
+</ul>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 5.1:</b></span> The three versions of the rectangles program</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:20%">Listing</th><th style="width:40%">Signature of area</th><th style="width:40%">Drawback / gain</th></tr>
+<tr><td>5.8 variables</td><td>fn area(width: u32, height: u32) -&gt; u32</td><td>two unrelated-looking parameters</td></tr>
+<tr><td>5.9 tuple</td><td>fn area(dimensions: (u32, u32)) -&gt; u32</td><td>one argument, but unnamed parts .0 and .1</td></tr>
+<tr><td>5.10 struct</td><td>fn area(rectangle: &amp;Rectangle) -&gt; u32</td><td>one borrowed value with named fields</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding functionality with derived traits</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">It’d be useful to print an instance of <span style="color:#273D56">Rectangle</span> while debugging and see the values of all its fields. Listing 5.11 tries the <span style="color:#273D56">println!</span> macro as in previous chapters. This won’t work, however.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.11:</b></span> Attempting to print a <span style="color:#273D56">Rectangle</span> instance — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("rect1 is {rect1}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Structs don’t implement Display</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Compiling Listing 5.11 gives an error with this core message:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error[E0277]: `Rectangle` doesn't implement `std::fmt::Display`</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.11 (Display).</b></span> The formatting <span style="color:#273D56">println!</span> uses by default for curly brackets <span style="color:#273D56">{}</span>: output intended for direct end user consumption.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The primitive types implement <span style="color:#273D56">Display</span> by default: there’s only one way you’d want to show a <span style="color:#273D56">1</span> or any other primitive type to a user.</li>
+<li>Structs have more possibilities (commas? curly brackets? all fields?), so Rust doesn’t guess: structs have no provided <span style="color:#273D56">Display</span> to use with <span style="color:#273D56">{}</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Reading on, the errors include this helpful note:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">help: the trait `std::fmt::Display` is not implemented for `Rectangle`</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:1:1</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Asking for Debug output with :?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s try it! The call becomes <span style="color:#273D56">println!("rect1 is {rect1:?}");</span> — the specifier <span style="color:#273D56">:?</span> inside the curly brackets tells <span style="color:#273D56">println!</span> to use an output format called <span style="color:#273D56">Debug</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.12 (Debug).</b></span> A trait that lets you print a value in a way useful for developers while debugging.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Compile with this change. Drat! We still get an error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error[E0277]: `Rectangle` doesn't implement `Debug`</p>
+</div>
+<p style="font-size:30px;line-height:1.45">But again, the compiler gives us a helpful note:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;required by this formatting parameter</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust <i>does</i> include functionality to print debugging information, but we must explicitly opt in: add the outer attribute <span style="color:#273D56">#[derive(Debug)]</span> just before the struct definition (Listing 5.12).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Opting in with #[derive(Debug)]</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.12:</b></span> Adding the attribute to derive the <span style="color:#273D56">Debug</span> trait and printing the <span style="color:#273D56">Rectangle</span> instance using debug formatting — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)]</p>
+<p style="white-space:nowrap">struct Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("rect1 is {rect1:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Debug output: {:?} and pretty {:#?}</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now the program runs without errors and prints:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rectangles v0.1.0 (file:///projects/rectangles)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.48s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/rectangles`</p>
+<p style="white-space:nowrap">rect1 is Rectangle { width: 30, height: 50 }</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Nice! It’s not the prettiest output, but it shows the values of all the fields for this instance, which would definitely help during debugging.</p>
+<p style="font-size:30px;line-height:1.45">For larger structs, output that’s a bit easier to read is useful: use <span style="color:#273D56">{:#?}</span> instead of <span style="color:#273D56">{:?}</span> in the <span style="color:#273D56">println!</span> string. Its output for this example is on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Pretty Debug output, and the dbg! macro</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using the <span style="color:#273D56">{:#?}</span> style outputs:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rectangles v0.1.0 (file:///projects/rectangles)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.48s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/rectangles`</p>
+<p style="white-space:nowrap">rect1 is Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Another way to print a value using the <span style="color:#273D56">Debug</span> format is the <span style="color:#273D56">dbg!</span> macro.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.13 (dbg! macro).</b></span> A macro that takes ownership of an expression (as opposed to <span style="color:#273D56">println!</span>, which takes a reference), prints the file and line number where the <span style="color:#273D56">dbg!</span> call occurs along with the resultant value of that expression, and returns ownership of the value.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using dbg! on a field value and on the struct</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)]</p>
+<p style="white-space:nowrap">struct Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let scale = 2;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: dbg!(30 * scale),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;dbg!(&amp;rect1);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Here (left) we want to see the value assigned to the <span style="color:#273D56">width</span> field, as well as the whole struct in <span style="color:#273D56">rect1</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Calling <span style="color:#273D56">dbg!</span> prints to the standard error console stream (<span style="color:#273D56">stderr</span>), as opposed to <span style="color:#273D56">println!</span>, which prints to the standard output console stream (<span style="color:#273D56">stdout</span>). More on both in “Redirecting Errors to Standard Error”, Chapter 12.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>We put <span style="color:#273D56">dbg!</span> around <span style="color:#273D56">30 * scale</span>; because <span style="color:#273D56">dbg!</span> returns ownership of the value, <span style="color:#273D56">width</span> gets the same value as without the call.</li>
+<li>We don’t want <span style="color:#273D56">dbg!</span> to take ownership of <span style="color:#273D56">rect1</span>, so the next call uses a reference, <span style="color:#273D56">&amp;rect1</span>.</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading dbg! output</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling rectangles v0.1.0 (file:///projects/rectangles)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/rectangles`</p>
+<p style="white-space:nowrap">[src/main.rs:10:16] 30 * scale = 60</p>
+<p style="white-space:nowrap">[src/main.rs:14:5] &amp;rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: 60,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The first bit of output comes from <i>src/main.rs</i> line 10, where we debug the expression <span style="color:#273D56">30 * scale</span>; its resultant value is <span style="color:#273D56">60</span> (the <span style="color:#273D56">Debug</span> formatting for integers prints only their value).</li>
+<li>The <span style="color:#273D56">dbg!</span> call on line 14 outputs the value of <span style="color:#273D56">&amp;rect1</span>, the <span style="color:#273D56">Rectangle</span> struct, using the pretty <span style="color:#273D56">Debug</span> formatting of the type.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">dbg!</span> macro can be really helpful when you’re trying to figure out what your code is doing!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">More derivable traits; from function to method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Beyond Debug</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>Besides <span style="color:#273D56">Debug</span>, Rust provides a number of traits to use with the <span style="color:#273D56">derive</span> attribute that add useful behavior to custom types. They and their behaviors are listed in Appendix C.</li>
+<li>Chapter 10 covers implementing these traits with custom behavior, and creating your own traits.</li>
+<li>There are also many attributes other than <span style="color:#273D56">derive</span>: see the “Attributes” section of the Rust Reference.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Where the refactoring goes next</h3>
+<p style="font-size:30px;line-height:1.45">Our <span style="color:#273D56">area</span> function is very specific: it only computes the area of rectangles. It would help to tie this behavior more closely to our <span style="color:#273D56">Rectangle</span> struct, because it won’t work with any other type. So we continue refactoring by turning the <span style="color:#273D56">area</span> function into an <span style="color:#273D56">area</span> <i>method</i> defined on the <span style="color:#273D56">Rectangle</span> type.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Methods versus functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.14 (Method).</b></span> A function defined within the context of a struct (or an enum or a trait object), whose first parameter is always <span style="color:#273D56">self</span>, representing the instance of the struct the method is being called on.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Like functions, methods…</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>are declared with the <span style="color:#273D56">fn</span> keyword and a name;</li>
+<li>can have parameters and a return value;</li>
+<li>contain code that runs when the method is called from somewhere else.</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Unlike functions, methods…</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>are defined within the context of a struct — or an enum (Chapter 6) or a trait object (Chapter 18);</li>
+<li>always take <span style="color:#273D56">self</span> as their first parameter.</li>
+</ul>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 5.13 (next) changes the <span style="color:#273D56">area</span> function, which has a <span style="color:#273D56">Rectangle</span> instance as a parameter, into an <span style="color:#273D56">area</span> method defined on the <span style="color:#273D56">Rectangle</span> struct.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Method syntax: an impl block for Rectangle</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.13:</b></span> Defining an <span style="color:#273D56">area</span> method on the <span style="color:#273D56">Rectangle</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug)]</p>
+<p style="white-space:nowrap">struct Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;width: u32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;height: u32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn area(&amp;self) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.width * self.height</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.15 (impl block).</b></span> An <span style="color:#273D56">impl</span> (implementation) block for a type: everything within it is associated with that type. To make <span style="color:#273D56">area</span> a method, we move the function inside the <span style="color:#273D56">impl Rectangle</span> curly brackets and change the first (here, only) parameter to <span style="color:#273D56">self</span>, in the signature and everywhere within the body.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Calling a method: rect1.area()</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.13 (continued):</b></span> Defining an <span style="color:#273D56">area</span> method on the <span style="color:#273D56">Rectangle</span> struct — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"The area of the rectangle is {} square pixels.",</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rect1.area()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Where <span style="color:#273D56">main</span> called the <span style="color:#273D56">area</span> function and passed <span style="color:#273D56">rect1</span> as an argument, we now use <i>method syntax</i> to call the <span style="color:#273D56">area</span> method on our <span style="color:#273D56">Rectangle</span> instance. Method syntax goes after an instance: a dot, the method name, parentheses, and any arguments.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">&amp;self is short for self: &amp;Self</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the signature for <span style="color:#273D56">area</span>, we use <span style="color:#273D56">&amp;self</span> instead of <span style="color:#273D56">rectangle: &amp;Rectangle</span>. The <span style="color:#273D56">&amp;self</span> is actually short for <span style="color:#273D56">self: &amp;Self</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.16 (Self).</b></span> Within an <span style="color:#273D56">impl</span> block, the type <span style="color:#273D56">Self</span> is an alias for the type that the <span style="color:#273D56">impl</span> block is for.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Methods must have a parameter named <span style="color:#273D56">self</span> of type <span style="color:#273D56">Self</span> as their first parameter, so Rust lets you abbreviate this with only the name <span style="color:#273D56">self</span> in the first parameter spot.</li>
+<li>We still need the <span style="color:#273D56">&amp;</span> in front of the <span style="color:#273D56">self</span> shorthand to indicate that this method borrows the <span style="color:#273D56">Self</span> instance, just as in <span style="color:#273D56">rectangle: &amp;Rectangle</span>.</li>
+<li>Methods can take ownership of <span style="color:#273D56">self</span>, borrow <span style="color:#273D56">self</span> immutably (as here), or borrow <span style="color:#273D56">self</span> mutably, just as they can any other parameter.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Choosing the receiver, and why methods</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We chose <span style="color:#273D56">&amp;self</span> for the same reason we used <span style="color:#273D56">&amp;Rectangle</span> in the function version: we don’t want to take ownership, and we only want to read the data in the struct, not write to it.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 5.2:</b></span> The three forms of the first parameter</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:18%">Receiver</th><th style="width:82%">When to use it</th></tr>
+<tr><td>&amp;self</td><td>The method only reads the instance (borrows it immutably).</td></tr>
+<tr><td>&amp;mut self</td><td>The method changes the instance it was called on.</td></tr>
+<tr><td>self</td><td>Rare: the method transforms self into something else, and the caller must not use the original afterward.</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Besides providing method syntax and not repeating the type of <span style="color:#273D56">self</span> in every signature, the main reason for methods is organization: everything we can do with an instance of a type sits in one <span style="color:#273D56">impl</span> block, instead of making future users of our code search for capabilities of <span style="color:#273D56">Rectangle</span> in various places in our library.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A method with the same name as a field</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A method may share a field’s name — here a <span style="color:#273D56">width</span> method on <span style="color:#273D56">Rectangle</span> (<i>src/main.rs</i>):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn width(&amp;self) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.width &gt; 0</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if rect1.width() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("The rectangle has a nonzero width; it is {}", rect1.width);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Field or method? Parentheses decide; getters</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">width</span> method returns <span style="color:#273D56">true</span> if the instance’s <span style="color:#273D56">width</span> field is greater than <span style="color:#273D56">0</span>, and <span style="color:#273D56">false</span> if it is <span style="color:#273D56">0</span>: a field can be used within a method of the same name for any purpose.</li>
+<li>In <span style="color:#273D56">main</span>, when we follow <span style="color:#273D56">rect1.width</span> with parentheses, Rust knows we mean the method <span style="color:#273D56">width</span>. Without parentheses, Rust knows we mean the field <span style="color:#273D56">width</span>.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.17 (Getter).</b></span> A method with the same name as a field that only returns the value in the field and does nothing else. Rust does not implement getters automatically for struct fields, as some other languages do.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Often, but not always, a method named like a field is a getter. Getters are useful because you can make the field private but the method public, enabling read-only access to that field as part of the type’s public API. Chapter 7 explains public and private, and how to designate a field or method as either.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Where’s the -&gt; operator?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">C and C++ use two different operators for calling methods:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">.</span> when calling a method on the object directly;</li>
+<li><span style="color:#273D56">-&gt;</span> when calling the method on a pointer to the object and the pointer must be dereferenced first. If <span style="color:#273D56">object</span> is a pointer, <span style="color:#273D56">object-&gt;something()</span> is similar to <span style="color:#273D56">(*object).something()</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Rust doesn’t have an equivalent to the <span style="color:#273D56">-&gt;</span> operator. Instead, it has a feature called <i>automatic referencing and dereferencing</i>; calling methods is one of the few places in Rust with this behavior.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.18 (Automatic referencing and dereferencing).</b></span> When you call a method with <span style="color:#273D56">object.something()</span>, Rust automatically adds in <span style="color:#273D56">&amp;</span>, <span style="color:#273D56">&amp;mut</span>, or <span style="color:#273D56">*</span> so that <span style="color:#273D56">object</span> matches the signature of the method.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implicit borrowing for method receivers</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 5.19.</b> Let <span style="color:#273D56">p1</span> and <span style="color:#273D56">p2</span> be <span style="color:#273D56">Point</span> values, where <span style="color:#273D56">Point</span> has a method <span style="color:#273D56">fn distance(&amp;self, other: &amp;Point) -&gt; f64</span>. The following two calls are the same:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">p1.distance(&amp;p2);</p>
+<p style="white-space:nowrap">(&amp;p1).distance(&amp;p2);</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The first one looks much cleaner. This automatic referencing works because methods have a clear receiver — the type of <span style="color:#273D56">self</span>. Given the receiver and name of a method, Rust can figure out definitively whether the method is:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>reading (<span style="color:#273D56">&amp;self</span>),</li>
+<li>mutating (<span style="color:#273D56">&amp;mut self</span>), or</li>
+<li>consuming (<span style="color:#273D56">self</span>).</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Making borrowing implicit for method receivers is a big part of making ownership ergonomic in practice.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Methods with more parameters: can_hold</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Practice: a second method on <span style="color:#273D56">Rectangle</span>. An instance takes another <span style="color:#273D56">Rectangle</span> and returns <span style="color:#273D56">true</span> if the second can fit completely within <span style="color:#273D56">self</span> (the first), otherwise <span style="color:#273D56">false</span>. Once <span style="color:#273D56">can_hold</span> exists, we want to write Listing 5.14.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.14:</b></span> Using the as-yet-unwritten <span style="color:#273D56">can_hold</span> method — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect1 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 30,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 50,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect2 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 40,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The expected output of can_hold</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.14 (continued):</b></span> Using the as-yet-unwritten <span style="color:#273D56">can_hold</span> method — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let rect3 = Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: 60,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: 45,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Can rect1 hold rect2? {}", rect1.can_hold(&amp;rect2));</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Can rect1 hold rect3? {}", rect1.can_hold(&amp;rect3));</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Both dimensions of <span style="color:#273D56">rect2</span> are smaller than those of <span style="color:#273D56">rect1</span>, but <span style="color:#273D56">rect3</span> is wider than <span style="color:#273D56">rect1</span>, so the expected output is:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Can rect1 hold rect2? true</p>
+<p style="white-space:nowrap">Can rect1 hold rect3? false</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Designing the can_hold signature</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We know we want a method, so it goes within the <span style="color:#273D56">impl Rectangle</span> block. Reading the calling code tells us the rest:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Name: <span style="color:#273D56">can_hold</span>.</li>
+<li>Parameter: an immutable borrow of another <span style="color:#273D56">Rectangle</span>. <span style="color:#273D56">rect1.can_hold(&amp;rect2)</span> passes in <span style="color:#273D56">&amp;rect2</span>, an immutable borrow of <span style="color:#273D56">rect2</span>, an instance of <span style="color:#273D56">Rectangle</span>.</li>
+<li>Why immutable: we only need to read <span style="color:#273D56">rect2</span> (writing would need a mutable borrow), and we want <span style="color:#273D56">main</span> to retain ownership of <span style="color:#273D56">rect2</span> so it can use it again after calling <span style="color:#273D56">can_hold</span>.</li>
+<li>Return value: a Boolean.</li>
+<li>Implementation: check whether the width and height of <span style="color:#273D56">self</span> are greater than the width and height of the other <span style="color:#273D56">Rectangle</span>, respectively.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Listing 5.15 (next) adds <span style="color:#273D56">can_hold</span> to the <span style="color:#273D56">impl</span> block from Listing 5.13.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implementing can_hold</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.15:</b></span> Implementing the <span style="color:#273D56">can_hold</span> method on <span style="color:#273D56">Rectangle</span> that takes another <span style="color:#273D56">Rectangle</span> instance as a parameter — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn area(&amp;self) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.width * self.height</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn can_hold(&amp;self, other: &amp;Rectangle) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.width &gt; other.width &amp;&amp; self.height &gt; other.height</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Running this with the <span style="color:#273D56">main</span> function of Listing 5.14 gives the desired output.</p>
+<p style="font-size:30px;line-height:1.45">Methods can take multiple parameters, added to the signature after the <span style="color:#273D56">self</span> parameter, and those parameters work just like parameters in functions.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Associated functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.20 (Associated function).</b></span> Any function defined within an <span style="color:#273D56">impl</span> block; it is associated with the type named after the <span style="color:#273D56">impl</span>. Methods are the associated functions whose first parameter is <span style="color:#273D56">self</span>.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>We can define associated functions that don’t have <span style="color:#273D56">self</span> as their first parameter (and thus are not methods), because they don’t need an instance of the type to work with.</li>
+<li>We’ve already used one: the <span style="color:#273D56">String::from</span> function, defined on the <span style="color:#273D56">String</span> type.</li>
+<li>Associated functions that aren’t methods are often used for constructors that return a new instance of the struct. These are often called <span style="color:#273D56">new</span>, but <span style="color:#273D56">new</span> isn’t a special name and isn’t built into the language.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">For example, an associated function named <span style="color:#273D56">square</span> could take one dimension parameter and use it as both width and height, making it easier to create a square <span style="color:#273D56">Rectangle</span> than specifying the same value twice (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A constructor: Rectangle::square</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn square(size: u32) -&gt; Self {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Self {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;width: size,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;height: size,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Self</span> keywords in the return type and in the body of the function are aliases for the type that appears after the <span style="color:#273D56">impl</span> keyword — in this case, <span style="color:#273D56">Rectangle</span>.</p>
+<p style="font-size:30px;line-height:1.45">To call this associated function, use the <span style="color:#273D56">::</span> syntax with the struct name, for example <span style="color:#273D56">let sq = Rectangle::square(3);</span>. The function is namespaced by the struct: the <span style="color:#273D56">::</span> syntax is used both for associated functions and for namespaces created by modules (Chapter 7).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Multiple impl blocks</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Each struct may have multiple <span style="color:#273D56">impl</span> blocks: Listing 5.16, with each method in its own block, equals Listing 5.15.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 5.16:</b></span> Rewriting Listing 5.15 using multiple <span style="color:#273D56">impl</span> blocks</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn area(&amp;self) -&gt; u32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.width * self.height</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl Rectangle {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn can_hold(&amp;self, other: &amp;Rectangle) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.width &gt; other.width &amp;&amp; self.height &gt; other.height</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">There’s no reason to separate these methods here, but it is valid syntax. Chapter 10 (generic types and traits) shows a case where multiple <span style="color:#273D56">impl</span> blocks are useful.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Structs let you create custom types that are meaningful for your domain.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>With structs you keep associated pieces of data connected to each other, and name each piece to make your code clear.</li>
+<li>In <span style="color:#273D56">impl</span> blocks you define functions that are associated with your type.</li>
+<li>Methods are a kind of associated function that let you specify the behavior that instances of your structs have.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Structs aren’t the only way to create custom types: Chapter 6 turns to Rust’s enum feature, adding another tool to your toolbox.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

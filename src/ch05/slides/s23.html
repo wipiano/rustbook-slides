@@ -1,0 +1,24 @@
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.2 An Example Program Using Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A win for clarity</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">area</span> accesses the <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span> fields of the <span style="color:#273D56">Rectangle</span> instance. Accessing fields of a borrowed struct instance does not move the field values, which is why you often see borrows of structs.</li>
+<li>The signature now says exactly what we mean: calculate the area of <span style="color:#273D56">Rectangle</span>, using its <span style="color:#273D56">width</span> and <span style="color:#273D56">height</span> fields.</li>
+<li>It conveys that width and height are related, and gives the values descriptive names instead of the tuple indexes <span style="color:#273D56">0</span> and <span style="color:#273D56">1</span>.</li>
+</ul>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 5.1:</b></span> The three versions of the rectangles program</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:20%">Listing</th><th style="width:40%">Signature of area</th><th style="width:40%">Drawback / gain</th></tr>
+<tr><td>5.8 variables</td><td>fn area(width: u32, height: u32) -&gt; u32</td><td>two unrelated-looking parameters</td></tr>
+<tr><td>5.9 tuple</td><td>fn area(dimensions: (u32, u32)) -&gt; u32</td><td>one argument, but unnamed parts .0 and .1</td></tr>
+<tr><td>5.10 struct</td><td>fn area(rectangle: &amp;Rectangle) -&gt; u32</td><td>one borrowed value with named fields</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>

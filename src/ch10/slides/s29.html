@@ -1,0 +1,36 @@
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.1 Generic Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What monomorphized code looks like</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When Rust compiles this code, it reads the values used in <span style="color:#273D56">Option&lt;T&gt;</span> instances and identifies two kinds of <span style="color:#273D56">Option&lt;T&gt;</span>: one is <span style="color:#273D56">i32</span> and the other is <span style="color:#273D56">f64</span>. It expands the generic definition into two definitions specialized to <span style="color:#273D56">i32</span> and <span style="color:#273D56">f64</span>, replacing the generic definition with the specific ones.</p>
+<p style="font-size:30px;line-height:1.45">The monomorphized version looks similar to this (the compiler uses different names than these illustrative ones):</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Option_i32 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Some(i32),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;None,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">enum Option_f64 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Some(f64),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;None,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let integer = Option_i32::Some(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let float = Option_f64::Some(5.0);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>

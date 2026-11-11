@@ -1,0 +1,28 @@
+<section id="s63" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.3 The Slice Type</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A stale index compiles without errors</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 4.8 (continued):</b></span> Storing the result from calling the <span style="color:#273D56">first_word</span> function and then changing the <span style="color:#273D56">String</span> contents — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s = String::from("hello world");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let word = first_word(&amp;s); // word will get the value 5</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s.clear(); // this empties the String, making it equal to ""</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// word still has the value 5 here, but s no longer has any content that we</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// could meaningfully use with the value 5, so word is now totally invalid!</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This program compiles without any errors and would also do so if we used <span style="color:#273D56">word</span> after calling <span style="color:#273D56">s.clear()</span>. Because <span style="color:#273D56">word</span> isn’t connected to the state of <span style="color:#273D56">s</span> at all, <span style="color:#273D56">word</span> still contains the value <span style="color:#273D56">5</span>. We could use that value <span style="color:#273D56">5</span> with the variable <span style="color:#273D56">s</span> to try to extract the first word out, but this would be a bug because the contents of <span style="color:#273D56">s</span> have changed since we saved <span style="color:#273D56">5</span> in <span style="color:#273D56">word</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">65</p>
+</div>
+</section>

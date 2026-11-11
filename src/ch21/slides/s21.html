@@ -1,0 +1,16 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">HTML rendered — but for any request</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Run this code with <span style="color:#273D56">cargo run</span> and load <i>127.0.0.1:7878</i> in your browser: you should see your HTML rendered!</p>
+<p style="font-size:30px;line-height:1.45">Currently, we ignore the request data in <span style="color:#273D56">http_request</span> and send back the contents of the HTML file unconditionally. Requesting <i>127.0.0.1:7878/something-else</i> still gets the same HTML response. Our server is very limited and does not do what most web servers do. We want to customize responses depending on the request, and only send back the HTML file for a well-formed request to <i>/</i>.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Validating the request and selectively responding</h3>
+<p style="font-size:30px;line-height:1.45">Let’s check that the browser is requesting <i>/</i> before returning the HTML file, and return an error if the browser requests anything else. Listing 21.6 modifies <span style="color:#273D56">handle_connection</span>: it checks the content of the request received against what we know a request for <i>/</i> looks like, and adds <span style="color:#273D56">if</span> and <span style="color:#273D56">else</span> blocks to treat requests differently.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

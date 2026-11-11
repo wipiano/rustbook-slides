@@ -1,0 +1,16 @@
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why ignore a parameter; parts of a value with a nested _</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 19.17 completely ignores the value <span style="color:#273D56">3</span> passed as the first argument and prints <span style="color:#273D56">This code only uses the y parameter: 4</span>.</p>
+<p style="font-size:30px;line-height:1.45">In most cases when you no longer need a parameter, you would change the signature so that it doesn’t include it. Ignoring a parameter is especially useful when, for example, you’re implementing a trait that needs a certain type signature but your implementation’s body doesn’t need one of the parameters. You then avoid the compiler warning about unused parameters that you would get if you used a name instead.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Parts of a value with a nested _</h3>
+<p style="font-size:30px;line-height:1.45">We can also use <span style="color:#273D56">_</span> inside another pattern to ignore just part of a value — for example, to test only part of a value when the rest is of no use to the code we want to run. Listing 19.18 manages a setting’s value. The business requirements: the user should not be allowed to overwrite an existing customization of a setting, but can unset the setting and give it a value if it is currently unset.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>

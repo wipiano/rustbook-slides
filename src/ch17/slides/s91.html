@@ -1,0 +1,23 @@
+<section id="s91" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why JoinAll needs Unpin</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">trpl::join_all</span> returns a struct called <span style="color:#273D56">JoinAll</span>, generic over a type <span style="color:#273D56">F</span> that is constrained to implement the <span style="color:#273D56">Future</span> trait. Directly awaiting a future with <span style="color:#273D56">await</span> pins the future implicitly. That’s why we don’t need to use <span style="color:#273D56">pin!</span> everywhere we want to await futures.</p>
+<p style="font-size:30px;line-height:1.45">However, we’re not directly awaiting a future here. Instead, we construct a new future, <span style="color:#273D56">JoinAll</span>, by passing a collection of futures to <span style="color:#273D56">join_all</span>. The signature for <span style="color:#273D56">join_all</span> requires that the types of the items in the collection all implement the <span style="color:#273D56">Future</span> trait, and <span style="color:#273D56">Box&lt;T&gt;</span> implements <span style="color:#273D56">Future</span> only if the <span style="color:#273D56">T</span> it wraps is a future that implements the <span style="color:#273D56">Unpin</span> trait.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 17.18.</b> The chain of requirements behind the error:</p>
+<ol style="font-size:26px;line-height:1.45">
+<li><span style="color:#273D56">JoinAll&lt;F&gt;</span> needs every item <span style="color:#273D56">F</span> to implement <span style="color:#273D56">Future</span>;</li>
+<li>each item is a <span style="color:#273D56">Box&lt;dyn Future&lt;Output = ()&gt;&gt;</span>, which implements <span style="color:#273D56">Future</span> only if <span style="color:#273D56">dyn Future&lt;Output = ()&gt;</span> implements <span style="color:#273D56">Unpin</span>;</li>
+<li>it doesn’t — so the code is rejected.</li>
+</ol>
+</div>
+<p style="font-size:30px;line-height:1.45">That’s a lot to absorb! Let’s dive further into how <span style="color:#273D56">Future</span> works, in particular around pinning.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">92</p>
+</div>
+</section>

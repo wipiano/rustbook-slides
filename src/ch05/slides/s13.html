@@ -1,0 +1,18 @@
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.1 Defining and Instantiating Structs</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ownership of struct data</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">User</span> struct in Listing 5.1 uses the owned <span style="color:#273D56">String</span> type rather than the <span style="color:#273D56">&amp;str</span> string slice type. This is a deliberate choice: we want each instance of this struct to own all of its data, and that data to be valid for as long as the entire struct is valid.</p>
+<p style="font-size:30px;line-height:1.45">Structs can also store references to data owned by something else, but that requires <i>lifetimes</i>, a Rust feature discussed in Chapter 10.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.10 (Lifetimes).</b></span> A Rust feature that ensures the data referenced by a struct is valid for as long as the struct is.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If you try to store a reference in a struct without specifying lifetimes, as on the next slide, it won’t work: the compiler complains that it needs lifetime specifiers.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>

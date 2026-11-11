@@ -1,0 +1,19 @@
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.5 RefCell&lt;T&gt; and the Interior Mutability Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Enforcing borrowing rules at runtime</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Unlike <span style="color:#273D56">Rc&lt;T&gt;</span>, the <span style="color:#273D56">RefCell&lt;T&gt;</span> type represents single ownership over the data it holds. So what makes it different from a type like <span style="color:#273D56">Box&lt;T&gt;</span>? Recall the borrowing rules of Chapter 4:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>At any given time, you can have <i>either</i> one mutable reference or any number of immutable references (but not both).</li>
+<li>References must always be valid.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">With references and <span style="color:#273D56">Box&lt;T&gt;</span>, these invariants are enforced at compile time; break them and you get a compiler error. With <span style="color:#273D56">RefCell&lt;T&gt;</span>, they are enforced <i>at runtime</i>; break them and your program will panic and exit.</p>
+<p style="font-size:30px;line-height:1.45">Checking at compile time catches errors sooner in the development process, with no impact on runtime performance, because all the analysis is completed beforehand. That makes it the best choice in the majority of cases, which is why it is Rust’s default.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>

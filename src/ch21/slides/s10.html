@@ -1,0 +1,25 @@
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Collecting the request lines</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let http_request: Vec&lt;_&gt; = buf_reader</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.lines()</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.map(|result| result.unwrap())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.take_while(|line| !line.is_empty())</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;.collect();</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The variable <span style="color:#273D56">http_request</span> collects the lines of the request the browser sends. The <span style="color:#273D56">Vec&lt;_&gt;</span> type annotation says we want to collect them in a vector.</li>
+<li><span style="color:#273D56">BufReader</span> implements the <span style="color:#273D56">std::io::BufRead</span> trait, whose <span style="color:#273D56">lines</span> method returns an iterator of <span style="color:#273D56">Result&lt;String, std::io::Error&gt;</span>, splitting the data at each newline byte.</li>
+<li>To get each <span style="color:#273D56">String</span>, we <span style="color:#273D56">map</span> and <span style="color:#273D56">unwrap</span> each <span style="color:#273D56">Result</span>. It might be an error if the data isn’t valid UTF-8 or there was a problem reading from the stream. A production program should handle these errors more gracefully; we stop the program for simplicity.</li>
+<li>The browser signals the end of an HTTP request by sending two newline characters in a row. So to get one request, we take lines until we get a line that is the empty string, then print the vector with pretty debug formatting to look at the instructions the browser sends.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>

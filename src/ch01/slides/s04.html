@@ -1,0 +1,33 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing on Windows, and troubleshooting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Windows</h3>
+<p style="font-size:30px;line-height:1.45">Go to rust-lang.org/tools/install and follow the instructions. At some point you are prompted to install Visual Studio, which provides a linker and the native libraries needed to compile programs. More help: rust-lang.github.io/rustup/installation/windows-msvc.html.</p>
+<p style="font-size:30px;line-height:1.45">The rest of the book uses commands that work in both <i>cmd.exe</i> and PowerShell, and explains any differences.</p>
+<p style="font-size:30px;line-height:1.45">Still stuck? The community page (rust-lang.org/community) lists where to reach other <i>Rustaceans</i> — the nickname Rust users call themselves.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Troubleshooting</h3>
+<p style="font-size:30px;line-height:1.45">Check the install: you should see the version number, commit hash and commit date of the latest stable release.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustc --version</p>
+<p style="white-space:nowrap">rustc x.y.z (abcabcabc yyyy-mm-dd)</p>
+</div>
+<p style="font-size:30px;line-height:1.45">If not, check that Rust is in your <span style="color:#273D56">%PATH%</span> system variable:</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:40%">Shell</th><th style="width:60%">Command</th></tr>
+<tr><td>Windows CMD</td><td>&gt; echo %PATH%</td></tr>
+<tr><td>PowerShell</td><td>&gt; echo $env:Path</td></tr>
+<tr><td>Linux, macOS</td><td>$ echo $PATH</td></tr>
+</table>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

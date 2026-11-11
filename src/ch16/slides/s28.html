@@ -1,0 +1,24 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.2 Transfer Data Between Threads with Message Passing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">send, recv and try_recv</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The transmitter has a <span style="color:#273D56">send</span> method that takes the value to send. It returns a <span style="color:#273D56">Result&lt;T, E&gt;</span>: if the receiver has already been dropped and there’s nowhere to send a value, the send operation returns an error. Here we call <span style="color:#273D56">unwrap</span> to panic in case of an error; a real application would handle it properly (Chapter 9).</p>
+<p style="font-size:30px;line-height:1.45">The receiver has two useful methods:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">recv</h3>
+<p style="font-size:30px;line-height:1.45">Short for <i>receive</i>. Blocks the main thread’s execution and waits until a value is sent down the channel; once one is sent, <span style="color:#273D56">recv</span> returns it in a <span style="color:#273D56">Result&lt;T, E&gt;</span>. When the transmitter closes, <span style="color:#273D56">recv</span> returns an error to signal that no more values will be coming.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">try_recv</h3>
+<p style="font-size:30px;line-height:1.45">Doesn’t block: returns a <span style="color:#273D56">Result&lt;T, E&gt;</span> immediately — <span style="color:#273D56">Ok</span> holding a message if one is available, <span style="color:#273D56">Err</span> if there aren’t any this time. Useful if the thread has other work to do while waiting: a loop can call <span style="color:#273D56">try_recv</span> every so often, handle a message if one is available, and otherwise do other work until checking again.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

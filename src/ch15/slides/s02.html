@@ -1,0 +1,20 @@
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Deref, Drop, and the smart pointers in this chapter</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Smart pointers are usually implemented using structs. Unlike an ordinary struct, they implement the <span style="color:#273D56">Deref</span> and <span style="color:#273D56">Drop</span> traits. <span style="color:#273D56">Deref</span> lets an instance of the smart pointer struct behave like a reference, so you can write code that works with either references or smart pointers. <span style="color:#273D56">Drop</span> lets you customize the code that runs when an instance goes out of scope.</p>
+<p style="font-size:30px;line-height:1.45">The smart pointer pattern is a general design pattern used frequently in Rust; many libraries have their own, and you can write your own. The chapter covers the most common ones in the standard library:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">Box&lt;T&gt;</span>, for allocating values on the heap;</li>
+<li><span style="color:#273D56">Rc&lt;T&gt;</span>, a reference counting type that enables multiple ownership;</li>
+<li><span style="color:#273D56">Ref&lt;T&gt;</span> and <span style="color:#273D56">RefMut&lt;T&gt;</span>, accessed through <span style="color:#273D56">RefCell&lt;T&gt;</span>, a type that enforces the borrowing rules at runtime instead of compile time.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">It also covers the <i>interior mutability</i> pattern, where an immutable type exposes an API for mutating an interior value, and reference cycles: how they can leak memory and how to prevent them.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>

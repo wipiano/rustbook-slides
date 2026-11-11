@@ -1,0 +1,19 @@
+<section id="s69" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.3 The Slice Type</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Slices make the stale-index bug impossible</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Returning a slice would also work for a <span style="color:#273D56">second_word</span> function:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn second_word(s: &amp;String) -&gt; &amp;str {</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We now have a straightforward API that’s much harder to mess up because the compiler will ensure that the references into the <span style="color:#273D56">String</span> remain valid.</p>
+<p style="font-size:30px;line-height:1.45">Remember the bug in the program in Listing 4.8, when we got the index to the end of the first word but then cleared the string so our index was invalid? That code was logically incorrect but didn’t show any immediate errors. The problems would show up later if we kept trying to use the first word index with an emptied string.</p>
+<p style="font-size:30px;line-height:1.45">Slices make this bug impossible and let us know much sooner that we have a problem with our code. Using the slice version of <span style="color:#273D56">first_word</span> will throw a compile-time error, as the next slides show.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">71</p>
+</div>
+</section>

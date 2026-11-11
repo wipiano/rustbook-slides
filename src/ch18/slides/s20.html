@@ -1,0 +1,17 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Like duck typing, but checked at compile time</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 18.7 (Duck typing).</b></span> In dynamically typed languages, being concerned only with the messages a value responds to rather than the value’s concrete type: if it walks like a duck and quacks like a duck, then it must be a duck!</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The concept of trait objects is similar. In the implementation of <span style="color:#273D56">run</span> on <span style="color:#273D56">Screen</span> in Listing 18.5, <span style="color:#273D56">run</span> doesn’t need to know the concrete type of each component. It doesn’t check whether a component is a <span style="color:#273D56">Button</span> or a <span style="color:#273D56">SelectBox</span>; it just calls <span style="color:#273D56">draw</span> on it. By specifying <span style="color:#273D56">Box&lt;dyn Draw&gt;</span> as the type of the values in the <span style="color:#273D56">components</span> vector, we’ve defined <span style="color:#273D56">Screen</span> to need values that we can call the <span style="color:#273D56">draw</span> method on.</p>
+<p style="font-size:30px;line-height:1.45">The advantage of using trait objects and Rust’s type system to write code similar to duck typing: we never have to check at runtime whether a value implements a particular method, or worry about errors if a value doesn’t implement a method but we call it anyway. Rust won’t compile our code if the values don’t implement the traits that the trait objects need.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

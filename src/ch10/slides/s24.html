@@ -1,0 +1,22 @@
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.1 Generic Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Declaring T after impl</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">impl&lt;T&gt; Point&lt;T&gt; {</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>We have to declare <span style="color:#273D56">T</span> just after <span style="color:#273D56">impl</span> so that we can use <span style="color:#273D56">T</span> to specify that we’re implementing methods on the type <span style="color:#273D56">Point&lt;T&gt;</span>.</li>
+<li>Declaring <span style="color:#273D56">T</span> as a generic type after <span style="color:#273D56">impl</span> lets Rust identify that the type in the angle brackets in <span style="color:#273D56">Point</span> is a generic type rather than a concrete type.</li>
+<li>We could choose a different name for this generic parameter than the one declared in the struct definition, but using the same name is conventional.</li>
+<li>A method written within an <span style="color:#273D56">impl</span> that declares a generic type is defined on any instance of the type, no matter what concrete type ends up substituting for the generic type.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">We can also specify constraints on generic types when defining methods. We could, for example, implement methods only on <span style="color:#273D56">Point&lt;f32&gt;</span> instances rather than on <span style="color:#273D56">Point&lt;T&gt;</span> instances with any generic type. Listing 10.10 uses the concrete type <span style="color:#273D56">f32</span>, meaning we don’t declare any types after <span style="color:#273D56">impl</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>

@@ -1,0 +1,22 @@
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.1 Futures and the Async Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Laziness vs threads; extracting the title</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This is different from <span style="color:#273D56">thread::spawn</span> in Chapter 16, where the closure we passed to another thread started running immediately. It’s also different from how many other languages approach async. But it’s important for Rust to be able to provide its performance guarantees, just as it is with iterators.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Once we have <span style="color:#273D56">response_text</span>, we parse it into an instance of the <span style="color:#273D56">Html</span> type using <span style="color:#273D56">Html::parse</span>. Instead of a raw string, we now have a data type we can use to work with the HTML as a richer data structure.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">select_first</span> finds the first instance of a given CSS selector. Passing <span style="color:#273D56">"title"</span> gets the first <span style="color:#273D56">&lt;title&gt;</span> element in the document, if there is one.</li>
+<li>Because there may be no matching element, <span style="color:#273D56">select_first</span> returns an <span style="color:#273D56">Option&lt;ElementRef&gt;</span>.</li>
+<li><span style="color:#273D56">Option::map</span> lets us work with the item in the <span style="color:#273D56">Option</span> if it’s present, and do nothing if it isn’t. (A <span style="color:#273D56">match</span> expression would also work, but <span style="color:#273D56">map</span> is more idiomatic.)</li>
+<li>In the function we supply to <span style="color:#273D56">map</span>, we call <span style="color:#273D56">inner_html</span> on the <span style="color:#273D56">title</span> to get its content, a <span style="color:#273D56">String</span>. When all is said and done, we have an <span style="color:#273D56">Option&lt;String&gt;</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>

@@ -1,0 +1,29 @@
+<section id="s65" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 4 · 4.3 The Slice Type</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">String slices</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 4.14 (String slice).</b></span> A reference to a contiguous sequence of the elements of a <span style="color:#273D56">String</span>. It looks like this:</p>
+</div>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = String::from("hello world");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = &amp;s[0..5];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let world = &amp;s[6..11];</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rather than a reference to the entire <span style="color:#273D56">String</span>, <span style="color:#273D56">hello</span> is a reference to a portion of the <span style="color:#273D56">String</span>, specified in the extra <span style="color:#273D56">[0..5]</span> bit. We create slices using a range within square brackets by specifying <span style="color:#273D56">[starting_index..ending_index]</span>, where <span style="color:#273D56">starting_index</span> is the first position in the slice and <span style="color:#273D56">ending_index</span> is one more than the last position in the slice.</p>
+<p style="font-size:30px;line-height:1.45">Internally, the slice data structure stores the starting position and the length of the slice, which corresponds to <span style="color:#273D56">ending_index</span> minus <span style="color:#273D56">starting_index</span>. So, in <span style="color:#273D56">let world = &amp;s[6..11];</span>, <span style="color:#273D56">world</span> would be a slice that contains a pointer to the byte at index 6 of <span style="color:#273D56">s</span> with a length value of <span style="color:#273D56">5</span>. Figure 4.7 shows this in a diagram.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.4 Understanding Ownership</p>
+<p style="font-size:24px;color:#596675">67</p>
+</div>
+</section>

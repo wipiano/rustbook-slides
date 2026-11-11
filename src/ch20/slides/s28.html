@@ -1,0 +1,26 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Miri’s warning: an integer-to-pointer cast</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4">Miri output (continued): the help lines of the warning</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;= help: this program is using integer-to-pointer casts or (equivalently)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;`ptr::with_exposed_provenance`, which means that Miri might miss pointer bugs in this program</p>
+<p style="white-space:nowrap">&#160;&#160;= help: see https://doc.rust-lang.org/nightly/std/ptr/fn.with_exposed_provenance.html</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for more details on that operation</p>
+<p style="white-space:nowrap">&#160;&#160;= help: to ensure that Miri does not miss bugs in your program, use Strict Provenance APIs</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(https://doc.rust-lang.org/nightly/std/ptr/index.html#strict-provenance,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;https://crates.io/crates/sptr) instead</p>
+<p style="white-space:nowrap">&#160;&#160;= help: you can then set `MIRIFLAGS=-Zmiri-strict-provenance` to ensure you are not relying</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;on `with_exposed_provenance` semantics</p>
+<p style="white-space:nowrap">&#160;&#160;= help: alternatively, `MIRIFLAGS=-Zmiri-permissive-provenance` disables this warning</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Miri correctly warns us that we’re casting an integer to a pointer, which might be a problem — but Miri can’t determine whether a problem exists, because it doesn’t know how the pointer originated.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

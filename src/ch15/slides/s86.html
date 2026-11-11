@@ -1,0 +1,16 @@
+<section id="s86" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Consequences, and how to avoid cycles</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you uncomment the last <span style="color:#273D56">println!</span> and run the program, Rust tries to print the cycle — <span style="color:#273D56">a</span> pointing to <span style="color:#273D56">b</span> pointing to <span style="color:#273D56">a</span>, and so forth — until it overflows the stack.</p>
+<p style="font-size:30px;line-height:1.45">Here the consequences aren’t very dire: right after we create the cycle, the program ends. But a more complex program that allocated lots of memory in a cycle and held onto it for a long time would use more memory than it needed, and might overwhelm the system, running out of available memory.</p>
+<p style="font-size:30px;line-height:1.45">Creating reference cycles is not easily done, but not impossible. If you have <span style="color:#273D56">RefCell&lt;T&gt;</span> values containing <span style="color:#273D56">Rc&lt;T&gt;</span> values, or similar nested combinations of interior mutability and reference counting, you must ensure you don’t create cycles; you can’t rely on Rust to catch them. A cycle is a logic bug, to minimize with automated tests, code reviews, and other software development practices.</p>
+<p style="font-size:30px;line-height:1.45">Another solution is reorganizing data structures so that some references express ownership and some don’t: cycles can then mix ownership and non-ownership relationships, and only ownership relationships affect whether a value can be dropped. In Listing 15.25, <span style="color:#273D56">Cons</span> variants must always own their list, so that isn’t possible; a graph of parent and child nodes shows when non-ownership relationships are appropriate.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">87</p>
+</div>
+</section>

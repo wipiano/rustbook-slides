@@ -1,0 +1,21 @@
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.1 Closures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Moving captured values out of closures</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Once a closure has captured a reference or captured ownership of a value from the environment where it is defined (affecting what, if anything, is moved <i>into</i> the closure), the code in its body defines what happens to the references or values when the closure is evaluated later (affecting what, if anything, is moved <i>out of</i> the closure).</p>
+<p style="font-size:30px;line-height:1.45">A closure body can do any of the following:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>move a captured value out of the closure;</li>
+<li>mutate the captured value;</li>
+<li>neither move nor mutate the value;</li>
+<li>capture nothing from the environment to begin with.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">How a closure captures and handles values from the environment affects which traits it implements, and traits are how functions and structs specify what kinds of closures they can use. Closures automatically implement one, two, or all three of the <span style="color:#273D56">Fn</span> traits, in an additive fashion, depending on how the body handles the values.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>

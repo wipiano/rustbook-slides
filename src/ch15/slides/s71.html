@@ -1,0 +1,18 @@
+<section id="s71" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.5 RefCell&lt;T&gt; and the Interior Mutability Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What changed in Listing 15.22</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">sent_messages</span> field is now of type <span style="color:#273D56">RefCell&lt;Vec&lt;String&gt;&gt;</span> instead of <span style="color:#273D56">Vec&lt;String&gt;</span>. The <span style="color:#273D56">new</span> function creates a new <span style="color:#273D56">RefCell&lt;Vec&lt;String&gt;&gt;</span> instance around the empty vector.</li>
+<li>In <span style="color:#273D56">send</span>, the first parameter is still an immutable borrow of <span style="color:#273D56">self</span>, which matches the trait definition. We call <span style="color:#273D56">borrow_mut</span> on the <span style="color:#273D56">RefCell&lt;Vec&lt;String&gt;&gt;</span> in <span style="color:#273D56">self.sent_messages</span> to get a mutable reference to the value inside it, the vector. Then we call <span style="color:#273D56">push</span> on that mutable reference to keep track of the messages sent during the test.</li>
+<li>In the assertion, to see how many items are in the inner vector, we call <span style="color:#273D56">borrow</span> on the <span style="color:#273D56">RefCell&lt;Vec&lt;String&gt;&gt;</span> to get an immutable reference to the vector.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Now that you’ve seen how to use <span style="color:#273D56">RefCell&lt;T&gt;</span>, let’s dig into how it works!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">72</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the match guard decides</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Listing 19.26 prints <span style="color:#273D56">The number 4 is even</span>. <span style="color:#273D56">num</span> matches the first arm’s pattern, because <span style="color:#273D56">Some(4)</span> matches <span style="color:#273D56">Some(x)</span>. Then the match guard checks whether the remainder of dividing <span style="color:#273D56">x</span> by 2 equals 0; it does, so the first arm is selected.</li>
+<li>Had <span style="color:#273D56">num</span> been <span style="color:#273D56">Some(5)</span>, the first arm’s guard would be <span style="color:#273D56">false</span> (5 divided by 2 leaves 1, not 0). Rust would go to the second arm, which matches because it has no match guard and therefore matches any <span style="color:#273D56">Some</span> variant.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">There is no way to express the <span style="color:#273D56">if x % 2 == 0</span> condition within a pattern, so the match guard gives us that ability. The downside of this extra expressiveness: the compiler doesn’t try to check for exhaustiveness when match guard expressions are involved.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Solving the shadowing problem</h3>
+<p style="font-size:30px;line-height:1.45">In Listing 19.11, the pattern in the <span style="color:#273D56">match</span> created a new variable instead of using the variable outside the <span style="color:#273D56">match</span>, so we couldn’t test against the outer variable’s value. Listing 19.27 uses a match guard to fix this problem.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

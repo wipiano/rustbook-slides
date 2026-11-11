@@ -1,0 +1,1494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.8 — Common Collections · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.8 — Common Collections</h1><nav><a href="ch07.html">← Ch.7</a><a href="ch09.html">Ch.9 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 8</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Common Collections</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Rust’s standard library includes very useful data structures called <i>collections</i>. Most data types represent one specific value; collections can contain multiple values. Unlike the built-in array and tuple types, the data these collections point to is stored on the heap, so its amount need not be known at compile time and can grow or shrink as the program runs. Each kind has different capabilities and costs; choosing an appropriate one is a skill you develop over time. This chapter covers how to create and update the three used most often, and what makes each special:</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>8.1 Storing Lists of Values with Vectors — a <i>vector</i> stores a variable number of values next to each other.</li>
+<li>8.2 Storing UTF-8 Encoded Text with Strings — a <i>string</i> is a collection of characters (<span style="color:#273D56">String</span> in depth).</li>
+<li>8.3 Storing Keys with Associated Values in Hash Maps — a <i>hash map</i> associates a value with a specific key; it is one implementation of the general data structure called a <i>map</i>.</li>
+</ul>
+<p style="font-size:26px;line-height:1.45;color:#596675">The other collections in the standard library are described in the std::collections documentation.</p>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Vectors, and creating an empty one</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The first collection type is <span style="color:#273D56">Vec&lt;T&gt;</span>, also known as a vector. Vectors are useful when you have a list of items, such as the lines of text in a file or the prices of items in a shopping cart.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.1 (Vector).</b></span> <span style="color:#273D56">Vec&lt;T&gt;</span>: a collection that stores more than one value in a single data structure, putting all the values next to each other in memory. A vector can only store values of the same type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To create a new, empty vector, call the <span style="color:#273D56">Vec::new</span> function, as shown in Listing 8.1.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.1:</b></span> Creating a new, empty vector to hold values of type <span style="color:#273D56">i32</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v: Vec&lt;i32&gt; = Vec::new();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Type annotations and the vec! macro</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 8.1 needs a type annotation: because no values are inserted, Rust doesn’t know what kind of elements we intend to store. This is an important point. Vectors are implemented using generics (Chapter 10 covers using generics with your own types). For now, know that the standard library’s <span style="color:#273D56">Vec&lt;T&gt;</span> can hold any type, and the specific type goes within angle brackets: in Listing 8.1, the <span style="color:#273D56">Vec&lt;T&gt;</span> in <span style="color:#273D56">v</span> holds elements of the <span style="color:#273D56">i32</span> type.</p>
+<p style="font-size:30px;line-height:1.45">More often you create a <span style="color:#273D56">Vec&lt;T&gt;</span> with initial values and Rust infers the element type, so you rarely need the annotation. The <span style="color:#273D56">vec!</span> macro creates a new vector holding the values you give it. Listing 8.2 creates a <span style="color:#273D56">Vec&lt;i32&gt;</span> holding <span style="color:#273D56">1</span>, <span style="color:#273D56">2</span> and <span style="color:#273D56">3</span>; the type is <span style="color:#273D56">i32</span> because that is the default integer type (“Data Types”, Chapter 3).</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.2:</b></span> Creating a new vector containing values</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec![1, 2, 3];</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Updating a vector with push</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Because Listing 8.2 gives initial <span style="color:#273D56">i32</span> values, Rust infers that the type of <span style="color:#273D56">v</span> is <span style="color:#273D56">Vec&lt;i32&gt;</span>, and no annotation is needed. To create a vector and then add elements to it, use the <span style="color:#273D56">push</span> method (Listing 8.3).</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.3:</b></span> Using the <span style="color:#273D56">push</span> method to add values to a vector</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut v = Vec::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v.push(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v.push(6);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v.push(7);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v.push(8);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>As with any variable, to change its value we make it mutable with the <span style="color:#273D56">mut</span> keyword (Chapter 3).</li>
+<li>The numbers placed inside are all of type <span style="color:#273D56">i32</span>; Rust infers this from the data, so the <span style="color:#273D56">Vec&lt;i32&gt;</span> annotation isn’t needed.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading elements: indexing or get</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">There are two ways to reference a value stored in a vector: via indexing or by using the <span style="color:#273D56">get</span> method. Listing 8.4 shows both; the types of the returned values are annotated for extra clarity.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.4:</b></span> Using indexing syntax and using the <span style="color:#273D56">get</span> method to access an item in a vector</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec![1, 2, 3, 4, 5];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let third: &amp;i32 = &amp;v[2];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The third element is {third}");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let third: Option&lt;&amp;i32&gt; = v.get(2);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match third {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(third) =&gt; println!("The third element is {third}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; println!("There is no third element."),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading past the end of a vector</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>In Listing 8.4, the index value <span style="color:#273D56">2</span> gets the third element, because vectors are indexed by number, starting at zero.</li>
+<li>Using <span style="color:#273D56">&amp;</span> and <span style="color:#273D56">[]</span> gives a reference to the element at the index value.</li>
+<li>The <span style="color:#273D56">get</span> method, with the index passed as an argument, gives an <span style="color:#273D56">Option&lt;&amp;T&gt;</span> that we can use with <span style="color:#273D56">match</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Rust provides both ways so you can choose how the program behaves when an index is outside the range of existing elements. Listing 8.5 takes a vector of five elements and tries to access index 100 with each technique.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.5:</b></span> Attempting to access the element at index 100 in a vector containing five elements</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec![1, 2, 3, 4, 5];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let does_not_exist = &amp;v[100];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let does_not_exist = v.get(100);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Panic with [] or None with get</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Indexing with []</h3>
+<p style="font-size:30px;line-height:1.45">When Listing 8.5 runs, the first, <span style="color:#273D56">[]</span> method causes the program to panic, because it references a nonexistent element.</p>
+<p style="font-size:30px;line-height:1.45">This method is best used when you want your program to crash if there’s an attempt to access an element past the end of the vector.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The get method</h3>
+<p style="font-size:30px;line-height:1.45">Passed an index outside the vector, <span style="color:#273D56">get</span> returns <span style="color:#273D56">None</span> without panicking. Use it if accessing an element beyond the range of the vector may happen occasionally under normal circumstances. Your code then has logic to handle either <span style="color:#273D56">Some(&amp;element)</span> or <span style="color:#273D56">None</span> (Chapter 6).</p>
+</div>
+</div>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 8.2.</b> The index could come from a person entering a number. If they accidentally enter a number that’s too large and the program gets a <span style="color:#273D56">None</span> value, you could tell the user how many items are in the current vector and give them another chance to enter a valid value. That is more user-friendly than crashing the program due to a typo!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Holding a reference while pushing</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When the program has a valid reference, the borrow checker enforces the ownership and borrowing rules (Chapter 4) to ensure that this reference and any other references to the contents of the vector remain valid. Recall the rule that you can’t have mutable and immutable references in the same scope. Listing 8.6 holds an immutable reference to the first element and tries to add an element to the end; this won’t work if we also refer to that element later in the function.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.6:</b></span> Attempting to add an element to a vector while holding a reference to an item</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut v = vec![1, 2, 3, 4, 5];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let first = &amp;v[0];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;v.push(6);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("The first element is: {first}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The E0502 borrow error</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Compiling the code in Listing 8.6 results in this error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling collections v0.1.0 (file:///projects/collections)</p>
+<p style="white-space:nowrap">error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:6:5</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">4 |&#160;&#160;&#160;&#160;&#160;let first = &amp;v[0];</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;- immutable borrow occurs here</p>
+<p style="white-space:nowrap">5 |</p>
+<p style="white-space:nowrap">6 |&#160;&#160;&#160;&#160;&#160;v.push(6);</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;^^^^^^^^^ mutable borrow occurs here</p>
+<p style="white-space:nowrap">7 |</p>
+<p style="white-space:nowrap">8 |&#160;&#160;&#160;&#160;&#160;println!("The first element is: {first}");</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;----- immutable borrow later used here</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0502`.</p>
+<p style="white-space:nowrap">error: could not compile `collections` (bin "collections") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the borrow checker rejects Listing 8.6</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The code might look like it should work: why should a reference to the first element care about changes at the end of the vector?</p>
+<p style="font-size:30px;line-height:1.45">The error is due to the way vectors work. Because vectors put the values next to each other in memory, adding a new element onto the end might require:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>allocating new memory, if there isn’t enough room to put all the elements next to each other where the vector is currently stored, and</li>
+<li>copying the old elements to the new space.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">In that case, the reference to the first element would be pointing to deallocated memory. The borrowing rules prevent programs from ending up in that situation.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For more on the implementation details of the <span style="color:#273D56">Vec&lt;T&gt;</span> type, see “The Rustonomicon” (doc.rust-lang.org/nomicon/vec/vec.html).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Iterating over the values in a vector</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To access each element in a vector in turn, iterate through all of the elements rather than use indices to access one at a time.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">for</span> loop gets immutable references to each element in a vector of <span style="color:#273D56">i32</span> values and prints them.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.7:</b></span> Printing each element in a vector by iterating over the elements using a <span style="color:#273D56">for</span> loop</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec![100, 32, 57];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for i in &amp;v {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("{i}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We can also iterate over mutable references to each element in a mutable vector to change all the elements. This loop adds <span style="color:#273D56">50</span> to each element.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.8:</b></span> Iterating over mutable references to elements in a vector</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut v = vec![100, 32, 57];</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for i in &amp;mut v {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*i += 50;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Dereferencing, and why iteration is safe</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">*i += 50;</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To change the value that the mutable reference refers to, we have to use the <span style="color:#273D56">*</span> dereference operator to get to the value in <span style="color:#273D56">i</span> before we can use the <span style="color:#273D56">+=</span> operator. The dereference operator is covered in “Following the Reference to the Value” in Chapter 15.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Iteration and the borrow checker</h3>
+<p style="font-size:30px;line-height:1.45">Iterating over a vector, whether immutably or mutably, is safe because of the borrow checker’s rules.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>If we attempted to insert or remove items in the <span style="color:#273D56">for</span> loop bodies of Listings 8.7 and 8.8, we would get a compiler error similar to the one for Listing 8.6.</li>
+<li>The reference to the vector that the <span style="color:#273D56">for</span> loop holds prevents simultaneous modification of the whole vector.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using an enum to store multiple types</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Vectors can only store values that are of the same type. This can be inconvenient: there are definitely use cases for storing a list of items of different types.</p>
+<p style="font-size:30px;line-height:1.45">Fortunately, the variants of an enum are defined under the same enum type. So when we need one type to represent elements of different types, we can define and use an enum!</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 8.3.</b> Say we want to get values from a row in a spreadsheet in which some of the columns contain integers, some floating-point numbers, and some strings.</p>
+<ul style="font-size:26px;line-height:1.45">
+<li>Define an enum whose variants hold the different value types.</li>
+<li>All the enum variants are considered the same type: that of the enum.</li>
+<li>Then create a vector to hold that enum — and so, ultimately, hold different types (Listing 8.9).</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A vector of spreadsheet cells</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.9:</b></span> Defining an enum to store values of different types in one vector</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;enum SpreadsheetCell {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Int(i32),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Float(f64),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Text(String),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let row = vec![</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SpreadsheetCell::Int(3),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SpreadsheetCell::Text(String::from("blue")),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SpreadsheetCell::Float(10.12),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;];</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust needs to know what types will be in the vector at compile time so that it knows exactly how much memory on the heap will be needed to store each element.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Explicit element types, trait objects, and the Vec API</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We must also be explicit about what types are allowed in this vector. If Rust allowed a vector to hold any type, there would be a chance that one or more of the types would cause errors with the operations performed on the elements of the vector.</p>
+<p style="font-size:30px;line-height:1.45">Using an enum plus a <span style="color:#273D56">match</span> expression means that Rust will ensure at compile time that every possible case is handled, as discussed in Chapter 6.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> If you don’t know the exhaustive set of types a program will get at runtime to store in a vector, the enum technique won’t work. Instead, you can use a trait object, covered in Chapter 18.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Those are some of the most common ways to use vectors. Be sure to review the API documentation (std::vec::Vec) for the many useful methods the standard library defines on <span style="color:#273D56">Vec&lt;T&gt;</span>. For example, in addition to <span style="color:#273D56">push</span>, a <span style="color:#273D56">pop</span> method removes and returns the last element.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Dropping a vector drops its elements</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Like any other <span style="color:#273D56">struct</span>, a vector is freed when it goes out of scope, as annotated in Listing 8.10.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.10:</b></span> Showing where the vector and its elements are dropped</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;{</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let v = vec![1, 2, 3, 4];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// do stuff with v</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} // &lt;- v goes out of scope and is freed here</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>When the vector gets dropped, all of its contents are also dropped: the integers it holds are cleaned up.</li>
+<li>The borrow checker ensures that any references to contents of a vector are only used while the vector itself is valid.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Next collection type: <span style="color:#273D56">String</span>!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Strings, in more depth</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 4 introduced strings; now we look at them in more depth. New Rustaceans commonly get stuck on strings for a combination of three reasons, which together can seem difficult when you’re coming from other programming languages:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Rust’s propensity for exposing possible errors;</li>
+<li>strings being a more complicated data structure than many programmers give them credit for;</li>
+<li>UTF-8.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Strings belong in a chapter on collections because they are implemented as a collection of bytes, plus some methods that provide useful functionality when those bytes are interpreted as text.</p>
+<p style="font-size:30px;line-height:1.45">This section covers the operations on <span style="color:#273D56">String</span> that every collection type has — creating, updating and reading — and the ways <span style="color:#273D56">String</span> differs from the other collections: indexing into a <span style="color:#273D56">String</span> is complicated by the differences between how people and computers interpret <span style="color:#273D56">String</span> data.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Defining strings: str and String</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">First, what we mean by the term <i>string</i>. Rust has only one string type in the core language: the string slice <span style="color:#273D56">str</span>, usually seen in its borrowed form, <span style="color:#273D56">&amp;str</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.4 (String slice).</b></span> <span style="color:#273D56">str</span> / <span style="color:#273D56">&amp;str</span>: a reference to some UTF-8 encoded string data stored elsewhere (Chapter 4). String literals, for example, are stored in the program’s binary and are therefore string slices.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.5 (String).</b></span> <span style="color:#273D56">String</span>: a growable, mutable, owned, UTF-8 encoded string type, provided by Rust’s standard library rather than coded into the core language.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>When Rustaceans refer to “strings” in Rust, they might mean either the <span style="color:#273D56">String</span> or the string slice <span style="color:#273D56">&amp;str</span> type, not just one of them.</li>
+<li>This section is largely about <span style="color:#273D56">String</span>, but both types are used heavily in Rust’s standard library.</li>
+<li>Both <span style="color:#273D56">String</span> and string slices are UTF-8 encoded.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating a new String</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Many operations of <span style="color:#273D56">Vec&lt;T&gt;</span> are available with <span style="color:#273D56">String</span> too, because <span style="color:#273D56">String</span> is actually implemented as a wrapper around a vector of bytes with some extra guarantees, restrictions and capabilities. One function that works the same way for both is <span style="color:#273D56">new</span>, which creates an instance.</p>
+<p style="font-size:30px;line-height:1.45">Often we want to start the string with some initial data. For that, use the <span style="color:#273D56">to_string</span> method, available on any type that implements the <span style="color:#273D56">Display</span> trait, as string literals do.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.11:</b></span> Creating a new, empty <span style="color:#273D56">String</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s = String::new();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This line creates a new, empty string called <span style="color:#273D56">s</span>, into which we can then load data.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.12:</b></span> Using the <span style="color:#273D56">to_string</span> method to create a <span style="color:#273D56">String</span> from a string literal</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let data = "initial contents";</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = data.to_string();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// The method also works on a literal directly:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = "initial contents".to_string();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">String::from, or to_string</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 8.12 creates a string containing <span style="color:#273D56">initial contents</span>. We can also use the function <span style="color:#273D56">String::from</span> to create a <span style="color:#273D56">String</span> from a string literal. Listing 8.13 is equivalent to Listing 8.12, which uses <span style="color:#273D56">to_string</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.13:</b></span> Using the <span style="color:#273D56">String::from</span> function to create a <span style="color:#273D56">String</span> from a string literal</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = String::from("initial contents");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Because strings are used for so many things, there are many different generic APIs for strings, giving us a lot of options. Some of them can seem redundant, but they all have their place!</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> <span style="color:#273D56">String::from</span> and <span style="color:#273D56">to_string</span> do the same thing, so which one you choose is a matter of style and readability.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Strings hold any UTF-8 text</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Strings are UTF-8 encoded, so we can include any properly encoded data in them, as shown in Listing 8.14.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.14:</b></span> Storing greetings in different languages in strings</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("السلام عليكم");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("Dobrý den");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("Hello");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("שלום");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("नमस्ते");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("&#12371;&#12435;&#12395;&#12385;&#12399;");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("안녕하세요");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("&#20320;&#22909;");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("Olá");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("Здравствуйте");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let hello = String::from("Hola");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">All of these are valid <span style="color:#273D56">String</span> values.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Updating a String: appending with push_str</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">String</span> can grow in size and its contents can change, just like the contents of a <span style="color:#273D56">Vec&lt;T&gt;</span>, if you push more data into it. You can also conveniently use the <span style="color:#273D56">+</span> operator or the <span style="color:#273D56">format!</span> macro to concatenate <span style="color:#273D56">String</span> values.</p>
+<p style="font-size:30px;line-height:1.45">We can grow a <span style="color:#273D56">String</span> by using the <span style="color:#273D56">push_str</span> method to append a string slice, as shown in Listing 8.15.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.15:</b></span> Appending a string slice to a <span style="color:#273D56">String</span> using the <span style="color:#273D56">push_str</span> method</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s = String::from("foo");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s.push_str("bar");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">After these two lines, <span style="color:#273D56">s</span> will contain <span style="color:#273D56">foobar</span>. The <span style="color:#273D56">push_str</span> method takes a string slice because we don’t necessarily want to take ownership of the parameter. For example, in Listing 8.16 we want to be able to use <span style="color:#273D56">s2</span> after appending its contents to <span style="color:#273D56">s1</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">push_str borrows; push adds one character</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.16:</b></span> Using a string slice after appending its contents to a <span style="color:#273D56">String</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s1 = String::from("foo");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2 = "bar";</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s1.push_str(s2);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("s2 is {s2}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">If the <span style="color:#273D56">push_str</span> method took ownership of <span style="color:#273D56">s2</span>, we wouldn’t be able to print its value on the last line. However, this code works as we’d expect!</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">push</span> method takes a single character as a parameter and adds it to the <span style="color:#273D56">String</span>. Listing 8.17 adds the letter <i>l</i> to a <span style="color:#273D56">String</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.17:</b></span> Adding one character to a <span style="color:#273D56">String</span> value using <span style="color:#273D56">push</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut s = String::from("lo");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;s.push('l');</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">As a result, <span style="color:#273D56">s</span> will contain <span style="color:#273D56">lol</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Concatenating with the + operator</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Often you’ll want to combine two existing strings. One way is the <span style="color:#273D56">+</span> operator, as shown in Listing 8.18.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.18:</b></span> Using the <span style="color:#273D56">+</span> operator to combine two <span style="color:#273D56">String</span> values into a new <span style="color:#273D56">String</span> value</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s1 = String::from("Hello, ");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2 = String::from("world!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s3 = s1 + &amp;s2; // note s1 has been moved here and can no longer be used</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The string <span style="color:#273D56">s3</span> will contain <span style="color:#273D56">Hello, world!</span>. Why <span style="color:#273D56">s1</span> is no longer valid after the addition, and why we used a reference to <span style="color:#273D56">s2</span>, has to do with the signature of the method called when we use the <span style="color:#273D56">+</span> operator. It uses the <span style="color:#273D56">add</span> method, whose signature looks something like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn add(self, s: &amp;str) -&gt; String {</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading add’s signature: the &amp;str parameter</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the standard library, <span style="color:#273D56">add</span> is defined using generics and associated types; here concrete types are substituted in, as happens when we call it with <span style="color:#273D56">String</span> values (generics: Chapter 10). This signature gives the clues to the tricky bits of the <span style="color:#273D56">+</span> operator.</p>
+<p style="font-size:30px;line-height:1.45"><b>First</b>, <span style="color:#273D56">s2</span> has an <span style="color:#273D56">&amp;</span>: we add a <i>reference</i> of the second string to the first string. This is because of the <span style="color:#273D56">s</span> parameter of <span style="color:#273D56">add</span>: we can only add a string slice to a <span style="color:#273D56">String</span>; we can’t add two <span style="color:#273D56">String</span> values together. But wait — the type of <span style="color:#273D56">&amp;s2</span> is <span style="color:#273D56">&amp;String</span>, not <span style="color:#273D56">&amp;str</span> as the second parameter of <span style="color:#273D56">add</span> specifies. So why does Listing 8.18 compile?</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.6 (Deref coercion).</b></span> A conversion the compiler applies to an argument; here it coerces the <span style="color:#273D56">&amp;String</span> argument into a <span style="color:#273D56">&amp;str</span>, turning <span style="color:#273D56">&amp;s2</span> into <span style="color:#273D56">&amp;s2[..]</span> (covered in depth in Chapter 15).</p>
+</div>
+<p style="font-size:30px;line-height:1.45">That is why <span style="color:#273D56">&amp;s2</span> can be used in the call to <span style="color:#273D56">add</span>. And because <span style="color:#273D56">add</span> does not take ownership of the <span style="color:#273D56">s</span> parameter, <span style="color:#273D56">s2</span> will still be a valid <span style="color:#273D56">String</span> after this operation.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">add takes ownership of self</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45"><b>Second</b>, the signature shows that <span style="color:#273D56">add</span> takes ownership of <span style="color:#273D56">self</span>, because <span style="color:#273D56">self</span> does <i>not</i> have an <span style="color:#273D56">&amp;</span>. So <span style="color:#273D56">s1</span> in Listing 8.18 is moved into the <span style="color:#273D56">add</span> call and is no longer valid afterwards.</p>
+<p style="font-size:30px;line-height:1.45">Although <span style="color:#273D56">let s3 = s1 + &amp;s2;</span> looks like it will copy both strings and create a new one, it takes ownership of <span style="color:#273D56">s1</span>, appends a copy of the contents of <span style="color:#273D56">s2</span>, and returns ownership of the result: not a lot of copies, but an implementation more efficient than copying.</p>
+<p style="font-size:30px;line-height:1.45">To concatenate multiple strings, the behavior of the <span style="color:#273D56">+</span> operator gets unwieldy:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s1 = String::from("tic");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2 = String::from("tac");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s3 = String::from("toe");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = s1 + "-" + &amp;s2 + "-" + &amp;s3;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Concatenating with format!</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">At this point, <span style="color:#273D56">s</span> will be <span style="color:#273D56">tic-tac-toe</span>. With all of the <span style="color:#273D56">+</span> and <span style="color:#273D56">"</span> characters, it’s difficult to see what’s going on. For combining strings in more complicated ways, use the <span style="color:#273D56">format!</span> macro instead:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s1 = String::from("tic");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s2 = String::from("tac");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s3 = String::from("toe");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = format!("{s1}-{s2}-{s3}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>This code also sets <span style="color:#273D56">s</span> to <span style="color:#273D56">tic-tac-toe</span>.</li>
+<li>The <span style="color:#273D56">format!</span> macro works like <span style="color:#273D56">println!</span>, but instead of printing the output to the screen, it returns a <span style="color:#273D56">String</span> with the contents.</li>
+<li>The <span style="color:#273D56">format!</span> version is much easier to read, and the code it generates uses references, so the call doesn’t take ownership of any of its parameters.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Indexing into strings</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In many other programming languages, accessing individual characters in a string by referencing them by index is a valid and common operation. However, if you try to access parts of a <span style="color:#273D56">String</span> using indexing syntax in Rust, you’ll get an error. Consider the invalid code in Listing 8.19.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.19:</b></span> Attempting to use indexing syntax with a <span style="color:#273D56">String</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s1 = String::from("hi");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let h = s1[0];</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This code results in the error <span style="color:#273D56">E0277</span>, shown in full on the next slide. Its key lines:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">the type `str` cannot be indexed by `{integer}`</span></li>
+<li><span style="color:#273D56">string indices are ranges of `usize`</span></li>
+<li><span style="color:#273D56">you can use `.chars().nth()` or `.bytes().nth()`</span></li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The E0277 error: a String cannot be indexed</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling collections v0.1.0 (file:///projects/collections)</p>
+<p style="white-space:nowrap">error[E0277]: the type `str` cannot be indexed by `{integer}`</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:3:16</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;let h = s1[0];</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ string indices are ranges of `usize`</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= help: the trait `SliceIndex&lt;str&gt;` is not implemented for `{integer}`</p>
+<p style="white-space:nowrap">&#160;&#160;= note: you can use `.chars().nth()` or `.bytes().nth()`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for more information, see chapter 8 in The Book:</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&lt;https://doc.rust-lang.org/book/ch08-02-strings.html#indexing-into-strings&gt;</p>
+<p style="white-space:nowrap">help: `usize` implements trait `SliceIndex&lt;T&gt;`</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">&#160;&#160;= note: required for `String` to implement `Index&lt;{integer}&gt;`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0277`.</p>
+<p style="white-space:nowrap">error: could not compile `collections` (bin "collections") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Internal representation: a Vec&lt;u8&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error tells the story: Rust strings don’t support indexing. But why not? To answer, we need to discuss how Rust stores strings in memory. A <span style="color:#273D56">String</span> is a wrapper over a <span style="color:#273D56">Vec&lt;u8&gt;</span>. Look at some of the properly encoded UTF-8 strings from Listing 8.14. First, this one:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let hello = String::from("Hola");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Here <span style="color:#273D56">len</span> will be <span style="color:#273D56">4</span>: the vector storing the string <span style="color:#273D56">"Hola"</span> is 4 bytes long, because each of these letters takes 1 byte when encoded in UTF-8. The following line, however, may surprise you (the string begins with the capital Cyrillic letter <i>Ze</i>, not the number 3):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let hello = String::from("Здравствуйте");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Asked how long the string is, you might say 12. In fact, Rust’s answer is 24: the number of bytes it takes to encode “Здравствуйте” in UTF-8, because each Unicode scalar value in that string takes 2 bytes of storage. So an index into the string’s bytes will not always correlate to a valid Unicode scalar value.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why a byte index is rejected</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To demonstrate, consider this invalid Rust code:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let hello = "Здравствуйте";</p>
+<p style="white-space:nowrap">let answer = &amp;hello[0];</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>You already know that <span style="color:#273D56">answer</span> will not be <span style="color:#273D56">З</span>, the first letter.</li>
+<li>In UTF-8 the first byte of <span style="color:#273D56">З</span> is <span style="color:#273D56">208</span> and the second is <span style="color:#273D56">151</span>, so <span style="color:#273D56">answer</span> would seem to be <span style="color:#273D56">208</span> — but <span style="color:#273D56">208</span> is not a valid character on its own.</li>
+<li>Returning <span style="color:#273D56">208</span> is likely not what a user asking for the first letter wants; however, it is the only data Rust has at byte index 0.</li>
+<li>Users generally don’t want the byte value, even for Latin letters: if <span style="color:#273D56">&amp;"hi"[0]</span> were valid code returning the byte value, it would return <span style="color:#273D56">104</span>, not <span style="color:#273D56">h</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">So, to avoid returning an unexpected value and causing bugs that might not be discovered immediately, Rust doesn’t compile this code at all, and prevents misunderstandings early in the development process.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Bytes, scalar values, and grapheme clusters</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">From Rust’s perspective there are three relevant ways to look at strings. Take the Hindi word “नमस्ते”, written in the Devanagari script.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><b>Bytes</b> — stored as a vector of <span style="color:#273D56">u8</span> values: 18 bytes, how computers ultimately store this data</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[224, 164, 168, 224, 164, 174, 224, 164, 184, 224, 165, 141, 224, 164, 164,</p>
+<p style="white-space:nowrap">224, 165, 135]</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><b>Unicode scalar values</b> (Rust’s <span style="color:#273D56">char</span> type): six <span style="color:#273D56">char</span> values, but the fourth and sixth are not letters — they’re diacritics that don’t make sense on their own</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">['न', 'म', 'स', '्', 'त', 'े']</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><b>Grapheme clusters</b>: what a person would call the four letters that make up the Hindi word</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">["न", "म", "स्", "ते"]</p>
+</div>
+</div>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.7 (Grapheme cluster).</b></span> The way of looking at a string that comes closest to what we would call its <i>letters</i>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">No O(1) indexing; be specific with slices</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust provides different ways of interpreting the raw string data that computers store, so that each program can choose the interpretation it needs, no matter what human language the data is in.</p>
+<p style="font-size:30px;line-height:1.45">A final reason Rust doesn’t allow indexing into a <span style="color:#273D56">String</span> to get a character: indexing operations are expected to always take constant time (O(1)). That performance can’t be guaranteed with a <span style="color:#273D56">String</span>, because Rust would have to walk through the contents from the beginning to the index to determine how many valid characters there were.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Slicing strings</h3>
+<p style="font-size:30px;line-height:1.45">Indexing into a string is often a bad idea because it’s not clear what the return type of the string-indexing operation should be: a byte value, a character, a grapheme cluster, or a string slice. If you really need to use indices to create string slices, therefore, Rust asks you to be more specific: rather than indexing using <span style="color:#273D56">[]</span> with a single number, use <span style="color:#273D56">[]</span> with a range to create a string slice containing particular bytes.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Slicing by byte range, and its panic</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let hello = "Здравствуйте";</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let s = &amp;hello[0..4];</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">Here, <span style="color:#273D56">s</span> will be a <span style="color:#273D56">&amp;str</span> that contains the first 4 bytes of the string. Each of these characters is 2 bytes, which means <span style="color:#273D56">s</span> will be <span style="color:#273D56">Зд</span>.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Slicing only part of a character’s bytes, with something like <span style="color:#273D56">&amp;hello[0..1]</span>, makes Rust panic at runtime, in the same way as if an invalid index were accessed in a vector:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling collections v0.1.0 (file:///projects/collections)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.43s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/collections`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">thread 'main' (6017738) panicked at src/main.rs:4:19:</p>
+<p style="white-space:nowrap">end byte index 1 is not a char boundary; it is inside 'З' (bytes 0..2 of string)</p>
+<p style="white-space:nowrap">note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Iterating over strings: chars and bytes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Use caution when creating string slices with ranges, because doing so can crash your program. The best way to operate on pieces of strings is to be explicit about whether you want characters or bytes.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">For individual Unicode scalar values, use <span style="color:#273D56">chars</span>. On “Зд” it separates out and returns two values of type <span style="color:#273D56">char</span>; iterate over the result to access each one:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">for c in "Зд".chars() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{c}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:26px;line-height:1.45">This code prints:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">З</p>
+<p style="white-space:nowrap">д</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Alternatively, the <span style="color:#273D56">bytes</span> method returns each raw byte, which might be appropriate for your domain:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">for b in "Зд".bytes() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{b}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:26px;line-height:1.45">This prints the 4 bytes that make up this string:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">208</p>
+<p style="white-space:nowrap">151</p>
+<p style="white-space:nowrap">208</p>
+<p style="white-space:nowrap">180</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.2 Storing UTF-8 Encoded Text with Strings</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling the complexities of strings</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Be sure to remember that valid Unicode scalar values may be made up of more than 1 byte.</li>
+<li>Getting grapheme clusters from strings, as with the Devanagari script, is complex, so the standard library does not provide this functionality. Crates are available on crates.io if you need it.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To summarize, strings are complicated. Different programming languages make different choices about how to present this complexity to the programmer. Rust has chosen to make the correct handling of <span style="color:#273D56">String</span> data the default behavior for all Rust programs, which means programmers have to put more thought into handling UTF-8 data up front.</p>
+<p style="font-size:30px;line-height:1.45">This trade-off exposes more of the complexity of strings than is apparent in other programming languages, but it prevents you from having to handle errors involving non-ASCII characters later in your development life cycle.</p>
+<p style="font-size:30px;line-height:1.45">The good news: the standard library offers a lot of functionality built off the <span style="color:#273D56">String</span> and <span style="color:#273D56">&amp;str</span> types to handle these complex situations correctly. Check the documentation for useful methods like <span style="color:#273D56">contains</span>, for searching in a string, and <span style="color:#273D56">replace</span>, for substituting parts of a string with another string. Next, something a bit less complex: hash maps!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Hash maps</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The last of our common collections is the hash map. Many programming languages support this kind of data structure, often under a different name: <i>hash</i>, <i>map</i>, <i>object</i>, <i>hash table</i>, <i>dictionary</i> or <i>associative array</i>, to name a few.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.8 (Hash map).</b></span> The type <span style="color:#273D56">HashMap&lt;K, V&gt;</span> stores a mapping of keys of type <span style="color:#273D56">K</span> to values of type <span style="color:#273D56">V</span> using a <i>hashing function</i>, which determines how it places these keys and values into memory.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Hash maps are useful when you want to look up data not by using an index, as you can with vectors, but by using a key that can be of any type.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 8.9.</b> In a game, you could keep track of each team’s score in a hash map in which each key is a team’s name and the values are each team’s score. Given a team name, you can retrieve its score.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This section covers the basic API of hash maps; many more goodies hide in the functions the standard library defines on <span style="color:#273D56">HashMap&lt;K, V&gt;</span>. As always, check the standard library documentation for more information.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Creating a new hash map</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">One way to create an empty hash map is <span style="color:#273D56">new</span>, adding elements with <span style="color:#273D56">insert</span>. Listing 8.20 tracks the scores of two teams, <i>Blue</i> (starting with 10 points) and <i>Yellow</i> (starting with 50).</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.20:</b></span> Creating a new hash map and inserting some keys and values</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut scores = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 10);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Yellow"), 50);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We first <span style="color:#273D56">use</span> the <span style="color:#273D56">HashMap</span> from the collections portion of the standard library. As the least often used of the three common collections, it isn’t brought into scope automatically in the prelude, and it has less standard-library support: there’s no built-in macro to construct one, for example.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Homogeneous keys and values; get</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This <span style="color:#273D56">HashMap</span> has keys of type <span style="color:#273D56">String</span> and values of type <span style="color:#273D56">i32</span>. Just like vectors, hash maps store their data on the heap, and they are homogeneous: all of the keys must have the same type, and all of the values must have the same type.</p>
+<p style="font-size:30px;line-height:1.45">We get a value out of the hash map by providing its key to the <span style="color:#273D56">get</span> method, as in Listing 8.21.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.21:</b></span> Accessing the score for the Blue team stored in the hash map</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut scores = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 10);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Yellow"), 50);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let team_name = String::from("Blue");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let score = scores.get(&amp;team_name).copied().unwrap_or(0);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What get returns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let score = scores.get(&amp;team_name).copied().unwrap_or(0);</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Here, <span style="color:#273D56">score</span> will have the value associated with the Blue team, and the result will be <span style="color:#273D56">10</span>.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 8.1:</b></span> How Listing 8.21 handles the <span style="color:#273D56">Option</span> that <span style="color:#273D56">get</span> returns</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Step</th><th style="width:70%">Result</th></tr>
+<tr><td>get(&amp;team_name)</td><td>Option&lt;&amp;V&gt;: None if there’s no value for that key</td></tr>
+<tr><td>.copied()</td><td>Option&lt;i32&gt; rather than Option&lt;&amp;i32&gt;</td></tr>
+<tr><td>.unwrap_or(0)</td><td>sets score to zero if scores has no entry for the key</td></tr>
+</table>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Iterating over a hash map</h3>
+<p style="font-size:30px;line-height:1.45">We can iterate over each key-value pair in a hash map in a similar manner as we do with vectors, using a <span style="color:#273D56">for</span> loop — shown on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Iterating over key-value pairs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:20px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut scores = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 10);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Yellow"), 50);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for (key, value) in &amp;scores {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("{key}: {value}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">This code will print each pair in an arbitrary order:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Yellow: 50</p>
+<p style="white-space:nowrap">Blue: 10</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Managing ownership in hash maps</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Types that implement the <span style="color:#273D56">Copy</span> trait, like <span style="color:#273D56">i32</span>, are copied into the hash map. Owned values like <span style="color:#273D56">String</span> are moved, and the hash map becomes their owner (Listing 8.22).</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.22:</b></span> Showing that keys and values are owned by the hash map once they’re inserted</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let field_name = String::from("Favorite color");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let field_value = String::from("Blue");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut map = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;map.insert(field_name, field_value);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// field_name and field_value are invalid at this point, try using them and</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// see what compiler error you get!</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">field_name</span> and <span style="color:#273D56">field_value</span> can’t be used after being moved into the hash map by the call to <span style="color:#273D56">insert</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">References as values; updating a hash map</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If we insert references to values into the hash map, the values won’t be moved into the hash map. The values that the references point to must be valid for at least as long as the hash map is valid (more in “Validating References with Lifetimes”, Chapter 10).</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Updating a hash map</h3>
+<p style="font-size:30px;line-height:1.45">Although the number of key and value pairs is growable, each unique key can only have one value associated with it at a time. Not vice versa: both the Blue team and the Yellow team could have the value <span style="color:#273D56">10</span> stored in the <span style="color:#273D56">scores</span> hash map.</p>
+<p style="font-size:30px;line-height:1.45">To change the data, you must decide how to handle the case when a key already has a value assigned. You could:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>replace the old value with the new value, completely disregarding the old value;</li>
+<li>keep the old value and ignore the new one, only adding the new value if the key <i>doesn’t</i> already have a value;</li>
+<li>combine the old value and the new value.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Overwriting a value</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Inserting a key and value, then the same key with a different value, replaces the value associated with that key. Listing 8.23 calls <span style="color:#273D56">insert</span> twice, but the hash map will only contain one key-value pair, because both times we insert the value for the Blue team’s key.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.23:</b></span> Replacing a value stored with a particular key</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut scores = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 10);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 25);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{scores:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This code will print <span style="color:#273D56">{"Blue": 25}</span>. The original value of <span style="color:#273D56">10</span> has been overwritten.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding a key and value only if the key isn’t present</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">It’s common to check whether a particular key already exists in the hash map with a value, and then to act as follows:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>if the key does exist in the hash map, the existing value should remain the way it is;</li>
+<li>if the key doesn’t exist, insert it and a value for it.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Hash maps have a special API for this called <span style="color:#273D56">entry</span>, which takes the key you want to check as a parameter.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.10 (Entry).</b></span> The enum returned by the <span style="color:#273D56">entry</span> method; it represents a value that might or might not exist.</p>
+</div>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 8.11.</b> Say we want to check whether the key for the Yellow team has a value associated with it. If it doesn’t, we want to insert the value <span style="color:#273D56">50</span>, and the same for the Blue team. Using the <span style="color:#273D56">entry</span> API, the code looks like Listing 8.24 (next slide).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The entry API and or_insert</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.24:</b></span> Using the <span style="color:#273D56">entry</span> method to only insert if the key does not already have a value</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut scores = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.insert(String::from("Blue"), 10);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.entry(String::from("Yellow")).or_insert(50);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;scores.entry(String::from("Blue")).or_insert(50);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{scores:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">or_insert</span> method on <span style="color:#273D56">Entry</span> returns a mutable reference to the value for the corresponding <span style="color:#273D56">Entry</span> key if that key exists; if not, it inserts the parameter as the new value for this key and returns a mutable reference to the new value. This is much cleaner than writing the logic ourselves and plays more nicely with the borrow checker.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What Listing 8.24 prints; updating from the old value</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running the code in Listing 8.24 prints:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">{"Yellow": 50, "Blue": 10}</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The first call to <span style="color:#273D56">entry</span> inserts the key for the Yellow team with the value <span style="color:#273D56">50</span>, because the Yellow team doesn’t have a value already.</li>
+<li>The second call to <span style="color:#273D56">entry</span> does not change the hash map, because the Blue team already has the value <span style="color:#273D56">10</span>.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Updating a value based on the old value</h3>
+<p style="font-size:30px;line-height:1.45">Another common use case for hash maps is to look up a key’s value and then update it based on the old value. Listing 8.25 counts how many times each word appears in some text: a hash map with the words as keys, whose value we increment to keep track of how many times we’ve seen that word. The first time we see a word, we first insert the value <span style="color:#273D56">0</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Counting words with a hash map</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.25:</b></span> Counting occurrences of words using a hash map that stores words and counts</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let text = "hello world wonderful world";</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut map = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for word in text.split_whitespace() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;let count = map.entry(word).or_insert(0);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*count += 1;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{map:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">For each word, <span style="color:#273D56">entry(word).or_insert(0)</span> finds or creates the count, and <span style="color:#273D56">*count += 1</span> increments it.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What Listing 8.25 prints, and why it works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code will print:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">{"world": 2, "hello": 1, "wonderful": 1}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">You might see the same key-value pairs printed in a different order: recall from “Accessing Values in a Hash Map” that iterating over a hash map happens in an arbitrary order.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>The <span style="color:#273D56">split_whitespace</span> method returns an iterator over subslices, separated by whitespace, of the value in <span style="color:#273D56">text</span>.</li>
+<li>The <span style="color:#273D56">or_insert</span> method returns a mutable reference (<span style="color:#273D56">&amp;mut V</span>) to the value for the specified key. We store it in <span style="color:#273D56">count</span>, so to assign to that value we must first dereference <span style="color:#273D56">count</span> using the asterisk (<span style="color:#273D56">*</span>).</li>
+<li>The mutable reference goes out of scope at the end of the <span style="color:#273D56">for</span> loop, so all of these changes are safe and allowed by the borrowing rules.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Hashing functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">By default, <span style="color:#273D56">HashMap</span> uses a hashing function called <i>SipHash</i>, which can provide resistance to denial-of-service (DoS) attacks involving hash tables.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>SipHash is not the fastest hashing algorithm available, but the trade-off for better security that comes with the drop in performance is worth it.</li>
+<li>If you profile your code and find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different hasher.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.12 (Hasher).</b></span> A type that implements the <span style="color:#273D56">BuildHasher</span> trait. Traits and how to implement them are covered in Chapter 10.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">You don’t necessarily have to implement your own hasher from scratch: crates.io has libraries shared by other Rust users that provide hashers implementing many common hashing algorithms.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> On SipHash, see en.wikipedia.org/wiki/SipHash (the book’s footnote).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-51">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Summary and exercises</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Vectors, strings, and hash maps provide a large amount of the functionality programs need to store, access, and modify data. You should now be equipped to solve these exercises:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Given a list of integers, use a vector and return the median (when sorted, the value in the middle position) and mode (the value that occurs most often; a hash map will be helpful here) of the list.</li>
+<li>Convert strings to Pig Latin. The first consonant of each word is moved to the end of the word and <i>ay</i> is added, so <i>first</i> becomes <i>irst-fay</i>. Words that start with a vowel have <i>hay</i> added to the end instead (<i>apple</i> becomes <i>apple-hay</i>). Keep in mind the details about UTF-8 encoding!</li>
+<li>Using a hash map and vectors, create a text interface to let a user add employee names to a department in a company, e.g. “Add Sally to Engineering” or “Add Amir to Sales.” Then let the user retrieve a list of all people in a department, or all people in the company by department, sorted alphabetically.</li>
+</ol>
+<p style="font-size:26px;line-height:1.45">The standard library API documentation describes methods of vectors, strings, and hash maps that will help with these exercises!</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> We’re getting into more complex programs in which operations can fail, so it’s a perfect time to discuss error handling — the subject of Chapter 9.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

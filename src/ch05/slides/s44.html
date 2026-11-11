@@ -1,0 +1,21 @@
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Designing the can_hold signature</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We know we want a method, so it goes within the <span style="color:#273D56">impl Rectangle</span> block. Reading the calling code tells us the rest:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Name: <span style="color:#273D56">can_hold</span>.</li>
+<li>Parameter: an immutable borrow of another <span style="color:#273D56">Rectangle</span>. <span style="color:#273D56">rect1.can_hold(&amp;rect2)</span> passes in <span style="color:#273D56">&amp;rect2</span>, an immutable borrow of <span style="color:#273D56">rect2</span>, an instance of <span style="color:#273D56">Rectangle</span>.</li>
+<li>Why immutable: we only need to read <span style="color:#273D56">rect2</span> (writing would need a mutable borrow), and we want <span style="color:#273D56">main</span> to retain ownership of <span style="color:#273D56">rect2</span> so it can use it again after calling <span style="color:#273D56">can_hold</span>.</li>
+<li>Return value: a Boolean.</li>
+<li>Implementation: check whether the width and height of <span style="color:#273D56">self</span> are greater than the width and height of the other <span style="color:#273D56">Rectangle</span>, respectively.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Listing 5.15 (next) adds <span style="color:#273D56">can_hold</span> to the <span style="color:#273D56">impl</span> block from Listing 5.13.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>

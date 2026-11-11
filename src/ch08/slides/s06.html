@@ -1,0 +1,26 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.1 Storing Lists of Values with Vectors</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Panic with [] or None with get</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Indexing with []</h3>
+<p style="font-size:30px;line-height:1.45">When Listing 8.5 runs, the first, <span style="color:#273D56">[]</span> method causes the program to panic, because it references a nonexistent element.</p>
+<p style="font-size:30px;line-height:1.45">This method is best used when you want your program to crash if there’s an attempt to access an element past the end of the vector.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">The get method</h3>
+<p style="font-size:30px;line-height:1.45">Passed an index outside the vector, <span style="color:#273D56">get</span> returns <span style="color:#273D56">None</span> without panicking. Use it if accessing an element beyond the range of the vector may happen occasionally under normal circumstances. Your code then has logic to handle either <span style="color:#273D56">Some(&amp;element)</span> or <span style="color:#273D56">None</span> (Chapter 6).</p>
+</div>
+</div>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 8.2.</b> The index could come from a person entering a number. If they accidentally enter a number that’s too large and the program gets a <span style="color:#273D56">None</span> value, you could tell the user how many items are in the current vector and give them another chance to enter a valid value. That is more user-friendly than crashing the program due to a typo!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

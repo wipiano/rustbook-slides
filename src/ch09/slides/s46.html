@@ -1,0 +1,22 @@
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Invalid values, safety, and contracts</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">When your code performs an operation that could put a user at risk if it’s called using invalid values, your code should verify the values are valid first and panic if they aren’t. This is mostly for safety reasons: attempting to operate on invalid data can expose your code to vulnerabilities.</p>
+<p style="font-size:30px;line-height:1.45">This is the main reason the standard library will call <span style="color:#273D56">panic!</span> if you attempt an out-of-bounds memory access: trying to access memory that doesn’t belong to the current data structure is a common security problem.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.13 (Contract).</b></span> A function’s requirement on its inputs: its behavior is only guaranteed if the inputs meet particular requirements.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Panicking when the contract is violated makes sense, because a contract violation always indicates a caller-side bug, and it’s not a kind of error you want the calling code to have to explicitly handle.</li>
+<li>In fact, there’s no reasonable way for calling code to recover; the calling <i>programmers</i> need to fix the code.</li>
+<li>Contracts for a function, especially when a violation will cause a panic, should be explained in the API documentation for the function.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>

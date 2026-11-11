@@ -1,0 +1,27 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0382: counter moved in a previous iteration</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the main thread, we collect all the join handles and, as in Listing 16.2, call <span style="color:#273D56">join</span> on each to make sure all the threads finish. Then the main thread acquires the lock and prints the result. We hinted that this example wouldn’t compile. Now let’s find out why:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling shared-state v0.1.0 (file:///projects/shared-state)</p>
+<p style="white-space:nowrap">error[E0382]: borrow of moved value: `counter`</p>
+<p style="white-space:nowrap">&#160;&#160;--&gt; src/main.rs:21:29</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;5 |&#160;&#160;&#160;&#160;&#160;let counter = Mutex::new(0);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;------- move occurs because `counter` has type `std::sync::Mutex&lt;i32&gt;`,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;which does not implement the `Copy` trait</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">&#160;8 |&#160;&#160;&#160;&#160;&#160;for _ in 0..10 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;-------------- inside of this loop</p>
+</div>
+<p style="font-size:26px;line-height:1.45">The error continues on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

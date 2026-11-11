@@ -1,0 +1,34 @@
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.1 Variables and Mutability</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shadowing can change the type</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The other difference between <span style="color:#273D56">mut</span> and shadowing: because we’re effectively creating a new variable when we use <span style="color:#273D56">let</span> again, we can change the type of the value but reuse the same name. Say our program asks a user how many spaces they want between some text by inputting space characters, and then we want to store that input as a number:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;line-height:1.45"><b>Shadowing</b> — compiles:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let spaces = "&#160;&#160;&#160;";</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let spaces = spaces.len();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:26px;line-height:1.45">The first <span style="color:#273D56">spaces</span> is a string type, the second a number type. Shadowing spares us from coming up with different names, such as <span style="color:#273D56">spaces_str</span> and <span style="color:#273D56">spaces_num</span>; we can reuse the simpler <span style="color:#273D56">spaces</span> name.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;line-height:1.45"><b>mut</b> — if we try this instead, we get a compile-time error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut spaces = "&#160;&#160;&#160;";</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;spaces = spaces.len();</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>

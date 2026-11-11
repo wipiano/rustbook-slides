@@ -1,0 +1,21 @@
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Deref coercion in functions and methods</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 15.7 (Deref coercion).</b></span> A conversion of a reference to a type that implements the <span style="color:#273D56">Deref</span> trait into a reference to another type. For example, it can convert <span style="color:#273D56">&amp;String</span> to <span style="color:#273D56">&amp;str</span>, because <span style="color:#273D56">String</span> implements <span style="color:#273D56">Deref</span> such that it returns <span style="color:#273D56">&amp;str</span>.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>It is a convenience Rust performs on arguments to functions and methods, and works only on types that implement <span style="color:#273D56">Deref</span>.</li>
+<li>It happens automatically when we pass a reference to a particular type’s value as an argument to a function or method whose parameter type doesn’t match it.</li>
+<li>A sequence of calls to the <span style="color:#273D56">deref</span> method converts the type we provided into the type the parameter needs.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Deref coercion was added to Rust so that programmers writing function and method calls don’t need to add as many explicit references and dereferences with <span style="color:#273D56">&amp;</span> and <span style="color:#273D56">*</span>. It also lets us write more code that can work for either references or smart pointers.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>

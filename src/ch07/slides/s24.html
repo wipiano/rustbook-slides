@@ -1,0 +1,23 @@
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Public APIs, and packages with a binary and a library</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you share your library crate so other projects can use your code, your public API is your contract with users of your crate: it determines how they can interact with your code. Managing changes to a public API so people can depend on your crate is beyond the scope of this book; see the Rust API Guidelines (rust-lang.github.io/api-guidelines).</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Best practices for packages with a binary and a library</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>A package can contain both a <i>src/main.rs</i> binary crate root and a <i>src/lib.rs</i> library crate root; both crates have the package name by default.</li>
+<li>Typically the binary crate has just enough code to start an executable that calls code defined in the library crate, so other projects benefit from the most functionality, because the library crate’s code can be shared.</li>
+<li>Define the module tree in <i>src/lib.rs</i>. Public items can then be used in the binary crate by starting paths with the name of the package.</li>
+<li>The binary crate becomes a user of the library crate just like a completely external crate: it can only use the public API. This helps you design a good API — you’re not only the author but also a client!</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Chapter 12 demonstrates this organizational practice with a command line program containing both a binary crate and a library crate.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What Miri can and cannot tell you</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Thanks to Miri, we now know there is a risk of undefined behavior in Listing 20.7, and we can think about how to make the code safe. In some cases, Miri can even make recommendations about how to fix errors.</p>
+<p style="font-size:30px;line-height:1.45">Miri doesn’t catch everything you might get wrong when writing unsafe code:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>It is a dynamic analysis tool, so it only catches problems with code that actually gets run. Use it in conjunction with good testing techniques to increase your confidence in your unsafe code.</li>
+<li>It does not cover every possible way your code can be unsound.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Put another way: if Miri <i>does</i> catch a problem, you know there’s a bug, but just because Miri <i>doesn’t</i> catch a bug doesn’t mean there isn’t a problem. It can catch a lot, though. Try running it on the other examples of unsafe code in this chapter and see what it says! More about Miri: its GitHub repository (github.com/rust-lang/miri).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>

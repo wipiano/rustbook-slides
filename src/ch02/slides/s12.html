@@ -1,0 +1,20 @@
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Handling the warning; println! placeholders</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust warns that you haven’t used the <span style="color:#273D56">Result</span> value returned from <span style="color:#273D56">read_line</span>, indicating that the program hasn’t handled a possible error.</p>
+<p style="font-size:30px;line-height:1.45">The right way to suppress the warning is to actually write error-handling code, but in our case we just want to crash the program when a problem occurs, so we can use <span style="color:#273D56">expect</span>. Recovering from errors is the subject of Chapter 9.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Printing values with println! placeholders</h3>
+<p style="font-size:30px;line-height:1.45">Aside from the closing curly bracket, there’s only one more line to discuss in the code so far:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">println!("You guessed: {guess}");</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This line prints the string that now contains the user’s input. The <span style="color:#273D56">{}</span> set of curly brackets is a placeholder: think of <span style="color:#273D56">{}</span> as little crab pincers that hold a value in place.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>

@@ -1,0 +1,21 @@
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A second language hidden inside Rust</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">All the code so far has had Rust’s memory safety guarantees enforced at compile time. However, Rust has a second language hidden inside it that doesn’t enforce these guarantees.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.1 (Unsafe Rust).</b></span> A part of Rust that works just like regular Rust but doesn’t enforce the memory safety guarantees, giving us extra superpowers.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Why it exists</h3>
+<ol style="font-size:30px;line-height:1.45">
+<li><b>Static analysis is conservative.</b> When the compiler tries to determine whether code upholds the guarantees, it’s better to reject some valid programs than to accept some invalid ones. Code that <i>might</i> be okay is rejected if the compiler lacks the information to be confident. Unsafe code tells the compiler, “Trust me, I know what I’m doing.” You use it at your own risk: used incorrectly, it can cause memory unsafety problems such as null pointer dereferencing.</li>
+<li><b>The hardware is inherently unsafe.</b> Without unsafe operations you couldn’t do certain tasks. Rust needs to allow low-level systems programming — directly interacting with the operating system, or even writing your own operating system — which is one of the goals of the language.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>

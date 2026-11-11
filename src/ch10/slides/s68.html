@@ -1,0 +1,19 @@
+<section id="s68" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the borrow checker can’t decide</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The help text reveals that the return type needs a generic lifetime parameter on it, because Rust can’t tell whether the reference being returned refers to <span style="color:#273D56">x</span> or <span style="color:#273D56">y</span>. Actually, we don’t know either: the <span style="color:#273D56">if</span> block in the body returns a reference to <span style="color:#273D56">x</span> and the <span style="color:#273D56">else</span> block returns a reference to <span style="color:#273D56">y</span>!</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>When defining this function, we don’t know the concrete values that will be passed in, so we don’t know whether the <span style="color:#273D56">if</span> case or the <span style="color:#273D56">else</span> case will execute.</li>
+<li>We also don’t know the concrete lifetimes of the references that will be passed in, so we can’t look at the scopes as in Listings 10.17 and 10.18 to determine whether the reference we return will always be valid.</li>
+<li>The borrow checker can’t determine this either, because it doesn’t know how the lifetimes of <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> relate to the lifetime of the return value.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">To fix this error, we add generic lifetime parameters that define the relationship between the references, so the borrow checker can perform its analysis.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">69</p>
+</div>
+</section>

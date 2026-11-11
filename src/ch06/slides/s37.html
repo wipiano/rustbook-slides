@@ -1,0 +1,23 @@
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.3 Concise Control Flow with if let and let...else</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The same logic with if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Instead, we could write this in a shorter way using <span style="color:#273D56">if let</span>. The following code behaves the same as the <span style="color:#273D56">match</span> in Listing 6.6:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let config_max = Some(3u8);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Some(max) = config_max {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("The maximum is configured to be {max}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 6.11 (if let).</b></span> A construct taking a pattern and an expression separated by an equal sign. It works the same way as a <span style="color:#273D56">match</span> where the expression is given to the <span style="color:#273D56">match</span> and the pattern is its first arm; its block runs only if the value matches the pattern.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Here the pattern is <span style="color:#273D56">Some(max)</span>, and <span style="color:#273D56">max</span> binds to the value inside the <span style="color:#273D56">Some</span>. We can then use <span style="color:#273D56">max</span> in the body of the <span style="color:#273D56">if let</span> block in the same way we used <span style="color:#273D56">max</span> in the corresponding <span style="color:#273D56">match</span> arm. The code in the <span style="color:#273D56">if let</span> block only runs if the value matches the pattern.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>

@@ -1,0 +1,21 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 13 · 13.1 Closures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How giveaway uses a closure</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The code sticks to concepts already learned, except for the body of <span style="color:#273D56">giveaway</span>, which uses a closure. It gets the user preference as a parameter of type <span style="color:#273D56">Option&lt;ShirtColor&gt;</span> and calls <span style="color:#273D56">unwrap_or_else</span> on <span style="color:#273D56">user_preference</span>. The standard library’s <span style="color:#273D56">unwrap_or_else</span> method on <span style="color:#273D56">Option&lt;T&gt;</span> takes one argument: a closure without any arguments that returns a value <span style="color:#273D56">T</span> (the type stored in the <span style="color:#273D56">Some</span> variant, here <span style="color:#273D56">ShirtColor</span>).</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>If the <span style="color:#273D56">Option&lt;T&gt;</span> is <span style="color:#273D56">Some</span>, <span style="color:#273D56">unwrap_or_else</span> returns the value from within the <span style="color:#273D56">Some</span>.</li>
+<li>If it is <span style="color:#273D56">None</span>, <span style="color:#273D56">unwrap_or_else</span> calls the closure and returns the value returned by the closure.</li>
+</ul>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">user_preference.unwrap_or_else(|| self.most_stocked())</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The closure expression <span style="color:#273D56">|| self.most_stocked()</span> takes no parameters (if it had any, they would appear between the two vertical pipes). Its body calls <span style="color:#273D56">self.most_stocked()</span>. The closure is defined here, and the implementation of <span style="color:#273D56">unwrap_or_else</span> will evaluate it later if the result is needed.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.13 Functional Language Features: Iterators and Closures</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

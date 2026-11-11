@@ -1,0 +1,22 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · Removing Duplication by Extracting a Function</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Three steps to remove duplication</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In summary, the steps we took to change the code from Listing 10.2 to Listing 10.3:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Identify duplicate code.</li>
+<li>Extract the duplicate code into the body of the function, and specify the inputs and return values of that code in the function signature.</li>
+<li>Update the two instances of duplicated code to call the function instead.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Next, we use these same steps with generics to reduce code duplication. In the same way that the function body can operate on an abstract <span style="color:#273D56">list</span> instead of specific values, generics allow code to operate on abstract types.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 10.2.</b> Say we had two functions: one that finds the largest item in a slice of <span style="color:#273D56">i32</span> values and one that finds the largest item in a slice of <span style="color:#273D56">char</span> values. How would we eliminate that duplication? Section 10.1 finds out.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

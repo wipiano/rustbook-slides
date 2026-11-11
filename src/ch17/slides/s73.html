@@ -1,0 +1,18 @@
+<section id="s73" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why argument order matters; the result</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The implementation of <span style="color:#273D56">trpl::select</span> is not fair: it always polls arguments in the order in which they are passed (other <span style="color:#273D56">select</span> implementations randomly choose which argument to poll first). So we pass <span style="color:#273D56">future_to_try</span> to <span style="color:#273D56">select</span> first, so it gets a chance to complete even if <span style="color:#273D56">max_time</span> is a very short duration. If <span style="color:#273D56">future_to_try</span> finishes first, <span style="color:#273D56">select</span> returns <span style="color:#273D56">Left</span> with its output; if the timer finishes first, <span style="color:#273D56">select</span> returns <span style="color:#273D56">Right</span> with the timer’s output of <span style="color:#273D56">()</span>.</p>
+<p style="font-size:30px;line-height:1.45">If <span style="color:#273D56">future_to_try</span> succeeds and we get a <span style="color:#273D56">Left(output)</span>, we return <span style="color:#273D56">Ok(output)</span>. If the sleep timer elapses instead and we get a <span style="color:#273D56">Right(())</span>, we ignore the <span style="color:#273D56">()</span> with <span style="color:#273D56">_</span> and return <span style="color:#273D56">Err(max_time)</span>.</p>
+<p style="font-size:30px;line-height:1.45">With that, we have a working <span style="color:#273D56">timeout</span> built out of two other async helpers. Running the code prints the failure mode after the timeout:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">Failed after 2 seconds</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">74</p>
+</div>
+</section>

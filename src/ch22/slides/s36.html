@@ -1,0 +1,34 @@
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Fix your code with rustfix: cargo fix</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The warning suggests removing the <span style="color:#273D56">mut</span> keyword. We can apply that suggestion automatically with the <span style="color:#273D56">rustfix</span> tool by running <span style="color:#273D56">cargo fix</span>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">Running <span style="color:#273D56">cargo fix</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo fix</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Checking myprogram v0.1.0 (file:///projects/myprogram)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;Fixing src/main.rs (1 fix)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished dev [unoptimized + debuginfo] target(s) in 0.59s</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> afterwards — changed by <span style="color:#273D56">cargo fix</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 42;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{x}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The variable <span style="color:#273D56">x</span> is now immutable, and the warning no longer appears. You can also use <span style="color:#273D56">cargo fix</span> to transition your code between different Rust editions (Appendix E).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>

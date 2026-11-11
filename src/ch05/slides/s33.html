@@ -1,0 +1,33 @@
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 5 · 5.3 Methods</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Methods versus functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 5.14 (Method).</b></span> A function defined within the context of a struct (or an enum or a trait object), whose first parameter is always <span style="color:#273D56">self</span>, representing the instance of the struct the method is being called on.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Like functions, methods…</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>are declared with the <span style="color:#273D56">fn</span> keyword and a name;</li>
+<li>can have parameters and a return value;</li>
+<li>contain code that runs when the method is called from somewhere else.</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Unlike functions, methods…</h3>
+<ul style="font-size:30px;line-height:1.45">
+<li>are defined within the context of a struct — or an enum (Chapter 6) or a trait object (Chapter 18);</li>
+<li>always take <span style="color:#273D56">self</span> as their first parameter.</li>
+</ul>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Listing 5.13 (next) changes the <span style="color:#273D56">area</span> function, which has a <span style="color:#273D56">Rectangle</span> instance as a parameter, into an <span style="color:#273D56">area</span> method defined on the <span style="color:#273D56">Rectangle</span> struct.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.5 Using Structs to Structure Related Data</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>

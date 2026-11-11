@@ -1,0 +1,18 @@
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 7 · 7.3 Paths for Referring to an Item in the Module Tree</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A public module doesn’t make its contents public</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">What happened? Adding the <span style="color:#273D56">pub</span> keyword in front of <span style="color:#273D56">mod hosting</span> makes the module public. With this change, if we can access <span style="color:#273D56">front_of_house</span>, we can access <span style="color:#273D56">hosting</span>.</p>
+<p style="font-size:30px;line-height:1.45">But the <i>contents</i> of <span style="color:#273D56">hosting</span> are still private; making the module public doesn’t make its contents public. The <span style="color:#273D56">pub</span> keyword on a module only lets code in its ancestor modules refer to it, not access its inner code.</p>
+<p style="font-size:30px;line-height:1.45">Because modules are containers, there’s not much we can do by only making the module public; we need to go further and choose to make one or more of the items within the module public as well.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The errors in Listing 7.6 say that the <span style="color:#273D56">add_to_waitlist</span> function is private. The privacy rules apply to structs, enums, functions, and methods as well as modules.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.7 Packages, Crates, and Modules</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>

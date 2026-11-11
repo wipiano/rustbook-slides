@@ -1,0 +1,19 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Pre-opened connections; then reading the request</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Browsers also sometimes open multiple connections to the server without sending any requests, so that if they <i>do</i> later send requests, those happen more quickly. Our server sees each such connection, whether or not a request is sent over it. Many versions of Chrome-based browsers do this; you can disable that optimization with private browsing mode or by using a different browser.</p>
+<p style="font-size:30px;line-height:1.45">The important factor is that we’ve successfully gotten a handle to a TCP connection!</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Stop the program with ctrl-C when you’re done running a particular version of the code. Then restart it with <span style="color:#273D56">cargo run</span> after each set of code changes, to make sure you’re running the newest code.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Reading the request</h3>
+<p style="font-size:30px;line-height:1.45">To separate the concerns of first getting a connection and then taking some action with it, we start a new function for processing connections. The new <span style="color:#273D56">handle_connection</span> function reads data from the TCP stream and prints it, so we can see the data the browser sends (Listing 21.2).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

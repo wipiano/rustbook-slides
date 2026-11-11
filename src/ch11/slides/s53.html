@@ -1,0 +1,19 @@
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 11 · 11.2 Controlling How Tests Are Run</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What cargo test does by default</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Now that you know several ways to write tests, let’s look at what happens when we run them and explore the options we can use with <span style="color:#273D56">cargo test</span>.</p>
+<p style="font-size:30px;line-height:1.45">Just as <span style="color:#273D56">cargo run</span> compiles your code and then runs the resultant binary, <span style="color:#273D56">cargo test</span> compiles your code in test mode and runs the resultant test binary. By default, that binary runs all the tests in parallel and captures output generated during test runs, preventing it from being displayed and making the output related to the test results easier to read. Command line options change this default behavior.</p>
+<p style="font-size:30px;line-height:1.45">Some options go to <span style="color:#273D56">cargo test</span>, and some go to the resultant test binary. To separate them, list the arguments for <span style="color:#273D56">cargo test</span>, then the separator <span style="color:#273D56">--</span>, then the ones for the test binary. Each command below displays the options you can use on its side of the separator; they are also documented in the “Tests” section of <i>The rustc Book</i>.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo test --help</p>
+<p style="white-space:nowrap">$ cargo test -- --help</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.11 Writing Automated Tests</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>

@@ -1,0 +1,22 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.2 Transfer Data Between Threads with Message Passing</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">mpsc: multiple producer, single consumer</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A new channel is created with the <span style="color:#273D56">mpsc::channel</span> function.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.11 (mpsc).</b></span> Short for <i>multiple producer, single consumer</i>: the way Rust’s standard library implements channels, a channel can have multiple <i>sending</i> ends that produce values but only one <i>receiving</i> end that consumes those values.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Imagine multiple streams flowing together into one big river: everything sent down any of the streams will end up in one river at the end. We start with a single producer, and add multiple producers once this example works.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">mpsc::channel</span> returns a tuple: the first element is the sending end — the transmitter — and the second is the receiving end — the receiver.</li>
+<li>The abbreviations <span style="color:#273D56">tx</span> and <span style="color:#273D56">rx</span> are traditionally used in many fields for <i>transmitter</i> and <i>receiver</i>, so the variables are named that way.</li>
+<li>The <span style="color:#273D56">let</span> statement uses a pattern that destructures the tuple (patterns: Chapter 19) — a convenient way to extract the pieces of the tuple returned by <span style="color:#273D56">mpsc::channel</span>.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.2 Using Trait Objects to Abstract over Shared Behavior</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">When the set of types must stay open</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 8 noted that vectors can store elements of only one type. Listing 8.9 worked around this with a <span style="color:#273D56">SpreadsheetCell</span> enum whose variants hold integers, floats, and text, so a vector could represent a row of cells. That is a perfectly good solution when the interchangeable items are a fixed set of types known when the code is compiled.</p>
+<p style="font-size:30px;line-height:1.45">Sometimes, though, we want the library user to be able to extend the set of valid types. Example: a GUI tool that iterates through a list of items, calling a <span style="color:#273D56">draw</span> method on each to draw it to the screen — a common technique for GUI tools. We’ll create a library crate called <span style="color:#273D56">gui</span> with the structure of a GUI library. It might include types such as <span style="color:#273D56">Button</span> or <span style="color:#273D56">TextField</span>, and <span style="color:#273D56">gui</span> users will want to create their own drawable types: one programmer might add an <span style="color:#273D56">Image</span>, another a <span style="color:#273D56">SelectBox</span>.</p>
+<p style="font-size:30px;line-height:1.45">When writing the library, we can’t know and define every type other programmers might create. But we do know that <span style="color:#273D56">gui</span> must keep track of many values of different types and call <span style="color:#273D56">draw</span> on each. It doesn’t need to know what exactly happens when <span style="color:#273D56">draw</span> is called — only that the value has that method available.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>

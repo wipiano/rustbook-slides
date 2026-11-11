@@ -1,0 +1,24 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.1 Unsafe Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Superpower 1: dereferencing a raw pointer</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Chapter 4 (“Dangling References”) noted that the compiler ensures references are always valid. Unsafe Rust has two new types, similar to references:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.3 (Raw pointers).</b></span> Pointer types written <span style="color:#273D56">*const T</span> (immutable) and <span style="color:#273D56">*mut T</span> (mutable). The asterisk isn’t the dereference operator; it’s part of the type name. Here, <i>immutable</i> means the pointer can’t be directly assigned to after being dereferenced.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Different from references and smart pointers, raw pointers:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>are allowed to ignore the borrowing rules by having both immutable and mutable pointers or multiple mutable pointers to the same location;</li>
+<li>aren’t guaranteed to point to valid memory;</li>
+<li>are allowed to be null;</li>
+<li>don’t implement any automatic cleanup.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">By opting out of having Rust enforce these guarantees, you give up guaranteed safety in exchange for greater performance or the ability to interface with another language or hardware where Rust’s guarantees don’t apply.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

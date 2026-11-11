@@ -1,0 +1,19 @@
+<section id="s57" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Errors at compile time, not at runtime</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Blanket implementations appear in the documentation for the trait in the “Implementors” section.</p>
+<p style="font-size:30px;line-height:1.45">Traits and trait bounds let us write code that uses generic type parameters to reduce duplication, but also specify to the compiler that we want the generic type to have particular behavior. The compiler can then use the trait bound information to check that all the concrete types used with our code provide the correct behavior.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In dynamically typed languages, we would get an error at runtime if we called a method on a type that didn’t define the method.</li>
+<li>Rust moves these errors to compile time, so we’re forced to fix the problems before our code is even able to run.</li>
+<li>We don’t have to write code that checks for behavior at runtime, because we’ve already checked at compile time. This improves performance without giving up the flexibility of generics.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">58</p>
+</div>
+</section>

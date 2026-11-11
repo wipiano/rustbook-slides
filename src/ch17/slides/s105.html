@@ -1,0 +1,31 @@
+<section id="s105" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.5 A Closer Look at the Traits for Async</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The Stream trait: Iterator meets Future</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Streams are similar to asynchronous iterators. Unlike <span style="color:#273D56">Iterator</span> and <span style="color:#273D56">Future</span>, however, <span style="color:#273D56">Stream</span> has no definition in the standard library as of this writing, but there <i>is</i> a very common definition from the <span style="color:#273D56">futures</span> crate used throughout the ecosystem.</p>
+<p style="font-size:30px;line-height:1.45">From <span style="color:#273D56">Iterator</span>, we have the idea of a sequence: its <span style="color:#273D56">next</span> method provides an <span style="color:#273D56">Option&lt;Self::Item&gt;</span>. From <span style="color:#273D56">Future</span>, we have the idea of readiness over time: its <span style="color:#273D56">poll</span> method provides a <span style="color:#273D56">Poll&lt;Self::Output&gt;</span>. To represent a sequence of items that become ready over time, a <span style="color:#273D56">Stream</span> trait puts those features together.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::pin::Pin;</p>
+<p style="white-space:nowrap">use std::task::{Context, Poll};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">trait Stream {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;type Item;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn poll_next(</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self: Pin&lt;&amp;mut Self&gt;,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cx: &amp;mut Context&lt;'_&gt;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;) -&gt; Poll&lt;Option&lt;Self::Item&gt;&gt;;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">106</p>
+</div>
+</section>

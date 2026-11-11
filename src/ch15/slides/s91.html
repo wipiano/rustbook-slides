@@ -1,0 +1,15 @@
+<section id="s91" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.6 Reference Cycles Can Leak Memory</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding a reference from a child to its parent</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Listing 15.27 we clone the <span style="color:#273D56">Rc&lt;Node&gt;</span> in <span style="color:#273D56">leaf</span> and store it in <span style="color:#273D56">branch</span>, so the <span style="color:#273D56">Node</span> in <span style="color:#273D56">leaf</span> now has two owners: <span style="color:#273D56">leaf</span> and <span style="color:#273D56">branch</span>. We can get from <span style="color:#273D56">branch</span> to <span style="color:#273D56">leaf</span> through <span style="color:#273D56">branch.children</span>, but there’s no way to get from <span style="color:#273D56">leaf</span> to <span style="color:#273D56">branch</span>: <span style="color:#273D56">leaf</span> has no reference to <span style="color:#273D56">branch</span> and doesn’t know they’re related. We want <span style="color:#273D56">leaf</span> to know that <span style="color:#273D56">branch</span> is its parent.</p>
+<p style="font-size:30px;line-height:1.45">So we add a <span style="color:#273D56">parent</span> field to <span style="color:#273D56">Node</span>. The trouble is deciding its type. It can’t contain an <span style="color:#273D56">Rc&lt;T&gt;</span>: that would create a reference cycle, with <span style="color:#273D56">leaf.parent</span> pointing to <span style="color:#273D56">branch</span> and <span style="color:#273D56">branch.children</span> pointing to <span style="color:#273D56">leaf</span>, and their <span style="color:#273D56">strong_count</span> values would never be 0.</p>
+<p style="font-size:30px;line-height:1.45">Thinking about the relationships another way: a parent node should own its children — if a parent is dropped, its child nodes should be dropped as well. But a child should not own its parent — if we drop a child node, the parent should still exist. This is a case for weak references!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">92</p>
+</div>
+</section>

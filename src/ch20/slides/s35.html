@@ -1,0 +1,31 @@
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.2 Advanced Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Associated types versus generics</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 20.14:</b></span> A hypothetical definition of the <span style="color:#273D56">Iterator</span> trait using generics</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub trait Iterator&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn next(&amp;mut self) -&gt; Option&lt;T&gt;;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">With generics</h3>
+<p style="font-size:30px;line-height:1.45">We must annotate the types in each implementation. Because we could also implement <span style="color:#273D56">Iterator&lt;String&gt; for Counter</span> or any other type, there could be multiple implementations of <span style="color:#273D56">Iterator</span> for <span style="color:#273D56">Counter</span>, each with different concrete types. Using <span style="color:#273D56">next</span> on <span style="color:#273D56">Counter</span> would need type annotations to pick the implementation.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">With associated types</h3>
+<p style="font-size:30px;line-height:1.45">We can’t implement a trait on a type multiple times, so no annotations are needed. With Listing 20.13 we choose the type of <span style="color:#273D56">Item</span> only once, because there can be only one <span style="color:#273D56">impl Iterator for Counter</span>; we don’t specify an iterator of <span style="color:#273D56">u32</span> everywhere we call <span style="color:#273D56">next</span>.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Associated types are also part of the trait’s contract: implementors must provide the stand-in type. They often have a name describing how the type will be used; documenting them in the API docs is good practice.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>

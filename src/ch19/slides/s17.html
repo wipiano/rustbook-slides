@@ -1,0 +1,32 @@
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">error[E0005]: refutable pattern in local binding</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">error[E0005]: refutable pattern in local binding</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:3:9</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;let Some(x) = some_option_value;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^ pattern `None` not covered</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `let` bindings require an "irrefutable pattern", like a `struct` or</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;an `enum` with only one variant</p>
+<p style="white-space:nowrap">&#160;&#160;= note: for more information, visit https://doc.rust-lang.org/book/ch19-02-refutability.html</p>
+<p style="white-space:nowrap">&#160;&#160;= note: the matched value is of type `Option&lt;i32&gt;`</p>
+<p style="white-space:nowrap">help: you might want to use `let...else` to handle the variant that isn't matched</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;let Some(x) = some_option_value else { todo!() };</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;++++++++++++++++</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0005`.</p>
+<p style="white-space:nowrap">error: could not compile `patterns` (bin "patterns") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We didn’t (and couldn’t!) cover every valid value with <span style="color:#273D56">Some(x)</span>, so Rust rightfully produces a compiler error.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>

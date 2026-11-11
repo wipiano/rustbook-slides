@@ -1,0 +1,36 @@
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.2 The match Control Flow Construct</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Sorting coins with match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.3:</b></span> An enum and a <span style="color:#273D56">match</span> expression that has the variants of the enum as its patterns</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Penny,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Nickel,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Dime,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quarter,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn value_in_cents(coin: Coin) -&gt; u8 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match coin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Penny =&gt; 1,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Nickel =&gt; 5,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Dime =&gt; 10,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Coin::Quarter =&gt; 25,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s break down the <span style="color:#273D56">match</span> in <span style="color:#273D56">value_in_cents</span>. First we list the <span style="color:#273D56">match</span> keyword followed by an expression, which in this case is the value <span style="color:#273D56">coin</span>.</p>
+<p style="font-size:30px;line-height:1.45">This seems very similar to a conditional expression used with <span style="color:#273D56">if</span>, but there’s a big difference: with <span style="color:#273D56">if</span>, the condition needs to evaluate to a Boolean value, but here it can be any type. The type of <span style="color:#273D56">coin</span> in this example is the <span style="color:#273D56">Coin</span> enum that we defined on the first line.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>

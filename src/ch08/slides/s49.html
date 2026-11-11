@@ -1,0 +1,24 @@
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Hashing functions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">By default, <span style="color:#273D56">HashMap</span> uses a hashing function called <i>SipHash</i>, which can provide resistance to denial-of-service (DoS) attacks involving hash tables.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>SipHash is not the fastest hashing algorithm available, but the trade-off for better security that comes with the drop in performance is worth it.</li>
+<li>If you profile your code and find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different hasher.</li>
+</ul>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 8.12 (Hasher).</b></span> A type that implements the <span style="color:#273D56">BuildHasher</span> trait. Traits and how to implement them are covered in Chapter 10.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">You don’t necessarily have to implement your own hasher from scratch: crates.io has libraries shared by other Rust users that provide hashers implementing many common hashing algorithms.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> On SipHash, see en.wikipedia.org/wiki/SipHash (the book’s footnote).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>

@@ -1,0 +1,15 @@
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The workflow encoded into the type system</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> methods take ownership of <span style="color:#273D56">self</span>, consuming the <span style="color:#273D56">DraftPost</span> and <span style="color:#273D56">PendingReviewPost</span> instances and transforming them into a <span style="color:#273D56">PendingReviewPost</span> and a published <span style="color:#273D56">Post</span>, respectively. So no <span style="color:#273D56">DraftPost</span> instances linger after we’ve called <span style="color:#273D56">request_review</span> on them, and so forth.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">PendingReviewPost</span> has no <span style="color:#273D56">content</span> method, so attempting to read its content is a compiler error, as with <span style="color:#273D56">DraftPost</span>. The only way to get a published <span style="color:#273D56">Post</span> — which does have <span style="color:#273D56">content</span> — is to call <span style="color:#273D56">approve</span> on a <span style="color:#273D56">PendingReviewPost</span>, and the only way to get a <span style="color:#273D56">PendingReviewPost</span> is to call <span style="color:#273D56">request_review</span> on a <span style="color:#273D56">DraftPost</span>. We’ve now encoded the blog post workflow into the type system.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">main</span> needs small changes too. <span style="color:#273D56">request_review</span> and <span style="color:#273D56">approve</span> return new instances rather than modifying the struct they’re called on, so we add more <span style="color:#273D56">let post =</span> shadowing assignments to save the returned instances. We also can’t — and needn’t — assert that draft and pending posts’ contents are empty strings: code that tries to use the content of posts in those states no longer compiles.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>

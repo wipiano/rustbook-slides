@@ -1,0 +1,26 @@
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.3 Cargo Workspaces</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The workspace manifest, and the first member</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the <i>add</i> directory, create the <i>Cargo.toml</i> file that configures the entire workspace. It has no <span style="color:#273D56">[package]</span> section; instead it starts with a <span style="color:#273D56">[workspace]</span> section that lets us add members to the workspace. We also use the latest and greatest version of Cargo’s resolver algorithm by setting <span style="color:#273D56">resolver</span> to <span style="color:#273D56">"3"</span>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[workspace]</p>
+<p style="white-space:nowrap">resolver = "3"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Next, create the <span style="color:#273D56">adder</span> binary crate by running <span style="color:#273D56">cargo new</span> within the <i>add</i> directory:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo new adder</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Created binary (application) `adder` package</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;Adding `adder` as member of workspace at `file:///projects/add`</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>

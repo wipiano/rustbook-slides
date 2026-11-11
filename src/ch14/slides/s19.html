@@ -1,0 +1,26 @@
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.2 Publishing a Crate to Crates.io</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding metadata: a unique crate name</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Say you have a crate you want to publish. Before publishing, you need to add some metadata in the <span style="color:#273D56">[package]</span> section of the crate’s <i>Cargo.toml</i> file. First, your crate needs a unique name:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>While working on a crate locally, you can name it whatever you like.</li>
+<li>Crate names on crates.io, however, are allocated on a first-come, first-served basis: once a name is taken, no one else can publish a crate with that name.</li>
+<li>Before attempting to publish, search for the name you want to use. If it has been used, find another name and edit the <span style="color:#273D56">name</span> field under <span style="color:#273D56">[package]</span> to use the new name for publishing:</li>
+</ul>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[package]</p>
+<p style="white-space:nowrap">name = "guessing_game"</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Even with a unique name, running <span style="color:#273D56">cargo publish</span> at this point gives you a warning and then an error (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>

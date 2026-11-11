@@ -1,0 +1,32 @@
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Implementing the Deref trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To implement a trait we provide implementations for its required methods (“Implementing a Trait on a Type,” Chapter 10). The standard library’s <span style="color:#273D56">Deref</span> trait requires one method named <span style="color:#273D56">deref</span> that borrows <span style="color:#273D56">self</span> and returns a reference to the inner data. Listing 15.10 adds an implementation of <span style="color:#273D56">Deref</span> to the definition of <span style="color:#273D56">MyBox&lt;T&gt;</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 15.10:</b></span> Implementing <span style="color:#273D56">Deref</span> on <span style="color:#273D56">MyBox&lt;T&gt;</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">use std::ops::Deref;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">impl&lt;T&gt; Deref for MyBox&lt;T&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;type Target = T;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn deref(&amp;self) -&gt; &amp;Self::Target {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&amp;self.0</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">type Target = T;</span> syntax defines an associated type for the <span style="color:#273D56">Deref</span> trait to use. Associated types are a slightly different way of declaring a generic parameter; you don’t need to worry about them for now — Chapter 20 covers them in more detail.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>

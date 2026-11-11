@@ -1,0 +1,17 @@
+<section id="s78" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.3 Validating References with Lifetimes</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The compiler goes by the signature</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The error shows that for <span style="color:#273D56">result</span> to be valid for the <span style="color:#273D56">println!</span> statement, <span style="color:#273D56">string2</span> would need to be valid until the end of the outer scope. Rust knows this because we annotated the lifetimes of the function parameters and return values using the same lifetime parameter <span style="color:#273D56">'a</span>.</p>
+<p style="font-size:30px;line-height:1.45">As humans, we can see that <span style="color:#273D56">string1</span> is longer than <span style="color:#273D56">string2</span>, so <span style="color:#273D56">result</span> will contain a reference to <span style="color:#273D56">string1</span>; and because <span style="color:#273D56">string1</span> has not gone out of scope yet, that reference will still be valid for the <span style="color:#273D56">println!</span>. But the compiler can’t see that the reference is valid in this case. We’ve told Rust that the lifetime of the reference returned by <span style="color:#273D56">longest</span> is the same as the smaller of the lifetimes of the references passed in. Therefore, the borrow checker disallows Listing 10.23 as possibly having an invalid reference.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 10.14.</b> Design more experiments that vary the values and lifetimes of the references passed in to <span style="color:#273D56">longest</span> and how the returned reference is used. Make hypotheses about whether your experiments will pass the borrow checker before you compile; then check whether you’re right!</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">79</p>
+</div>
+</section>

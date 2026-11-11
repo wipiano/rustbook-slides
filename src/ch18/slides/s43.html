@@ -1,0 +1,15 @@
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why unwrap is safe here, and where content goes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We then call <span style="color:#273D56">unwrap</span>, which we know will never panic: the methods on <span style="color:#273D56">Post</span> ensure that <span style="color:#273D56">state</span> always contains a <span style="color:#273D56">Some</span> value when they are done. This is one of the cases from “When You Have More Information Than the Compiler” in Chapter 9: we know a <span style="color:#273D56">None</span> value is never possible, even though the compiler isn’t able to understand that.</p>
+<p style="font-size:30px;line-height:1.45">When we call <span style="color:#273D56">content</span> on the <span style="color:#273D56">&amp;Box&lt;dyn State&gt;</span>, deref coercion takes effect on the <span style="color:#273D56">&amp;</span> and the <span style="color:#273D56">Box</span>, so the <span style="color:#273D56">content</span> method is ultimately called on the type that implements the <span style="color:#273D56">State</span> trait.</p>
+<p style="font-size:30px;line-height:1.45">That means we need to add <span style="color:#273D56">content</span> to the <span style="color:#273D56">State</span> trait definition, and that is where we put the logic for what content to return depending on which state we have (Listing 18.18).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>

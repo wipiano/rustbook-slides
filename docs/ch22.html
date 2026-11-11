@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appendix — Appendices A–G · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Appendix — Appendices A–G</h1><nav><a href="ch21.html">← Ch.21</a><span></span></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Appendix</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Appendices A–G</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">The following sections contain reference material you may find useful in your Rust journey: the keyword and symbol tables, the traits you can <span style="color:#273D56">derive</span>, the tools that ship with Rust, how editions work, translations of the book, and how Rust itself is made.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>A Keywords</li>
+<li>B Operators and Symbols</li>
+<li>C Derivable Traits</li>
+<li>D Useful Development Tools</li>
+<li>E Editions</li>
+<li>F Translations of the Book</li>
+<li>G How Rust is Made and “Nightly Rust”</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Keywords are reserved words</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The following lists contain keywords that are reserved for current or future use by the Rust language. As such, they cannot be used as identifiers — except as raw identifiers, discussed in “Raw Identifiers” at the end of this appendix.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.1 (Identifier).</b></span> A name of a function, variable, parameter, struct field, module, crate, constant, macro, static value, attribute, type, trait, or lifetime.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Appendix A has three parts:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><b>Keywords currently in use</b> — each listed with its functionality (Table A.1, four slides).</li>
+<li><b>Keywords reserved for future use</b> — no functionality yet (Table A.2).</li>
+<li><b>Raw identifiers</b> — the <span style="color:#273D56">r#</span> syntax that lets you use a keyword as an identifier.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Keywords currently in use (1 of 4): as – enum</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.1:</b></span> Keywords currently in use, with their functionality</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:18%">Keyword</th><th style="width:82%">Functionality</th></tr>
+<tr><td>as</td><td>Perform primitive casting, disambiguate the specific trait containing an item, or rename items in use statements</td></tr>
+<tr><td>async</td><td>Return a Future instead of blocking the current thread</td></tr>
+<tr><td>await</td><td>Suspend execution until the result of a Future is ready</td></tr>
+<tr><td>break</td><td>Exit a loop immediately</td></tr>
+<tr><td>const</td><td>Define constant items or constant raw pointers</td></tr>
+<tr><td>continue</td><td>Continue to the next loop iteration</td></tr>
+<tr><td>crate</td><td>In a module path, refers to the crate root</td></tr>
+<tr><td>dyn</td><td>Dynamic dispatch to a trait object</td></tr>
+<tr><td>else</td><td>Fallback for if and if let control flow constructs</td></tr>
+<tr><td>enum</td><td>Define an enumeration</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Keywords currently in use (2 of 4): extern – match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.1 (continued):</b></span> Keywords currently in use, with their functionality</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:18%">Keyword</th><th style="width:82%">Functionality</th></tr>
+<tr><td>extern</td><td>Link an external function or variable</td></tr>
+<tr><td>false</td><td>Boolean false literal</td></tr>
+<tr><td>fn</td><td>Define a function or the function pointer type</td></tr>
+<tr><td>for</td><td>Loop over items from an iterator, implement a trait, or specify a higher ranked lifetime</td></tr>
+<tr><td>if</td><td>Branch based on the result of a conditional expression</td></tr>
+<tr><td>impl</td><td>Implement inherent or trait functionality</td></tr>
+<tr><td>in</td><td>Part of for loop syntax</td></tr>
+<tr><td>let</td><td>Bind a variable</td></tr>
+<tr><td>loop</td><td>Loop unconditionally</td></tr>
+<tr><td>match</td><td>Match a value to patterns</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Keywords currently in use (3 of 4): mod – struct</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.1 (continued):</b></span> Keywords currently in use, with their functionality</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:18%">Keyword</th><th style="width:82%">Functionality</th></tr>
+<tr><td>mod</td><td>Define a module</td></tr>
+<tr><td>move</td><td>Make a closure take ownership of all its captures</td></tr>
+<tr><td>mut</td><td>Denote mutability in references, raw pointers, or pattern bindings</td></tr>
+<tr><td>pub</td><td>Denote public visibility in struct fields, impl blocks, or modules</td></tr>
+<tr><td>ref</td><td>Bind by reference</td></tr>
+<tr><td>return</td><td>Return from function</td></tr>
+<tr><td>Self</td><td>A type alias for the type we are defining or implementing</td></tr>
+<tr><td>self</td><td>Method subject or current module</td></tr>
+<tr><td>static</td><td>Global variable or lifetime lasting the entire program execution</td></tr>
+<tr><td>struct</td><td>Define a structure</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Keywords currently in use (4 of 4): super – while</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.1 (continued):</b></span> Keywords currently in use, with their functionality</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:18%">Keyword</th><th style="width:82%">Functionality</th></tr>
+<tr><td>super</td><td>Parent module of the current module</td></tr>
+<tr><td>trait</td><td>Define a trait</td></tr>
+<tr><td>true</td><td>Boolean true literal</td></tr>
+<tr><td>type</td><td>Define a type alias or associated type</td></tr>
+<tr><td>union</td><td>Define a union; is a keyword only when used in a union declaration</td></tr>
+<tr><td>unsafe</td><td>Denote unsafe code, functions, traits, or implementations</td></tr>
+<tr><td>use</td><td>Bring symbols into scope</td></tr>
+<tr><td>where</td><td>Denote clauses that constrain a type</td></tr>
+<tr><td>while</td><td>Loop conditionally based on the result of an expression</td></tr>
+</table>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> <span style="color:#273D56">union</span> is a contextual keyword: outside a union declaration it can still be used as an ordinary identifier. See the Rust Reference, “Unions”.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Keywords reserved for future use</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The following keywords do not yet have any functionality but are reserved by Rust for potential future use. Like the keywords in use, they cannot be ordinary identifiers.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.2:</b></span> Keywords reserved for future use (14 keywords)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:50%">Reserved keyword</th><th style="width:50%">Reserved keyword</th></tr>
+<tr><td>abstract</td><td>override</td></tr>
+<tr><td>become</td><td>priv</td></tr>
+<tr><td>box</td><td>try</td></tr>
+<tr><td>do</td><td>typeof</td></tr>
+<tr><td>final</td><td>unsized</td></tr>
+<tr><td>gen</td><td>virtual</td></tr>
+<tr><td>macro</td><td>yield</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Raw identifiers: the problem</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.2 (Raw identifier).</b></span> The syntax that lets you use keywords where they wouldn’t normally be allowed: you prefix a keyword with <span style="color:#273D56">r#</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, <span style="color:#273D56">match</span> is a keyword. Try to compile a function that uses <span style="color:#273D56">match</span> as its name:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn match(needle: &amp;str, haystack: &amp;str) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;haystack.contains(needle)</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">You’ll get this error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error: expected identifier, found keyword `match`</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:4:4</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">4 | fn match(needle: &amp;str, haystack: &amp;str) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;^^^^^ expected identifier, found keyword</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The error shows that you can’t use the keyword <span style="color:#273D56">match</span> as the function identifier. To use <span style="color:#273D56">match</span> as a function name, you need the raw identifier syntax.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · A Keywords</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Raw identifiers: the fix, and why they exist</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn r#match(needle: &amp;str, haystack: &amp;str) -&gt; bool {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;haystack.contains(needle)</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert!(r#match("foo", "foobar"));</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This code compiles without any errors. Note the <span style="color:#273D56">r#</span> prefix on the function name both in its definition and where the function is called in <span style="color:#273D56">main</span>.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Raw identifiers let you use any word you choose as an identifier, even a reserved keyword. That gives more freedom in naming and lets Rust integrate with programs written in a language where these words aren’t keywords.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.3.</b> Raw identifiers also let you use libraries written in a different Rust edition than your crate. <span style="color:#273D56">try</span> isn’t a keyword in the 2015 edition but is in the 2018, 2021, and 2024 editions. If you depend on a 2015-edition library that has a <span style="color:#273D56">try</span> function, you call it as <span style="color:#273D56">r#try</span> from your code on later editions. (Editions: Appendix E.)</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A glossary of Rust’s syntax</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This appendix contains a glossary of Rust’s syntax, including operators and other symbols that appear by themselves or in the context of paths, generics, trait bounds, macros, attributes, comments, tuples, and brackets.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Operators</h3>
+<p style="font-size:30px;line-height:1.45">Table A.3 (the book’s Table B-1, next six slides) lists the operators in Rust, an example of how each operator would appear in context, a short explanation, and whether that operator is overloadable. If an operator is overloadable, the relevant trait to use to overload that operator is listed.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.4.</b> The row for <span style="color:#273D56">+</span> in <span style="color:#273D56">expr + expr</span> names the trait <span style="color:#273D56">Add</span>: implement <span style="color:#273D56">std::ops::Add</span> for your type and <span style="color:#273D56">a + b</span> works on it. Rows with an empty last cell (such as <span style="color:#273D56">&amp;&amp;</span>) cannot be overloaded.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The non-operator symbols follow in Tables A.4–A.12 (the book’s Tables B-2 to B-10).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Operators (1 of 6): ! to &amp;&amp;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.3:</b></span> Operators (book Table B-1) — “—” means not overloadable</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:11%">Operator</th><th style="width:39%">Example</th><th style="width:32%">Explanation</th><th style="width:18%">Overloadable?</th></tr>
+<tr><td>!</td><td>ident!(...), ident!{...}, ident![...]</td><td>Macro expansion</td><td>—</td></tr>
+<tr><td>!</td><td>!expr</td><td>Bitwise or logical complement</td><td>Not</td></tr>
+<tr><td>!=</td><td>expr != expr</td><td>Nonequality comparison</td><td>PartialEq</td></tr>
+<tr><td>%</td><td>expr % expr</td><td>Arithmetic remainder</td><td>Rem</td></tr>
+<tr><td>%=</td><td>var %= expr</td><td>Arithmetic remainder and assignment</td><td>RemAssign</td></tr>
+<tr><td>&amp;</td><td>&amp;expr, &amp;mut expr</td><td>Borrow</td><td>—</td></tr>
+<tr><td>&amp;</td><td>&amp;type, &amp;mut type, &amp;'a type, &amp;'a mut type</td><td>Borrowed pointer type</td><td>—</td></tr>
+<tr><td>&amp;</td><td>expr &amp; expr</td><td>Bitwise AND</td><td>BitAnd</td></tr>
+<tr><td>&amp;=</td><td>var &amp;= expr</td><td>Bitwise AND and assignment</td><td>BitAndAssign</td></tr>
+<tr><td>&amp;&amp;</td><td>expr &amp;&amp; expr</td><td>Short-circuiting logical AND</td><td>—</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Operators (2 of 6): * to -</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.3 (continued):</b></span> Operators (book Table B-1)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:11%">Operator</th><th style="width:39%">Example</th><th style="width:32%">Explanation</th><th style="width:18%">Overloadable?</th></tr>
+<tr><td>*</td><td>expr * expr</td><td>Arithmetic multiplication</td><td>Mul</td></tr>
+<tr><td>*=</td><td>var *= expr</td><td>Arithmetic multiplication and assignment</td><td>MulAssign</td></tr>
+<tr><td>*</td><td>*expr</td><td>Dereference</td><td>Deref</td></tr>
+<tr><td>*</td><td>*const type, *mut type</td><td>Raw pointer</td><td>—</td></tr>
+<tr><td>+</td><td>trait + trait, 'a + trait</td><td>Compound type constraint</td><td>—</td></tr>
+<tr><td>+</td><td>expr + expr</td><td>Arithmetic addition</td><td>Add</td></tr>
+<tr><td>+=</td><td>var += expr</td><td>Arithmetic addition and assignment</td><td>AddAssign</td></tr>
+<tr><td>,</td><td>expr, expr</td><td>Argument and element separator</td><td>—</td></tr>
+<tr><td>-</td><td>- expr</td><td>Arithmetic negation</td><td>Neg</td></tr>
+<tr><td>-</td><td>expr - expr</td><td>Arithmetic subtraction</td><td>Sub</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Operators (3 of 6): -= to ..</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.3 (continued):</b></span> Operators (book Table B-1)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:11%">Operator</th><th style="width:39%">Example</th><th style="width:32%">Explanation</th><th style="width:18%">Overloadable?</th></tr>
+<tr><td>-=</td><td>var -= expr</td><td>Arithmetic subtraction and assignment</td><td>SubAssign</td></tr>
+<tr><td>-&gt;</td><td>fn(...) -&gt; type, |…| -&gt; type</td><td>Function and closure return type</td><td>—</td></tr>
+<tr><td>.</td><td>expr.ident</td><td>Field access</td><td>—</td></tr>
+<tr><td>.</td><td>expr.ident(expr, ...)</td><td>Method call</td><td>—</td></tr>
+<tr><td>.</td><td>expr.0, expr.1, and so on</td><td>Tuple indexing</td><td>—</td></tr>
+<tr><td>..</td><td>.., expr.., ..expr, expr..expr</td><td>Right-exclusive range literal</td><td>PartialOrd</td></tr>
+<tr><td>..=</td><td>..=expr, expr..=expr</td><td>Right-inclusive range literal</td><td>PartialOrd</td></tr>
+<tr><td>..</td><td>..expr</td><td>Struct literal update syntax</td><td>—</td></tr>
+<tr><td>..</td><td>variant(x, ..), struct_type { x, .. }</td><td>“And the rest” pattern binding</td><td>—</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Operators (4 of 6): ... to &lt;&lt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.3 (continued):</b></span> Operators (book Table B-1)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:11%">Operator</th><th style="width:30%">Example</th><th style="width:41%">Explanation</th><th style="width:18%">Overloadable?</th></tr>
+<tr><td>...</td><td>expr...expr</td><td>(Deprecated, use ..= instead) In a pattern: inclusive range pattern</td><td>—</td></tr>
+<tr><td>/</td><td>expr / expr</td><td>Arithmetic division</td><td>Div</td></tr>
+<tr><td>/=</td><td>var /= expr</td><td>Arithmetic division and assignment</td><td>DivAssign</td></tr>
+<tr><td>:</td><td>pat: type, ident: type</td><td>Constraints</td><td>—</td></tr>
+<tr><td>:</td><td>ident: expr</td><td>Struct field initializer</td><td>—</td></tr>
+<tr><td>:</td><td>'a: loop {...}</td><td>Loop label</td><td>—</td></tr>
+<tr><td>;</td><td>expr;</td><td>Statement and item terminator</td><td>—</td></tr>
+<tr><td>;</td><td>[...; len]</td><td>Part of fixed-size array syntax</td><td>—</td></tr>
+<tr><td>&lt;&lt;</td><td>expr &lt;&lt; expr</td><td>Left-shift</td><td>Shl</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Operators (5 of 6): &lt;&lt;= to &gt;&gt;</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.3 (continued):</b></span> Operators (book Table B-1)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:11%">Operator</th><th style="width:30%">Example</th><th style="width:41%">Explanation</th><th style="width:18%">Overloadable?</th></tr>
+<tr><td>&lt;&lt;=</td><td>var &lt;&lt;= expr</td><td>Left-shift and assignment</td><td>ShlAssign</td></tr>
+<tr><td>&lt;</td><td>expr &lt; expr</td><td>Less than comparison</td><td>PartialOrd</td></tr>
+<tr><td>&lt;=</td><td>expr &lt;= expr</td><td>Less than or equal to comparison</td><td>PartialOrd</td></tr>
+<tr><td>=</td><td>var = expr, ident = type</td><td>Assignment/equivalence</td><td>—</td></tr>
+<tr><td>==</td><td>expr == expr</td><td>Equality comparison</td><td>PartialEq</td></tr>
+<tr><td>=&gt;</td><td>pat =&gt; expr</td><td>Part of match arm syntax</td><td>—</td></tr>
+<tr><td>&gt;</td><td>expr &gt; expr</td><td>Greater than comparison</td><td>PartialOrd</td></tr>
+<tr><td>&gt;=</td><td>expr &gt;= expr</td><td>Greater than or equal to comparison</td><td>PartialOrd</td></tr>
+<tr><td>&gt;&gt;</td><td>expr &gt;&gt; expr</td><td>Right-shift</td><td>Shr</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Operators (6 of 6): &gt;&gt;= to ?</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.3 (continued):</b></span> Operators (book Table B-1)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:11%">Operator</th><th style="width:30%">Example</th><th style="width:41%">Explanation</th><th style="width:18%">Overloadable?</th></tr>
+<tr><td>&gt;&gt;=</td><td>var &gt;&gt;= expr</td><td>Right-shift and assignment</td><td>ShrAssign</td></tr>
+<tr><td>@</td><td>ident @ pat</td><td>Pattern binding</td><td>—</td></tr>
+<tr><td>^</td><td>expr ^ expr</td><td>Bitwise exclusive OR</td><td>BitXor</td></tr>
+<tr><td>^=</td><td>var ^= expr</td><td>Bitwise exclusive OR and assignment</td><td>BitXorAssign</td></tr>
+<tr><td>|</td><td>pat | pat</td><td>Pattern alternatives</td><td>—</td></tr>
+<tr><td>|</td><td>expr | expr</td><td>Bitwise OR</td><td>BitOr</td></tr>
+<tr><td>|=</td><td>var |= expr</td><td>Bitwise OR and assignment</td><td>BitOrAssign</td></tr>
+<tr><td>||</td><td>expr || expr</td><td>Short-circuiting logical OR</td><td>—</td></tr>
+<tr><td>?</td><td>expr?</td><td>Error propagation</td><td>—</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Non-operator symbols: stand-alone syntax (1 of 2)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The following tables contain all symbols that don’t function as operators; that is, they don’t behave like a function or method call. Table A.4 shows symbols that appear on their own and are valid in a variety of locations.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.4:</b></span> Stand-alone syntax (book Table B-2)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:45%">Symbol</th><th style="width:55%">Explanation</th></tr>
+<tr><td>'ident</td><td>Named lifetime or loop label</td></tr>
+<tr><td>Digits immediately followed by u8, i32, f64, usize, and so on</td><td>Numeric literal of specific type</td></tr>
+<tr><td>"..."</td><td>String literal</td></tr>
+<tr><td>r"...", r#"..."#, r##"..."##, and so on</td><td>Raw string literal; escape characters not processed</td></tr>
+<tr><td>b"..."</td><td>Byte string literal; constructs an array of bytes instead of a string</td></tr>
+<tr><td>br"...", br#"..."#, br##"..."##, and so on</td><td>Raw byte string literal; combination of raw and byte string literal</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Non-operator symbols: stand-alone syntax (2 of 2)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.4 (continued):</b></span> Stand-alone syntax (book Table B-2)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:45%">Symbol</th><th style="width:55%">Explanation</th></tr>
+<tr><td>'...'</td><td>Character literal</td></tr>
+<tr><td>b'...'</td><td>ASCII byte literal</td></tr>
+<tr><td>|…| expr</td><td>Closure</td></tr>
+<tr><td>!</td><td>Always-empty bottom type for diverging functions</td></tr>
+<tr><td>_</td><td>“Ignored” pattern binding; also used to make integer literals readable</td></tr>
+</table>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.5.</b> A few stand-alone symbols in use: a typed numeric literal made readable with <span style="color:#273D56">_</span>, a raw string, a byte string, and a closure.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let big = 1_000_000u32;</p>
+<p style="white-space:nowrap">let path = r"C:\no\escapes";</p>
+<p style="white-space:nowrap">let bytes = b"abc";</p>
+<p style="white-space:nowrap">let double = |x: i32| x * 2;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Path-related syntax</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.5:</b></span> Path-related syntax (book Table B-3) — symbols that appear in the context of a path through the module hierarchy to an item</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:36%">Symbol</th><th style="width:64%">Explanation</th></tr>
+<tr><td>ident::ident</td><td>Namespace path</td></tr>
+<tr><td>::path</td><td>Path relative to the crate root (that is, an explicitly absolute path)</td></tr>
+<tr><td>self::path</td><td>Path relative to the current module (that is, an explicitly relative path)</td></tr>
+<tr><td>super::path</td><td>Path relative to the parent of the current module</td></tr>
+<tr><td>type::ident, &lt;type as trait&gt;::ident</td><td>Associated constants, functions, and types</td></tr>
+<tr><td>&lt;type&gt;::...</td><td>Associated item for a type that cannot be directly named (for example, &lt;&amp;T&gt;::..., &lt;[T]&gt;::..., and so on)</td></tr>
+<tr><td>trait::method(...)</td><td>Disambiguating a method call by naming the trait that defines it</td></tr>
+<tr><td>type::method(...)</td><td>Disambiguating a method call by naming the type for which it’s defined</td></tr>
+<tr><td>&lt;type as trait&gt;::method(...)</td><td>Disambiguating a method call by naming the trait and type</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Generics syntax</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.6:</b></span> Generics (book Table B-4) — symbols that appear in the context of using generic type parameters</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Symbol</th><th style="width:70%">Explanation</th></tr>
+<tr><td>path&lt;...&gt;</td><td>Specifies parameters to a generic type in a type (for example, Vec&lt;u8&gt;)</td></tr>
+<tr><td>path::&lt;...&gt;, method::&lt;...&gt;</td><td>Specifies parameters to a generic type, function, or method in an expression; often referred to as turbofish (for example, "42".parse::&lt;i32&gt;())</td></tr>
+<tr><td>fn ident&lt;...&gt; ...</td><td>Define generic function</td></tr>
+<tr><td>struct ident&lt;...&gt; ...</td><td>Define generic structure</td></tr>
+<tr><td>enum ident&lt;...&gt; ...</td><td>Define generic enumeration</td></tr>
+<tr><td>impl&lt;...&gt; ...</td><td>Define generic implementation</td></tr>
+<tr><td>for&lt;...&gt; type</td><td>Higher ranked lifetime bounds</td></tr>
+<tr><td>type&lt;ident=type&gt;</td><td>A generic type where one or more associated types have specific assignments (for example, Iterator&lt;Item=T&gt;)</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Trait bound constraints</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Table A.7 shows symbols that appear in the context of constraining generic type parameters with trait bounds.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.7:</b></span> Trait bound constraints (book Table B-5)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:26%">Symbol</th><th style="width:74%">Explanation</th></tr>
+<tr><td>T: U</td><td>Generic parameter T constrained to types that implement U</td></tr>
+<tr><td>T: 'a</td><td>Generic type T must outlive lifetime 'a (meaning the type cannot transitively contain any references with lifetimes shorter than 'a)</td></tr>
+<tr><td>T: 'static</td><td>Generic type T contains no borrowed references other than 'static ones</td></tr>
+<tr><td>'b: 'a</td><td>Generic lifetime 'b must outlive lifetime 'a</td></tr>
+<tr><td>T: ?Sized</td><td>Allow generic type parameter to be a dynamically sized type</td></tr>
+<tr><td>'a + trait, trait + trait</td><td>Compound type constraint</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Macros, attributes and comments</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45">Symbols that appear in the context of calling or defining macros and specifying attributes on an item:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.8:</b></span> Macros and attributes (book Table B-6)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:56%">Symbol</th><th style="width:44%">Explanation</th></tr>
+<tr><td>#[meta]</td><td>Outer attribute</td></tr>
+<tr><td>#![meta]</td><td>Inner attribute</td></tr>
+<tr><td>$ident</td><td>Macro substitution</td></tr>
+<tr><td>$ident:kind</td><td>Macro metavariable</td></tr>
+<tr><td>$(...)...</td><td>Macro repetition</td></tr>
+<tr><td>ident!(...), ident!{...}, ident![...]</td><td>Macro invocation</td></tr>
+</table>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45">Symbols that create comments:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.9:</b></span> Comments (book Table B-7)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:40%">Symbol</th><th style="width:60%">Explanation</th></tr>
+<tr><td>//</td><td>Line comment</td></tr>
+<tr><td>//!</td><td>Inner line doc comment</td></tr>
+<tr><td>///</td><td>Outer line doc comment</td></tr>
+<tr><td>/*...*/</td><td>Block comment</td></tr>
+<tr><td>/*!...*/</td><td>Inner block doc comment</td></tr>
+<tr><td>/**...*/</td><td>Outer block doc comment</td></tr>
+</table>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Parentheses and curly brackets</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.10:</b></span> Parentheses (book Table B-8) — the contexts in which parentheses are used</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:34%">Symbol</th><th style="width:66%">Explanation</th></tr>
+<tr><td>()</td><td>Empty tuple (aka unit), both literal and type</td></tr>
+<tr><td>(expr)</td><td>Parenthesized expression</td></tr>
+<tr><td>(expr,)</td><td>Single-element tuple expression</td></tr>
+<tr><td>(type,)</td><td>Single-element tuple type</td></tr>
+<tr><td>(expr, ...)</td><td>Tuple expression</td></tr>
+<tr><td>(type, ...)</td><td>Tuple type</td></tr>
+<tr><td>expr(expr, ...)</td><td>Function call expression; also used to initialize tuple structs and tuple enum variants</td></tr>
+</table>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.11:</b></span> Curly brackets (book Table B-9) — the contexts in which curly brackets are used</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:45%">Context</th><th style="width:55%">Explanation</th></tr>
+<tr><td>{...}</td><td>Block expression</td></tr>
+<tr><td>Type {...}</td><td>Struct literal</td></tr>
+</table>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · B Operators and Symbols</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Square brackets</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.12:</b></span> Square brackets (book Table B-10) — the contexts in which square brackets are used</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:36%">Context</th><th style="width:64%">Explanation</th></tr>
+<tr><td>[...]</td><td>Array literal</td></tr>
+<tr><td>[expr; len]</td><td>Array literal containing len copies of expr</td></tr>
+<tr><td>[type; len]</td><td>Array type containing len instances of type</td></tr>
+<tr><td>expr[expr]</td><td>Collection indexing; overloadable (Index, IndexMut)</td></tr>
+<tr><td>expr[..], expr[a..], expr[..b], expr[a..b]</td><td>Collection indexing pretending to be collection slicing, using Range, RangeFrom, RangeTo, or RangeFull as the “index”</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The derive attribute</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.6 (derive attribute).</b></span> An attribute you apply to a struct or enum definition; it generates code that implements a trait, with its own default implementation, on the type you’ve annotated with the <span style="color:#273D56">derive</span> syntax.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This appendix is a reference of all the traits in the standard library that you can use with <span style="color:#273D56">derive</span>. Each section covers:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>What operators and methods deriving this trait will enable</li>
+<li>What the implementation of the trait provided by <span style="color:#273D56">derive</span> does</li>
+<li>What implementing the trait signifies about the type</li>
+<li>The conditions in which you’re allowed or not allowed to implement the trait</li>
+<li>Examples of operations that require the trait</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">If you want different behavior from that provided by <span style="color:#273D56">derive</span>, consult the standard library documentation for each trait for details on how to implement it manually.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Which traits can be derived — and which cannot</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The traits listed here are the only ones defined by the standard library that can be implemented on your types using <span style="color:#273D56">derive</span>. Other standard library traits don’t have sensible default behavior, so it’s up to you to implement them in the way that makes sense for what you’re trying to accomplish.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.7.</b> <span style="color:#273D56">Display</span>, which handles formatting for end users, can’t be derived. You should always consider the appropriate way to display a type to an end user. What parts of the type should an end user be allowed to see? What parts would they find relevant? What format of the data would be most relevant to them? The Rust compiler doesn’t have this insight, so it can’t provide appropriate default behavior for you.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The list of derivable traits in this appendix is not comprehensive: libraries can implement <span style="color:#273D56">derive</span> for their own traits, making the list of traits you can use <span style="color:#273D56">derive</span> with truly open ended.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Implementing <span style="color:#273D56">derive</span> involves using a procedural macro, covered in the “Custom derive Macros” section in Chapter 20.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Debug for programmer output</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Debug</span> trait enables debug formatting in format strings, which you indicate by adding <span style="color:#273D56">:?</span> within <span style="color:#273D56">{}</span> placeholders.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Debug</span> lets you print instances of a type for debugging purposes, so you and other programmers using your type can inspect an instance at a particular point in a program’s execution.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> for example, the <span style="color:#273D56">assert_eq!</span> macro. It prints the values of the instances given as arguments if the equality assertion fails, so programmers can see why the two instances weren’t equal.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.8.</b> Deriving <span style="color:#273D56">Debug</span> and <span style="color:#273D56">PartialEq</span> (next slide) makes a struct printable and usable in <span style="color:#273D56">assert_eq!</span>.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Debug, PartialEq)]</p>
+<p style="white-space:nowrap">struct Point { x: i32, y: i32 }</p>
+<p style="white-space:nowrap">let p = Point { x: 1, y: 2 };</p>
+<p style="white-space:nowrap">println!("{p:?}");&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;// Point { x: 1, y: 2 }</p>
+<p style="white-space:nowrap">assert_eq!(p, Point { x: 1, y: 2 });</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">PartialEq and Eq for equality comparisons</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">PartialEq</h3>
+<p style="font-size:30px;line-height:1.45">Lets you compare instances of a type for equality and enables the <span style="color:#273D56">==</span> and <span style="color:#273D56">!=</span> operators. Deriving it implements the <span style="color:#273D56">eq</span> method.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>On structs: two instances are equal only if <i>all</i> fields are equal, and not equal if <i>any</i> field is not equal.</li>
+<li>On enums: each variant is equal to itself and not equal to the other variants.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> for example, <span style="color:#273D56">assert_eq!</span>, which must compare two instances for equality.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Eq</h3>
+<p style="font-size:30px;line-height:1.45">Has no methods. It signals that for every value of the annotated type, the value is equal to itself. <span style="color:#273D56">Eq</span> can only be applied to types that also implement <span style="color:#273D56">PartialEq</span> — but not all such types can implement <span style="color:#273D56">Eq</span>.</p>
+<p style="font-size:30px;line-height:1.45">Floating-point types are one example: two instances of the not-a-number (<span style="color:#273D56">NaN</span>) value are not equal to each other.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> keys in a <span style="color:#273D56">HashMap&lt;K, V&gt;</span>, so it can tell whether two keys are the same.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">PartialOrd for ordering comparisons</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">PartialOrd</span> trait lets you compare instances of a type for sorting purposes. A type that implements <span style="color:#273D56">PartialOrd</span> can be used with the <span style="color:#273D56">&lt;</span>, <span style="color:#273D56">&gt;</span>, <span style="color:#273D56">&lt;=</span>, and <span style="color:#273D56">&gt;=</span> operators. You can only apply <span style="color:#273D56">PartialOrd</span> to types that also implement <span style="color:#273D56">PartialEq</span>.</p>
+<p style="font-size:30px;line-height:1.45">Deriving <span style="color:#273D56">PartialOrd</span> implements the <span style="color:#273D56">partial_cmp</span> method, which returns an <span style="color:#273D56">Option&lt;Ordering&gt;</span> that is <span style="color:#273D56">None</span> when the values given don’t produce an ordering. An example of a value that doesn’t produce an ordering, even though most values of its type can be compared, is the <span style="color:#273D56">NaN</span> floating-point value: calling <span style="color:#273D56">partial_cmp</span> with any floating-point number and <span style="color:#273D56">NaN</span> returns <span style="color:#273D56">None</span>.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>On structs: compares two instances by comparing the value in each field, in the order the fields appear in the struct definition.</li>
+<li>On enums: variants declared earlier in the enum definition are considered less than the variants listed later.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> for example, the <span style="color:#273D56">gen_range</span> method from the <span style="color:#273D56">rand</span> crate, which generates a random value in the range specified by a range expression.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ord for total ordering</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Ord</span> trait lets you know that for any two values of the annotated type, a valid ordering will exist. It implements the <span style="color:#273D56">cmp</span> method, which returns an <span style="color:#273D56">Ordering</span> rather than an <span style="color:#273D56">Option&lt;Ordering&gt;</span>, because a valid ordering is always possible.</p>
+<p style="font-size:30px;line-height:1.45">You can only apply <span style="color:#273D56">Ord</span> to types that also implement <span style="color:#273D56">PartialOrd</span> and <span style="color:#273D56">Eq</span> (and <span style="color:#273D56">Eq</span> requires <span style="color:#273D56">PartialEq</span>). When derived on structs and enums, <span style="color:#273D56">cmp</span> behaves the same way as the derived <span style="color:#273D56">partial_cmp</span> does with <span style="color:#273D56">PartialOrd</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> storing values in a <span style="color:#273D56">BTreeSet&lt;T&gt;</span>, a data structure that stores data based on the sort order of the values.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.9.</b> A derived ordering on an enum follows declaration order, so the whole chain of traits is derived together:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(PartialEq, Eq, PartialOrd, Ord)]</p>
+<p style="white-space:nowrap">enum Size { Small, Medium, Large }</p>
+<p style="white-space:nowrap">assert!(Size::Small &lt; Size::Large);&#160;&#160;// declared earlier =&gt; less</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Clone for duplicating values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Clone</span> trait lets you explicitly create a deep copy of a value; the duplication process might involve running arbitrary code and copying heap data. (More on <span style="color:#273D56">Clone</span>: “Variables and Data Interacting with Clone”, Chapter 4.)</p>
+<p style="font-size:30px;line-height:1.45">Deriving <span style="color:#273D56">Clone</span> implements the <span style="color:#273D56">clone</span> method, which, when implemented for the whole type, calls <span style="color:#273D56">clone</span> on each of the parts of the type. This means all the fields or values in the type must also implement <span style="color:#273D56">Clone</span> to derive <span style="color:#273D56">Clone</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> calling the <span style="color:#273D56">to_vec</span> method on a slice. The slice doesn’t own the type instances it contains, but the vector returned from <span style="color:#273D56">to_vec</span> needs to own its instances, so <span style="color:#273D56">to_vec</span> calls <span style="color:#273D56">clone</span> on each item. Thus, the type stored in the slice must implement <span style="color:#273D56">Clone</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Copy for duplicating values cheaply</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Copy</span> trait lets you duplicate a value by only copying bits stored on the stack; no arbitrary code is necessary. (More on <span style="color:#273D56">Copy</span>: “Stack-Only Data: Copy”, Chapter 4.)</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Copy</span> doesn’t define any methods, to prevent programmers from overloading those methods and violating the assumption that no arbitrary code is being run. That way, all programmers can assume that copying a value will be very fast.</p>
+<p style="font-size:30px;line-height:1.45">You can derive <span style="color:#273D56">Copy</span> on any type whose parts all implement <span style="color:#273D56">Copy</span>. A type that implements <span style="color:#273D56">Copy</span> must also implement <span style="color:#273D56">Clone</span>, because a <span style="color:#273D56">Copy</span> type has a trivial implementation of <span style="color:#273D56">Clone</span> that performs the same task as <span style="color:#273D56">Copy</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Rarely required:</b> types that implement <span style="color:#273D56">Copy</span> have optimizations available, meaning you don’t have to call <span style="color:#273D56">clone</span>, which makes the code more concise.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Everything possible with <span style="color:#273D56">Copy</span> you can also accomplish with <span style="color:#273D56">Clone</span>, but the code might be slower or have to use <span style="color:#273D56">clone</span> in places.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Hash for mapping a value to a value of fixed size</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Hash</span> trait lets you take an instance of a type of arbitrary size and map that instance to a value of fixed size using a hash function.</p>
+<p style="font-size:30px;line-height:1.45">Deriving <span style="color:#273D56">Hash</span> implements the <span style="color:#273D56">hash</span> method. The derived implementation combines the result of calling <span style="color:#273D56">hash</span> on each of the parts of the type, meaning all fields or values must also implement <span style="color:#273D56">Hash</span> to derive <span style="color:#273D56">Hash</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> storing keys in a <span style="color:#273D56">HashMap&lt;K, V&gt;</span> to store data efficiently.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.10.</b> A type used as a <span style="color:#273D56">HashMap</span> key needs <span style="color:#273D56">Hash</span> plus <span style="color:#273D56">Eq</span> (and so <span style="color:#273D56">PartialEq</span>):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(PartialEq, Eq, Hash)]</p>
+<p style="white-space:nowrap">struct UserId(u32);</p>
+<p style="white-space:nowrap">let mut names: HashMap&lt;UserId, String&gt; = HashMap::new();</p>
+<p style="white-space:nowrap">names.insert(UserId(7), String::from("Ferris"));</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Default for default values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">Default</span> trait lets you create a default value for a type. Deriving <span style="color:#273D56">Default</span> implements the <span style="color:#273D56">default</span> function, whose derived implementation calls <span style="color:#273D56">default</span> on each part of the type — so all fields or values in the type must also implement <span style="color:#273D56">Default</span> to derive <span style="color:#273D56">Default</span>.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">Default::default</span> is commonly combined with the struct update syntax (“Creating Instances from Other Instances with Struct Update Syntax”, Chapter 5): customize a few fields of a struct, then set and use a default value for the rest with <span style="color:#273D56">..Default::default()</span>.</p>
+<p style="font-size:30px;line-height:1.45"><b>Required by:</b> for example, the method <span style="color:#273D56">unwrap_or_default</span> on <span style="color:#273D56">Option&lt;T&gt;</span>. If the <span style="color:#273D56">Option&lt;T&gt;</span> is <span style="color:#273D56">None</span>, <span style="color:#273D56">unwrap_or_default</span> returns the result of <span style="color:#273D56">Default::default</span> for the type <span style="color:#273D56">T</span> stored in the <span style="color:#273D56">Option&lt;T&gt;</span>.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.11.</b> Struct update syntax with derived defaults:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#[derive(Default)]</p>
+<p style="white-space:nowrap">struct Config { verbose: bool, retries: u32, name: String }</p>
+<p style="white-space:nowrap">let c = Config { retries: 3, ..Default::default() };&#160;&#160;// verbose: false, name: ""</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Automatic formatting with rustfmt</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This appendix covers useful development tools that the Rust project provides: automatic formatting, quick ways to apply warning fixes, a linter, and integration with IDEs.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">rustfmt</span> tool reformats your code according to the community code style. Many collaborative projects use <span style="color:#273D56">rustfmt</span> to prevent arguments about which style to use when writing Rust: everyone formats their code using the tool.</p>
+<p style="font-size:30px;line-height:1.45">Rust installations include <span style="color:#273D56">rustfmt</span> by default, so you should already have the programs <span style="color:#273D56">rustfmt</span> and <span style="color:#273D56">cargo-fmt</span>. They are analogous to <span style="color:#273D56">rustc</span> and <span style="color:#273D56">cargo</span>: <span style="color:#273D56">rustfmt</span> allows finer-grained control, and <span style="color:#273D56">cargo-fmt</span> understands the conventions of a project that uses Cargo. To format any Cargo project:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo fmt</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This reformats all the Rust code in the current crate. It should only change the code style, not the code semantics. More: the rustfmt documentation (github.com/rust-lang/rustfmt).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Fix your code with rustfix: a warning</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">rustfix</span> tool is included with Rust installations and can automatically fix compiler warnings that have a clear way to correct the problem that’s likely what you want. Consider this code:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:2;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut x = 42;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{x}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We define <span style="color:#273D56">x</span> as mutable but never actually mutate it. Rust warns us about that (right).</p>
+</div>
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo build</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling myprogram v0.1.0 (file:///projects/myprogram)</p>
+<p style="white-space:nowrap">warning: variable does not need to be mutable</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:2:9</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let mut x = 0;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;----^</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;help: remove this `mut`</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `#[warn(unused_mut)]` on by default</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Fix your code with rustfix: cargo fix</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The warning suggests removing the <span style="color:#273D56">mut</span> keyword. We can apply that suggestion automatically with the <span style="color:#273D56">rustfix</span> tool by running <span style="color:#273D56">cargo fix</span>:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4">Running <span style="color:#273D56">cargo fix</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo fix</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Checking myprogram v0.1.0 (file:///projects/myprogram)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;Fixing src/main.rs (1 fix)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished dev [unoptimized + debuginfo] target(s) in 0.59s</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i> afterwards — changed by <span style="color:#273D56">cargo fix</span>:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 42;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{x}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The variable <span style="color:#273D56">x</span> is now immutable, and the warning no longer appears. You can also use <span style="color:#273D56">cargo fix</span> to transition your code between different Rust editions (Appendix E).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">More lints with Clippy</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.12 (Clippy).</b></span> A collection of lints that analyze your code so you can catch common mistakes and improve your Rust code. Clippy is included with standard Rust installations.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To run Clippy’s lints on any Cargo project, enter:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo clippy</p>
+</div>
+<p style="font-size:30px;line-height:1.45">For example, say you write a program that uses an approximation of a mathematical constant, such as pi:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 3.1415;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let r = 8.0;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("the area of the circle is {}", x * r * r);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Clippy’s approx_constant error</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running <span style="color:#273D56">cargo clippy</span> on this project results in this error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">error: approximate value of `f{32, 64}::consts::PI` found</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:2:13</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let x = 3.1415;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `#[deny(clippy::approx_constant)]` on by default</p>
+<p style="white-space:nowrap">&#160;&#160;= help: consider using the constant directly</p>
+<p style="white-space:nowrap">&#160;&#160;= help: for further information visit</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;https://rust-lang.github.io/rust-clippy/master/index.html#approx_constant</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This error lets you know that Rust already has a more precise <span style="color:#273D56">PI</span> constant defined, and that your program would be more correct if you used the constant instead. You would then change your code to use the <span style="color:#273D56">PI</span> constant.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Clippy: the fixed program</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The following code doesn’t result in any errors or warnings from Clippy:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = std::f64::consts::PI;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let r = 8.0;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("the area of the circle is {}", x * r * r);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For more information on Clippy, see its documentation (github.com/rust-lang/rust-clippy).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · D Useful Development Tools</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">IDE integration using rust-analyzer</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To help with IDE integration, the Rust community recommends using <span style="color:#273D56">rust-analyzer</span> (rust-analyzer.github.io). This tool is a set of compiler-centric utilities that speak the Language Server Protocol.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.13 (Language Server Protocol).</b></span> A specification for IDEs and programming languages to communicate with each other (langserver.org).</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Different clients can use <span style="color:#273D56">rust-analyzer</span>, such as the Rust analyzer plug-in for Visual Studio Code.</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>Visit the <span style="color:#273D56">rust-analyzer</span> project’s home page (rust-analyzer.github.io) for installation instructions.</li>
+<li>Install the language server support in your particular IDE.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Your IDE then gains capabilities such as autocompletion, jump to definition, and inline errors.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · E Editions</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why Rust has editions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Chapter 1, <span style="color:#273D56">cargo new</span> added a bit of metadata about an edition to your <i>Cargo.toml</i> file. This appendix explains what that means.</p>
+<p style="font-size:30px;line-height:1.45">The Rust language and compiler have a six-week release cycle, so users get a constant stream of new features. Other programming languages release larger changes less often; Rust releases smaller updates more frequently. After a while, all of these tiny changes add up — but from release to release, it can be difficult to look back and say, “Wow, between Rust 1.10 and Rust 1.31, Rust has changed a lot!”</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.14 (Edition).</b></span> A package, produced by the Rust team every three years or so, that brings together the features that have landed into a clear package with fully updated documentation and tooling. New editions ship as part of the usual six-week release process.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · E Editions</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Choosing an edition</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Editions serve different purposes for different people:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>For active Rust users, a new edition brings together incremental changes into an easy-to-understand package.</li>
+<li>For non-users, it signals that some major advancements have landed, which might make Rust worth another look.</li>
+<li>For those developing Rust, it provides a rallying point for the project as a whole.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">At the time of this writing, four Rust editions are available: <b>Rust 2015</b>, <b>Rust 2018</b>, <b>Rust 2021</b>, and <b>Rust 2024</b>. The book is written using Rust 2024 edition idioms.</p>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">edition</span> key in <i>Cargo.toml</i> indicates which edition the compiler should use for your code. If the key doesn’t exist, Rust uses <span style="color:#273D56">2015</span> as the edition value, for backward compatibility reasons.</p>
+<p style="font-size:30px;line-height:1.45">Each project can opt in to an edition other than the default 2015 edition. Editions can contain incompatible changes, such as a new keyword that conflicts with identifiers in code. However, unless you opt in to those changes, your code will continue to compile even as you upgrade the Rust compiler version you use.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · E Editions</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Editions interoperate</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">All Rust compiler versions support any edition that existed prior to that compiler’s release, and they can link crates of any supported editions together. Edition changes only affect the way the compiler initially parses code.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.15.</b> If you’re using Rust 2015 and one of your dependencies uses Rust 2018, your project will compile and be able to use that dependency. The opposite situation — your project uses Rust 2018 and a dependency uses Rust 2015 — works as well.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">To be clear: most features will be available on all editions, and developers using any Rust edition will continue to see improvements as new stable releases are made. However, in some cases, mainly when new keywords are added, some new features might only be available in later editions. You will need to switch editions if you want to take advantage of such features.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For more details, see <i>The Rust Edition Guide</i> (doc.rust-lang.org/stable/edition-guide), a complete book that enumerates the differences between editions and explains how to automatically upgrade your code to a new edition via <span style="color:#273D56">cargo fix</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · F Translations</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Translations of the book (1 of 3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Resources in languages other than English. Most are still in progress; see the Translations label on the book’s GitHub issues to help, or to let the maintainers know about a new translation.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.13:</b></span> Translations (repositories on github.com unless a full host is given)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Language</th><th style="width:70%">Repository</th></tr>
+<tr><td>Portuguese (Brazil)</td><td>rust-br/rust-book-pt-br</td></tr>
+<tr><td>Portuguese (Portugal)</td><td>nunojesus/rust-book-pt-pt</td></tr>
+<tr><td>Simplified Chinese</td><td>KaiserY/trpl-zh-cn; gnu4cn/rust-lang-Zh_CN</td></tr>
+<tr><td>Traditional Chinese</td><td>rust-tw/book-tw</td></tr>
+<tr><td>Ukrainian</td><td>rust-lang-ua.github.io/rustbook_ukrainian</td></tr>
+<tr><td>Spanish</td><td>thecodix/book; alternate: ManRR/rust-book-es; RustLangES/rust-book-es</td></tr>
+<tr><td>Russian</td><td>rust-lang-ru/book</td></tr>
+<tr><td>Korean</td><td>rust-kr/doc.rust-kr.org</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · F Translations</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Translations of the book (2 of 3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.13 (continued):</b></span> Translations (repositories on github.com unless a full host is given)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Language</th><th style="width:70%">Repository</th></tr>
+<tr><td>Japanese</td><td>rust-lang-ja/book-ja</td></tr>
+<tr><td>French</td><td>Jimskapt/rust-book-fr</td></tr>
+<tr><td>Polish</td><td>paytchoo/book-pl</td></tr>
+<tr><td>Cebuano</td><td>agentzero1/book</td></tr>
+<tr><td>Tagalog</td><td>josephace135/book</td></tr>
+<tr><td>Esperanto</td><td>psychoslave/Rust-libro</td></tr>
+<tr><td>Greek</td><td>TChatzigiannakis/rust-book-greek</td></tr>
+<tr><td>Swedish</td><td>sebras/book</td></tr>
+<tr><td>Farsi; Persian (FA)</td><td>RustFarsi/book; persian-rust/book</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · F Translations</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Translations of the book (3 of 3)</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table A.13 (continued):</b></span> Translations (repositories on github.com unless a full host is given)</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:30%">Language</th><th style="width:70%">Repository</th></tr>
+<tr><td>German</td><td>rust-lang-de/rustbook-de</td></tr>
+<tr><td>Hindi</td><td>venkatarun95/rust-book-hindi</td></tr>
+<tr><td>Thai</td><td>rust-lang-th/book-th</td></tr>
+<tr><td>Danish</td><td>DanKHansen/book-dk</td></tr>
+<tr><td>Uzbek</td><td>rust-lang-uz/book</td></tr>
+<tr><td>Vietnamese</td><td>tuanemdev/rust-book-vn</td></tr>
+<tr><td>Italian</td><td>nixxo.github.io/rust-lang-book-it</td></tr>
+<tr><td>Bengali</td><td>IsmailHosenIsmailJames/rust-book-bn</td></tr>
+</table>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The book lists each language under its own name (for example Deutsch, Español, Français); this deck gives English names. The list is open: new translations are announced through the Translations label on github.com/rust-lang/book issues.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Stability without stagnation</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This appendix is about how Rust is made and how that affects you as a Rust developer.</p>
+<p style="font-size:30px;line-height:1.45">As a language, Rust cares a <i>lot</i> about the stability of your code. Rust should be a rock-solid foundation you can build on, and if things were constantly changing, that would be impossible.</p>
+<p style="font-size:30px;line-height:1.45">At the same time, if the Rust team can’t experiment with new features, they may not find out important flaws until after their release, when things can no longer be changed.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.16 (Stability without stagnation).</b></span> Rust’s solution to this tension. Its guiding principle: you should never have to fear upgrading to a new version of stable Rust. Each upgrade should be painless, but should also bring you new features, fewer bugs, and faster compile times.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Choo, choo! Release channels and riding the trains</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust development operates on a <i>train schedule</i>: all development is done in the main branch of the Rust repository, and releases follow a software release train model, which has been used by Cisco IOS and other software projects.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.17 (Release channel).</b></span> One of the three streams in which Rust is released: <b>Nightly</b>, <b>Beta</b>, and <b>Stable</b>. Most Rust developers primarily use the stable channel, but those who want to try out experimental new features may use nightly or beta.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">An example of how development and release work: assume the Rust team is working on the release of Rust 1.5. (That release happened in December 2015, but it gives realistic version numbers.) A new feature is added to Rust: a new commit lands on the main branch. Each night, a new nightly version of Rust is produced. Every day is a release day, and these releases are created automatically by the release infrastructure. So as time passes, the releases look like this, once a night:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">nightly: * - - * - - *</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The trains: beta branches off, regressions get fixed</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45"><b>1.</b> Every six weeks, it’s time to prepare a new release! The <span style="color:#273D56">beta</span> branch of the Rust repository branches off from the main branch used by nightly. Now there are two releases:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">nightly: * - - * - - *</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">beta:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+</div>
+<p style="font-size:26px;line-height:1.45"><b>2.</b> Most Rust users do not use beta releases actively, but test against beta in their CI system to help Rust discover possible regressions. Meanwhile, there’s still a nightly release every night:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">nightly: * - - * - - * - - * - - *</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">beta:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45"><b>3.</b> Say a regression is found. Good thing there was time to test the beta release before the regression snuck into a stable release! The fix is applied to the main branch, so nightly is fixed; then the fix is backported to the <span style="color:#273D56">beta</span> branch, and a new beta release is produced:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">nightly: * - - * - - * - - * - - * - - *</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">beta:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;* - - - - - - - - *</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-51">
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The trains: stable ships, the next beta departs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45"><b>4.</b> Six weeks after the first beta was created, it’s time for a stable release! The <span style="color:#273D56">stable</span> branch is produced from the <span style="color:#273D56">beta</span> branch:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">nightly: * - - * - - * - - * - - * - - * - * - *</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">beta:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;* - - - - - - - - *</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">stable:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.45"><b>5.</b> Hooray! Rust 1.5 is done! But because the six weeks have gone by, a new beta of the <i>next</i> version of Rust, 1.6, is needed too. So after <span style="color:#273D56">stable</span> branches off of <span style="color:#273D56">beta</span>, the next version of <span style="color:#273D56">beta</span> branches off of <span style="color:#273D56">nightly</span> again:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">nightly: * - - * - - * - - * - - * - - * - * - *</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">beta:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;* - - - - - - - - *&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">stable:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-52">
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why the train model works</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.18 (Train model).</b></span> The release model in which every six weeks a release “leaves the station”, but still has to take a journey through the beta channel before it arrives as a stable release.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust releases every six weeks, like clockwork. If you know the date of one Rust release, you can know the date of the next one: it’s six weeks later. A nice aspect of releases scheduled every six weeks is that the next train is coming soon. If a feature happens to miss a particular release, there’s no need to worry: another one is happening in a short time! This helps reduce pressure to sneak possibly unpolished features in close to the release deadline.</p>
+<p style="font-size:30px;line-height:1.45">Thanks to this process, you can always check out the next build of Rust and verify for yourself that it’s easy to upgrade to: if a beta release doesn’t work as expected, you can report it to the team and get it fixed before the next stable release happens! Breakage in a beta release is relatively rare, but <span style="color:#273D56">rustc</span> is still a piece of software, and bugs do exist.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-53">
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Maintenance time and unstable features</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Maintenance time</h3>
+<p style="font-size:30px;line-height:1.45">The Rust project supports the most recent stable version. When a new stable version is released, the old version reaches its end of life (EOL). This means each version is supported for six weeks.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Unstable features</h3>
+<p style="font-size:30px;line-height:1.45">There’s one more catch with this release model: unstable features. Rust uses a technique called “feature flags” to determine what features are enabled in a given release.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.19 (Feature flag).</b></span> A flag behind which a feature under active development lands on the main branch — and therefore in nightly. To try out the work-in-progress feature, you must be using a nightly release of Rust and annotate your source code with the appropriate flag to opt in.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-54">
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Unstable features stay on nightly</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you’re using a beta or stable release of Rust, you can’t use any feature flags. This is the key that allows practical use of new features before they are declared stable forever. Those who wish to opt into the bleeding edge can do so, and those who want a rock-solid experience can stick with stable and know that their code won’t break. Stability without stagnation.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.20.</b> Opting in to an unstable feature is a crate-level attribute naming the flag; it compiles only on a nightly toolchain, and beta or stable reject it.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">#![feature(never_type)]&#160;&#160;// at the top of src/main.rs or src/lib.rs</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The book only contains information about stable features, as in-progress features are still changing, and surely they’ll be different between when the book was written and when they get enabled in stable builds. You can find documentation for nightly-only features online.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-55">
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Rustup and the role of Rust nightly</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rustup makes it easy to change between different release channels of Rust, on a global or per-project basis. By default, you’ll have stable Rust installed. To install nightly, for example:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ rustup toolchain install nightly</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.21 (Toolchain).</b></span> A release of Rust together with its associated components, as installed and managed by <span style="color:#273D56">rustup</span>.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">You can see all of the toolchains you have installed with <span style="color:#273D56">rustup</span> as well. Here’s an example on one of the authors’ Windows computers:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&gt; rustup toolchain list</p>
+<p style="white-space:nowrap">stable-x86_64-pc-windows-msvc (default)</p>
+<p style="white-space:nowrap">beta-x86_64-pc-windows-msvc</p>
+<p style="white-space:nowrap">nightly-x86_64-pc-windows-msvc</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-56">
+<section id="s55" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using nightly for one project: rustup override</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As the list shows, the stable toolchain is the default. Most Rust users use stable most of the time. You might want to use stable most of the time but use nightly on a specific project, because you care about a cutting-edge feature.</p>
+<p style="font-size:30px;line-height:1.45">To do so, use <span style="color:#273D56">rustup override</span> in that project’s directory to set the nightly toolchain as the one <span style="color:#273D56">rustup</span> should use when you’re in that directory:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cd ~/projects/needs-nightly</p>
+<p style="white-space:nowrap">$ rustup override set nightly</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Now, every time you call <span style="color:#273D56">rustc</span> or <span style="color:#273D56">cargo</span> inside <i>~/projects/needs-nightly</i>, <span style="color:#273D56">rustup</span> makes sure that you are using nightly Rust rather than your default of stable Rust. This comes in handy when you have a lot of Rust projects!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-57">
+<section id="s56" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The RFC process and teams</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">So how do you learn about these new features? Rust’s development model follows a <i>Request For Comments (RFC) process</i>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition A.22 (RFC).</b></span> A written proposal for an improvement in Rust. Anyone can write RFCs to improve Rust.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The proposals are reviewed and discussed by the Rust team, which is comprised of many topic subteams. There’s a full list of the teams on Rust’s website (rust-lang.org/governance), including teams for each area of the project: language design, compiler implementation, infrastructure, documentation, and more.</p>
+<p style="font-size:30px;line-height:1.45">The appropriate team reads the proposal and the comments, writes some comments of their own, and eventually there’s consensus to accept or reject the feature.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">57</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-58">
+<section id="s57" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · G How Rust is Made and Nightly Rust</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">From accepted RFC to stable feature</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Once a team reaches consensus to accept a feature, it travels the rest of the way like this:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>An issue is opened on the Rust repository, and someone can implement it. The person who implements it very well may not be the person who proposed the feature in the first place!</li>
+<li>When the implementation is ready, it lands on the main branch behind a feature gate, as discussed in “Unstable features”.</li>
+<li>After some time, once Rust developers who use nightly releases have been able to try out the new feature, team members discuss the feature and how it’s worked out on nightly, and decide whether it should make it into stable Rust.</li>
+<li>If the decision is to move forward, the feature gate is removed, and the feature is now considered stable! It rides the trains into a new stable release of Rust.</li>
+</ol>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">58</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-59">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Appendix summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The appendices are reference material to come back to:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li><b>A</b> — keywords in use and reserved; <span style="color:#273D56">r#</span> raw identifiers let you use any keyword as a name.</li>
+<li><b>B</b> — every operator (with its overloading trait) and every non-operator symbol.</li>
+<li><b>C</b> — the derivable traits: <span style="color:#273D56">Debug</span>, <span style="color:#273D56">PartialEq</span>/<span style="color:#273D56">Eq</span>, <span style="color:#273D56">PartialOrd</span>/<span style="color:#273D56">Ord</span>, <span style="color:#273D56">Clone</span>/<span style="color:#273D56">Copy</span>, <span style="color:#273D56">Hash</span>, <span style="color:#273D56">Default</span>.</li>
+<li><b>D</b> — <span style="color:#273D56">cargo fmt</span>, <span style="color:#273D56">cargo fix</span>, <span style="color:#273D56">cargo clippy</span>, and <span style="color:#273D56">rust-analyzer</span> for IDEs.</li>
+<li><b>E</b> — editions (2015, 2018, 2021, 2024) are opt-in via <i>Cargo.toml</i> and interoperate freely.</li>
+<li><b>F</b> — community translations of the book in many languages.</li>
+<li><b>G</b> — nightly, beta and stable ride six-week trains; unstable features stay behind feature flags on nightly; RFCs drive new features.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> This is the end of the book. From here, keep the standard library documentation (<span style="color:#273D56">rustup doc</span>) and <i>The Rust Edition Guide</i> close at hand, and follow new features as they ride the trains to stable.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">59</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

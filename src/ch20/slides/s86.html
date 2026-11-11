@@ -1,0 +1,21 @@
+<section id="s86" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.5 Macros</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Downsides of macros; declarative macros</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Macro definitions are more complex than function definitions, because you’re writing Rust code that writes Rust code. Due to this indirection, they are generally more difficult to read, understand, and maintain.</li>
+<li>You must define macros or bring them into scope <i>before</i> you call them in a file, as opposed to functions, which you can define anywhere and call anywhere.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Declarative macros for general metaprogramming</h3>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.27 (Declarative macro).</b></span> The most widely used form of macros in Rust, also called “macros by example,” “<span style="color:#273D56">macro_rules!</span> macros,” or just plain “macros.” At its core, it lets you write something similar to a Rust <span style="color:#273D56">match</span> expression.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">A <span style="color:#273D56">match</span> expression (Chapter 6) takes an expression, compares the resultant value to patterns, and runs the code associated with the matching pattern. Macros also compare a value to patterns associated with code: here the value is the literal Rust source code passed to the macro; the patterns are compared with the structure of that source code; and the code associated with each pattern, when matched, replaces the code passed to the macro. This all happens during compilation.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">87</p>
+</div>
+</section>

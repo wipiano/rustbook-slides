@@ -1,0 +1,20 @@
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.2 Data Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Integer overflow in debug builds</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Say you have a variable of type <span style="color:#273D56">u8</span>, which can hold values between 0 and 255. If you try to change the variable to a value outside that range, such as 256, integer overflow occurs.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 3.11 (Integer overflow).</b></span> Assigning an integer variable a value outside the range its type can hold. It results in one of two behaviors, depending on whether you compile in debug or release mode.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">When you’re compiling in debug mode, Rust includes checks for integer overflow that cause your program to <i>panic</i> at runtime if this behavior occurs.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 3.12 (Panic).</b></span> Rust’s term for a program exiting with an error (<i>panicking</i>). Panics are discussed in more depth in “Unrecoverable Errors with <span style="color:#273D56">panic!</span>” in Chapter 9.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>

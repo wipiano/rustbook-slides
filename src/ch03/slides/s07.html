@@ -1,0 +1,25 @@
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.1 Variables and Mutability</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Declaring constants</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 3.4 (Constant).</b></span> Like an immutable variable, a value that is bound to a name and is not allowed to change — but with a few differences from variables.</p>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>You aren’t allowed to use <span style="color:#273D56">mut</span> with constants: they aren’t just immutable by default, they’re <i>always</i> immutable.</li>
+<li>You declare constants with the <span style="color:#273D56">const</span> keyword instead of <span style="color:#273D56">let</span>, and the type of the value <i>must</i> be annotated (types and annotations come in “Data Types”; just know you must always annotate the type).</li>
+<li>Constants can be declared in any scope, including the global scope, which makes them useful for values that many parts of code need to know about.</li>
+<li>Constants may be set only to a constant expression, not to the result of a value that could only be computed at runtime.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">Here’s an example of a constant declaration:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>

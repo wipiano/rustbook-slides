@@ -1,0 +1,16 @@
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · 9.3 To panic! or Not to panic!</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Custom types for validation: the problem</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Let’s take the idea of using Rust’s type system to ensure we have a valid value one step further, and create a custom type for validation.</p>
+<p style="font-size:30px;line-height:1.45">Recall the guessing game in Chapter 2, which asked the user to guess a number between 1 and 100. We never validated that the guess was between those numbers before checking it against our secret number; we only validated that the guess was positive. The consequences were not very dire: our output of “Too high” or “Too low” would still be correct.</p>
+<p style="font-size:30px;line-height:1.45">But it would be a useful enhancement to guide the user toward valid guesses, and to behave differently when the user guesses a number that’s out of range versus when the user types, for example, letters instead.</p>
+<p style="font-size:30px;line-height:1.45">One way to do this would be to parse the guess as an <span style="color:#273D56">i32</span> instead of only a <span style="color:#273D56">u32</span> to allow potentially negative numbers, and then add a check for the number being in range, as on the next slides.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>

@@ -1,0 +1,30 @@
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 8 · 8.3 Storing Keys with Associated Values in Hash Maps</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Managing ownership in hash maps</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Types that implement the <span style="color:#273D56">Copy</span> trait, like <span style="color:#273D56">i32</span>, are copied into the hash map. Owned values like <span style="color:#273D56">String</span> are moved, and the hash map becomes their owner (Listing 8.22).</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 8.22:</b></span> Showing that keys and values are owned by the hash map once they’re inserted</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;use std::collections::HashMap;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let field_name = String::from("Favorite color");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let field_value = String::from("Blue");</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut map = HashMap::new();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;map.insert(field_name, field_value);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// field_name and field_value are invalid at this point, try using them and</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// see what compiler error you get!</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">field_name</span> and <span style="color:#273D56">field_value</span> can’t be used after being moved into the hash map by the call to <span style="color:#273D56">insert</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.8 Common Collections</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>

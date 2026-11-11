@@ -1,0 +1,28 @@
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Precedence of a match guard over |</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The arm in Listing 19.28 matches only if <span style="color:#273D56">x</span> equals <span style="color:#273D56">4</span>, <span style="color:#273D56">5</span>, or <span style="color:#273D56">6</span> <i>and</i> <span style="color:#273D56">y</span> is <span style="color:#273D56">true</span>. When the code runs, the first arm’s pattern matches because <span style="color:#273D56">x</span> is <span style="color:#273D56">4</span>, but the match guard <span style="color:#273D56">if y</span> is <span style="color:#273D56">false</span>, so the first arm is not chosen. The code moves on to the second arm, which does match, and the program prints <span style="color:#273D56">no</span>. The <span style="color:#273D56">if</span> condition applies to the whole pattern <span style="color:#273D56">4 | 5 | 6</span>, not just to the last value <span style="color:#273D56">6</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">The precedence behaves like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">(4 | 5 | 6) if y =&gt; ...</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">rather than this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">4 | 5 | (6 if y) =&gt; ...</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">After running the code, the precedence behavior is evident: if the match guard applied only to the final value in the list specified with the <span style="color:#273D56">|</span> operator, the arm would have matched and the program would have printed <span style="color:#273D56">yes</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>

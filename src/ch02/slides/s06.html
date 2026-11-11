@@ -1,0 +1,22 @@
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.2 Processing a Guess</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Binding guess to a new, empty String</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let mut guess = String::new();</p>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">let mut guess</span> introduces a mutable variable named <span style="color:#273D56">guess</span>. The equal sign (<span style="color:#273D56">=</span>) tells Rust we want to bind something to the variable now. On its right is the value <span style="color:#273D56">guess</span> is bound to: the result of calling <span style="color:#273D56">String::new</span>, a function that returns a new instance of a <span style="color:#273D56">String</span>.</p>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">String</span> is a string type provided by the standard library that is a growable, UTF-8 encoded bit of text.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 2.3 (Associated function).</b></span> A function that’s implemented on a type, here <span style="color:#273D56">String</span>. The <span style="color:#273D56">::</span> syntax in the <span style="color:#273D56">::new</span> line indicates that <span style="color:#273D56">new</span> is an associated function of the <span style="color:#273D56">String</span> type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This <span style="color:#273D56">new</span> function creates a new, empty string. You’ll find a <span style="color:#273D56">new</span> function on many types, because it’s a common name for a function that makes a new value of some kind.</p>
+<p style="font-size:30px;line-height:1.45">In full, the line has created a mutable variable that is currently bound to a new, empty instance of a <span style="color:#273D56">String</span>. Whew!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>

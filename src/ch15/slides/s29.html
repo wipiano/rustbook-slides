@@ -1,0 +1,21 @@
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Reading Listing 15.13, and the cost of coercion</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><span style="color:#273D56">(*m)</span> dereferences the <span style="color:#273D56">MyBox&lt;String&gt;</span> into a <span style="color:#273D56">String</span>.</li>
+<li>The <span style="color:#273D56">&amp;</span> and <span style="color:#273D56">[..]</span> then take a string slice of the <span style="color:#273D56">String</span> that is equal to the whole string, to match the signature of <span style="color:#273D56">hello</span>.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">This code without deref coercions is harder to read, write, and understand with all of these symbols involved. Deref coercion lets Rust handle these conversions for us automatically.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 15.8.</b> The coercion chain behind <span style="color:#273D56">hello(&amp;m)</span>: <span style="color:#273D56">&amp;MyBox&lt;String&gt;</span> → (<span style="color:#273D56">MyBox</span>’s <span style="color:#273D56">deref</span>) → <span style="color:#273D56">&amp;String</span> → (<span style="color:#273D56">String</span>’s <span style="color:#273D56">deref</span>) → <span style="color:#273D56">&amp;str</span>, the parameter type of <span style="color:#273D56">hello</span>. Two calls to <span style="color:#273D56">Deref::deref</span> are inserted.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">When the <span style="color:#273D56">Deref</span> trait is defined for the types involved, Rust analyzes the types and uses <span style="color:#273D56">Deref::deref</span> as many times as necessary to get a reference that matches the parameter’s type. The number of insertions is resolved at compile time, so there is no runtime penalty for taking advantage of deref coercion!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>

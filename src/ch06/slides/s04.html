@@ -1,0 +1,40 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Storing the address data: a struct attempt</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using enums has even more advantages. At the moment we have no way to store the actual IP address <i>data</i>; we only know what <i>kind</i> it is. Having just learned about structs in Chapter 5, you might be tempted to tackle this problem with structs, as in Listing 6.1.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 6.1:</b></span> Storing the data and <span style="color:#273D56">IpAddrKind</span> variant of an IP address using a <span style="color:#273D56">struct</span></p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum IpAddrKind {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V4,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;V6,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">struct IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;kind: IpAddrKind,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;address: String,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let home = IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;kind: IpAddrKind::V4,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;address: String::from("127.0.0.1"),</p>
+<p style="white-space:nowrap">};</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">let loopback = IpAddr {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;kind: IpAddrKind::V6,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;address: String::from("::1"),</p>
+<p style="white-space:nowrap">};</p>
+</div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

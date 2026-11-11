@@ -1,0 +1,15 @@
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Draft posts without a content method</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We still enable the creation of new posts in the draft state using <span style="color:#273D56">Post::new</span>, and the ability to add text to the post’s content.</p>
+<p style="font-size:30px;line-height:1.45">But instead of a <span style="color:#273D56">content</span> method on a draft post that returns an empty string, draft posts won’t have a <span style="color:#273D56">content</span> method at all. That way, trying to get a draft post’s content gives a compiler error telling us the method doesn’t exist. As a result, it is impossible to accidentally display draft post content in production, because that code won’t even compile.</p>
+<p style="font-size:30px;line-height:1.45">Listing 18.19 (next slide) shows the definition of a <span style="color:#273D56">Post</span> struct and a <span style="color:#273D56">DraftPost</span> struct, as well as methods on each.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>

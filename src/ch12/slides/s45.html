@@ -1,0 +1,21 @@
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.3 Refactoring to Improve Modularity and Error Handling</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What Listing 12.14 changes</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>A <span style="color:#273D56">use minigrep::search</span> line brings the <span style="color:#273D56">search</span> function from the library crate into the binary crate’s scope.</li>
+<li>In <span style="color:#273D56">run</span>, rather than printing out the contents of the file, we call <span style="color:#273D56">search</span>, passing <span style="color:#273D56">config.query</span> and <span style="color:#273D56">contents</span> as arguments, and use a <span style="color:#273D56">for</span> loop to print each line returned from <span style="color:#273D56">search</span> that matched the query.</li>
+<li>This is also a good time to remove the <span style="color:#273D56">println!</span> calls in <span style="color:#273D56">main</span> that displayed the query and the file path, so that the program only prints the search results (if no errors occur).</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The <span style="color:#273D56">search</span> function collects all the results into a vector it returns before any printing happens. This could be slow to display results when searching large files, because results aren’t printed as they’re found; Chapter 13 discusses a possible fix using iterators.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Whew! That was a lot of work, but it’s now much easier to handle errors and the code is more modular; almost all our work will be done in <i>src/lib.rs</i> from here on. Next we use this modularity for something difficult with the old code but easy with the new: we’ll write some tests!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>

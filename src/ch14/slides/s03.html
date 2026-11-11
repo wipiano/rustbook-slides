@@ -1,0 +1,28 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 14 · 14.1 Customizing Builds with Release Profiles</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Overriding a default setting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You override a default by adding a different value for it in <i>Cargo.toml</i>. For example, to use optimization level 1 in the development profile, add these two lines to the project’s <i>Cargo.toml</i>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><i>Cargo.toml</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">[profile.dev]</p>
+<p style="white-space:nowrap">opt-level = 1</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>This overrides the default setting of <span style="color:#273D56">0</span>.</li>
+<li>Now <span style="color:#273D56">cargo build</span> uses the defaults for the <span style="color:#273D56">dev</span> profile plus our customization to <span style="color:#273D56">opt-level</span>.</li>
+<li>Because <span style="color:#273D56">opt-level</span> is <span style="color:#273D56">1</span>, Cargo applies more optimizations than the default, but not as many as in a release build.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> For the full list of configuration options and defaults for each profile, see Cargo’s documentation (doc.rust-lang.org/cargo/reference/profiles.html).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.14 More About Cargo and Crates.io</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

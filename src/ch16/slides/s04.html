@@ -1,0 +1,20 @@
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.1 Using Threads to Run Code Simultaneously</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The 1:1 threading model, and thread::spawn</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust attempts to mitigate the negative effects of threads, but multithreaded programming still takes careful thought and a code structure different from that of single-threaded programs.</p>
+<p style="font-size:30px;line-height:1.45">Languages implement threads in a few different ways; many operating systems provide an API the language can call to create new threads.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.6 (1:1 model).</b></span> The model of thread implementation used by the Rust standard library, whereby a program uses one operating system thread per one language thread.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Crates implement other threading models with different trade-offs. (Rust’s async system, in the next chapter, is another approach to concurrency as well.)</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Creating a new thread with spawn</h3>
+<p style="font-size:30px;line-height:1.45">To create a new thread, call the <span style="color:#273D56">thread::spawn</span> function and pass it a closure (Chapter 13) containing the code you want to run in the new thread. Listing 16.1, on the next slide, prints some text from a main thread and other text from a new thread.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>

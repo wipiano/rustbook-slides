@@ -1,0 +1,1752 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.19 — Patterns and Matching · Rust Book Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/slides.js" defer></script>
+</head>
+<body>
+<header class="bar"><a href="index.html">Contents</a><h1>Ch.19 — Patterns and Matching</h1><nav><a href="ch18.html">← Ch.18</a><a href="ch20.html">Ch.20 →</a></nav></header>
+<main class="deck">
+<div class="frame" id="slide-1">
+<section id="cover" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:112px 112px 160px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;line-height:1.3;color:#596675">Chapter 19</p>
+<h1 style="font-family:'Libertinus Serif', Georgia, serif;font-size:64px;font-weight:600;line-height:1.2;color:#273D56">Patterns and Matching</h1>
+<hr style="width:1696px;border-top:1px solid #D5DCE3">
+<p style="font-size:30px;line-height:1.45">Patterns are a special syntax in Rust for matching against the structure of types, both complex and simple. Using patterns in conjunction with <span style="color:#273D56">match</span> expressions and other constructs gives you more control over a program’s control flow.</p>
+<p style="font-size:30px;line-height:1.45">This chapter is a reference on all things related to patterns: the valid places to use patterns, the difference between refutable and irrefutable patterns, and the different kinds of pattern syntax that you might see. By the end, you’ll know how to use patterns to express many concepts in a clear way.</p>
+<ul style="font-size:30px;line-height:1.45;color:#20252B">
+<li>19.1 All the Places Patterns Can Be Used</li>
+<li>19.2 Refutability: Whether a Pattern Might Fail to Match</li>
+<li>19.3 Pattern Syntax</li>
+</ul>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">1</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-2">
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What a pattern is</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.1 (Pattern).</b></span> A special syntax in Rust for matching against the structure of types, both complex and simple. In the contexts where patterns are valid, they describe the shape of data.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">A pattern consists of some combination of:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Literals</li>
+<li>Destructured arrays, enums, structs, or tuples</li>
+<li>Variables</li>
+<li>Wildcards</li>
+<li>Placeholders</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:30px;line-height:1.45">Some example patterns: <span style="color:#273D56">x</span>, <span style="color:#273D56">(a, 3)</span>, and <span style="color:#273D56">Some(Color::Red)</span>. Our program matches values against the patterns to determine whether it has the correct shape of data to continue running a particular piece of code.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">To use a pattern, we compare it to some value. If the pattern matches the value, we use the value parts in our code. Recall the <span style="color:#273D56">match</span> expressions in Chapter 6, such as the coin-sorting machine: if the value fits the shape of the pattern, we can use the named pieces; if it doesn’t, the code associated with the pattern won’t run.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-3">
+<section id="s02" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">match arms</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Patterns pop up in many places; you’ve used them a lot without realizing it. A <span style="color:#273D56">match</span> is the keyword <span style="color:#273D56">match</span>, a value to match on, and one or more arms: a pattern plus an expression to run if the value matches it.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">Formally:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match VALUE {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;PATTERN =&gt; EXPRESSION,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;PATTERN =&gt; EXPRESSION,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;PATTERN =&gt; EXPRESSION,</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">From Listing 6.5, matching an <span style="color:#273D56">Option&lt;i32&gt;</span> in <span style="color:#273D56">x</span>; the patterns are <span style="color:#273D56">None</span> and <span style="color:#273D56">Some(i)</span>, left of each arrow:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;None =&gt; None,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Some(i) =&gt; Some(i + 1),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">match</span> expressions must be <i>exhaustive</i>: all possibilities for the value must be accounted for. One way is a catch-all pattern in the last arm: a variable name matching any value can never fail and so covers every remaining case.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.2 (The _ pattern).</b></span> A pattern that matches anything but never binds to a variable; often used in the last match arm to ignore any value not specified (more in “Ignoring Values in a Pattern”).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">3</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-4">
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">let statements</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Before this chapter we had only explicitly discussed patterns with <span style="color:#273D56">match</span> and <span style="color:#273D56">if let</span>, but we’ve used patterns elsewhere too — including in <span style="color:#273D56">let</span> statements.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">A straightforward variable assignment:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let x = 5;</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">More formally, a <span style="color:#273D56">let</span> statement looks like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let PATTERN = EXPRESSION;</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Every time you’ve used a <span style="color:#273D56">let</span> statement like this, you’ve been using patterns, although you might not have realized it!</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>In <span style="color:#273D56">let x = 5;</span> the variable name in the PATTERN slot is just a particularly simple form of a pattern.</li>
+<li>Rust compares the expression against the pattern and assigns any names it finds.</li>
+<li><span style="color:#273D56">x</span> is a pattern that means “bind what matches here to the variable <span style="color:#273D56">x</span>.” Because the name <span style="color:#273D56">x</span> is the whole pattern, it effectively means “bind everything to the variable <span style="color:#273D56">x</span>, whatever the value is.”</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-5">
+<section id="s04" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Destructuring a tuple with let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.1:</b></span> Using a pattern to destructure a tuple and create three variables at once</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let (x, y, z) = (1, 2, 3);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Rust compares the value <span style="color:#273D56">(1, 2, 3)</span> to the pattern <span style="color:#273D56">(x, y, z)</span> and sees that the value matches — the number of elements is the same in both — so it binds <span style="color:#273D56">1</span> to <span style="color:#273D56">x</span>, <span style="color:#273D56">2</span> to <span style="color:#273D56">y</span>, and <span style="color:#273D56">3</span> to <span style="color:#273D56">z</span>. Think of this tuple pattern as nesting three individual variable patterns inside it.</p>
+<p style="font-size:30px;line-height:1.45">If the number of elements in the pattern doesn’t match the number in the tuple, the overall type won’t match and we get a compiler error. Listing 19.2 tries to destructure a three-element tuple into two variables:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.2:</b></span> Incorrectly constructing a pattern whose variables don’t match the number of elements in the tuple</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let (x, y) = (1, 2, 3);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">5</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-6">
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The mismatched-tuple type error</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Attempting to compile Listing 19.2 results in this type error:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling patterns v0.1.0 (file:///projects/patterns)</p>
+<p style="white-space:nowrap">error[E0308]: mismatched types</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:2:9</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let (x, y) = (1, 2, 3);</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^&#160;&#160;&#160;--------- this expression has type `({integer}, {integer}, {integer})`</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;expected a tuple with 3 elements, found one with 2 elements</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: expected tuple `({integer}, {integer}, {integer})`</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;found tuple `(_, _)`</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0308`.</p>
+<p style="white-space:nowrap">error: could not compile `patterns` (bin "patterns") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-7">
+<section id="s06" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Fixing the mismatch; conditional if let expressions</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">To fix the error, we could ignore one or more of the tuple’s values using <span style="color:#273D56">_</span> or <span style="color:#273D56">..</span> (see “Ignoring Values in a Pattern”). If the problem is too many variables in the pattern, make the types match by removing variables so that the number of variables equals the number of elements in the tuple.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Conditional if let expressions</h3>
+<p style="font-size:30px;line-height:1.45">Chapter 6 used <span style="color:#273D56">if let</span> mainly as a shorter way to write the equivalent of a <span style="color:#273D56">match</span> that only matches one case. Optionally, <span style="color:#273D56">if let</span> can have a corresponding <span style="color:#273D56">else</span> containing code to run if the pattern doesn’t match.</p>
+<p style="font-size:30px;line-height:1.45">You can also mix and match <span style="color:#273D56">if let</span>, <span style="color:#273D56">else if</span>, and <span style="color:#273D56">else if let</span> expressions. This gives more flexibility than a <span style="color:#273D56">match</span>, which can express only one value to compare with the patterns. And Rust doesn’t require the conditions in a series of <span style="color:#273D56">if let</span>, <span style="color:#273D56">else if</span>, and <span style="color:#273D56">else if let</span> arms to relate to each other.</p>
+<p style="font-size:30px;line-height:1.45">Listing 19.3 decides what color to make your background from a series of checks. Its variables have hardcoded values that a real program might receive from user input.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">7</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-8">
+<section id="s07" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Mixing if let, else if, and else if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.3:</b></span> Mixing <span style="color:#273D56">if let</span>, <span style="color:#273D56">else if</span>, <span style="color:#273D56">else if let</span>, and <span style="color:#273D56">else</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let favorite_color: Option&lt;&amp;str&gt; = None;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let is_tuesday = false;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let age: Result&lt;u8, _&gt; = "34".parse();</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Some(color) = favorite_color {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Using your favorite color, {color}, as the background");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else if is_tuesday {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Tuesday is green day!");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else if let Ok(age) = age {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if age &gt; 30 {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Using purple as the background color");</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The listing continues on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">8</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-9">
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the background color is chosen</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.3 (continued)</b></span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Using orange as the background color");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;} else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Using blue as the background color");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">If the user specifies a favorite color, that color is the background. If no favorite color is specified and today is Tuesday, the background is green. Otherwise, if the user specifies their age as a string and we can parse it as a number successfully, the color is purple or orange depending on the number. If none of these conditions apply, the background is blue.</p>
+<p style="font-size:30px;line-height:1.45">This conditional structure lets us support complex requirements. With the hardcoded values here, the example prints <span style="color:#273D56">Using purple as the background color</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-10">
+<section id="s09" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Shadowing and exhaustiveness in if let</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">if let can shadow variables</h3>
+<p style="font-size:30px;line-height:1.45"><span style="color:#273D56">if let</span> can introduce new variables that shadow existing ones, in the same way that <span style="color:#273D56">match</span> arms can. The line <span style="color:#273D56">if let Ok(age) = age</span> introduces a new <span style="color:#273D56">age</span> variable containing the value inside the <span style="color:#273D56">Ok</span> variant, shadowing the existing <span style="color:#273D56">age</span>.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>So the <span style="color:#273D56">if age &gt; 30</span> condition must go within that block.</li>
+<li>We can’t combine the two conditions into <span style="color:#273D56">if let Ok(age) = age &amp;&amp; age &gt; 30</span>: the new <span style="color:#273D56">age</span> we want to compare to 30 isn’t valid until the new scope starts with the curly bracket.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">No exhaustiveness check</h3>
+<p style="font-size:30px;line-height:1.45">The downside of <span style="color:#273D56">if let</span> expressions is that the compiler doesn’t check for exhaustiveness, whereas with <span style="color:#273D56">match</span> it does. If we omitted the last <span style="color:#273D56">else</span> block and so missed handling some cases, the compiler would not alert us to the possible logic bug.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">10</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-11">
+<section id="s10" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">while let conditional loops</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.4:</b></span> Using a <span style="color:#273D56">while let</span> loop to print values for as long as <span style="color:#273D56">rx.recv()</span> returns <span style="color:#273D56">Ok</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let (tx, rx) = std::sync::mpsc::channel();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;std::thread::spawn(move || {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;for val in [1, 2, 3] {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tx.send(val).unwrap();</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;});</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;while let Ok(value) = rx.recv() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("{value}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Similar in construction to <span style="color:#273D56">if let</span>, the <span style="color:#273D56">while let</span> loop lets a <span style="color:#273D56">while</span> loop run for as long as a pattern continues to match. Listing 19.4 waits on messages sent between threads — checking a <span style="color:#273D56">Result</span> instead of an <span style="color:#273D56">Option</span>.</p>
+<p style="font-size:30px;line-height:1.45">It prints <span style="color:#273D56">1</span>, <span style="color:#273D56">2</span>, and then <span style="color:#273D56">3</span>. <span style="color:#273D56">recv</span> takes the first message out of the receiver side of the channel and returns <span style="color:#273D56">Ok(value)</span>. In Chapter 16 we unwrapped the error directly, or used the receiver as an iterator in a <span style="color:#273D56">for</span> loop. We can also use <span style="color:#273D56">while let</span>: <span style="color:#273D56">recv</span> returns <span style="color:#273D56">Ok</span> each time a message arrives, as long as the sender exists, and then <span style="color:#273D56">Err</span> once the sender side disconnects.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">11</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-12">
+<section id="s11" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">for loops</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In a <span style="color:#273D56">for</span> loop, the value that directly follows the keyword <span style="color:#273D56">for</span> is a pattern: in <span style="color:#273D56">for x in y</span>, the <span style="color:#273D56">x</span> is the pattern. Listing 19.5 uses a pattern in a <span style="color:#273D56">for</span> loop to destructure, or break apart, a tuple as part of the loop.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.5:</b></span> Using a pattern in a <span style="color:#273D56">for</span> loop to destructure a tuple</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let v = vec!['a', 'b', 'c'];</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for (index, value) in v.iter().enumerate() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("{value} is at index {index}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We adapt the iterator with the <span style="color:#273D56">enumerate</span> method so that it produces a value and the index for that value, placed into a tuple. The output follows on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">12</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-13">
+<section id="s12" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Destructuring in a for loop: the output</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The code in Listing 19.5 prints the following:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling patterns v0.1.0 (file:///projects/patterns)</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.52s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/patterns`</p>
+<p style="white-space:nowrap">a is at index 0</p>
+<p style="white-space:nowrap">b is at index 1</p>
+<p style="white-space:nowrap">c is at index 2</p>
+</div>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 19.3.</b> The first value <span style="color:#273D56">enumerate</span> produces is the tuple <span style="color:#273D56">(0, 'a')</span>. When this value is matched to the pattern <span style="color:#273D56">(index, value)</span>, <span style="color:#273D56">index</span> will be <span style="color:#273D56">0</span> and <span style="color:#273D56">value</span> will be <span style="color:#273D56">'a'</span>, printing the first line of the output.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">13</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-14">
+<section id="s13" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.1 All the Places Patterns Can Be Used</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Function parameters</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Function parameters can also be patterns. Listing 19.6 declares a function <span style="color:#273D56">foo</span> taking one parameter <span style="color:#273D56">x</span> of type <span style="color:#273D56">i32</span> — by now familiar.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.6:</b></span> A function signature using patterns in the parameters</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn foo(x: i32) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;// code goes here</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">x</span> part is a pattern! As with <span style="color:#273D56">let</span>, we could match a tuple in a function’s arguments to the pattern. Listing 19.7 splits the values in a tuple as we pass it to a function.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.7:</b></span> A function with parameters that destructure a tuple — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn print_coordinates(&amp;(x, y): &amp;(i32, i32)) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("Current location: ({x}, {y})");</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let point = (3, 5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;print_coordinates(&amp;point);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This prints <span style="color:#273D56">Current location: (3, 5)</span>. The values <span style="color:#273D56">&amp;(3, 5)</span> match the pattern <span style="color:#273D56">&amp;(x, y)</span>, so <span style="color:#273D56">x</span> is <span style="color:#273D56">3</span> and <span style="color:#273D56">y</span> is <span style="color:#273D56">5</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Closures are similar to functions (Chapter 13), so closure parameter lists take patterns in the same way.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">14</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-15">
+<section id="s14" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Refutable and irrefutable patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You’ve now seen several ways to use patterns, but patterns don’t work the same in every place we can use them. In some places the patterns must be irrefutable; in others they can be refutable. Patterns come in these two forms:</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.4 (Irrefutable pattern).</b></span> A pattern that will match for any possible value passed. Example: <span style="color:#273D56">x</span> in <span style="color:#273D56">let x = 5;</span> matches anything and therefore cannot fail to match.</p>
+</div>
+<div style="flex:1;border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.5 (Refutable pattern).</b></span> A pattern that can fail to match for some possible value. Example: <span style="color:#273D56">Some(x)</span> in <span style="color:#273D56">if let Some(x) = a_value</span> — if <span style="color:#273D56">a_value</span> is <span style="color:#273D56">None</span> rather than <span style="color:#273D56">Some</span>, the pattern will not match.</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>Function parameters, <span style="color:#273D56">let</span> statements, and <span style="color:#273D56">for</span> loops can only accept irrefutable patterns, because the program cannot do anything meaningful when values don’t match.</li>
+<li><span style="color:#273D56">if let</span> and <span style="color:#273D56">while let</span> expressions and the <span style="color:#273D56">let...else</span> statement accept refutable and irrefutable patterns, but the compiler warns against irrefutable ones: by definition they’re intended to handle possible failure — a conditional’s functionality is its ability to perform differently depending on success or failure.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">15</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-16">
+<section id="s15" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Which constructs accept which patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 19.1:</b></span> Pattern refutability required by each construct</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:42%">Construct</th><th style="width:58%">Accepts</th></tr>
+<tr><td>Function parameters, let, for</td><td>Irrefutable patterns only</td></tr>
+<tr><td>if let, while let, let...else</td><td>Refutable and irrefutable (warning on irrefutable)</td></tr>
+<tr><td>match arms</td><td>Refutable arms; the last arm irrefutable</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">In general, you shouldn’t have to worry about the distinction. But you do need to be familiar with refutability so that you can respond when you see it in an error message: then you’ll need to change either the pattern or the construct you’re using the pattern with, depending on the intended behavior of the code.</p>
+<p style="font-size:30px;line-height:1.45">Next: what happens when we use a refutable pattern where Rust requires an irrefutable one, and vice versa. Listing 19.8 shows a <span style="color:#273D56">let</span> statement whose pattern is <span style="color:#273D56">Some(x)</span>, a refutable pattern. As you might expect, this code will not compile.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">16</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-17">
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A refutable pattern where let needs an irrefutable one</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.8:</b></span> Attempting to use a refutable pattern with <span style="color:#273D56">let</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let some_option_value: Option&lt;i32&gt; = None;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Some(x) = some_option_value;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>If <span style="color:#273D56">some_option_value</span> were a <span style="color:#273D56">None</span> value, it would fail to match the pattern <span style="color:#273D56">Some(x)</span>, meaning the pattern is refutable.</li>
+<li>However, the <span style="color:#273D56">let</span> statement can only accept an irrefutable pattern, because there is nothing valid the code can do with a <span style="color:#273D56">None</span> value.</li>
+<li>At compile time, Rust complains that we’ve tried to use a refutable pattern where an irrefutable pattern is required (error on the next slide).</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-18">
+<section id="s17" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">error[E0005]: refutable pattern in local binding</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">error[E0005]: refutable pattern in local binding</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:3:9</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;let Some(x) = some_option_value;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^^^^^^ pattern `None` not covered</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `let` bindings require an "irrefutable pattern", like a `struct` or</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;an `enum` with only one variant</p>
+<p style="white-space:nowrap">&#160;&#160;= note: for more information, visit https://doc.rust-lang.org/book/ch19-02-refutability.html</p>
+<p style="white-space:nowrap">&#160;&#160;= note: the matched value is of type `Option&lt;i32&gt;`</p>
+<p style="white-space:nowrap">help: you might want to use `let...else` to handle the variant that isn't matched</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">3 |&#160;&#160;&#160;&#160;&#160;let Some(x) = some_option_value else { todo!() };</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;++++++++++++++++</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0005`.</p>
+<p style="white-space:nowrap">error: could not compile `patterns` (bin "patterns") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We didn’t (and couldn’t!) cover every valid value with <span style="color:#273D56">Some(x)</span>, so Rust rightfully produces a compiler error.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">18</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-19">
+<section id="s18" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The fix: let...else</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If we have a refutable pattern where an irrefutable pattern is needed, we can fix it by changing the code that uses the pattern: instead of <span style="color:#273D56">let</span>, use <span style="color:#273D56">let...else</span>. Then, if the pattern doesn’t match, the code in the curly brackets handles the value. Listing 19.9 fixes Listing 19.8.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.9:</b></span> Using <span style="color:#273D56">let...else</span> and a block with refutable patterns instead of <span style="color:#273D56">let</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let some_option_value: Option&lt;i32&gt; = None;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Some(x) = some_option_value else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.10:</b></span> Attempting to use an irrefutable pattern with <span style="color:#273D56">let...else</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 5 else {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;};</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We’ve given the code an out! Listing 19.9 is perfectly valid, but it means we cannot use an irrefutable pattern without receiving a warning: if we give <span style="color:#273D56">let...else</span> a pattern that will always match, such as <span style="color:#273D56">x</span> in Listing 19.10, the compiler warns.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">19</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-20">
+<section id="s19" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">warning: unreachable else clause</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">For Listing 19.10, Rust complains that it doesn’t make sense to use <span style="color:#273D56">let...else</span> with an irrefutable pattern, because the <span style="color:#273D56">else</span> will never be reached:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">warning: unreachable `else` clause</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:2:15</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">2 |&#160;&#160;&#160;&#160;&#160;let x = 5 else {</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;--------- ^^^^</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;assigning to binding pattern will always succeed</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= note: this pattern always matches, so the else clause is unreachable</p>
+<p style="white-space:nowrap">&#160;&#160;= note: `#[warn(irrefutable_let_patterns)]` on by default</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">warning: `patterns` (bin "patterns") generated 1 warning</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.39s</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;Running `target/debug/patterns`</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">20</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-21">
+<section id="s20" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.2 Refutability: Whether a Pattern Might Fail to Match</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Refutability in match arms</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">For this reason, <span style="color:#273D56">match</span> arms must use refutable patterns, except for the last arm, which should match any remaining values with an irrefutable pattern. Rust allows an irrefutable pattern in a <span style="color:#273D56">match</span> with only one arm, but this syntax isn’t particularly useful and could be replaced with a simpler <span style="color:#273D56">let</span> statement.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 19.6.</b> Left: the first arm’s literal is refutable; the last arm’s <span style="color:#273D56">_</span> is irrefutable and catches every remaining value. Right: a one-arm <span style="color:#273D56">match</span> with an irrefutable pattern does exactly what the <span style="color:#273D56">let</span> below it does.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;1 =&gt; println!("one"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;_ =&gt; println!("anything"),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<div style="flex:1;background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match (1, 2) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;(a, b) =&gt; println!("{a} {b}"),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">let (a, b) = (1, 2);</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">Now that you know where to use patterns and the difference between refutable and irrefutable patterns, the next section covers all the syntax we can use to create patterns.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">21</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-22">
+<section id="s21" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matching literals</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">This section gathers all the syntax that is valid in patterns and discusses why and when you might want to use each one.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 1;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1 =&gt; println!("one"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;2 =&gt; println!("two"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3 =&gt; println!("three"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("anything"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">As you saw in Chapter 6, you can match patterns against literals directly. The code on the left gives some examples.</p>
+<p style="font-size:30px;line-height:1.45">It prints <span style="color:#273D56">one</span>, because the value in <span style="color:#273D56">x</span> is <span style="color:#273D56">1</span>.</p>
+<p style="font-size:30px;line-height:1.45">This syntax is useful when you want your code to take an action if it gets a particular concrete value.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">22</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-23">
+<section id="s22" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matching named variables</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.11:</b></span> A <span style="color:#273D56">match</span> expression with an arm that introduces a new variable which shadows an existing variable <span style="color:#273D56">y</span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = Some(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = 10;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(50) =&gt; println!("Got 50"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(y) =&gt; println!("Matched, y = {y}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("Default case, x = {x:?}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("at the end: x = {x:?}, y = {y}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Named variables are irrefutable patterns that match any value, and we’ve used them many times. But there is a complication in <span style="color:#273D56">match</span>, <span style="color:#273D56">if let</span>, or <span style="color:#273D56">while let</span> expressions: each starts a new scope, so variables declared as part of a pattern inside them shadow those with the same name outside, as is the case with all variables.</p>
+<p style="font-size:30px;line-height:1.45">In Listing 19.11, <span style="color:#273D56">x</span> has the value <span style="color:#273D56">Some(5)</span> and <span style="color:#273D56">y</span> the value <span style="color:#273D56">10</span>; then we <span style="color:#273D56">match</span> on <span style="color:#273D56">x</span>. Look at the patterns in the arms and the <span style="color:#273D56">println!</span> at the end, and try to figure out what the code will print before reading further.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">23</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-24">
+<section id="s23" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Walking through Listing 19.11</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ol style="font-size:30px;line-height:1.45">
+<li>The first arm’s pattern, <span style="color:#273D56">Some(50)</span>, doesn’t match the value of <span style="color:#273D56">x</span>, so the code continues.</li>
+<li>The second arm’s pattern introduces a new variable <span style="color:#273D56">y</span> that matches any value inside a <span style="color:#273D56">Some</span>. We’re in a new scope inside the <span style="color:#273D56">match</span>, so this is a new <span style="color:#273D56">y</span>, not the <span style="color:#273D56">y</span> declared at the beginning with the value <span style="color:#273D56">10</span>. It binds to the inner value of the <span style="color:#273D56">Some</span> in <span style="color:#273D56">x</span>, which is <span style="color:#273D56">5</span>, so that arm prints <span style="color:#273D56">Matched, y = 5</span>.</li>
+<li>When the <span style="color:#273D56">match</span> is done, its scope ends, and so does the inner <span style="color:#273D56">y</span>’s. The last <span style="color:#273D56">println!</span> produces <span style="color:#273D56">at the end: x = Some(5), y = 10</span>.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">Had <span style="color:#273D56">x</span> been <span style="color:#273D56">None</span>, the first two arms wouldn’t match, so the value would match the underscore. That arm’s pattern introduces no <span style="color:#273D56">x</span>, so the <span style="color:#273D56">x</span> in its expression is still the outer, unshadowed <span style="color:#273D56">x</span>, and the <span style="color:#273D56">match</span> would print <span style="color:#273D56">Default case, x = None</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> To compare the values of the outer <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> rather than introduce a new variable that shadows <span style="color:#273D56">y</span>, we need a match guard conditional instead (“Adding Conditionals with Match Guards”, Listing 19.27).</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">24</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-25">
+<section id="s24" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Multiple patterns with | and ranges with ..=</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Matching multiple patterns</h3>
+<p style="font-size:30px;line-height:1.45">In <span style="color:#273D56">match</span> expressions, <span style="color:#273D56">|</span> is the pattern <i>or</i> operator. Below, if <span style="color:#273D56">x</span> matches either value in the first arm, that arm’s code runs:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 1;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1 | 2 =&gt; println!("one or two"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;3 =&gt; println!("three"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("anything"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This code prints <span style="color:#273D56">one or two</span>.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Matching ranges of values</h3>
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">..=</span> syntax matches an inclusive range of values. When a pattern matches any value within the range, that arm executes:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 5;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1..=5 =&gt; println!("one through five"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("something else"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">25</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-26">
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Range patterns: numbers and char values</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In the previous example, if <span style="color:#273D56">x</span> is <span style="color:#273D56">1</span>, <span style="color:#273D56">2</span>, <span style="color:#273D56">3</span>, <span style="color:#273D56">4</span>, or <span style="color:#273D56">5</span>, the first arm matches. A range is more convenient than <span style="color:#273D56">|</span> for the same idea, which would need <span style="color:#273D56">1 | 2 | 3 | 4 | 5</span>. Specifying a range is much shorter, especially to match, say, any number between 1 and 1,000!</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">An example using ranges of <span style="color:#273D56">char</span> values:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 'c';</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'a'..='j' =&gt; println!("early ASCII letter"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'k'..='z' =&gt; println!("late ASCII letter"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("something else"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">The compiler checks that the range isn’t empty at compile time. The only types for which Rust can tell whether a range is empty are <span style="color:#273D56">char</span> and numeric values, so ranges are only allowed with numeric or <span style="color:#273D56">char</span> values.</p>
+<p style="font-size:30px;line-height:1.45">Rust can tell that <span style="color:#273D56">'c'</span> is within the first pattern’s range and prints <span style="color:#273D56">early ASCII letter</span>.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-27">
+<section id="s26" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Destructuring structs</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.12:</b></span> Destructuring a struct’s fields into separate variables — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let p = Point { x: 0, y: 7 };</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Point { x: a, y: b } = p;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(0, a);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(7, b);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">Patterns can also destructure structs, enums, and tuples, so that we can use different parts of these values. Let’s walk through each.</p>
+<p style="font-size:30px;line-height:1.45">Listing 19.12 shows a <span style="color:#273D56">Point</span> struct with two fields, <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span>, that we break apart using a pattern with a <span style="color:#273D56">let</span> statement.</p>
+<p style="font-size:30px;line-height:1.45">The code creates variables <span style="color:#273D56">a</span> and <span style="color:#273D56">b</span> that match the values of the <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> fields of <span style="color:#273D56">p</span>. So the names of the variables in the pattern don’t have to match the struct’s field names.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">27</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-28">
+<section id="s27" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Struct field shorthand in patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.13:</b></span> Destructuring struct fields using struct field shorthand — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let p = Point { x: 0, y: 7 };</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let Point { x, y } = p;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(0, x);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;assert_eq!(7, y);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">It’s common to match the variable names to the field names, to make it easier to remember which variables came from which fields. Because of this, and because <span style="color:#273D56">let Point { x: x, y: y } = p;</span> contains a lot of duplication, Rust has a shorthand: list only the name of the struct field, and the variables created from the pattern get the same names.</p>
+<p style="font-size:30px;line-height:1.45">Listing 19.13 behaves like Listing 19.12, but the variables created are <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> instead of <span style="color:#273D56">a</span> and <span style="color:#273D56">b</span>: they contain the values from the <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> fields of the <span style="color:#273D56">p</span> struct.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">28</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-29">
+<section id="s28" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Literal values inside struct patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can also destructure with literal values as part of the struct pattern rather than creating variables for all the fields. This lets us test some of the fields for particular values while creating variables to destructure the other fields.</p>
+<p style="font-size:30px;line-height:1.45">In Listing 19.14, a <span style="color:#273D56">match</span> separates <span style="color:#273D56">Point</span> values into three cases: points that lie directly on the <span style="color:#273D56">x</span> axis (true when <span style="color:#273D56">y = 0</span>), on the <span style="color:#273D56">y</span> axis (<span style="color:#273D56">x = 0</span>), or on neither axis.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.14:</b></span> Destructuring and matching literal values in one pattern — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">struct Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let p = Point { x: 0, y: 7 };</p>
+<p style="white-space:nowrap">&#160;</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">29</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-30">
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Points on the x axis, the y axis, or neither</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.14 (continued)</b></span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match p {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Point { x, y: 0 } =&gt; println!("On the x axis at {x}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Point { x: 0, y } =&gt; println!("On the y axis at {y}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Point { x, y } =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("On neither axis: ({x}, {y})");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<ul style="font-size:30px;line-height:1.45">
+<li>The first arm matches any point on the <span style="color:#273D56">x</span> axis: its <span style="color:#273D56">y</span> field matches only if its value matches the literal <span style="color:#273D56">0</span>. The pattern still creates an <span style="color:#273D56">x</span> variable that the arm’s code can use.</li>
+<li>The second arm matches any point on the <span style="color:#273D56">y</span> axis — the <span style="color:#273D56">x</span> field must be <span style="color:#273D56">0</span> — and creates a variable <span style="color:#273D56">y</span> for the <span style="color:#273D56">y</span> field’s value.</li>
+<li>The third arm specifies no literals, so it matches any other <span style="color:#273D56">Point</span> and creates variables for both the <span style="color:#273D56">x</span> and <span style="color:#273D56">y</span> fields.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-31">
+<section id="s30" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">First match wins; destructuring enums</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">In Listing 19.14, the value <span style="color:#273D56">p</span> matches the second arm by virtue of <span style="color:#273D56">x</span> containing a <span style="color:#273D56">0</span>, so the code prints <span style="color:#273D56">On the y axis at 7</span>.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> A <span style="color:#273D56">match</span> expression stops checking arms once it has found the first matching pattern. So even though <span style="color:#273D56">Point { x: 0, y: 0 }</span> is on the <span style="color:#273D56">x</span> axis and the <span style="color:#273D56">y</span> axis, this code would only print <span style="color:#273D56">On the x axis at 0</span>.</p>
+</div>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Enums</h3>
+<p style="font-size:30px;line-height:1.45">We’ve destructured enums before (for example, Listing 6.5 in Chapter 6), but haven’t explicitly said that the pattern to destructure an enum corresponds to the way the data stored within the enum is defined.</p>
+<p style="font-size:30px;line-height:1.45">Listing 19.15 (next slides) uses the <span style="color:#273D56">Message</span> enum from Listing 6.2 and writes a <span style="color:#273D56">match</span> with patterns that destructure each inner value.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">31</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-32">
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Destructuring every Message variant</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Each variant holds a different kind of value, and each arm’s pattern mirrors that variant’s definition:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.15:</b></span> Destructuring enum variants that hold different kinds of values — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quit,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Move { x: i32, y: i32 },</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Write(String),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;ChangeColor(i32, i32, i32),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let msg = Message::ChangeColor(0, 160, 255);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match msg {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::Quit =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("The Quit variant has no data to destructure.");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-33">
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Struct-like and tuple-like variant patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.15 (continued)</b></span> — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::Move { x, y } =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Move in the x direction {x} and in the y direction {y}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::Write(text) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Text message: {text}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::ChangeColor(r, g, b) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Change color to red {r}, green {g}, and blue {b}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This code prints <span style="color:#273D56">Change color to red 0, green 160, and blue 255</span>. Try changing the value of <span style="color:#273D56">msg</span> to see the code from the other arms run.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-34">
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How each variant’s pattern is shaped</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li><b>No data</b>, like <span style="color:#273D56">Message::Quit</span>: we can’t destructure the value any further. We can only match on the literal <span style="color:#273D56">Message::Quit</span> value, and no variables are in that pattern.</li>
+<li><b>Struct-like</b>, such as <span style="color:#273D56">Message::Move</span>: a pattern similar to the one for structs. After the variant name, place curly brackets and list the fields with variables, breaking apart the pieces to use in this arm’s code. Here we use the shorthand form, as in Listing 19.13.</li>
+<li><b>Tuple-like</b>, like <span style="color:#273D56">Message::Write</span> (a tuple with one element) and <span style="color:#273D56">Message::ChangeColor</span> (three elements): a pattern similar to the one for tuples. The number of variables in the pattern must match the number of elements in the variant we’re matching.</li>
+</ul>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Nested structs and enums</h3>
+<p style="font-size:30px;line-height:1.45">So far our examples have all matched structs or enums one level deep, but matching works on nested items too! Listing 19.16 refactors Listing 19.15 to support RGB and HSV colors in the <span style="color:#273D56">ChangeColor</span> message.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-35">
+<section id="s34" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">An enum inside an enum</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">A new <span style="color:#273D56">Color</span> enum; <span style="color:#273D56">ChangeColor</span> now holds a <span style="color:#273D56">Color</span>:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.16:</b></span> Matching on nested enums</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">enum Color {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Rgb(i32, i32, i32),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Hsv(i32, i32, i32),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">enum Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Quit,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Move { x: i32, y: i32 },</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Write(String),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;ChangeColor(Color),</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let msg = Message::ChangeColor(Color::Hsv(0, 160, 255));</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">35</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-36">
+<section id="s35" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Matching two enums in one pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.16 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match msg {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::ChangeColor(Color::Rgb(r, g, b)) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Change color to red {r}, green {g}, and blue {b}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::ChangeColor(Color::Hsv(h, s, v)) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Change color to hue {h}, saturation {s}, value {v}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; (),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The first arm’s pattern matches a <span style="color:#273D56">Message::ChangeColor</span> variant that contains a <span style="color:#273D56">Color::Rgb</span> variant, then binds to the three inner <span style="color:#273D56">i32</span> values. The second arm also matches <span style="color:#273D56">Message::ChangeColor</span>, but its inner enum matches <span style="color:#273D56">Color::Hsv</span> instead. We can specify these complex conditions in one <span style="color:#273D56">match</span> expression, even though two enums are involved.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">36</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-37">
+<section id="s36" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Structs and tuples nested together</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">We can mix, match, and nest destructuring patterns in even more complex ways. This complicated destructure nests structs and tuples inside a tuple and destructures all the primitive values out:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;struct Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<p style="font-size:30px;line-height:1.45">This code lets us break complex types into their component parts so that we can use the values we’re interested in separately.</p>
+<p style="font-size:30px;line-height:1.45">Destructuring with patterns is a convenient way to use pieces of values, such as the value from each field in a struct, separately from each other.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">37</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-38">
+<section id="s37" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Ignoring values: an entire value with _</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">It’s sometimes useful to ignore values in a pattern, as in the last arm of a <span style="color:#273D56">match</span>, to get a catch-all that doesn’t actually do anything but does account for all remaining possible values. There are a few ways to ignore entire values or parts of values: the <span style="color:#273D56">_</span> pattern, <span style="color:#273D56">_</span> within another pattern, a name that starts with an underscore, or <span style="color:#273D56">..</span> to ignore remaining parts of a value.</p>
+<p style="font-size:30px;line-height:1.45">The underscore is a wildcard pattern that matches any value but doesn’t bind to it. It’s especially useful as the last arm in a <span style="color:#273D56">match</span>, but we can use it in any pattern, including function parameters:</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.17:</b></span> Using <span style="color:#273D56">_</span> in a function signature — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn foo(_: i32, y: i32) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("This code only uses the y parameter: {y}");</p>
+<p style="white-space:nowrap">}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;foo(3, 4);</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">38</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-39">
+<section id="s38" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Why ignore a parameter; parts of a value with a nested _</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 19.17 completely ignores the value <span style="color:#273D56">3</span> passed as the first argument and prints <span style="color:#273D56">This code only uses the y parameter: 4</span>.</p>
+<p style="font-size:30px;line-height:1.45">In most cases when you no longer need a parameter, you would change the signature so that it doesn’t include it. Ignoring a parameter is especially useful when, for example, you’re implementing a trait that needs a certain type signature but your implementation’s body doesn’t need one of the parameters. You then avoid the compiler warning about unused parameters that you would get if you used a name instead.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Parts of a value with a nested _</h3>
+<p style="font-size:30px;line-height:1.45">We can also use <span style="color:#273D56">_</span> inside another pattern to ignore just part of a value — for example, to test only part of a value when the rest is of no use to the code we want to run. Listing 19.18 manages a setting’s value. The business requirements: the user should not be allowed to overwrite an existing customization of a setting, but can unset the setting and give it a value if it is currently unset.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">39</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-40">
+<section id="s39" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Don’t overwrite a customized setting</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.18:</b></span> Using an underscore within patterns that match <span style="color:#273D56">Some</span> variants when we don’t need to use the value inside the <span style="color:#273D56">Some</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let mut setting_value = Some(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let new_setting_value = Some(10);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match (setting_value, new_setting_value) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(Some(_), Some(_)) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Can't overwrite an existing customized value");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;setting_value = new_setting_value;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("setting is {setting_value:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">40</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-41">
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Underscores in one or several places</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 19.18 prints <span style="color:#273D56">Can't overwrite an existing customized value</span> and then <span style="color:#273D56">setting is Some(5)</span>. The first arm doesn’t use the values inside either <span style="color:#273D56">Some</span>, but tests for both being <span style="color:#273D56">Some</span>; then it prints why <span style="color:#273D56">setting_value</span> isn’t changed. In all other cases (either is <span style="color:#273D56">None</span>), the second arm’s <span style="color:#273D56">_</span> lets <span style="color:#273D56">new_setting_value</span> become <span style="color:#273D56">setting_value</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.19:</b></span> Ignoring multiple parts of a tuple</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let numbers = (2, 4, 8, 16, 32);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match numbers {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(first, _, third, _, fifth) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Some numbers: {first}, {third}, {fifth}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We can also use underscores in multiple places within one pattern to ignore particular values. Listing 19.19 ignores the second and fourth values in a tuple of five items.</p>
+<p style="font-size:30px;line-height:1.45">It prints <span style="color:#273D56">Some numbers: 2, 8, 32</span>; the values <span style="color:#273D56">4</span> and <span style="color:#273D56">16</span> are ignored.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-42">
+<section id="s41" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">An unused variable starting with _</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">If you create a variable but don’t use it anywhere, Rust usually issues a warning, because an unused variable could be a bug. But sometimes it’s useful to create a variable you won’t use yet, such as when you’re prototyping or just starting a project. Then you can tell Rust not to warn you by starting the variable’s name with an underscore. Listing 19.20 creates two unused variables, but compiling it gives a warning about only one of them.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.20:</b></span> Starting a variable name with an underscore to avoid getting unused variable warnings — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let _x = 5;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = 10;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">We get a warning about not using the variable <span style="color:#273D56">y</span>, but no warning about not using <span style="color:#273D56">_x</span>.</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> There is a subtle difference between using only <span style="color:#273D56">_</span> and using a name that starts with an underscore. The syntax <span style="color:#273D56">_x</span> still binds the value to the variable, whereas <span style="color:#273D56">_</span> doesn’t bind at all. Listings 19.21 and 19.22 show a case where this distinction matters.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">42</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-43">
+<section id="s42" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">_s binds and moves; _ never binds</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.21:</b></span> An unused variable starting with an underscore still binds the value, which might take ownership of the value.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = Some(String::from("Hello!"));</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Some(_s) = s {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("found a string");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{s:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">We get an error: the <span style="color:#273D56">s</span> value is still moved into <span style="color:#273D56">_s</span>, which prevents us from using <span style="color:#273D56">s</span> again.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.22:</b></span> Using an underscore does not bind the value.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let s = Some(String::from("Hello!"));</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;if let Some(_) = s {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("found a string");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("{s:?}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">The underscore by itself never binds to the value, so this compiles without errors: we never bind <span style="color:#273D56">s</span> to anything, so it isn’t moved.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">43</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-44">
+<section id="s43" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Remaining parts of a value with ..</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.23:</b></span> Ignoring all fields of a <span style="color:#273D56">Point</span> except for <span style="color:#273D56">x</span> by using <span style="color:#273D56">..</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;struct Point {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;x: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;y: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;z: i32,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let origin = Point { x: 0, y: 0, z: 0 };</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match origin {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Point { x, .. } =&gt; println!("x is {x}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">With values that have many parts, the <span style="color:#273D56">..</span> syntax uses specific parts and ignores the rest, avoiding the need to list underscores for each ignored value. The <span style="color:#273D56">..</span> pattern ignores any parts of a value that we haven’t explicitly matched in the rest of the pattern.</p>
+<p style="font-size:30px;line-height:1.45">In Listing 19.23, <span style="color:#273D56">Point</span> holds a coordinate in three-dimensional space. The <span style="color:#273D56">match</span> operates only on the <span style="color:#273D56">x</span> coordinate and ignores the <span style="color:#273D56">y</span> and <span style="color:#273D56">z</span> fields: we list <span style="color:#273D56">x</span> and then just include <span style="color:#273D56">..</span>.</p>
+<p style="font-size:30px;line-height:1.45">That is quicker than listing <span style="color:#273D56">y: _</span> and <span style="color:#273D56">z: _</span>, particularly for structs with lots of fields where only one or two are relevant.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">44</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-45">
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">.. in a tuple: first and last</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The syntax <span style="color:#273D56">..</span> will expand to as many values as it needs to be. Listing 19.24 shows how to use <span style="color:#273D56">..</span> with a tuple.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.24:</b></span> Matching only the first and last values in a tuple and ignoring all other values — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let numbers = (2, 4, 8, 16, 32);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match numbers {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(first, .., last) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Some numbers: {first}, {last}");</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">The first and last values are matched with <span style="color:#273D56">first</span> and <span style="color:#273D56">last</span>. The <span style="color:#273D56">..</span> matches and ignores everything in the middle.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-46">
+<section id="s45" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">.. must be unambiguous</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">..</span> must be unambiguous. If it is unclear which values are intended for matching and which should be ignored, Rust gives us an error. Listing 19.25 uses <span style="color:#273D56">..</span> ambiguously, so it will not compile.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.25:</b></span> An attempt to use <span style="color:#273D56">..</span> in an ambiguous way — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let numbers = (2, 4, 8, 16, 32);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match numbers {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(.., second, ..) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Some numbers: {second}")</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;},</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">When we compile this example, we get the error shown on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">46</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-47">
+<section id="s46" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">error: .. can only be used once per tuple pattern</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling patterns v0.1.0 (file:///projects/patterns)</p>
+<p style="white-space:nowrap">error: `..` can only be used once per tuple pattern</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:5:22</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">5 |&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(.., second, ..) =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^^ can only be used once per tuple pattern</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;previously used here</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">error: could not compile `patterns` (bin "patterns") due to 1 previous error</p>
+</div>
+<p style="font-size:30px;line-height:1.45">It’s impossible for Rust to determine how many values in the tuple to ignore before matching a value with <span style="color:#273D56">second</span>, and how many further values to ignore thereafter. The code could mean: ignore <span style="color:#273D56">2</span>, bind <span style="color:#273D56">second</span> to <span style="color:#273D56">4</span>, then ignore <span style="color:#273D56">8</span>, <span style="color:#273D56">16</span>, and <span style="color:#273D56">32</span>; or ignore <span style="color:#273D56">2</span> and <span style="color:#273D56">4</span>, bind <span style="color:#273D56">second</span> to <span style="color:#273D56">8</span>, then ignore <span style="color:#273D56">16</span> and <span style="color:#273D56">32</span>; and so forth. The name <span style="color:#273D56">second</span> means nothing special to Rust, so using <span style="color:#273D56">..</span> in two places like this is ambiguous — a compiler error.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">47</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-48">
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Adding conditionals with match guards</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.7 (Match guard).</b></span> An additional <span style="color:#273D56">if</span> condition, specified after the pattern in a <span style="color:#273D56">match</span> arm, that must also match for that arm to be chosen. Match guards express more complex ideas than a pattern alone allows. They are only available in <span style="color:#273D56">match</span> expressions, not in <span style="color:#273D56">if let</span> or <span style="color:#273D56">while let</span> expressions.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The condition can use variables created in the pattern. In Listing 19.26 the first arm has the pattern <span style="color:#273D56">Some(x)</span> and the match guard <span style="color:#273D56">if x % 2 == 0</span>, which is <span style="color:#273D56">true</span> if the number is even.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.26:</b></span> Adding a match guard to a pattern</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let num = Some(4);</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match num {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(x) if x % 2 == 0 =&gt; println!("The number {x} is even"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(x) =&gt; println!("The number {x} is odd"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;None =&gt; (),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-49">
+<section id="s48" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">How the match guard decides</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>Listing 19.26 prints <span style="color:#273D56">The number 4 is even</span>. <span style="color:#273D56">num</span> matches the first arm’s pattern, because <span style="color:#273D56">Some(4)</span> matches <span style="color:#273D56">Some(x)</span>. Then the match guard checks whether the remainder of dividing <span style="color:#273D56">x</span> by 2 equals 0; it does, so the first arm is selected.</li>
+<li>Had <span style="color:#273D56">num</span> been <span style="color:#273D56">Some(5)</span>, the first arm’s guard would be <span style="color:#273D56">false</span> (5 divided by 2 leaves 1, not 0). Rust would go to the second arm, which matches because it has no match guard and therefore matches any <span style="color:#273D56">Some</span> variant.</li>
+</ul>
+<p style="font-size:30px;line-height:1.45">There is no way to express the <span style="color:#273D56">if x % 2 == 0</span> condition within a pattern, so the match guard gives us that ability. The downside of this extra expressiveness: the compiler doesn’t try to check for exhaustiveness when match guard expressions are involved.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Solving the shadowing problem</h3>
+<p style="font-size:30px;line-height:1.45">In Listing 19.11, the pattern in the <span style="color:#273D56">match</span> created a new variable instead of using the variable outside the <span style="color:#273D56">match</span>, so we couldn’t test against the outer variable’s value. Listing 19.27 uses a match guard to fix this problem.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">49</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-50">
+<section id="s49" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Testing against an outer variable</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.27:</b></span> Using a match guard to test for equality with an outer variable — <i>src/main.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = Some(5);</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = 10;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(50) =&gt; println!("Got 50"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Some(n) if n == y =&gt; println!("Matched, n = {n}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("Default case, x = {x:?}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;println!("at the end: x = {x:?}, y = {y}");</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:30px;line-height:1.45">This code now prints <span style="color:#273D56">Default case, x = Some(5)</span>. The second arm’s pattern doesn’t introduce a new <span style="color:#273D56">y</span> that would shadow the outer <span style="color:#273D56">y</span>, so we can use the outer <span style="color:#273D56">y</span> in the match guard. Instead of <span style="color:#273D56">Some(y)</span>, we specify <span style="color:#273D56">Some(n)</span>: a new variable <span style="color:#273D56">n</span> that shadows nothing, because there is no <span style="color:#273D56">n</span> outside the <span style="color:#273D56">match</span>.</p>
+</div>
+</div>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The match guard <span style="color:#273D56">if n == y</span> is not a pattern and therefore doesn’t introduce new variables. This <span style="color:#273D56">y</span> <i>is</i> the outer <span style="color:#273D56">y</span> rather than a new one shadowing it, so we can look for a value equal to the outer <span style="color:#273D56">y</span> by comparing <span style="color:#273D56">n</span> to <span style="color:#273D56">y</span>.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">50</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-51">
+<section id="s50" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Match guards with multiple patterns</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">You can also use the <i>or</i> operator <span style="color:#273D56">|</span> in a match guard to specify multiple patterns; the match guard condition applies to all the patterns. Listing 19.28 shows the precedence when combining a pattern that uses <span style="color:#273D56">|</span> with a match guard. The important part: the <span style="color:#273D56">if y</span> match guard applies to <span style="color:#273D56">4</span>, <span style="color:#273D56">5</span>, <i>and</i> <span style="color:#273D56">6</span>, even though it might look like <span style="color:#273D56">if y</span> only applies to <span style="color:#273D56">6</span>.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.28:</b></span> Combining multiple patterns with a match guard</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let x = 4;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let y = false;</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match x {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;4 | 5 | 6 if y =&gt; println!("yes"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;_ =&gt; println!("no"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">51</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-52">
+<section id="s51" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Precedence of a match guard over |</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The arm in Listing 19.28 matches only if <span style="color:#273D56">x</span> equals <span style="color:#273D56">4</span>, <span style="color:#273D56">5</span>, or <span style="color:#273D56">6</span> <i>and</i> <span style="color:#273D56">y</span> is <span style="color:#273D56">true</span>. When the code runs, the first arm’s pattern matches because <span style="color:#273D56">x</span> is <span style="color:#273D56">4</span>, but the match guard <span style="color:#273D56">if y</span> is <span style="color:#273D56">false</span>, so the first arm is not chosen. The code moves on to the second arm, which does match, and the program prints <span style="color:#273D56">no</span>. The <span style="color:#273D56">if</span> condition applies to the whole pattern <span style="color:#273D56">4 | 5 | 6</span>, not just to the last value <span style="color:#273D56">6</span>.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">The precedence behaves like this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">(4 | 5 | 6) if y =&gt; ...</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45">rather than this:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">4 | 5 | (6 if y) =&gt; ...</p>
+</div>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">After running the code, the precedence behavior is evident: if the match guard applied only to the final value in the list specified with the <span style="color:#273D56">|</span> operator, the arm would have matched and the program would have printed <span style="color:#273D56">yes</span>.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">52</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-53">
+<section id="s52" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Using @ bindings</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 19.8 (@ binding).</b></span> The <i>at</i> operator <span style="color:#273D56">@</span> creates a variable that holds a value at the same time as we’re testing that value for a pattern match.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In Listing 19.29 we want to test that a <span style="color:#273D56">Message::Hello</span> <span style="color:#273D56">id</span> field is within the range <span style="color:#273D56">3..=7</span>. We also want to bind the value to the variable <span style="color:#273D56">id</span>, so that we can use it in the code associated with the arm.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.29:</b></span> Using <span style="color:#273D56">@</span> to bind to a value in a pattern while also testing it</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">fn main() {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;enum Message {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Hello { id: i32 },</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;let msg = Message::Hello { id: 5 };</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;match msg {</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">53</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-54">
+<section id="s53" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Testing a range and capturing the value</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 19.29 (continued)</b></span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::Hello { id: id @ 3..=7 } =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Found an id in range: {id}")</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::Hello { id: 10..=12 } =&gt; {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;println!("Found an id in another range")</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Message::Hello { id } =&gt; println!("Found some other id: {id}"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;}</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">This example prints <span style="color:#273D56">Found an id in range: 5</span>. By specifying <span style="color:#273D56">id @</span> before the range <span style="color:#273D56">3..=7</span>, we capture whatever value matched the range in a variable named <span style="color:#273D56">id</span>, while also testing that the value matched the range pattern.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">54</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-55">
+<section id="s54" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · 19.3 Pattern Syntax</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">What each arm of Listing 19.29 can see</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The second arm has only a range in its pattern, so its code has no variable containing the actual value of the <span style="color:#273D56">id</span> field. The value could have been 10, 11, or 12, but the code that goes with that pattern doesn’t know which: we haven’t saved the <span style="color:#273D56">id</span> value in a variable.</li>
+<li>The last arm specifies a variable without a range, so the value is available in the arm’s code in a variable named <span style="color:#273D56">id</span>, thanks to the struct field shorthand syntax. But it applies no test to the value, as the first two arms did: any value would match this pattern.</li>
+</ul>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 19.2:</b></span> Testing versus binding in the three arms of Listing 19.29</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:34%">Pattern for the id field</th><th style="width:33%">Tests the value?</th><th style="width:33%">Value usable in the arm?</th></tr>
+<tr><td>id: id @ 3..=7</td><td>Yes, range 3..=7</td><td>Yes, as id</td></tr>
+<tr><td>id: 10..=12</td><td>Yes, range 10..=12</td><td>No</td></tr>
+<tr><td>id (shorthand)</td><td>No, any value matches</td><td>Yes, as id</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">Using <span style="color:#273D56">@</span> lets us test a value and save it in a variable within one pattern.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">55</p>
+</div>
+</section>
+</div>
+<div class="frame" id="slide-56">
+<section id="summary" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 19 · Summary</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Chapter summary</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust’s patterns are very useful in distinguishing between different kinds of data. When used in <span style="color:#273D56">match</span> expressions, Rust ensures that your patterns cover every possible value, or your program won’t compile. Patterns in <span style="color:#273D56">let</span> statements and function parameters make those constructs more useful, enabling the destructuring of values into smaller parts and assigning those parts to variables. We can create simple or complex patterns to suit our needs.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Places: <span style="color:#273D56">match</span> arms, <span style="color:#273D56">let</span>, <span style="color:#273D56">if let</span>, <span style="color:#273D56">while let</span>, <span style="color:#273D56">for</span>, function and closure parameters.</li>
+<li>Refutability: <span style="color:#273D56">let</span>, <span style="color:#273D56">for</span> and parameters need irrefutable patterns; conditionals and <span style="color:#273D56">let...else</span> take refutable ones.</li>
+<li>Syntax: literals, named variables, <span style="color:#273D56">|</span>, <span style="color:#273D56">..=</span> ranges, destructuring, <span style="color:#273D56">_</span>, <span style="color:#273D56">_name</span>, <span style="color:#273D56">..</span>, match guards, and <span style="color:#273D56">@</span> bindings.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Next, in the penultimate chapter of the book, we look at some advanced aspects of a variety of Rust’s features.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.19 Patterns and Matching</p>
+<p style="font-size:24px;color:#596675">56</p>
+</div>
+</section>
+</div>
+</main>
+<footer class="notice"><p>Unofficial slides adapted from <a href="https://doc.rust-lang.org/book/"><i>The Rust Programming Language</i></a> by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the Rust Community (edition for Rust 1.97.0). Original text and code © The Rust Project Developers, licensed under <a href="https://github.com/rust-lang/book/blob/main/LICENSE-MIT">MIT</a> or <a href="https://github.com/rust-lang/book/blob/main/LICENSE-APACHE">Apache-2.0</a>; this adaptation is available under the same terms (<a href="https://github.com/wipiano/rustbook-slides/blob/main/COPYRIGHT">details</a>). Not affiliated with or endorsed by the Rust Project or the Rust Foundation. “Rust” is a trademark of the Rust Foundation.</p></footer>
+</body>
+</html>

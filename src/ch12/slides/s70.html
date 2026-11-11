@@ -1,0 +1,21 @@
+<section id="s70" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.5 Working with Environment Variables</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Checking the environment variable with env::var</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Finally, we need to check for the environment variable. The functions for working with environment variables are in the <span style="color:#273D56">env</span> module of the standard library, which is already in scope at the top of <i>src/main.rs</i>. We use the <span style="color:#273D56">var</span> function from <span style="color:#273D56">env</span> to check whether any value has been set for an environment variable named <span style="color:#273D56">IGNORE_CASE</span> (Listing 12.23, next slide).</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">let ignore_case = env::var("IGNORE_CASE").is_ok();</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Here, we create a new variable, <span style="color:#273D56">ignore_case</span>. To set its value, we call <span style="color:#273D56">env::var</span> and pass it the name of the <span style="color:#273D56">IGNORE_CASE</span> environment variable. <span style="color:#273D56">env::var</span> returns a <span style="color:#273D56">Result</span>:</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>the successful <span style="color:#273D56">Ok</span> variant, containing the value of the environment variable, if the variable is set to any value;</li>
+<li>the <span style="color:#273D56">Err</span> variant if the environment variable is not set.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">71</p>
+</div>
+</section>

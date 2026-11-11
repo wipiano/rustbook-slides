@@ -1,0 +1,19 @@
+<section id="s05" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.1 Building a Single-Threaded Web Server</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">incoming: streams and connection attempts</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The <span style="color:#273D56">incoming</span> method on <span style="color:#273D56">TcpListener</span> returns an iterator that gives us a sequence of streams — more specifically, streams of type <span style="color:#273D56">TcpStream</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 21.4 (Stream).</b></span> An open connection between the client and the server.</p>
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 21.5 (Connection).</b></span> The full request and response process: a client connects to the server, the server generates a response, and the server closes the connection.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">So we will read from the <span style="color:#273D56">TcpStream</span> to see what the client sent, then write our response to the stream to send data back. The <span style="color:#273D56">for</span> loop processes each connection in turn and produces a series of streams for us to handle.</p>
+<p style="font-size:30px;line-height:1.45">For now we <span style="color:#273D56">unwrap</span> each stream (terminating on errors) and print a message. <span style="color:#273D56">incoming</span> can give errors because we iterate over <i>connection attempts</i>, not connections; they can fail for many, often OS-specific, reasons. E.g. many OSes limit simultaneous open connections, and attempts beyond the limit error until some are closed.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">6</p>
+</div>
+</section>

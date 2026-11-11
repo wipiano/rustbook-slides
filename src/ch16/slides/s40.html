@@ -1,0 +1,25 @@
+<section id="s40" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Communicating by sharing memory</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Having seen how channels work, we turn to a different method of concurrency. Message passing is a fine way to handle concurrency, but it’s not the only way. Another method is for multiple threads to access the same shared data. Consider this part of the Go slogan again: “Do not communicate by sharing memory.”</p>
+<p style="font-size:30px;line-height:1.45">What would communicating by sharing memory look like? And why would message-passing enthusiasts caution not to use memory sharing?</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Channels ≈ single ownership</h3>
+<p style="font-size:30px;line-height:1.45">In any programming language, once you transfer a value down a channel, you should no longer use that value.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Shared memory ≈ multiple ownership</h3>
+<p style="font-size:30px;line-height:1.45">Multiple threads can access the same memory location at the same time.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.45">As Chapter 15 showed with smart pointers, multiple ownership can add complexity because these different owners need managing. Rust’s type system and ownership rules greatly assist in getting this management correct. An example: mutexes, one of the more common concurrency primitives for shared memory.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">41</p>
+</div>
+</section>

@@ -1,0 +1,22 @@
+<section id="s73" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · 21.3 Graceful Shutdown and Cleanup</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Graceful shutdown and cleanup</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Listing 21.20 responds to requests asynchronously through a thread pool, as intended. The warnings about the <span style="color:#273D56">workers</span>, <span style="color:#273D56">id</span> and <span style="color:#273D56">thread</span> fields we don’t use directly remind us that we’re not cleaning anything up. When we halt the main thread with the less elegant ctrl-C method, all other threads stop immediately as well, even in the middle of serving a request.</p>
+<p style="font-size:30px;line-height:1.45">Next, then:</p>
+<ol style="font-size:30px;line-height:1.45">
+<li>implement the <span style="color:#273D56">Drop</span> trait to call <span style="color:#273D56">join</span> on each thread in the pool, so they can finish the requests they’re working on before closing;</li>
+<li>implement a way to tell the threads they should stop accepting new requests and shut down;</li>
+<li>to see it in action, modify the server to accept only two requests before gracefully shutting down its thread pool.</li>
+</ol>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> None of this affects the parts of the code that handle executing the closures, so everything here would be the same if we were using a thread pool for an async runtime.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">74</p>
+</div>
+</section>

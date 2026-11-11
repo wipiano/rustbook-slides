@@ -1,0 +1,21 @@
+<section id="s44" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.3 Shared-State Concurrency</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">new, lock, and why you can’t forget to lock</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>As with many types, a <span style="color:#273D56">Mutex&lt;T&gt;</span> is created with the associated function <span style="color:#273D56">new</span>.</li>
+<li>To access the data inside the mutex, use the <span style="color:#273D56">lock</span> method to acquire the lock. This call blocks the current thread so that it can’t do any work until it’s our turn to have the lock.</li>
+<li>The call to <span style="color:#273D56">lock</span> would fail if another thread holding the lock panicked. In that case, no one would ever be able to get the lock, so the code chooses to <span style="color:#273D56">unwrap</span> and have this thread panic if it is in that situation.</li>
+<li>After acquiring the lock, the return value, named <span style="color:#273D56">num</span> here, can be treated as a mutable reference to the data inside.</li>
+</ul>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> The type system ensures that we acquire a lock before using the value in <span style="color:#273D56">m</span>. The type of <span style="color:#273D56">m</span> is <span style="color:#273D56">Mutex&lt;i32&gt;</span>, not <span style="color:#273D56">i32</span>, so we <i>must</i> call <span style="color:#273D56">lock</span> to be able to use the <span style="color:#273D56">i32</span> value. We can’t forget; the type system won’t let us access the inner <span style="color:#273D56">i32</span> otherwise.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">45</p>
+</div>
+</section>

@@ -1,0 +1,19 @@
+<section id="s60" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 16 · 16.4 Extensible Concurrency with Send and Sync</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Concurrency in the language: the marker traits</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Interestingly, almost every concurrency feature in this chapter so far has been part of the standard library, not the language. Your options for handling concurrency are not limited to the language or the standard library; you can write your own concurrency features or use those written by others.</p>
+<p style="font-size:30px;line-height:1.45">However, among the key concurrency concepts embedded in the language rather than the standard library are the <span style="color:#273D56">std::marker</span> traits <span style="color:#273D56">Send</span> and <span style="color:#273D56">Sync</span>.</p>
+<h3 style="font-family:'Libertinus Serif', Georgia, serif;font-size:36px;font-weight:600;line-height:1.3;color:#273D56">Transferring ownership between threads</h3>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 16.18 (Send).</b></span> The marker trait indicating that ownership of values of the type implementing <span style="color:#273D56">Send</span> can be transferred between threads.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Almost every Rust type implements <span style="color:#273D56">Send</span>, with some exceptions, including <span style="color:#273D56">Rc&lt;T&gt;</span>: if you cloned an <span style="color:#273D56">Rc&lt;T&gt;</span> value and tried to transfer ownership of the clone to another thread, both threads might update the reference count at the same time. So <span style="color:#273D56">Rc&lt;T&gt;</span> is implemented for single-threaded situations where you don’t want to pay the thread-safe performance penalty.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.16 Fearless Concurrency</p>
+<p style="font-size:24px;color:#596675">61</p>
+</div>
+</section>

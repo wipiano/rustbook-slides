@@ -1,0 +1,26 @@
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 9 · Introduction</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Two kinds of errors: recoverable and unrecoverable</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Rust groups errors into two major categories:</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.1 (Recoverable error).</b></span> An error such as a <i>file not found</i> error, where we most likely just want to report the problem to the user and retry the operation.</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 9.2 (Unrecoverable error).</b></span> An error that is always a symptom of a bug, such as trying to access a location beyond the end of an array; we want to immediately stop the program.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">Most languages don’t distinguish between these two kinds of errors and handle both in the same way, using mechanisms such as exceptions. Rust doesn’t have exceptions. Instead:</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 9.1:</b></span> How Rust handles each category</p>
+<table style="font-size:28px;color:#20252B">
+<tr><th style="width:34%">Category</th><th style="width:66%">Rust mechanism</th></tr>
+<tr><td>Recoverable</td><td>The type Result&lt;T, E&gt;</td></tr>
+<tr><td>Unrecoverable</td><td>The panic! macro, which stops execution</td></tr>
+</table>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.9 Error Handling</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>

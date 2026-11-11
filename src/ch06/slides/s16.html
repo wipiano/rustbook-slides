@@ -1,0 +1,31 @@
+<section id="s16" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 6 · 6.1 Defining an Enum</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Error E0277: cannot add Option&lt;i8&gt; to i8</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Running the code gives an error message like this one (the notes listing other <span style="color:#273D56">Add</span> implementations are elided):</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ cargo run</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;Compiling enums v0.1.0 (file:///projects/enums)</p>
+<p style="white-space:nowrap">error[E0277]: cannot add `Option&lt;i8&gt;` to `i8`</p>
+<p style="white-space:nowrap">&#160;--&gt; src/main.rs:5:17</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">5 |&#160;&#160;&#160;&#160;&#160;let sum = x + y;</p>
+<p style="white-space:nowrap">&#160;&#160;|&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;^ no implementation for `i8 + Option&lt;i8&gt;`</p>
+<p style="white-space:nowrap">&#160;&#160;|</p>
+<p style="white-space:nowrap">&#160;&#160;= help: the trait `Add&lt;Option&lt;i8&gt;&gt;` is not implemented for `i8`</p>
+<p style="white-space:nowrap">help: the following other types implement trait `Add&lt;Rhs&gt;`</p>
+<p style="white-space:nowrap">...</p>
+<p style="white-space:nowrap">&#160;&#160;= note: this error originates in the macro `add_impl` (in Nightly builds,</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;run with -Z macro-backtrace for more info)</p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap">For more information about this error, try `rustc --explain E0277`.</p>
+<p style="white-space:nowrap">error: could not compile `enums` (bin "enums") due to 1 previous error</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.6 Enums and Pattern Matching</p>
+<p style="font-size:24px;color:#596675">17</p>
+</div>
+</section>

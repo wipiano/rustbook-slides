@@ -1,0 +1,22 @@
+<section id="s32" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A media aggregator and its Summary trait</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Say we have multiple structs that hold various kinds and amounts of text: a <span style="color:#273D56">NewsArticle</span> struct that holds a news story filed in a particular location, and a <span style="color:#273D56">SocialPost</span> that can have at most 280 characters, along with metadata indicating whether it was a new post, a repost, or a reply to another post.</p>
+<p style="font-size:30px;line-height:1.45">We want a media aggregator library crate named <span style="color:#273D56">aggregator</span> that can display summaries of data that might be stored in a <span style="color:#273D56">NewsArticle</span> or <span style="color:#273D56">SocialPost</span> instance. We need a summary from each type, requested by calling a <span style="color:#273D56">summarize</span> method on an instance. Listing 10.12 defines a public <span style="color:#273D56">Summary</span> trait that expresses this behavior.</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Listing 10.12:</b></span> A <span style="color:#273D56">Summary</span> trait that consists of the behavior provided by a <span style="color:#273D56">summarize</span> method — <i>src/lib.rs</i></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">pub trait Summary {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;fn summarize(&amp;self) -&gt; String;</p>
+<p style="white-space:nowrap">}</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">33</p>
+</div>
+</section>

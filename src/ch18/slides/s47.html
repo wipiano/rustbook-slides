@@ -1,0 +1,22 @@
+<section id="s47" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 18 · 18.3 Implementing an Object-Oriented Design Pattern</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Easy to extend: exercises</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">With the state pattern, the <span style="color:#273D56">Post</span> methods and the places we use <span style="color:#273D56">Post</span> don’t need <span style="color:#273D56">match</span> expressions. To add a new state, we would only need to add a new struct and implement the trait methods on that one struct, in one location.</p>
+<p style="font-size:30px;line-height:1.45">The implementation is easy to extend with more functionality. To see how simple it is to maintain code that uses the state pattern, try a few of these suggestions:</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 18.12.</b> Extensions to try on the <span style="color:#273D56">blog</span> crate:</p>
+<ul style="font-size:26px;line-height:1.45">
+<li>Add a <span style="color:#273D56">reject</span> method that changes the post’s state from <span style="color:#273D56">PendingReview</span> back to <span style="color:#273D56">Draft</span>.</li>
+<li>Require two calls to <span style="color:#273D56">approve</span> before the state can be changed to <span style="color:#273D56">Published</span>.</li>
+<li>Allow users to add text content only when a post is in the <span style="color:#273D56">Draft</span> state. Hint: have the state object responsible for what might change about the content but not responsible for modifying the <span style="color:#273D56">Post</span>.</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.18 Object-Oriented Programming Features</p>
+<p style="font-size:24px;color:#596675">48</p>
+</div>
+</section>

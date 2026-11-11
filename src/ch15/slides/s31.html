@@ -1,0 +1,19 @@
+<section id="s31" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 15 · 15.2 Treating Smart Pointers Like Regular References</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Mutable to immutable, never the reverse</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The third case is trickier: Rust will also coerce a mutable reference to an immutable one. But the reverse is <i>not</i> possible: immutable references will never coerce to mutable references.</p>
+<ul style="font-size:30px;line-height:1.45">
+<li>Because of the borrowing rules, if you have a mutable reference, that mutable reference must be the only reference to that data (otherwise, the program wouldn’t compile).</li>
+<li>So converting one mutable reference to one immutable reference will never break the borrowing rules.</li>
+<li>Converting an immutable reference to a mutable reference would require that the initial immutable reference is the only immutable reference to that data — but the borrowing rules don’t guarantee that.</li>
+<li>Therefore, Rust can’t assume that converting an immutable reference to a mutable reference is possible.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.15 Smart Pointers</p>
+<p style="font-size:24px;color:#596675">32</p>
+</div>
+</section>

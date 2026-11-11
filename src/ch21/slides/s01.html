@@ -1,0 +1,20 @@
+<section id="s01" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 21 · Final Project</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">The goal, and two details before we start</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 21.1.</b> Figure 21-1, our final shared project: a web browser visiting <span style="color:#273D56">127.0.0.1:8080</span> shows a page with the heading “Hello!” and the text “Hi from Rust”.</p>
+</div>
+<ol style="font-size:30px;line-height:1.45">
+<li>The method we’ll use won’t be the best way to build a web server with Rust. Community members have published production-ready crates on crates.io with more complete web server and thread pool implementations. Our intention is to help you learn, not to take the easy route. Because Rust is a systems programming language, we can choose the level of abstraction we work with, and go lower than is possible or practical in other languages.</li>
+<li>We will not use async and await. Building a thread pool is a big enough challenge on its own, without also building an async runtime! We will, however, note how async and await might apply to some of the same problems. As noted in Chapter 17, many async runtimes use thread pools for managing their work.</li>
+</ol>
+<p style="font-size:30px;line-height:1.45">So we write the basic HTTP server and thread pool manually, to learn the general ideas and techniques behind the crates you might use in the future.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.21 Final Project: Building a Multithreaded Web Server</p>
+<p style="font-size:24px;color:#596675">2</p>
+</div>
+</section>

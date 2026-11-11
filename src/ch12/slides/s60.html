@@ -1,0 +1,21 @@
+<section id="s60" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 12 · 12.4 Adding Functionality with Test-Driven Development</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">A mini version of a classic tool</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Excellent! We’ve built our own mini version of a classic tool and learned a lot about how to structure applications. We’ve also learned a bit about file input and output, lifetimes, testing, and command line parsing.</p>
+<p style="font-size:26px;line-height:1.4"><span style="color:#273D56"><b>Table 12.1:</b></span> How the <span style="color:#273D56">minigrep</span> code is organized at this point</p>
+<table style="font-size:26px;color:#20252B">
+<tr><th style="width:22%">File</th><th style="width:78%">Holds</th></tr>
+<tr><td>src/main.rs</td><td>main: collect args, Config::build (exit 1 on error), call run, print “Application error” and exit 1</td></tr>
+<tr><td>src/main.rs</td><td>Config { query, file_path } and run: read the file with ?, print each line search returns</td></tr>
+<tr><td>src/lib.rs</td><td>pub fn search, plus the tests module with the one_result test</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.45">To round out this project, we briefly demonstrate how to work with environment variables and how to print to standard error, both of which are useful when you’re writing command line programs.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.12 An I/O Project: Building a Command Line Program</p>
+<p style="font-size:24px;color:#596675">61</p>
+</div>
+</section>

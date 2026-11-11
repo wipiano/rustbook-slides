@@ -1,0 +1,20 @@
+<section id="s33" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 10 · 10.2 Defining Shared Behavior with Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Anatomy of a trait definition</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>We declare a trait using the <span style="color:#273D56">trait</span> keyword and then the trait’s name, here <span style="color:#273D56">Summary</span>.</li>
+<li>We declare the trait as <span style="color:#273D56">pub</span> so that crates depending on this crate can make use of this trait too.</li>
+<li>Inside the curly brackets, we declare the method signatures that describe the behaviors of the types that implement this trait, here <span style="color:#273D56">fn summarize(&amp;self) -&gt; String</span>.</li>
+<li>After the method signature, instead of providing an implementation within curly brackets, we use a semicolon. Each type implementing this trait must provide its own custom behavior for the body of the method.</li>
+<li>The compiler enforces that any type that has the <span style="color:#273D56">Summary</span> trait will have the method <span style="color:#273D56">summarize</span> defined with this signature exactly.</li>
+<li>A trait can have multiple methods in its body: the method signatures are listed one per line, and each line ends in a semicolon.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.10 Generic Types, Traits, and Lifetimes</p>
+<p style="font-size:24px;color:#596675">34</p>
+</div>
+</section>

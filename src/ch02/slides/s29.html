@@ -1,0 +1,29 @@
+<section id="s29" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 2 · 2.4 Comparing the Guess to the Secret Number</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Walking through a match</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example 2.12.</b> Say the user has guessed 50 and the randomly generated secret number this time is 38.</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">match guess.cmp(&amp;secret_number) {</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ordering::Less =&gt; println!("Too small!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ordering::Greater =&gt; println!("Too big!"),</p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;Ordering::Equal =&gt; println!("You win!"),</p>
+<p style="white-space:nowrap">}</p>
+</div>
+<ol style="font-size:26px;line-height:1.45">
+<li>Comparing 50 to 38, the <span style="color:#273D56">cmp</span> method returns <span style="color:#273D56">Ordering::Greater</span>, because 50 is greater than 38.</li>
+<li>The <span style="color:#273D56">match</span> expression gets the <span style="color:#273D56">Ordering::Greater</span> value and starts checking each arm’s pattern. The first arm’s pattern, <span style="color:#273D56">Ordering::Less</span>, does not match <span style="color:#273D56">Ordering::Greater</span>, so it ignores the code in that arm and moves to the next arm.</li>
+<li>The next arm’s pattern, <span style="color:#273D56">Ordering::Greater</span>, <i>does</i> match! The associated code in that arm executes and prints <span style="color:#273D56">Too big!</span> to the screen.</li>
+<li>The <span style="color:#273D56">match</span> expression ends after the first successful match, so it won’t look at the last arm in this scenario.</li>
+</ol>
+</div>
+<p style="font-size:30px;line-height:1.45">However, the code in Listing 2.4 won’t compile yet. Let’s try it — the output follows on the next slide.</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.2 Programming a Guessing Game</p>
+<p style="font-size:24px;color:#596675">30</p>
+</div>
+</section>

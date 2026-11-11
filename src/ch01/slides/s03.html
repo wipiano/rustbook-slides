@@ -1,0 +1,31 @@
+<section id="s03" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 1 · 1.1 Installation</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Installing rustup on Linux or macOS</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Open a terminal and enter the command below. It downloads a script that installs the <span style="color:#273D56">rustup</span> tool, which in turn installs the latest stable Rust. You might be prompted for your password. On success it prints <span style="color:#273D56">Rust is installed now. Great!</span></p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh</p>
+</div>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 1.3 (Linker).</b></span> A program that Rust uses to join its compiled outputs into one file.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">You probably already have a linker. If you get linker errors, install a C compiler, which typically includes one. A C compiler is useful anyway, because some common Rust packages depend on C code.</p>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>macOS</b> — get a C compiler with:</p>
+<div style="background:#F3F5F7;border:1px solid #D5DCE3;padding:20px 28px;display:flex;flex-direction:column;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;line-height:1.45">
+<p style="white-space:nowrap">$ xcode-select --install</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Linux</b> — install GCC or Clang as your distribution documents; on Ubuntu, install the <span style="color:#273D56">build-essential</span> package.</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.1 Getting Started</p>
+<p style="font-size:24px;color:#596675">4</p>
+</div>
+</section>

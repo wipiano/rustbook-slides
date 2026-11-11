@@ -1,0 +1,18 @@
+<section id="s67" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 20 · 20.3 Advanced Types</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">continue has the type !</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">As you might have guessed, <span style="color:#273D56">continue</span> has a <span style="color:#273D56">!</span> value. When Rust computes the type of <span style="color:#273D56">guess</span>, it looks at both match arms: the former with a value of <span style="color:#273D56">u32</span>, the latter with a <span style="color:#273D56">!</span> value. Because <span style="color:#273D56">!</span> can never have a value, Rust decides that the type of <span style="color:#273D56">guess</span> is <span style="color:#273D56">u32</span>.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 20.21 (Coercion of !).</b></span> The formal description of this behavior: expressions of type <span style="color:#273D56">!</span> can be coerced into any other type.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">We’re allowed to end this <span style="color:#273D56">match</span> arm with <span style="color:#273D56">continue</span> because <span style="color:#273D56">continue</span> doesn’t return a value; instead, it moves control back to the top of the loop. So in the <span style="color:#273D56">Err</span> case, we never assign a value to <span style="color:#273D56">guess</span>.</p>
+<p style="font-size:30px;line-height:1.45">The never type is useful with the <span style="color:#273D56">panic!</span> macro as well. Recall the <span style="color:#273D56">unwrap</span> function that we call on <span style="color:#273D56">Option&lt;T&gt;</span> values to produce a value or panic (next slide).</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.20 Advanced Features</p>
+<p style="font-size:24px;color:#596675">68</p>
+</div>
+</section>

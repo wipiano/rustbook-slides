@@ -1,0 +1,19 @@
+<section id="s08" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 3 · 3.1 Variables and Mutability</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Naming and using constants</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<ul style="font-size:30px;line-height:1.45">
+<li>The constant’s name is <span style="color:#273D56">THREE_HOURS_IN_SECONDS</span>. Its value is 60 (seconds in a minute) times 60 (minutes in an hour) times 3 (the number of hours we want to count in this program).</li>
+<li>Rust’s naming convention for constants is all uppercase with underscores between words.</li>
+<li>The compiler can evaluate a limited set of operations at compile time. That lets us write the value in a way that’s easier to understand and verify, rather than setting the constant to 10,800. The Rust Reference’s section on constant evaluation lists which operations are allowed.</li>
+<li>Constants are valid for the entire time a program runs, within the scope in which they were declared. This makes them useful for values in your application domain that multiple parts of the program might need to know about, such as the maximum number of points any player of a game may earn, or the speed of light.</li>
+<li>Naming hardcoded values used throughout your program as constants conveys the meaning of that value to future maintainers, and leaves only one place to change if the hardcoded value needs updating.</li>
+</ul>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.3 Common Programming Concepts</p>
+<p style="font-size:24px;color:#596675">9</p>
+</div>
+</section>

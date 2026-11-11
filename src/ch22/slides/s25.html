@@ -1,0 +1,20 @@
+<section id="s25" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Appendix · C Derivable Traits</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Which traits can be derived — and which cannot</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">The traits listed here are the only ones defined by the standard library that can be implemented on your types using <span style="color:#273D56">derive</span>. Other standard library traits don’t have sensible default behavior, so it’s up to you to implement them in the way that makes sense for what you’re trying to accomplish.</p>
+<div style="background:#F3F5F7;padding:20px 28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;line-height:1.45"><b>Example A.7.</b> <span style="color:#273D56">Display</span>, which handles formatting for end users, can’t be derived. You should always consider the appropriate way to display a type to an end user. What parts of the type should an end user be allowed to see? What parts would they find relevant? What format of the data would be most relevant to them? The Rust compiler doesn’t have this insight, so it can’t provide appropriate default behavior for you.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">The list of derivable traits in this appendix is not comprehensive: libraries can implement <span style="color:#273D56">derive</span> for their own traits, making the list of traits you can use <span style="color:#273D56">derive</span> with truly open ended.</p>
+<div style="border-left:2px solid #D5DCE3;padding:4px 0 4px 24px">
+<p style="font-size:26px;line-height:1.45"><i>Remark.</i> Implementing <span style="color:#273D56">derive</span> involves using a procedural macro, covered in the “Custom derive Macros” section in Chapter 20.</p>
+</div>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Appendix</p>
+<p style="font-size:24px;color:#596675">26</p>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section id="s68" data-transition="fade" style="background:#FFFFFF;color:#20252B;font-family:'Source Sans 3', Arial, sans-serif;padding:72px 112px 136px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #D5DCE3;padding:0 0 20px">
+<p style="font-size:24px;line-height:1.3;color:#596675">Chapter 17 · 17.3 Working with Any Number of Futures</p>
+<h2 style="font-family:'Libertinus Serif', Georgia, serif;font-size:52px;font-weight:600;line-height:1.25;color:#273D56">Cooperative multitasking</h2>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:30px;line-height:1.45">Async can be useful even for compute-bound tasks, depending on what else your program is doing, because it provides a useful tool for structuring the relationships between different parts of the program — at the cost of the overhead of the async state machine.</p>
+<div style="border:1px solid #D5DCE3;padding:20px 28px">
+<p style="font-size:26px;line-height:1.45"><span style="color:#273D56"><b>Definition 17.15 (Cooperative multitasking).</b></span> A form of multitasking in which each future has the power to determine when it hands over control, via await points — and therefore also the responsibility to avoid blocking for too long.</p>
+</div>
+<p style="font-size:30px;line-height:1.45">In some Rust-based embedded operating systems, this is the <i>only</i> kind of multitasking!</p>
+<p style="font-size:30px;line-height:1.45">In real-world code, you won’t usually alternate function calls with await points on every single line. Yielding control this way is relatively inexpensive, but it’s not free. Trying to break up a compute-bound task might make it significantly slower, so sometimes it’s better for <i>overall</i> performance to let an operation block briefly. Always measure to see what your code’s actual performance bottlenecks are. Keep the underlying dynamic in mind, though, if you <i>are</i> seeing a lot of work happening in serial that you expected to happen concurrently!</p>
+</div>
+<div style="position:absolute;left:112px;bottom:48px;width:1696px;border-top:1px solid #D5DCE3;padding:12px 0 0;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#596675">The Rust Programming Language · Ch.17 Async, Await, Futures, and Streams</p>
+<p style="font-size:24px;color:#596675">69</p>
+</div>
+</section>
